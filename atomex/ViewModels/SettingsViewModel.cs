@@ -65,10 +65,10 @@ namespace atomex.ViewModels
 
         public ObservableCollection<Language> Languages { get; } = new ObservableCollection<Language>()
         {
-            new Language {Name = "English", Code = "en", ShortName = "Eng", IsActive = false},
-            new Language {Name = "Français", Code = "fr", ShortName = "Fra", IsActive = false},
-            new Language {Name = "Русский", Code = "ru", ShortName = "Rus", IsActive = false},
-            new Language {Name = "Türk", Code = "tr", ShortName = "Tur", IsActive = false}
+            new Language { Name = "English", Code = "en", ShortName = "Eng", IsActive = false },
+            new Language { Name = "Français", Code = "fr", ShortName = "Fra", IsActive = false },
+            new Language { Name = "Русский", Code = "ru", ShortName = "Rus", IsActive = false },
+            new Language { Name = "Türk", Code = "tr", ShortName = "Tur", IsActive = false }
         };
 
         public string Header => AppResources.EnterPin;
@@ -78,8 +78,6 @@ namespace atomex.ViewModels
         private const string TwitterUrl = "https://twitter.com/atomex_official";
         private const string TelegramUrl = "https://t.me/atomex_official";
         private const string SupportUrl = "mailto:support@atomex.me";
-
-        public CultureInfo CurrentCulture => AppResources.Culture ?? Thread.CurrentThread.CurrentUICulture;
 
         public SettingsViewModel(
             IAtomexApp app,
@@ -103,7 +101,7 @@ namespace atomex.ViewModels
         {
             _navigationService = service ?? throw new ArgumentNullException(nameof(service));
         }
-        
+
         private void InitUserLanguage()
         {
             try
@@ -262,7 +260,7 @@ namespace atomex.ViewModels
                 StoragePassword.Clear();
                 this.RaisePropertyChanged(nameof(StoragePassword));
 
-                var tabs = ((CustomTabbedPage) Application.Current.MainPage).Children;
+                var tabs = ((CustomTabbedPage)Application.Current.MainPage).Children;
 
                 foreach (NavigationPage tab in tabs)
                 {
@@ -315,10 +313,9 @@ namespace atomex.ViewModels
         {
             try
             {
-                LocalizationResourceManager.Instance.
-                    SetCulture(CultureInfo.GetCultureInfo(language?.Code ?? "en"));
+                LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo(language?.Code ?? "en"));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.Error(e, "Set culture error");
             }
@@ -352,7 +349,7 @@ namespace atomex.ViewModels
         {
             if (StoragePassword?.Length != 0)
             {
-                StoragePassword.RemoveAt(StoragePassword.Length - 1);
+                StoragePassword!.RemoveAt(StoragePassword.Length - 1);
                 this.RaisePropertyChanged(nameof(StoragePassword));
             }
         });
@@ -410,42 +407,63 @@ namespace atomex.ViewModels
         public ReactiveCommand<Unit, Unit> SignOutCommand => _signOutCommand ??= ReactiveCommand.CreateFromTask(
             async () =>
             {
-                var res = await _navigationService?.ShowAlert(AppResources.SignOut, AppResources.AreYouSure,
-                    AppResources.AcceptButton, AppResources.CancelButton);
-                if (res)
-                    _mainViewModel.Locked.Invoke(this, EventArgs.Empty);
+                try
+                {
+                    var res = await _navigationService?.ShowAlert(
+                        title: AppResources.SignOut,
+                        text: AppResources.AreYouSure,
+                        accept: AppResources.AcceptButton,
+                        cancel: AppResources.CancelButton);
+                    if (res)
+                        _mainViewModel?.Locked?.Invoke(this, EventArgs.Empty);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "Sign out error");
+                }
             });
 
         private ReactiveCommand<string, Unit> _deleteWalletCommand;
 
         public ReactiveCommand<string, Unit> DeleteWalletCommand => _deleteWalletCommand ??=
-            ReactiveCommand.Create<string>(async (name) =>
+            ReactiveCommand.CreateFromTask<string>(async (name) =>
             {
-                WalletInfo selectedWallet = Wallets
-                    .Single(w => w.Name == name);
-
-                var confirm = await _navigationService?.ShowAlert(AppResources.DeletingWallet,
-                    AppResources.DeletingWalletText, AppResources.UnderstandButton, AppResources.CancelButton);
-                if (confirm)
+                try
                 {
-                    var confirm2 = await _navigationService?.ShowAlert(
+                    WalletInfo selectedWallet = Wallets
+                        .Single(w => w.Name == name);
+
+                    var confirm = await _navigationService?.ShowAlert(
                         title: AppResources.DeletingWallet,
-                        text: string.Format(CultureInfo.InvariantCulture, AppResources.DeletingWalletConfirmationText,
-                            selectedWallet?.Name),
-                        accept: AppResources.DeleteButton,
+                        text: AppResources.DeletingWalletText,
+                        accept: AppResources.UnderstandButton,
                         cancel: AppResources.CancelButton);
-                    if (confirm2)
+                    if (confirm)
                     {
-                        DeleteWallet(selectedWallet?.Path);
-                        if (_app.Account.Wallet.PathToWallet.Equals(selectedWallet.Path))
-                            _mainViewModel?.Locked?.Invoke(this, EventArgs.Empty);
+                        var confirm2 = await _navigationService?.ShowAlert(
+                            title: AppResources.DeletingWallet,
+                            text: string.Format(CultureInfo.InvariantCulture,
+                                AppResources.DeletingWalletConfirmationText,
+                                selectedWallet?.Name),
+                            accept: AppResources.DeleteButton,
+                            cancel: AppResources.CancelButton);
+                        if (confirm2)
+                        {
+                            DeleteWallet(selectedWallet?.Path);
+                            if (_app.Account.Wallet.PathToWallet.Equals(selectedWallet.Path))
+                                _mainViewModel?.Locked?.Invoke(this, EventArgs.Empty);
+                        }
                     }
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "Delete wallet error");
                 }
             });
 
         private string GetWalletName()
         {
-            return new DirectoryInfo(_app.Account.Wallet.PathToWallet).Parent.Name;
+            return new DirectoryInfo(_app.Account.Wallet.PathToWallet).Parent!.Name;
         }
     }
 }

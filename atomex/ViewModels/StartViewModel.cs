@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
@@ -42,7 +41,7 @@ namespace atomex.ViewModels
                     _language.IsActive = false;
 
                 _language = value;
-                
+
                 SetCulture(_language);
                 _language.IsActive = true;
                 OnPropertyChanged(nameof(Language));
@@ -53,10 +52,10 @@ namespace atomex.ViewModels
 
         public ObservableCollection<Language> Languages { get; } = new ObservableCollection<Language>()
         {
-            new Language {Name = "English", Code = "en", ShortName = "Eng", IsActive = false},
-            new Language {Name = "Français", Code = "fr", ShortName = "Fra", IsActive = false},
-            new Language {Name = "Русский", Code = "ru", ShortName = "Rus", IsActive = false},
-            new Language {Name = "Türk", Code = "tr", ShortName = "Tur", IsActive = false}
+            new Language { Name = "English", Code = "en", ShortName = "Eng", IsActive = false },
+            new Language { Name = "Français", Code = "fr", ShortName = "Fra", IsActive = false },
+            new Language { Name = "Русский", Code = "ru", ShortName = "Rus", IsActive = false },
+            new Language { Name = "Türk", Code = "tr", ShortName = "Tur", IsActive = false }
         };
 
         private void SetCulture(Language language)
@@ -66,14 +65,11 @@ namespace atomex.ViewModels
                 LocalizationResourceManager.Instance
                     .SetCulture(CultureInfo.GetCultureInfo(language?.Code ?? "en"));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.Error(e, "Set culture error");
             }
         }
-
-        public CultureInfo CurrentCulture => AppResources.Culture ?? Thread.CurrentThread.CurrentUICulture;
-        
 
         public StartViewModel(IAtomexApp app)
         {
@@ -147,8 +143,11 @@ namespace atomex.ViewModels
 
                 if (!isLatest)
                 {
-                    var update = await _navigationService?.ShowAlert(AppResources.UpdateAvailable, AppResources.UpdateApp,
-                        AppResources.Yes, AppResources.No);
+                    var update = await _navigationService?.ShowAlert(
+                        title: AppResources.UpdateAvailable,
+                        text: AppResources.UpdateApp,
+                        accept: AppResources.Yes,
+                        cancel: AppResources.No);
 
                     if (update)
                         await CrossLatestVersion.Current.OpenAppInStore();
