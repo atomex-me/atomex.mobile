@@ -8,7 +8,6 @@
               xmlns:vm="clr-namespace:atomex.ViewModels.DappsViewModels;assembly=atomex"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-              xmlns:converters="clr-namespace:atomex.Converters"
               mc:Ignorable="d"
               d:BindingContext="{d:DesignInstance vm:OperationRequestViewModel}">
     <rg:PopupPage.Animation>
@@ -50,10 +49,11 @@
                                    VerticalOptions="Center"
                                    HorizontalOptions="Start" />
                         </Frame>
-                        <Label Text="..."
+                        <Label Text="&#8230;"
                                Style="{DynamicResource AdditionalTextH3}"
-                               VerticalOptions="Start"
-                               Margin="10,20,10,0" />
+                               VerticalOptions="Center"
+                               VerticalTextAlignment="Center"
+                               Margin="10,0,10,4" />
                         <Frame Padding="0"
                                HasShadow="False"
                                CornerRadius="20"
@@ -88,8 +88,8 @@
                             <DataTemplate>
                                 <Grid HorizontalOptions="Fill"
                                       VerticalOptions="EndAndExpand"
-                                      ColumnSpacing="24"
-                                      RowSpacing="4"
+                                      ColumnSpacing="12"
+                                      RowSpacing="0"
                                       BackgroundColor="{AppThemeBinding Dark={StaticResource ButtonContainerColorDark}, Light={StaticResource ButtonContainerColorDark}}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="17" />
@@ -98,7 +98,7 @@
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="24" />
-                                        <RowDefinition Height="70" />
+                                        <RowDefinition Height="56" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
@@ -112,7 +112,8 @@
                                            Grid.ColumnSpan="2"
                                            Style="{DynamicResource MainTextH4}"
                                            HorizontalTextAlignment="Start"
-                                           VerticalTextAlignment="Center">
+                                           VerticalTextAlignment="Center"
+                                           Padding="0,2">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span Text="{helpers:Translate Transaction}" />
@@ -124,20 +125,23 @@
                                            Style="{DynamicResource AdditionalTextH4}"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Start"
-                                           Text="{helpers:Translate FromLabel}" />
+                                           Text="{helpers:Translate FromLabel}"
+                                           Padding="0,2" />
                                     <Label Grid.Row="2"
                                            Grid.Column="1"
                                            Style="{DynamicResource MainTextH5}"
                                            LineBreakMode="MiddleTruncation"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="End"
-                                           Text="{Binding Operation.Source}" />
+                                           Text="{Binding Operation.Source}"
+                                           Padding="0,2" />
                                     <Label Grid.Row="3"
                                            Style="{DynamicResource AdditionalTextH4}"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Start"
                                            Text="{helpers:Translate ToLabel}"
-                                           HeightRequest="24">
+                                           HeightRequest="24"
+                                           Padding="0,2">
                                         <Label.Triggers>
                                             <DataTrigger TargetType="Label"
                                                          Binding="{Binding Operation.Kind}"
@@ -154,7 +158,8 @@
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="End"
                                            Text="{Binding Operation.Destination}"
-                                           HeightRequest="24">
+                                           HeightRequest="24"
+                                           Padding="0,2">
                                         <Label.Triggers>
                                             <DataTrigger TargetType="Label"
                                                          Binding="{Binding Operation.Kind}"
@@ -169,7 +174,8 @@
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Start"
                                            Text="{helpers:Translate AmountLabel}"
-                                           HeightRequest="24">
+                                           HeightRequest="24"
+                                           Padding="0,2">
                                         <Label.Triggers>
                                             <DataTrigger TargetType="Label"
                                                          Binding="{Binding Operation.Kind}"
@@ -185,7 +191,8 @@
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="End"
                                            Text="{Binding AmountInTez}"
-                                           HeightRequest="24">
+                                           HeightRequest="24"
+                                           Padding="0,2">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span Text="{Binding AmountInTez, StringFormat='{0:0.#####} XTZ /'}" />
@@ -205,13 +212,15 @@
                                            Style="{DynamicResource AdditionalTextH4}"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Start"
-                                           Text="{helpers:Translate FeeLabel}" />
+                                           Text="{helpers:Translate FeeLabel}"
+                                           Padding="0,2" />
                                     <Label Grid.Row="5"
                                            Grid.Column="1"
                                            Style="{DynamicResource MainTextH5}"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="End"
-                                           Text="{Binding FeeInTez}">
+                                           Text="{Binding FeeInTez}"
+                                           Padding="0,2">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span Text="{Binding FeeInTez, StringFormat='{0:0.#####} XTZ /'}" />
@@ -223,7 +232,7 @@
                                             Grid.ColumnSpan="2"
                                             Text="{Binding DetailsButtonName}"
                                             Style="{DynamicResource TransparentButton}"
-                                            Margin="0,10"
+                                            Margin="0,0,0,6"
                                             Command="{Binding OnOpenDetailsCommand}" />
                                     <StackLayout Grid.Row="7"
                                                  Grid.ColumnSpan="2"
@@ -317,11 +326,11 @@
                     <StackLayout Style="{DynamicResource SeparatorStyle}"
                                  Grid.ColumnSpan="2" />
                     <RelativeLayout Grid.Row="1"
-                                    HeightRequest="44">
+                                    HeightRequest="44"
+                                    Margin="16,0,0,0">
                         <Button Text="{helpers:Translate Reject}"
                                 Style="{DynamicResource AdditionalButton}"
                                 CornerRadius="22"
-                                Margin="16,0,0,0"
                                 RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
                                 RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
                                 Command="{Binding OnRejectCommand}">
@@ -348,11 +357,11 @@
                     </RelativeLayout>
                     <RelativeLayout Grid.Row="1"
                                     Grid.Column="1"
-                                    HeightRequest="44">
+                                    HeightRequest="44"
+                                    Margin="0,0,16,0">
                         <Button Text="{helpers:Translate Allow}"
                                 Style="{DynamicResource MainButton}"
                                 CornerRadius="22"
-                                Margin="0,0,16,0"
                                 RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
                                 RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
                                 Command="{Binding OnConfirmCommand}">
