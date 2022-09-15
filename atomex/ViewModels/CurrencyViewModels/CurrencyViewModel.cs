@@ -58,7 +58,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         public bool IsStakingAvailable => Currency?.Name == "XTZ";
         public bool HasCollectibles => Currency?.Name == "XTZ";
         public bool HasTokens => Currency?.Name == "XTZ";
-        public bool HasDapps => Currency?.Name == "XTZ";
+        public bool HasDapps { get; set; }
         public bool CanBuy { get; set; }
 
         protected CancellationTokenSource _cancellationTokenSource;
@@ -174,6 +174,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             IsAllTxsShowed = false;
             SelectedTab = CurrencyTab.Activity;
             CanBuy = BuyViewModel.Currencies.Contains(Currency.Name);
+            HasDapps = false;
         }
 
         protected virtual void LoadAddresses()

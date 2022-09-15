@@ -26,7 +26,9 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public DelegationViewModel SelectedDelegation { get; set; }
         [Reactive] public TezosTokensViewModel TezosTokensViewModel { get; set; }
         [Reactive] public CollectiblesViewModel CollectiblesViewModel { get; set; }
+#if ANDROID
         [Reactive] public DappsViewModel DappsViewModel { get; set; }
+#endif
         private DelegateViewModel _delegateViewModel { get; set; }
 
         public const double DefaultDelegationRowHeight = 76;
@@ -65,7 +67,10 @@ namespace atomex.ViewModels.CurrencyViewModels
             _delegateViewModel = new DelegateViewModel(_app, _navigationService);
             TezosTokensViewModel = new TezosTokensViewModel(_app, _navigationService);
             CollectiblesViewModel = new CollectiblesViewModel(_app, _navigationService);
+            HasDapps = Device.RuntimePlatform == Device.Android;
+    #if ANDROID
             DappsViewModel = new DappsViewModel(_app, _navigationService);
+    #endif
         }
 
         private async Task LoadDelegationInfoAsync()
