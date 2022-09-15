@@ -27,7 +27,7 @@ using static atomex.Models.Message;
 
 namespace atomex.ViewModels.SendViewModels
 {
-    public class TezosTokensSendViewModel : BaseViewModel
+    public class TezosTokensSendViewModel : BaseViewModel, IDisposable
     {
         private IAtomexApp _app { get; }
         private INavigationService _navigationService { get; }
@@ -867,6 +867,12 @@ namespace atomex.ViewModels.SendViewModels
             Message.TooltipText = tooltipText;
 
             this.RaisePropertyChanged(nameof(Message));
+        }
+
+        public void Dispose()
+        {
+            if (_app.HasQuotesProvider)
+                _app.QuotesProvider.QuotesUpdated -= OnQuotesUpdatedEventHandler;
         }
     }
 }

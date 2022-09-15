@@ -1,4 +1,5 @@
-﻿using atomex.ViewModels.SendViewModels;
+﻿using System;
+using atomex.ViewModels.SendViewModels;
 using Rg.Plugins.Popup.Pages;
 
 namespace atomex.Views.Send
@@ -19,6 +20,9 @@ namespace atomex.Views.Send
 
         protected override void OnDisappearing()
         {
+            if (BindingContext is IDisposable vm)
+                vm.Dispose();
+            
             if (BindingContext is SendViewModel)
             {
                 var sendViewModel = (SendViewModel)BindingContext;
