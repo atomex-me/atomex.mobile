@@ -138,7 +138,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 .WhereNotNull()
                 .SubscribeInMainThread(_ =>
                 {
-                    CanShowMoreTxs = Transactions.Count > TxsNumberPerPage;
+                    CanShowMoreTxs = Transactions!.Count > TxsNumberPerPage;
 
                     TxListViewHeight = IsAllTxsShowed
                         ? Transactions.Count * DefaultTxRowHeight +

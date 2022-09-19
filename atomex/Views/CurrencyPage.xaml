@@ -223,7 +223,8 @@
                                 x:Name="TabScrollView">
                         <Grid HorizontalOptions="CenterAndExpand"
                               ColumnSpacing="0"
-                              RowSpacing="0">
+                              RowSpacing="0"
+                              x:Name="TabButtons">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="36" />
                             </Grid.RowDefinitions>
@@ -243,7 +244,9 @@
                             <Button Style="{DynamicResource TabButton}"
                                     Text="{helpers:Translate Activity}"
                                     Command="{Binding ChangeCurrencyTabCommand}"
-                                    CommandParameter="Activity">
+                                    x:Name="Activity"
+                                    CommandParameter="Activity"
+                                    Clicked="ScrollToActiveTab">
                                 <Button.Triggers>
                                     <DataTrigger TargetType="Button"
                                                  Binding="{Binding SelectedTab}"
@@ -267,8 +270,9 @@
                                     Style="{DynamicResource TabButton}"
                                     Text="{helpers:Translate Addresses}"
                                     Command="{Binding ChangeCurrencyTabCommand}"
+                                    x:Name="Addresses"
                                     CommandParameter="Addresses"
-                                    Clicked="ScrollToEnd">
+                                    Clicked="ScrollToActiveTab">
                                 <Button.Triggers>
                                     <DataTrigger TargetType="Button"
                                                  Binding="{Binding SelectedTab}"
@@ -293,9 +297,10 @@
                                     WidthRequest="120"
                                     Text="{helpers:Translate Tokens}"
                                     Command="{Binding ChangeCurrencyTabCommand}"
+                                    x:Name="Tokens"
                                     CommandParameter="Tokens"
                                     IsVisible="{Binding HasTokens, TargetNullValue='false', FallbackValue='false'}"
-                                    Clicked="ScrollToCenter">
+                                    Clicked="ScrollToActiveTab">
                                 <Button.Triggers>
                                     <DataTrigger TargetType="Button"
                                                  Binding="{Binding SelectedTab}"
@@ -320,9 +325,10 @@
                                     WidthRequest="120"
                                     Text="{helpers:Translate Collectibles}"
                                     Command="{Binding ChangeCurrencyTabCommand}"
+                                    x:Name="Collectibles"
                                     CommandParameter="Collectibles"
                                     IsVisible="{Binding HasCollectibles, TargetNullValue='false', FallbackValue='false'}"
-                                    Clicked="ScrollToCenter">
+                                    Clicked="ScrollToActiveTab">
                                 <Button.Triggers>
                                     <DataTrigger TargetType="Button"
                                                  Binding="{Binding SelectedTab}"
@@ -346,8 +352,9 @@
                                     Style="{DynamicResource TabButton}"
                                     Text="{helpers:Translate Delegations}"
                                     Command="{Binding ChangeCurrencyTabCommand}"
+                                    x:Name="Delegations"
                                     CommandParameter="Delegations"
-                                    Clicked="ScrollToCenter"
+                                    Clicked="ScrollToActiveTab"
                                     IsVisible="{Binding IsStakingAvailable, FallbackValue='False', TargetNullValue='False'}">
                                 <Button.Triggers>
                                     <DataTrigger TargetType="Button"
@@ -372,8 +379,10 @@
                                     Style="{DynamicResource TabButton}"
                                     Text="{helpers:Translate Dapps}"
                                     Command="{Binding ChangeCurrencyTabCommand}"
+                                    x:Name="Dapps"
                                     CommandParameter="Dapps"
-                                    IsVisible="{Binding HasDapps, FallbackValue='False', TargetNullValue='False'}">
+                                    IsVisible="{Binding HasDapps, FallbackValue='False', TargetNullValue='False'}"
+                                    Clicked="ScrollToActiveTab">
                                 <Button.Triggers>
                                     <DataTrigger TargetType="Button"
                                                  Binding="{Binding SelectedTab}"

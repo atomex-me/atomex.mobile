@@ -1,26 +1,50 @@
 ﻿using Xamarin.Forms;
 using System;
+using System.Linq;
 using atomex.ViewModels.CurrencyViewModels;
 
 namespace atomex.Views
 {
     public partial class CurrencyPage : ContentPage
     {
+        private readonly CurrencyViewModel _currencyViewModel;
         public CurrencyPage(CurrencyViewModel currencyViewModel)
         {
             InitializeComponent();
             BindingContext = currencyViewModel;
+            _currencyViewModel = currencyViewModel;
+        }
+        
+        protected override void OnAppearing()
+        {
+            var tab = _currencyViewModel
+                .SelectedTab
+                .ToString(); 
+            var button = this.FindByName<Button>(tab);
+            if (button == null) return;
+            
+            ScrollTo(button);
         }
 
-
-        private async void ScrollToCenter(object sender, EventArgs e)
+        private void ScrollToActiveTab(object sender, EventArgs e)
         {
-            await TabScrollView.ScrollToAsync((VisualElement) sender, ScrollToPosition.Center, true);
+            var button = sender as VisualElement;
+            ScrollTo(button);
         }
 
-        private async void ScrollToEnd(object sender, EventArgs e)
+        private async void ScrollTo(VisualElement element)
         {
-            await TabScrollView.ScrollToAsync((VisualElement) sender, ScrollToPosition.End, true);
+            var lastElement = TabButtons
+                .Children
+                .Where(t => t.IsVisible)
+                ?.LastOrDefault();
+            
+            await TabScrollView.ScrollToAsync(
+                element, 
+                element?.Id == lastElement?.Id 
+                    ? ScrollToPosition.End
+                    : ScrollToPosition.Center, 
+                true);
         }
 
         private async void ScrollToSearch(object sender, EventArgs e)
