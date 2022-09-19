@@ -17,6 +17,7 @@ using Atomex.ViewModels;
 using Atomex.Wallet.Abstract;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using ZXing;
@@ -196,7 +197,7 @@ namespace atomex.ViewModels
                     Message.Text = string.Empty;
                     this.RaisePropertyChanged(nameof(Message));
                 });
-            
+
             var onlyAddressesWithBalances =
                 SelectAddressMode is SelectAddressMode.SendFrom;
 
@@ -415,7 +416,7 @@ namespace atomex.ViewModels
                 permissions = await Permissions.RequestAsync<Permissions.Camera>();
             if (permissions != PermissionStatus.Granted)
                 return;
-            
+
             IsScanning = true;
             IsAnalyzing = true;
             this.RaisePropertyChanged(nameof(IsScanning));
@@ -466,35 +467,49 @@ namespace atomex.ViewModels
 
         private void ValidateAddress(string address)
         {
-            if (!_currency.IsValidAddress(address))
+            try
             {
+                if (_currency.IsValidAddress(address))
+                    return;
+
                 Message.Type = MessageType.Error;
                 Message.RelatedElement = RelatedTo.Address;
                 Message.Text = AppResources.InvalidAddressError;
                 this.RaisePropertyChanged(nameof(Message));
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Validate address error");
             }
         }
 
         private void ConfirmExternalAddress()
         {
-            if (!_currency.IsValidAddress(ToAddress))
+            try
             {
-                Message.Type = MessageType.Error;
-                Message.RelatedElement = RelatedTo.Address;
-                Message.Text = AppResources.InvalidAddressError;
-                this.RaisePropertyChanged(nameof(Message));
+                if (!_currency.IsValidAddress(ToAddress))
+                {
+                    Message.Type = MessageType.Error;
+                    Message.RelatedElement = RelatedTo.Address;
+                    Message.Text = AppResources.InvalidAddressError;
+                    this.RaisePropertyChanged(nameof(Message));
 
-                return;
+                    return;
+                }
+
+                var selectedAddress = new WalletAddressViewModel
+                {
+                    Address = ToAddress,
+                    AvailableBalance = 0,
+                    TokenId = 0
+                };
+
+                ConfirmAction?.Invoke(this, selectedAddress);
             }
-
-            var selectedAddress = new WalletAddressViewModel
+            catch (Exception e)
             {
-                Address = ToAddress,
-                AvailableBalance = 0,
-                TokenId = 0
-            };
-
-            ConfirmAction?.Invoke(this, selectedAddress);
+                Log.Error(e, "Confirm external address error");
+            }
         }
     }
 }

@@ -20,6 +20,7 @@ using atomex.ViewModels.ConversionViewModels;
 using static atomex.Models.SnackbarMessage;
 using Rg.Plugins.Popup.Services;
 using Rg.Plugins.Popup.Pages;
+using Serilog;
 
 namespace atomex.Views
 {
@@ -237,83 +238,90 @@ namespace atomex.Views
             string buttonText = "OK",
             int duration = 3000)
         {
-            string snackBarBgColorName;
-            string snackBarTextColorName;
-            Color backgroundColor = Color.White;
-            Color textColor = Color.Black;
-
-            switch (messageType)
+            try
             {
-                case MessageType.Error:
-                    snackBarBgColorName = "ErrorSnackBarBgColor";
-                    snackBarTextColorName = "ErrorSnackBarTextColor";
-                    break;
+                string snackBarBgColorName;
+                string snackBarTextColorName;
+                Color backgroundColor = Color.White;
+                Color textColor = Color.Black;
 
-                case MessageType.Warning:
-                    snackBarBgColorName = "WarningSnackBarBgColor";
-                    snackBarTextColorName = "WarningSnackBarTextColor";
-                    break;
-
-                case MessageType.Success:
-                    snackBarBgColorName = "SuccessSnackBarBgColor";
-                    snackBarTextColorName = "SuccessSnackBarTextColor";
-                    break;
-
-                case MessageType.Regular:
-                    snackBarBgColorName = "RegularSnackBarBgColor";
-                    snackBarTextColorName = "RegularSnackBarTextColor";
-                    break;
-
-                default:
-                    snackBarBgColorName = "RegularSnackBarBgColor";
-                    snackBarTextColorName = "RegularSnackBarTextColor";
-                    break;
-            }
-
-            snackBarBgColorName = Application.Current.RequestedTheme == OSAppTheme.Dark
-                ? snackBarBgColorName + "Dark"
-                : snackBarBgColorName;
-            snackBarTextColorName = Application.Current.RequestedTheme == OSAppTheme.Dark
-                ? snackBarTextColorName + "Dark"
-                : snackBarTextColorName;
-
-            Application.Current.Resources.TryGetValue(snackBarBgColorName, out var bgColor);
-            backgroundColor = (Color) bgColor;
-            Application.Current.Resources.TryGetValue(snackBarTextColorName, out var txtColor);
-            textColor = (Color) txtColor;
-
-            var messageOptions = new MessageOptions
-            {
-                Foreground = textColor,
-                Font = Font.SystemFontOfSize(14),
-                Padding = new Thickness(20, 14),
-                Message = text
-            };
-
-            var actionOptions = new List<SnackBarActionOptions>
-            {
-                new SnackBarActionOptions
+                switch (messageType)
                 {
-                    ForegroundColor = textColor,
-                    BackgroundColor = Color.Transparent,
-                    Font = Font.SystemFontOfSize(17),
-                    Text = buttonText,
-                    Padding = new Thickness(20, 16),
-                    Action = () => { return Task.CompletedTask; }
+                    case MessageType.Error:
+                        snackBarBgColorName = "ErrorSnackBarBgColor";
+                        snackBarTextColorName = "ErrorSnackBarTextColor";
+                        break;
+
+                    case MessageType.Warning:
+                        snackBarBgColorName = "WarningSnackBarBgColor";
+                        snackBarTextColorName = "WarningSnackBarTextColor";
+                        break;
+
+                    case MessageType.Success:
+                        snackBarBgColorName = "SuccessSnackBarBgColor";
+                        snackBarTextColorName = "SuccessSnackBarTextColor";
+                        break;
+
+                    case MessageType.Regular:
+                        snackBarBgColorName = "RegularSnackBarBgColor";
+                        snackBarTextColorName = "RegularSnackBarTextColor";
+                        break;
+
+                    default:
+                        snackBarBgColorName = "RegularSnackBarBgColor";
+                        snackBarTextColorName = "RegularSnackBarTextColor";
+                        break;
                 }
-            };
 
-            var options = new SnackBarOptions
+                snackBarBgColorName = Application.Current.RequestedTheme == OSAppTheme.Dark
+                    ? snackBarBgColorName + "Dark"
+                    : snackBarBgColorName;
+                snackBarTextColorName = Application.Current.RequestedTheme == OSAppTheme.Dark
+                    ? snackBarTextColorName + "Dark"
+                    : snackBarTextColorName;
+
+                Application.Current.Resources.TryGetValue(snackBarBgColorName, out var bgColor);
+                backgroundColor = (Color)bgColor;
+                Application.Current.Resources.TryGetValue(snackBarTextColorName, out var txtColor);
+                textColor = (Color)txtColor;
+
+                var messageOptions = new MessageOptions
+                {
+                    Foreground = textColor,
+                    Font = Font.SystemFontOfSize(14),
+                    Padding = new Thickness(20, 14),
+                    Message = text
+                };
+
+                var actionOptions = new List<SnackBarActionOptions>
+                {
+                    new SnackBarActionOptions
+                    {
+                        ForegroundColor = textColor,
+                        BackgroundColor = Color.Transparent,
+                        Font = Font.SystemFontOfSize(17),
+                        Text = buttonText,
+                        Padding = new Thickness(20, 16),
+                        Action = () => { return Task.CompletedTask; }
+                    }
+                };
+
+                var options = new SnackBarOptions
+                {
+                    MessageOptions = messageOptions,
+                    Duration = TimeSpan.FromMilliseconds(duration),
+                    BackgroundColor = backgroundColor,
+                    IsRtl = false,
+                    CornerRadius = 4,
+                    Actions = actionOptions
+                };
+                
+                await this.DisplaySnackBarAsync(options);
+            }
+            catch (Exception e)
             {
-                MessageOptions = messageOptions,
-                Duration = TimeSpan.FromMilliseconds(duration),
-                BackgroundColor = backgroundColor,
-                IsRtl = false,
-                CornerRadius = 4,
-                Actions = actionOptions
-            };
-
-            var result = await this.DisplaySnackBarAsync(options);
+                Log.Error(e, "Display SnackBar error");
+            }
         }
 
         public async Task ShowAlert(
@@ -380,7 +388,7 @@ namespace atomex.Views
                             NavigationPortfolioPage.Navigation.NavigationStack[i - 1]);
                     }
 
-                    if (NavigationPortfolioPage.Navigation.NavigationStack.Count > _initiatedPageNumber) 
+                    if (NavigationPortfolioPage.Navigation.NavigationStack.Count > _initiatedPageNumber)
                         await NavigationPortfolioPage.Navigation.PopAsync();
                     break;
                 case TabNavigation.Exchange:
