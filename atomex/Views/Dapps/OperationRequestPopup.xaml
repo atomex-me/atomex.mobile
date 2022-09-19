@@ -23,7 +23,7 @@
     </rg:PopupPage.Animation>
     <Frame CornerRadius="8"
            WidthRequest="320"
-           Padding="0,12"
+           Padding="0"
            HasShadow="False"
            HorizontalOptions="Center"
            VerticalOptions="Center"
@@ -35,7 +35,7 @@
                     <StackLayout Spacing="0"
                                  Orientation="Horizontal"
                                  HorizontalOptions="Center"
-                                 Margin="0,0,0,16">
+                                 Margin="0,16">
                         <Frame Padding="0"
                                HasShadow="False"
                                CornerRadius="20"
@@ -89,8 +89,7 @@
                                 <Grid HorizontalOptions="Fill"
                                       VerticalOptions="EndAndExpand"
                                       ColumnSpacing="12"
-                                      RowSpacing="0"
-                                      BackgroundColor="{AppThemeBinding Dark={StaticResource ButtonContainerColorDark}, Light={StaticResource ButtonContainerColorDark}}">
+                                      RowSpacing="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="17" />
                                         <RowDefinition Height="24" />
@@ -317,7 +316,7 @@
                       BackgroundColor="{AppThemeBinding Dark={StaticResource ButtonContainerColorDark}, Light={StaticResource ButtonContainerColor}}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1" />
-                        <RowDefinition Height="44" />
+                        <RowDefinition Height="56" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5*" />
@@ -327,7 +326,7 @@
                                  Grid.ColumnSpan="2" />
                     <RelativeLayout Grid.Row="1"
                                     HeightRequest="44"
-                                    Margin="16,0,0,0">
+                                    Margin="16,0,0,12">
                         <Button Text="{helpers:Translate Reject}"
                                 Style="{DynamicResource AdditionalButton}"
                                 CornerRadius="22"
@@ -358,7 +357,7 @@
                     <RelativeLayout Grid.Row="1"
                                     Grid.Column="1"
                                     HeightRequest="44"
-                                    Margin="0,0,16,0">
+                                    Margin="0,0,16,12">
                         <Button Text="{helpers:Translate Allow}"
                                 Style="{DynamicResource MainButton}"
                                 CornerRadius="22"
