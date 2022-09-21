@@ -68,8 +68,8 @@ namespace atomex.ViewModels.CurrencyViewModels
             CollectiblesViewModel = new CollectiblesViewModel(_app, _navigationService);
             HasDapps = Device.RuntimePlatform == Device.Android;
 
-            DappsViewModel = new DappsViewModel(_app, _navigationService);
-
+            if (Device.RuntimePlatform == Device.Android)
+                DappsViewModel = new DappsViewModel(_app, _navigationService);
         }
 
         private async Task LoadDelegationInfoAsync()
