@@ -98,33 +98,54 @@ namespace atomex.Views
 
         private void SignOut()
         {
-            MainViewModel?.SignOut();
-            StartViewModel startViewModel = new StartViewModel(MainViewModel.AtomexApp);
-            var mainPage = new StartPage(startViewModel);
-            Application.Current.MainPage = new NavigationPage(mainPage);
-            startViewModel?.SetNavigationService(mainPage);
+            try
+            {
+                MainViewModel?.SignOut();
+                StartViewModel startViewModel = new StartViewModel(MainViewModel?.AtomexApp);
+                var mainPage = new StartPage(startViewModel);
+                Application.Current.MainPage = new NavigationPage(mainPage);
+                startViewModel?.SetNavigationService(mainPage);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Sign out error");
+            }
         }
 
         public void GoToBuy(CurrencyConfig currency)
         {
-            if (NavigationBuyPage.RootPage.BindingContext is BuyViewModel buyViewModel)
+            try
             {
-                _ = NavigationBuyPage.Navigation.PopToRootAsync(false);
-                CurrentPage = NavigationBuyPage;
-                buyViewModel.BuyCurrency(currency);
+                if (NavigationBuyPage.RootPage.BindingContext is BuyViewModel buyViewModel)
+                {
+                    _ = NavigationBuyPage.Navigation.PopToRootAsync(false);
+                    CurrentPage = NavigationBuyPage;
+                    buyViewModel.BuyCurrency(currency);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Go to buy error");
             }
         }
 
         public void GoToExchange(CurrencyConfig currency)
         {
-            if (NavigationConversionPage.RootPage.BindingContext is ConversionViewModel conversionViewModel)
+            try
             {
-                _ = NavigationConversionPage.Navigation.PopToRootAsync(false);
-                CurrentPage = NavigationConversionPage;
-                if (currency == null)
-                    conversionViewModel?.FromViewModel?.SelectCurrencyCommand.Execute(null);
-                else
-                    conversionViewModel?.SetFromCurrency(currency);
+                if (NavigationConversionPage.RootPage.BindingContext is ConversionViewModel conversionViewModel)
+                {
+                    _ = NavigationConversionPage.Navigation.PopToRootAsync(false);
+                    CurrentPage = NavigationConversionPage;
+                    if (currency == null)
+                        conversionViewModel?.FromViewModel?.SelectCurrencyCommand.Execute(null);
+                    else
+                        conversionViewModel?.SetFromCurrency(currency);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Go to exchange error");
             }
         }
 
@@ -132,104 +153,138 @@ namespace atomex.Views
             Page page,
             TabNavigation tab = TabNavigation.None)
         {
-            if (page == null)
-                return;
-
-            switch (tab)
+            try
             {
-                case TabNavigation.Portfolio:
-                    NavigationPortfolioPage.PushAsync(page);
-                    break;
-                case TabNavigation.Exchange:
-                    NavigationConversionPage.PushAsync(page);
-                    break;
-                case TabNavigation.Buy:
-                    NavigationBuyPage.PushAsync(page);
-                    break;
-                case TabNavigation.Settings:
-                    NavigationSettingsPage.PushAsync(page);
-                    break;
-                case TabNavigation.None:
-                    break;
+                if (page == null)
+                    return;
 
-                default:
-                    break;
+                switch (tab)
+                {
+                    case TabNavigation.Portfolio:
+                        NavigationPortfolioPage.PushAsync(page);
+                        break;
+                    case TabNavigation.Exchange:
+                        NavigationConversionPage.PushAsync(page);
+                        break;
+                    case TabNavigation.Buy:
+                        NavigationBuyPage.PushAsync(page);
+                        break;
+                    case TabNavigation.Settings:
+                        NavigationSettingsPage.PushAsync(page);
+                        break;
+                    case TabNavigation.None:
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Show page error");
             }
         }
 
         public void ClosePage(TabNavigation tab)
         {
-            switch (tab)
+            try
             {
-                case TabNavigation.Portfolio:
-                    NavigationPortfolioPage.PopAsync();
-                    break;
-                case TabNavigation.Exchange:
-                    NavigationConversionPage.PopAsync();
-                    break;
-                case TabNavigation.Buy:
-                    NavigationBuyPage.PopAsync();
-                    break;
-                case TabNavigation.Settings:
-                    NavigationSettingsPage.PopAsync();
-                    break;
-                case TabNavigation.None:
-                    break;
-
-                default:
-                    break;
+                switch (tab)
+                {
+                    case TabNavigation.Portfolio:
+                        NavigationPortfolioPage.PopAsync();
+                        break;
+                    case TabNavigation.Exchange:
+                        NavigationConversionPage.PopAsync();
+                        break;
+                    case TabNavigation.Buy:
+                        NavigationBuyPage.PopAsync();
+                        break;
+                    case TabNavigation.Settings:
+                        NavigationSettingsPage.PopAsync();
+                        break;
+                    case TabNavigation.None:
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Close page error");
             }
         }
 
         public void RemovePreviousPage(TabNavigation tab)
         {
-            switch (tab)
+            try
             {
-                case TabNavigation.Portfolio:
-                    NavigationPortfolioPage.Navigation.RemovePage(
-                        NavigationPortfolioPage.Navigation.NavigationStack[
-                            NavigationPortfolioPage.Navigation.NavigationStack.Count - 2]);
-                    break;
-                case TabNavigation.Exchange:
-                    NavigationConversionPage.Navigation.RemovePage(
-                        NavigationConversionPage.Navigation.NavigationStack[
-                            NavigationConversionPage.Navigation.NavigationStack.Count - 2]);
-                    break;
-                case TabNavigation.Buy:
-                    NavigationBuyPage.Navigation.RemovePage(
-                        NavigationBuyPage.Navigation.NavigationStack[
-                            NavigationBuyPage.Navigation.NavigationStack.Count - 2]);
-                    break;
-                case TabNavigation.Settings:
-                    NavigationSettingsPage.Navigation.RemovePage(
-                        NavigationSettingsPage.Navigation.NavigationStack[
-                            NavigationSettingsPage.Navigation.NavigationStack.Count - 2]);
-                    break;
-                case TabNavigation.None:
-                    break;
-
-                default:
-                    break;
+                switch (tab)
+                {
+                    case TabNavigation.Portfolio:
+                        NavigationPortfolioPage.Navigation.RemovePage(
+                            NavigationPortfolioPage.Navigation.NavigationStack[
+                                NavigationPortfolioPage.Navigation.NavigationStack.Count - 2]);
+                        break;
+                    case TabNavigation.Exchange:
+                        NavigationConversionPage.Navigation.RemovePage(
+                            NavigationConversionPage.Navigation.NavigationStack[
+                                NavigationConversionPage.Navigation.NavigationStack.Count - 2]);
+                        break;
+                    case TabNavigation.Buy:
+                        NavigationBuyPage.Navigation.RemovePage(
+                            NavigationBuyPage.Navigation.NavigationStack[
+                                NavigationBuyPage.Navigation.NavigationStack.Count - 2]);
+                        break;
+                    case TabNavigation.Settings:
+                        NavigationSettingsPage.Navigation.RemovePage(
+                            NavigationSettingsPage.Navigation.NavigationStack[
+                                NavigationSettingsPage.Navigation.NavigationStack.Count - 2]);
+                        break;
+                    case TabNavigation.None:
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Remove previous page error");
             }
         }
 
         public void ShowBottomSheet(PopupPage popup)
         {
-            if (PopupNavigation.Instance.PopupStack.Count > 0)
-                _ = PopupNavigation.Instance.PopAsync();
+            try
+            {
+                if (PopupNavigation.Instance.PopupStack.Count > 0)
+                    _ = PopupNavigation.Instance.PopAsync();
 
-            _ = PopupNavigation.Instance.PushAsync(popup);
+                _ = PopupNavigation.Instance.PushAsync(popup);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Show bottom sheet error");
+            }
         }
 
         public void CloseBottomSheet()
         {
-            if (PopupNavigation.Instance.PopupStack.Count > 0)
-                PopupNavigation.Instance.PopAsync();
+            try
+            {
+                if (PopupNavigation.Instance.PopupStack.Count > 0)
+                    PopupNavigation.Instance.PopAsync();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Close bottom sheet error");
+            }
         }
 
         public bool HasMultipleBottomSheets()
         {
-            return PopupNavigation.Instance.PopupStack.Count > 1;
+            try
+            {
+                return PopupNavigation.Instance.PopupStack.Count > 1;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Has multiple bottom sheet error");
+                return false;
+            }
         }
 
         public async void DisplaySnackBar(
@@ -315,7 +370,7 @@ namespace atomex.Views
                     CornerRadius = 4,
                     Actions = actionOptions
                 };
-                
+
                 await this.DisplaySnackBarAsync(options);
             }
             catch (Exception e)
@@ -329,8 +384,15 @@ namespace atomex.Views
             string text,
             string cancel)
         {
-            await Application.Current.MainPage
-                .DisplayAlert(title, text, cancel);
+            try
+            {
+                await Application.Current.MainPage
+                    .DisplayAlert(title, text, cancel);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Show alert error");
+            }
         }
 
         public async Task<bool> ShowAlert(
@@ -339,8 +401,16 @@ namespace atomex.Views
             string accept,
             string cancel)
         {
-            return await Application.Current.MainPage
-                .DisplayAlert(title, text, accept, cancel);
+            try
+            {
+                return await Application.Current.MainPage
+                    .DisplayAlert(title, text, accept, cancel);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Show alert error");
+                return false;
+            }
         }
 
         public async Task<string> DisplayActionSheet(
@@ -348,85 +418,103 @@ namespace atomex.Views
             string[] actions,
             string title = null)
         {
-            return await DisplayActionSheet(title: title, cancel: cancel, destruction: null, actions);
+            try
+            {
+                return await DisplayActionSheet(title: title, cancel: cancel, destruction: null, actions);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Display action sheet error");
+                return null;
+            }
         }
 
         public void SetInitiatedPage(TabNavigation tab)
         {
-            switch (tab)
+            try
             {
-                case TabNavigation.Portfolio:
-                    _initiatedPageNumber = NavigationPortfolioPage.Navigation.NavigationStack.Count;
-                    break;
-                case TabNavigation.Exchange:
-                    _initiatedPageNumber = NavigationConversionPage.Navigation.NavigationStack.Count;
-                    break;
-                case TabNavigation.Buy:
-                    _initiatedPageNumber = NavigationBuyPage.Navigation.NavigationStack.Count;
-                    break;
-                case TabNavigation.Settings:
-                    _initiatedPageNumber = NavigationSettingsPage.Navigation.NavigationStack.Count;
-                    break;
-                case TabNavigation.None:
-                    break;
-
-                default:
-                    break;
+                switch (tab)
+                {
+                    case TabNavigation.Portfolio:
+                        _initiatedPageNumber = NavigationPortfolioPage.Navigation.NavigationStack.Count;
+                        break;
+                    case TabNavigation.Exchange:
+                        _initiatedPageNumber = NavigationConversionPage.Navigation.NavigationStack.Count;
+                        break;
+                    case TabNavigation.Buy:
+                        _initiatedPageNumber = NavigationBuyPage.Navigation.NavigationStack.Count;
+                        break;
+                    case TabNavigation.Settings:
+                        _initiatedPageNumber = NavigationSettingsPage.Navigation.NavigationStack.Count;
+                        break;
+                    case TabNavigation.None:
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Set initiated page error");
             }
         }
 
         public async Task ReturnToInitiatedPage(TabNavigation tab)
         {
-            switch (tab)
+            try
             {
-                case TabNavigation.Portfolio:
-                    for (int i = NavigationPortfolioPage.Navigation.NavigationStack.Count - 1;
-                         i > _initiatedPageNumber;
-                         i--)
-                    {
-                        NavigationPortfolioPage.Navigation.RemovePage(
-                            NavigationPortfolioPage.Navigation.NavigationStack[i - 1]);
-                    }
+                switch (tab)
+                {
+                    case TabNavigation.Portfolio:
+                        for (int i = NavigationPortfolioPage.Navigation.NavigationStack.Count - 1;
+                             i > _initiatedPageNumber;
+                             i--)
+                        {
+                            NavigationPortfolioPage.Navigation.RemovePage(
+                                NavigationPortfolioPage.Navigation.NavigationStack[i - 1]);
+                        }
 
-                    if (NavigationPortfolioPage.Navigation.NavigationStack.Count > _initiatedPageNumber)
-                        await NavigationPortfolioPage.Navigation.PopAsync();
-                    break;
-                case TabNavigation.Exchange:
-                    for (int i = NavigationConversionPage.Navigation.NavigationStack.Count - 1;
-                         i > _initiatedPageNumber;
-                         i--)
-                    {
-                        NavigationConversionPage.Navigation.RemovePage(
-                            NavigationConversionPage.Navigation.NavigationStack[i - 1]);
-                    }
+                        if (NavigationPortfolioPage.Navigation.NavigationStack.Count > _initiatedPageNumber)
+                            await NavigationPortfolioPage.Navigation.PopAsync();
+                        break;
+                    case TabNavigation.Exchange:
+                        for (int i = NavigationConversionPage.Navigation.NavigationStack.Count - 1;
+                             i > _initiatedPageNumber;
+                             i--)
+                        {
+                            NavigationConversionPage.Navigation.RemovePage(
+                                NavigationConversionPage.Navigation.NavigationStack[i - 1]);
+                        }
 
-                    await NavigationConversionPage.Navigation.PopAsync();
-                    break;
-                case TabNavigation.Buy:
-                    for (int i = NavigationBuyPage.Navigation.NavigationStack.Count - 1; i > _initiatedPageNumber; i--)
-                    {
-                        NavigationBuyPage.Navigation.RemovePage(
-                            NavigationBuyPage.Navigation.NavigationStack[i - 1]);
-                    }
+                        await NavigationConversionPage.Navigation.PopAsync();
+                        break;
+                    case TabNavigation.Buy:
+                        for (int i = NavigationBuyPage.Navigation.NavigationStack.Count - 1;
+                             i > _initiatedPageNumber;
+                             i--)
+                        {
+                            NavigationBuyPage.Navigation.RemovePage(
+                                NavigationBuyPage.Navigation.NavigationStack[i - 1]);
+                        }
 
-                    await NavigationBuyPage.Navigation.PopAsync();
-                    break;
-                case TabNavigation.Settings:
-                    for (int i = NavigationSettingsPage.Navigation.NavigationStack.Count - 1;
-                         i > _initiatedPageNumber;
-                         i--)
-                    {
-                        NavigationSettingsPage.Navigation.RemovePage(
-                            NavigationSettingsPage.Navigation.NavigationStack[i - 1]);
-                    }
+                        await NavigationBuyPage.Navigation.PopAsync();
+                        break;
+                    case TabNavigation.Settings:
+                        for (int i = NavigationSettingsPage.Navigation.NavigationStack.Count - 1;
+                             i > _initiatedPageNumber;
+                             i--)
+                        {
+                            NavigationSettingsPage.Navigation.RemovePage(
+                                NavigationSettingsPage.Navigation.NavigationStack[i - 1]);
+                        }
 
-                    await NavigationSettingsPage.Navigation.PopAsync();
-                    break;
-                case TabNavigation.None:
-                    break;
-
-                default:
-                    break;
+                        await NavigationSettingsPage.Navigation.PopAsync();
+                        break;
+                    case TabNavigation.None:
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Return to initiated page error");
             }
         }
     }
