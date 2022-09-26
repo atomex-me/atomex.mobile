@@ -468,7 +468,7 @@ namespace atomex.ViewModels
 
         private async Task LoadBakerList()
         {
-            List<BakerViewModel> bakers = null;
+            List<BakerViewModel> bakers;
 
             try
             {
@@ -488,22 +488,22 @@ namespace atomex.ViewModels
                             StakingAvailable = bakerData.StakingAvailable
                         })
                         .ToList();
+                    
+                    await Device.InvokeOnMainThreadAsync(() =>
+                    {
+                        BakersList = bakers;
+                        _initialBakersList =
+                            BakersList != null
+                                ? new List<BakerViewModel>(BakersList)
+                                : new List<BakerViewModel>();
+                        //UseDefaultFee = _useDefaultFee;
+                    });
                 });
             }
             catch (Exception e)
             {
                 Log.Error(e.Message, "Error while fetching bakers list");
             }
-
-            await Device.InvokeOnMainThreadAsync(() =>
-            {
-                BakersList = bakers;
-                _initialBakersList =
-                    BakersList != null
-                        ? new List<BakerViewModel>(BakersList)
-                        : new List<BakerViewModel>();
-                //UseDefaultFee = _useDefaultFee;
-            });
         }
 
         private List<BakerViewModel> GetReverseInitialBakersList()

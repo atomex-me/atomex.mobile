@@ -196,7 +196,7 @@ namespace atomex.ViewModels
         });
     }
 
-    public class AddressesViewModel : BaseViewModel
+    public class AddressesViewModel : BaseViewModel, IDisposable
     {
         private readonly IAtomexApp _app;
         private CurrencyConfig _currency { get; set; }
@@ -341,7 +341,7 @@ namespace atomex.ViewModels
                                 Path = path,
                                 HasTokens = HasTokens,
                                 IsFreeAddress = a?.Address == freeAddress?.Address,
-                                Balance = a.AvailableBalance,
+                                Balance = Currencies.IsTezosToken(_currency.Name) ? a.TokenBalance : a.AvailableBalance,
                                 BalanceCode = _currency.DisplayedName,
                                 UpdateAddress = UpdateAddress
                             };

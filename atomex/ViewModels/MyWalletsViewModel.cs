@@ -17,19 +17,14 @@ namespace atomex.ViewModels
     {
         private IAtomexApp _app { get; set; }
         private INavigationService _navigationService { get; set; }
-
         [Reactive] public List<WalletInfo> Wallets { get; set; }
-
-        public MyWalletsViewModel()
-        {
-        }
 
         public MyWalletsViewModel(
             IAtomexApp app,
             INavigationService navigationService)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(_app));
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
+            _app = app ?? throw new ArgumentNullException(nameof(app));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             ;
             Wallets = WalletInfo.AvailableWallets().ToList();
         }
@@ -55,7 +50,6 @@ namespace atomex.ViewModels
             catch (Exception ex)
             {
                 Log.Error(ex, AppResources.NotSupportSecureStorage);
-                return;
             }
         });
     }

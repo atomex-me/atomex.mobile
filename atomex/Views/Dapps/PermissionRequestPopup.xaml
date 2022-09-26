@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<rg:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:rg="http://rotorgames.com"
+              xmlns:helpers="clr-namespace:atomex.Helpers"
+              x:Class="atomex.Views.Dapps.PermissionRequestPopup"
+              xmlns:vm="clr-namespace:atomex.ViewModels.DappsViewModels;assembly=atomex"
+              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              mc:Ignorable="d"
+              d:BindingContext="{d:DesignInstance vm:PermissionRequestViewModel}">
+    <rg:PopupPage.Animation>
+        <rg:ScaleAnimation PositionIn="Center"
+                           PositionOut="Center"
+                           ScaleIn="1.2"
+                           ScaleOut="0.8"
+                           DurationIn="400"
+                           DurationOut="300"
+                           EasingIn="SinOut"
+                           EasingOut="SinIn"
+                           HasBackgroundAnimation="True" />
+    </rg:PopupPage.Animation>
+    <Frame CornerRadius="8"
+           WidthRequest="320"
+           Padding="0,12"
+           HasShadow="False"
+           HorizontalOptions="Center"
+           VerticalOptions="Center"
+           BackgroundColor="{AppThemeBinding Dark={StaticResource PopupFrameBackgroundColorDark}, Light={StaticResource PopupFrameBackgroundColor}}">
+        <StackLayout Spacing="0"
+                     Padding="24,0">
+            <Frame Padding="0"
+                   HasShadow="False"
+                   CornerRadius="20"
+                   HeightRequest="40"
+                   WidthRequest="40"
+                   HorizontalOptions="Center"
+                   BackgroundColor="{AppThemeBinding Dark={StaticResource IconFrameBackgroundColorDark}, Light={StaticResource IconFrameBackgroundColor}}">
+                <Image Source="{Binding DappLogo}"
+                       HeightRequest="40"
+                       WidthRequest="40"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Start" />
+            </Frame>
+            <Label Text="{Binding DappName}"
+                   Style="{DynamicResource AdditionalTextH5}"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Start"
+                   Margin="0,8" />
+            <Label Text="{Binding SubTitle}"
+                   Style="{DynamicResource MainTextH2}"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center" />
+            <Label Style="{DynamicResource MainTextH5}"
+                   HorizontalTextAlignment="Start"
+                   VerticalTextAlignment="Center"
+                   LineHeight="1.25"
+                   Margin="0,32,0,8">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{helpers:Translate AppIsRequestingPermissions}" />
+                        <Span Text=":" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <StackLayout BindableLayout.ItemsSource="{Binding PermissionStrings}"
+                         BackgroundColor="Transparent"
+                         Spacing="0">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <Label Style="{DynamicResource MainTextH5}"
+                               HorizontalTextAlignment="Start"
+                               VerticalTextAlignment="Center"
+                               LineHeight="1.25">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="&#8226;" />
+                                    <Span Text=" " />
+                                    <Span Text="{Binding .}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </StackLayout>
+            <Frame HasShadow="False"
+                   Padding="0"
+                   Margin="0,24"
+                   HorizontalOptions="FillAndExpand"
+                   CornerRadius="8"
+                   BackgroundColor="Transparent"
+                   BorderColor="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColor}}">
+                <Grid ColumnSpacing="13"
+                      RowSpacing="4"
+                      Padding="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="22" />
+                        <RowDefinition Height="22" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="22" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.RowSpan="2"
+                           Source="XTZ"
+                           HorizontalOptions="Start" />
+                    <Label Grid.Column="1"
+                           Text="{Binding Address}"
+                           Style="{DynamicResource MainTextH5}"
+                           LineBreakMode="MiddleTruncation"
+                           VerticalTextAlignment="End"
+                           HorizontalTextAlignment="Start" />
+                    <Label Grid.Row="1"
+                           Grid.Column="1"
+                           Style="{DynamicResource AdditionalTextH5}"
+                           VerticalTextAlignment="Start"
+                           HorizontalTextAlignment="Start"
+                           Text="{Binding Balance}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding Balance}" />
+                                <Span Text=" " />
+                                <Span Text="XTZ" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </Grid>
+            </Frame>
+            <Grid RowSpacing="0"
+                  ColumnSpacing="8"
+                  HeightRequest="44">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="5*" />
+                </Grid.ColumnDefinitions>
+                <RelativeLayout HeightRequest="44">
+                    <Button Text="{helpers:Translate Reject}"
+                            Style="{DynamicResource AdditionalButton}"
+                            CornerRadius="22"
+                            RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
+                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
+                            Command="{Binding OnRejectCommand}"
+                            Margin="0">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button"
+                                         Binding="{Binding IsRejecting}"
+                                         Value="True">
+                                <Setter Property="Text"
+                                        Value="" />
+                                <Setter Property="IsEnabled"
+                                        Value="False" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <ActivityIndicator
+                        RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-12}"
+                        RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-12}"
+                        RelativeLayout.WidthConstraint="24"
+                        RelativeLayout.HeightConstraint="24"
+                        Color="#92C8F9"
+                        BackgroundColor="Transparent"
+                        IsRunning="{Binding IsRejecting}"
+                        IsVisible="{Binding IsRejecting}" />
+                </RelativeLayout>
+                <RelativeLayout Grid.Column="1"
+                                HeightRequest="44">
+                    <Button Text="{helpers:Translate Allow}"
+                            Style="{DynamicResource MainButton}"
+                            CornerRadius="22"
+                            RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
+                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
+                            Command="{Binding OnAllowCommand}"
+                            Margin="0">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button"
+                                         Binding="{Binding IsSending}"
+                                         Value="True">
+                                <Setter Property="Text"
+                                        Value="" />
+                                <Setter Property="IsEnabled"
+                                        Value="False" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <ActivityIndicator
+                        RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-12}"
+                        RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-12}"
+                        RelativeLayout.WidthConstraint="24"
+                        RelativeLayout.HeightConstraint="24"
+                        Color="#92C8F9"
+                        BackgroundColor="Transparent"
+                        IsRunning="{Binding IsSending}"
+                        IsVisible="{Binding IsSending}" />
+                </RelativeLayout>
+            </Grid>
+            <Label Text="{helpers:Translate ConnectToTrustSites}"
+                   Style="{DynamicResource AdditionalTextH6}"
+                   Margin="0,12"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center" />
+        </StackLayout>
+    </Frame>
+</rg:PopupPage>

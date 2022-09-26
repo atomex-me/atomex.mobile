@@ -96,12 +96,13 @@ namespace atomex.ViewModels
 
             this.WhenAnyValue(vm => vm.SelectedCurrency)
                 .WhereNotNull()
-                .SubscribeInMainThread(c =>
+                .SubscribeInMainThread( c =>
                 {
                     switch (SelectCurrencyUseCase)
                     {
                         case CurrencyActionType.Show:
                             _navigationService?.ShowPage(new CurrencyPage(c), TabNavigation.Portfolio);
+                            _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
                             SelectedCurrency = null;
                             break;
                         case CurrencyActionType.Send:
@@ -133,6 +134,7 @@ namespace atomex.ViewModels
                             break;
                         default:
                             _navigationService?.ShowPage(new CurrencyPage(c), TabNavigation.Portfolio);
+                            _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
                             SelectedCurrency = null;
                             break;
                     }

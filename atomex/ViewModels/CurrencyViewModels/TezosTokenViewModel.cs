@@ -54,7 +54,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public ObservableCollection<TransactionViewModel> Transactions { get; set; }
 
         [Reactive]
-        public ObservableCollection<Grouping<DateTime, TransactionViewModel>> GroupedTransactions { get; set; }
+        public ObservableCollection<Grouping<TransactionViewModel>> GroupedTransactions { get; set; }
 
         [Reactive] public TransactionViewModel SelectedTransaction { get; set; }
 
@@ -78,17 +78,20 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         private CancellationTokenSource _cancellationTokenSource;
 
-        public class Grouping<K, T> : ObservableCollection<T>
+        public class Grouping<T> : ObservableCollection<T>
         {
             public double GroupHeight { get; set; } = DefaultTxGroupHeight;
-            public K Date { get; private set; }
+            public DateTime Date { get; private set; }
 
-            public Grouping(K date, IEnumerable<T> items)
+            public Grouping(DateTime date, IEnumerable<T> items)
             {
                 Date = date;
+
                 foreach (T item in items)
                     Items.Add(item);
             }
+
+            public string DateString => Date.ToString(AppResources.Culture.DateTimeFormat.MonthDayPattern, AppResources.Culture);
         }
 
         [Reactive] public bool IsRefreshing { get; set; }
@@ -141,19 +144,8 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             if (TokenBalance == null) return;
 
-            if (TokenBalance.IsNft)
-            {
-                var url = ThumbsApi.GetCollectiblePreviewUrl(Contract.Address, TokenBalance.TokenId);
-                TokenPreview = GetTokenPreview(url);
-            }
-            else
-            {
-                foreach (var url in ThumbsApi.GetTokenPreviewUrls(TokenBalance.Contract, TokenBalance.ThumbnailUri,
-                             TokenBalance.DisplayUri ?? TokenBalance.ArtifactUri))
-                {
-                    TokenPreview = GetTokenPreview(url);
-                }
-            }
+            var url = ThumbsApi.GetTokenPreviewUrl(Contract.Address, TokenBalance.TokenId);
+            TokenPreview = GetTokenPreview(url);
         }
 
         public TezosTokenViewModel(
@@ -163,7 +155,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             TokenBalance tokenBalance)
         {
             Transactions = new ObservableCollection<TransactionViewModel>();
-            GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>();
+            GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>();
 
             _app = app ?? throw new ArgumentNullException(nameof(app));
             _account = app.Account ?? throw new ArgumentNullException(nameof(app.Account));
@@ -302,15 +294,15 @@ namespace atomex.ViewModels.CurrencyViewModels
                             .OrderByDescending(p => p.LocalTime.Date)
                             .Take(TxsNumberPerPage)
                             .GroupBy(p => p.LocalTime.Date)
-                            .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key,
+                            .Select(g => new Grouping<TransactionViewModel>(g.Key,
                                 new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))))
                         : Transactions
                             .GroupBy(p => p.LocalTime.Date)
                             .OrderByDescending(g => g.Key)
-                            .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key,
+                            .Select(g => new Grouping<TransactionViewModel>(g.Key,
                                 new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
 
-                    GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
+                    GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
                 });
             }
             catch (OperationCanceledException)
@@ -365,11 +357,12 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             try
             {
-                var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
-                if (quote == null) return;
+                var tokenQuote = quotesProvider.GetQuote(TokenBalance.Symbol, BaseCurrencyCode);
+                var xtzQuote = quotesProvider.GetQuote(TezosConfig.Xtz, BaseCurrencyCode);
+                if (tokenQuote == null || xtzQuote == null) return;
 
-                CurrentQuote = quote.Bid;
-                TotalAmountInBase = TotalAmount.SafeMultiply(quote.Bid);
+                CurrentQuote = tokenQuote.Bid.SafeMultiply(xtzQuote.Bid);
+                TotalAmountInBase = TotalAmount.SafeMultiply(CurrentQuote);
             }
             catch (Exception e)
             {
@@ -401,7 +394,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
                     if (currency == null)
                         return; // TODO: msg to user
-                        
+
                     _navigationService?.CloseBottomSheet();
                     _navigationService?.SetInitiatedPage(TabNavigation.Exchange);
                     _navigationService?.GoToExchange(currency);
@@ -452,7 +445,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
                 await tezosTokensScanner.UpdateBalanceAsync(
                     tokenContract: Contract.Address,
-                    tokenId: (int) TokenBalance.TokenId,
+                    tokenId: (int)TokenBalance.TokenId,
                     cancellationToken: _cancellationTokenSource.Token);
 
                 await Device.InvokeOnMainThreadAsync(() =>
@@ -484,7 +477,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 currency: TezosConfig,
                 tokenContract: Contract.Address,
                 tokenType: Contract.GetContractType(),
-                tokenId: (int) TokenBalance.TokenId);
+                tokenId: (int)TokenBalance.TokenId);
             _navigationService?.ShowBottomSheet(new ReceiveBottomSheet(receiveViewModel));
         }
 
@@ -499,14 +492,14 @@ namespace atomex.ViewModels.CurrencyViewModels
                     app: _app,
                     navigationService: _navigationService,
                     tokenContract: Contract.Address,
-                    tokenId: (int) TokenBalance.TokenId,
+                    tokenId: (int)TokenBalance.TokenId,
                     tokenType: Contract.GetContractType(),
                     tokenPreview: TokenPreview)
                 : new TezosTokensSendViewModel(
                     app: _app,
                     navigationService: _navigationService,
                     tokenContract: Contract.Address,
-                    tokenId: (int) TokenBalance.TokenId,
+                    tokenId: (int)TokenBalance.TokenId,
                     tokenType: Contract.GetContractType(),
                     tokenPreview: TokenPreview);
 
@@ -604,10 +597,10 @@ namespace atomex.ViewModels.CurrencyViewModels
             var groups = Transactions
                 .GroupBy(p => p.LocalTime.Date)
                 .OrderByDescending(g => g.Key)
-                .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key,
+                .Select(g => new Grouping<TransactionViewModel>(g.Key,
                     new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
 
-            GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
+            GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
         });
 
         private ReactiveCommand<Unit, Unit> _showDescriptionCommand;

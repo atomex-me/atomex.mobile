@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<rg:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:rg="http://rotorgames.com"
+              xmlns:helpers="clr-namespace:atomex.Helpers"
+              x:Class="atomex.Views.Dapps.DappDisconnectPopup"
+              xmlns:vm="clr-namespace:atomex.ViewModels.DappsViewModels;assembly=atomex"
+              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              mc:Ignorable="d"
+              d:BindingContext="{d:DesignInstance vm:DappViewModel}">
+    <rg:PopupPage.Animation>
+        <rg:ScaleAnimation PositionIn="Center"
+                           PositionOut="Center"
+                           ScaleIn="1.2"
+                           ScaleOut="0.8"
+                           DurationIn="400"
+                           DurationOut="300"
+                           EasingIn="SinOut"
+                           EasingOut="SinIn"
+                           HasBackgroundAnimation="True" />
+    </rg:PopupPage.Animation>
+    <Frame CornerRadius="8"
+           WidthRequest="280"
+           Padding="24,20,24,12"
+           HasShadow="False"
+           HorizontalOptions="Center"
+           VerticalOptions="Center"
+           BackgroundColor="{AppThemeBinding Dark={StaticResource PopupFrameBackgroundColorDark}, Light={StaticResource PopupFrameBackgroundColor}}">
+        <StackLayout Spacing="0"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="Center">
+            <Label Text="{Binding DisconnectTitle}"
+                   Style="{DynamicResource MainTextH3}"
+                   HorizontalTextAlignment="Start"
+                   VerticalTextAlignment="Center" />
+            <Label Text="{Binding DisconnectConfirmationText}"
+                   Style="{DynamicResource MainTextH5}"
+                   Margin="0,24"
+                   HorizontalTextAlignment="Start"
+                   VerticalTextAlignment="Start" />
+            <Grid HorizontalOptions="FillAndExpand"
+                  ColumnSpacing="0"
+                  RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="5*" />
+                </Grid.ColumnDefinitions>
+                <Button Text="{helpers:Translate CancelButton}"
+                        Style="{DynamicResource TransparentButton}"
+                        Padding="0"
+                        VerticalOptions="Center"
+                        HorizontalOptions="FillAndExpand"
+                        Command="{Binding CloseDisconnectionCommand}" />
+                <Button Grid.Column="1"
+                        Text="{helpers:Translate Disconnect}"
+                        Style="{DynamicResource TransparentButton}"
+                        Padding="0"
+                        VerticalOptions="Center"
+                        HorizontalOptions="FillAndExpand"
+                        Command="{Binding DisconnectCommand}" />
+            </Grid>
+        </StackLayout>
+    </Frame>
+</rg:PopupPage>

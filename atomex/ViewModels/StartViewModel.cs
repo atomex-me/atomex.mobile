@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
@@ -44,9 +43,7 @@ namespace atomex.ViewModels
                 _language = value;
 
                 SetCulture(_language);
-
                 _language.IsActive = true;
-
                 OnPropertyChanged(nameof(Language));
             }
         }
@@ -55,35 +52,30 @@ namespace atomex.ViewModels
 
         public ObservableCollection<Language> Languages { get; } = new ObservableCollection<Language>()
         {
-            new Language {Name = "English", Code = "en", ShortName = "Eng", IsActive = false},
-            new Language {Name = "Français", Code = "fr", ShortName = "Fra", IsActive = false},
-            new Language {Name = "Русский", Code = "ru", ShortName = "Rus", IsActive = false},
-            new Language {Name = "Türk", Code = "tr", ShortName = "Tur", IsActive = false}
+            new Language { Name = "English", Code = "en", ShortName = "Eng", IsActive = false },
+            new Language { Name = "Français", Code = "fr", ShortName = "Fra", IsActive = false },
+            new Language { Name = "Русский", Code = "ru", ShortName = "Rus", IsActive = false },
+            new Language { Name = "Türk", Code = "tr", ShortName = "Tur", IsActive = false }
         };
 
         private void SetCulture(Language language)
         {
             try
             {
-                LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo(language.Code));
+                LocalizationResourceManager.Instance
+                    .SetCulture(CultureInfo.GetCultureInfo(language?.Code ?? "en"));
             }
-            catch
+            catch (Exception e)
             {
-                LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo("en"));
+                Log.Error(e, "Set culture error");
             }
-        }
-
-        public CultureInfo CurrentCulture => AppResources.Culture ?? Thread.CurrentThread.CurrentUICulture;
-
-        public StartViewModel()
-        {
         }
 
         public StartViewModel(IAtomexApp app)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(AtomexApp));
-            HasWallets = WalletInfo.AvailableWallets().Count() > 0;
-            SetUserLanguage();
+            _app = app ?? throw new ArgumentNullException(nameof(app));
+            HasWallets = WalletInfo.AvailableWallets().Any();
+            InitUserLanguage();
             _ = CheckLatestVersion();
         }
 
@@ -92,20 +84,18 @@ namespace atomex.ViewModels
             _navigationService = service ?? throw new ArgumentNullException(nameof(service));
         }
 
-        private void SetUserLanguage()
+        private void InitUserLanguage()
         {
             try
             {
-                string language = Preferences.Get(LanguageKey, CurrentCulture.TwoLetterISOLanguageName);
-                Language = Languages.Where(l =>
-                    l.Code == Preferences.Get(LanguageKey, CurrentCulture.TwoLetterISOLanguageName)).Single();
-                LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo(language));
+                string language = Preferences.Get(LanguageKey, "en");
+                Language = Languages.Single(l =>
+                    l.Code == language);
             }
             catch (Exception e)
             {
-                LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo("en"));
-                Language = Languages.Where(l => l.Code == "en").Single();
-                Log.Error(e, "Not found user language error");
+                Language = Languages.Single(l => l.Code == "en");
+                Log.Error(e, "Init user language error");
             }
         }
 
@@ -147,15 +137,25 @@ namespace atomex.ViewModels
 
         private async Task CheckLatestVersion()
         {
-            var isLatest = await CrossLatestVersion.Current.IsUsingLatestVersion();
-
-            if (!isLatest)
+            try
             {
-                var update = await _navigationService?.ShowAlert(AppResources.UpdateAvailable, AppResources.UpdateApp,
-                    AppResources.Yes, AppResources.No);
+                var isLatest = await CrossLatestVersion.Current.IsUsingLatestVersion();
 
-                if (update)
-                    await CrossLatestVersion.Current.OpenAppInStore();
+                if (!isLatest)
+                {
+                    var update = await _navigationService?.ShowAlert(
+                        title: AppResources.UpdateAvailable,
+                        text: AppResources.UpdateApp,
+                        accept: AppResources.Yes,
+                        cancel: AppResources.No);
+
+                    if (update)
+                        await CrossLatestVersion.Current.OpenAppInStore();
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Check latest app version error");
             }
         }
     }

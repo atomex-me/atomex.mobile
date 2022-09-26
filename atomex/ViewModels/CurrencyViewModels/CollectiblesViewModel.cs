@@ -87,7 +87,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 .WhereNotNull()
                 .SubscribeInMainThread(collectibles =>
                     CollectibleListViewHeight =
-                        Math.Ceiling(UserCollectibles.Count / CollectiblesPerRow) * DefaultCollectibleHeight);
+                        Math.Ceiling(UserCollectibles!.Count / CollectiblesPerRow) * DefaultCollectibleHeight);
 
             this.WhenAnyValue(vm => vm.SelectedCollectible)
                 .WhereNotNull()

@@ -12,15 +12,8 @@ namespace atomex.Helpers
     public class LocalizationResourceManager : INotifyPropertyChanged
     {
         private const string LanguageKey = nameof(LanguageKey);
-
         public static LocalizationResourceManager Instance { get; } = new LocalizationResourceManager();
-
         public event EventHandler LanguageChanged;
-
-        private LocalizationResourceManager()
-        {
-            SetCulture(new CultureInfo(Preferences.Get(LanguageKey, CurrentCulture.TwoLetterISOLanguageName)));
-        }
 
         public string this[string text]
         {
@@ -39,9 +32,9 @@ namespace atomex.Helpers
             Invalidate();
         }
 
-        public string GetValue(string text, string ResourceId)
+        public string GetValue(string text, string resourceId)
         {
-            ResourceManager resourceManager = new ResourceManager(ResourceId, typeof(TranslateExtension).GetTypeInfo().Assembly);
+            ResourceManager resourceManager = new ResourceManager(resourceId, typeof(TranslateExtension).GetTypeInfo().Assembly);
             return resourceManager.GetString(text, CultureInfo.CurrentCulture);
         }
 
@@ -49,10 +42,9 @@ namespace atomex.Helpers
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void Invalidate()
+        private void Invalidate()
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null));
-
             LanguageChanged?.Invoke(this, EventArgs.Empty);
         }
     }

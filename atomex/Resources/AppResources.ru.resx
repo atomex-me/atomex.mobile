@@ -83,9 +83,6 @@
     <data name="TotalAmountInclFees" xml:space="preserve">
         <value>Всего (вкл. коммиссию)</value>
     </data>
-    <data name="ToLabel" xml:space="preserve">
-        <value>На адрес</value>
-    </data>
     <data name="TransactionTime" xml:space="preserve">
         <value>Время транзакции</value>
     </data>
@@ -279,10 +276,10 @@
         <value>Управление активами</value>
     </data>
     <data name="AvailableToSpend" xml:space="preserve">
-        <value>Available to spend</value>
+        <value>Доступные средства</value>
     </data>
     <data name="BalanceOnHold" xml:space="preserve">
-        <value>Balance on hold</value>
+        <value>Неподтвержденный баланс</value>
     </data>
     <data name="RestoringWallet" xml:space="preserve">
         <value>Восстановление кошелька</value>
@@ -552,19 +549,19 @@
         <value>Расчет комиссии</value>
     </data>
     <data name="SortByRatingButton" xml:space="preserve">
-        <value>Sort by rating</value>
+        <value>Сорт. по рейтингу</value>
     </data>
     <data name="SortByRoiButton" xml:space="preserve">
-        <value>Sort by ROI</value>
+        <value>Сорт. по ROI</value>
     </data>
     <data name="SortByStatusButton" xml:space="preserve">
-        <value>Sort by status</value>
+        <value>Сорт. по статусу</value>
     </data>
     <data name="SortByValidatorButton" xml:space="preserve">
-        <value>Sort by validator</value>
+        <value>Сорт. по валидатору</value>
     </data>
     <data name="SortByMinTezButton" xml:space="preserve">
-        <value>Sort by min. XTZ</value>
+        <value>Сорт. по мин. XTZ</value>
     </data>
     <data name="BakersNotFound" xml:space="preserve">
         <value>Бейкеры не найдены</value>
@@ -692,13 +689,6 @@
     <data name="CurrencyRefunded" xml:space="preserve">
         <value>{0} возвращен</value>
     </data>
-    <data name="DetailsTab" xml:space="preserve">
-        <value>Подробнее</value>
-    </data>
-    <data name="ProgressTab" xml:space="preserve">
-        <value>Прогресс</value>
-    </data>
-
     <!-- Create Swap Pages -->
     <data name="SwapListPageTitle" xml:space="preserve">
         <value>Список свопов</value>
@@ -1054,9 +1044,6 @@
     <data name="InsufficientChainFundsWithDetails" xml:space="preserve">
         <value>Недостаточно {0} для покрытия комиссии за перевод токенов. Требуется минимум {1}</value>
     </data>
-    <data name="CommissionLessThanZeroError" xml:space="preserve">
-        <value>Комиссия должна быть больше нуля</value>
-    </data>
     <data name="SendingTransactionError" xml:space="preserve">
         <value>Ошибка при отправке транзакции</value>
     </data>
@@ -1139,7 +1126,7 @@
         <value>Не удалось включить аутентификацию по биометрии</value>
     </data>
     <data name="Verified" xml:space="preserve">
-        <value>Проверено!</value>
+        <value>Проверено</value>
     </data>
     <data name="SwapHistoryText" xml:space="preserve">
         <value>История свопов хранится локально на вашем устройстве. Это значит, что вы не увидите операции, сделанные на другом устройстве.</value>
@@ -1212,12 +1199,99 @@
         <value>Адрес контракта</value>
     </data>
     <data name="ViewOnObjktButton" xml:space="preserve">
-        <value>View more on objkt.com</value>
+        <value>Подробнее на objkt.com</value>
     </data>
     <data name="Search" xml:space="preserve">
-        <value>Search...</value>
+        <value>Поиск...</value>
     </data>
     <data name="ManageTezosCollectibles" xml:space="preserve">
         <value>Управление Tezos NFT</value>
+    </data>
+    <data name="Dapps" xml:space="preserve">
+        <value>Dapps</value>
+    </data>
+    <data name="Details" xml:space="preserve">
+        <value>Подробнее</value>
+    </data>
+    <data name="Progress" xml:space="preserve">
+        <value>Progress</value>
+    </data>
+    <data name="IncorrectQrCodeFormat" xml:space="preserve">
+        <value>Некорректный формат QR-кода</value>
+    </data>
+    <data name="DappId" xml:space="preserve">
+        <value>Dapp ID</value>
+    </data>
+    <data name="DappIsConnected" xml:space="preserve">
+        <value>{0} подключен(-а) к вашему аккаунту</value>
+    </data>
+    <data name="Connecting" xml:space="preserve">
+        <value>Подключение</value>
+    </data>
+    <data name="ConnectedToAddress" xml:space="preserve">
+        <value>Подключен(-а) к адресу</value>
+    </data>
+    <data name="ConnectDapp" xml:space="preserve">
+        <value>Подключить Dapp</value>
+    </data>
+    <data name="ConnectedSuccessfully" xml:space="preserve">
+        <value>Успешное подключение</value>
+    </data>
+    <data name="ConnectToTrustSites" xml:space="preserve">
+        <value>Подключайтесь только к тем веб-сайтам, которым вы доверяете</value>
+    </data>
+    <data name="AppIsRequestingPermissions" xml:space="preserve">
+        <value>Приложение запрашивает следующие разрешения</value>
+    </data>
+    <data name="AreYouSureToDisconnect" xml:space="preserve">
+        <value>Вы уверены, что хотите отключить {0}?</value>
+    </data>
+    <data name="Allow" xml:space="preserve">
+        <value>Разрешить</value>
+    </data>
+    <data name="Disconnect" xml:space="preserve">
+        <value>Отключить</value>
+    </data>
+    <data name="DisconnectDappTitle" xml:space="preserve">
+        <value>Отключить {0}?</value>
+    </data>
+    <data name="DisconnectedSuccessfully" xml:space="preserve">
+        <value>Успешное отключение</value>
+    </data>
+    <data name="Disconnecting" xml:space="preserve">
+        <value>Отключение</value>
+    </data>
+    <data name="Permissions" xml:space="preserve">
+        <value>Разрешения</value>
+    </data>
+    <data name="Reject" xml:space="preserve">
+        <value>Отклонить</value>
+    </data>
+    <data name="Sign" xml:space="preserve">
+        <value>Подписать</value>
+    </data>
+    <data name="DoYouWantToSignData" xml:space="preserve">
+        <value>Подписать следующие данные?</value>
+    </data>
+    <data name="AddressToConnect" xml:space="preserve">
+        <value>Адрес для подключения</value>
+    </data>
+    <data name="DappWantsToConnect" xml:space="preserve">
+        <value>{0} хочет подключиться к вашему аккаунту</value>
+    </data>
+    <data name="ConfirmDappOperations" xml:space="preserve">
+        <value>Подтверждая, вы разрешаете {0} выполнить следующие операции</value>
+    </data>
+    <data name="RequestFromDapp" xml:space="preserve">
+        <value>Запрос от {0}</value>
+    </data>
+    <data name="Transaction" xml:space="preserve">
+        <value>Транзакция</value>
+    </data>
+    <data name="DisplayTxDetails" xml:space="preserve">
+        <value>Показать доп. информацию о транзакции</value>
+    </data>
+    <data name="HideTxDetails" xml:space="preserve">
+        <value>Скрыть доп. информацию о транзакции</value>
     </data>
 </root>

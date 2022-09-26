@@ -120,7 +120,7 @@
                                Padding="0"
                                BackgroundColor="{AppThemeBinding Dark={StaticResource TabSwitcherBackgroundColorDark}, Light={StaticResource TabSwitcherBackgroundColor}}" />
                         <Button Style="{DynamicResource TabButton}"
-                                Text="{helpers:Translate DetailsTab}"
+                                Text="{helpers:Translate Details}"
                                 Command="{Binding ChangeCurrencyTabCommand}"
                                 CommandParameter="Details">
                             <Button.Triggers>
@@ -370,7 +370,7 @@
                                 <StackLayout VerticalOptions="FillAndExpand"
                                              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                                              Spacing="0">
-                                    <Label Text="{Binding Date, StringFormat='{}{0:dddd, dd MMMM}'}"
+                                    <Label Text="{Binding DateString}"
                                            Style="{DynamicResource AdditionalTextH5}"
                                            Padding="16,0"
                                            VerticalOptions="FillAndExpand"
@@ -573,7 +573,7 @@
                                            HorizontalTextAlignment="Start">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding Balance}" />
+                                                <Span Text="{Binding Balance, StringFormat='{0:0.########}'}" />
                                                 <Span Text=" " />
                                                 <Span Text="{Binding BalanceCode}" />
                                             </FormattedString>

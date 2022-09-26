@@ -31,7 +31,7 @@ namespace atomex.ViewModels.SendViewModels
         AdditionalConfirmation
     }
 
-    public abstract class SendViewModel : BaseViewModel
+    public abstract class SendViewModel : BaseViewModel, IDisposable
     {
         protected IAtomexApp _app { get; }
         protected INavigationService _navigationService { get; }
@@ -554,6 +554,12 @@ namespace atomex.ViewModels.SendViewModels
             RecommendedMaxAmountWarning.TooltipText = tooltipText;
 
             this.RaisePropertyChanged(nameof(RecommendedMaxAmountWarning));
+        }
+        
+        public void Dispose()
+        {
+            if (_app.HasQuotesProvider)
+                _app.QuotesProvider.QuotesUpdated -= OnQuotesUpdatedEventHandler;
         }
     }
 }

@@ -10,6 +10,7 @@ using Atomex.Blockchain.Tezos;
 using Atomex.Blockchain.Tezos.Internal;
 using Atomex.Blockchain.Tezos.Tzkt;
 using Atomex.Core;
+using atomex.ViewModels.DappsViewModels;
 using Atomex.Wallet;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -24,8 +25,9 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public ObservableCollection<DelegationViewModel> Delegations { get; set; }
         [Reactive] public DelegationViewModel SelectedDelegation { get; set; }
         [Reactive] public TezosTokensViewModel TezosTokensViewModel { get; set; }
-        
         [Reactive] public CollectiblesViewModel CollectiblesViewModel { get; set; }
+        [Reactive] public DappsViewModel DappsViewModel { get; set; }
+
         private DelegateViewModel _delegateViewModel { get; set; }
 
         public const double DefaultDelegationRowHeight = 76;
@@ -64,6 +66,10 @@ namespace atomex.ViewModels.CurrencyViewModels
             _delegateViewModel = new DelegateViewModel(_app, _navigationService);
             TezosTokensViewModel = new TezosTokensViewModel(_app, _navigationService);
             CollectiblesViewModel = new CollectiblesViewModel(_app, _navigationService);
+            HasDapps = Device.RuntimePlatform == Device.Android;
+
+            if (Device.RuntimePlatform == Device.Android)
+                DappsViewModel = new DappsViewModel(_app, _navigationService);
         }
 
         private async Task LoadDelegationInfoAsync()
