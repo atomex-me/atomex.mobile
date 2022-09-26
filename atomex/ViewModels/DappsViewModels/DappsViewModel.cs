@@ -426,8 +426,8 @@ namespace atomex.ViewModels.DappsViewModels
                             StorageLimit = 5000,
                             Parameters = new Parameters
                             {
-                                Entrypoint = o.Parameters["entrypoint"]!.ToString(),
-                                Value = Micheline.FromJson(o.Parameters["value"]!.ToString())
+                                Entrypoint = o?.Parameters?["entrypoint"]!.ToString(),
+                                Value = Micheline.FromJson(o?.Parameters?["value"]!.ToString())
                             }
                         };
                     }));
