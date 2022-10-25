@@ -1,4 +1,5 @@
 ﻿using System;
+using Serilog;
 using Xamarin.Forms;
 
 namespace atomex.Behaviors
@@ -86,51 +87,58 @@ namespace atomex.Behaviors
 
         private void Pan_PanUpdated(object sender, PanUpdatedEventArgs e)
         {
-            View v = sender as View;
-            switch (e.StatusType)
+            try
             {
-                case GestureStatus.Started:
-                    StartPanDownTime = DateTime.Now;
-                    break;
+                View v = sender as View;
+                switch (e.StatusType)
+                {
+                    case GestureStatus.Started:
+                        StartPanDownTime = DateTime.Now;
+                        break;
 
-                case GestureStatus.Running:
-                    TotalY = e.TotalY;
-                    if (TotalY > 0)
-                    {
-                        if (Device.RuntimePlatform == Device.Android)
+                    case GestureStatus.Running:
+                        TotalY = e.TotalY;
+                        if (TotalY > 0)
                         {
-                            v.TranslateTo(0, TotalY + v.TranslationY, 20, Easing.Linear);
-                            //Too close to edge?
-                            ReachedEdge = TotalY + v.TranslationY > v.Height - ClosingEdge;
-                        }
+                            if (Device.RuntimePlatform == Device.Android)
+                            {
+                                v.TranslateTo(0, TotalY + v.TranslationY, 20, Easing.Linear);
+                                //Too close to edge?
+                                ReachedEdge = TotalY + v.TranslationY > v.Height - ClosingEdge;
+                            }
 
+                            else
+                            {
+                                v.TranslateTo(0, TotalY, 20, Easing.Linear);
+                                //Too close to edge?
+                                ReachedEdge = TotalY > v.Height - ClosingEdge;
+                            }
+                        }
+                        break;
+
+                    case GestureStatus.Completed:
+                        EndPanDownTime = DateTimeOffset.Now;
+                        if ((EndPanDownTime.Value.ToUnixTimeMilliseconds() - StartPanDownTime.Value.ToUnixTimeMilliseconds() < ClosingTimeInMs
+                             && TotalY > 0)
+                            || ReachedEdge)
+                            //Swipe too fast
+                            CloseAction?.Invoke();
                         else
                         {
-                            v.TranslateTo(0, TotalY, 20, Easing.Linear);
-                            //Too close to edge?
-                            ReachedEdge = TotalY > v.Height - ClosingEdge;
+                            v.TranslateTo(0, 0, 20, Easing.Linear);
                         }
-                    }
-                    break;
+                        break;
+                }
 
-                case GestureStatus.Completed:
-                    EndPanDownTime = DateTimeOffset.Now;
-                    if ((EndPanDownTime.Value.ToUnixTimeMilliseconds() - StartPanDownTime.Value.ToUnixTimeMilliseconds() < ClosingTimeInMs
-                        && TotalY > 0)
-                        || ReachedEdge)
-                        //Swipe too fast
-                        CloseAction?.Invoke();
-                    else
-                    {
-                        v.TranslateTo(0, 0, 20, Easing.Linear);
-                    }
-                    break;
+                if (e.StatusType == GestureStatus.Completed || e.StatusType == GestureStatus.Canceled)
+                {
+                    StartPanDownTime = null;
+                    EndPanDownTime = null;
+                }
             }
-
-            if (e.StatusType == GestureStatus.Completed || e.StatusType == GestureStatus.Canceled)
+            catch (Exception ex)
             {
-                StartPanDownTime = null;
-                EndPanDownTime = null;
+                Log.Error(ex, "Swipe popup PanUpdated error");
             }
         }
     }

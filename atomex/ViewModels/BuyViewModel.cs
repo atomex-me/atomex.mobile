@@ -13,6 +13,7 @@ using Atomex.ViewModels;
 using Atomex.Wallet.Abstract;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -69,19 +70,26 @@ namespace atomex.ViewModels
 
         private void LoadWebView(string currency)
         {
-            string appTheme = Application.Current.RequestedTheme.ToString().ToLower();
-            string address = GetDefaultAddress(currency);
-            var baseUri = Network == Network.MainNet
-                ? "https://widget.wert.io/atomex"
-                : "https://sandbox.wert.io/01F298K3HP4DY326AH1NS3MM3M";
+            try
+            {
+                string appTheme = Application.Current.RequestedTheme.ToString().ToLower();
+                string address = GetDefaultAddress(currency);
+                var baseUri = Network == Network.MainNet
+                    ? "https://widget.wert.io/atomex"
+                    : "https://sandbox.wert.io/01F298K3HP4DY326AH1NS3MM3M";
 
-            Url = $"{baseUri}/widget" +
-                  $"?commodity={currency}" +
-                  $"&address={address}" +
-                  $"&click_id=user:{_userId}/network:{Network}" +
-                  $"&theme={appTheme}";
+                Url = $"{baseUri}/widget" +
+                      $"?commodity={currency}" +
+                      $"&address={address}" +
+                      $"&click_id=user:{_userId}/network:{Network}" +
+                      $"&theme={appTheme}";
 
-            _navigationService?.ShowPage(new BuyPage(this), TabNavigation.Buy);
+                _navigationService?.ShowPage(new BuyPage(this), TabNavigation.Buy);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Load web view error");
+            }
         }
 
         private ICommand _canExecuteCommand;
