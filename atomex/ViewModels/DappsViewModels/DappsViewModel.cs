@@ -28,8 +28,10 @@ using Beacon.Sdk.Beacon.Error;
 using Beacon.Sdk.Beacon.Operation;
 using Beacon.Sdk.Beacon.Permission;
 using Beacon.Sdk.Beacon.Sign;
+using Beacon.Sdk.BeaconClients;
+using Beacon.Sdk.BeaconClients.Abstract;
 using Beacon.Sdk.Core.Domain.Entities;
-using Beacon.Sdk.WalletBeaconClient;
+using Microsoft.Extensions.Logging;
 using Netezos.Encoding;
 using Netezos.Forging.Models;
 using Netezos.Keys;
@@ -42,6 +44,7 @@ using Serilog.Extensions.Logging;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Hex = Atomex.Common.Hex;
+using ILogger = Serilog.ILogger;
 
 namespace atomex.ViewModels.DappsViewModels
 {
@@ -100,8 +103,6 @@ namespace atomex.ViewModels.DappsViewModels
         private readonly IAtomexApp _app;
         private INavigationService _navigationService;
         private IWalletBeaconClient _beaconWalletClient;
-
-        private static readonly WalletBeaconClientFactory _beaconClientFactory = new();
 
         [Reactive] public ObservableCollection<DappViewModel> Dapps { get; set; }
         [Reactive] public DappViewModel SelectedDapp { get; set; }
@@ -169,16 +170,22 @@ namespace atomex.ViewModels.DappsViewModels
                         },
                         DatabaseConnectionString = $"Filename={path}"
                     };
+                    
+                    ILogger serilogLogger = new LoggerConfiguration()
+                        .MinimumLevel.Error()
+                        .WriteTo.Sentry()
+                        .CreateLogger();
+                    ILoggerProvider loggerProvider = new SerilogLoggerProvider(serilogLogger);
 
-                    _beaconWalletClient = _beaconClientFactory.Create(options, new SerilogLoggerFactory());
+                    _beaconWalletClient = BeaconClientFactory.Create<IWalletBeaconClient>(options, loggerProvider);
                     _beaconWalletClient.OnBeaconMessageReceived += OnBeaconWalletClientMessageReceived;
                     _beaconWalletClient.OnDappsListChanged += OnDappsListChanged;
                     await _beaconWalletClient.InitAsync();
                     _beaconWalletClient.Connect();
 
                     GetAllDapps();
-                    Log.Debug("{@Sender}: WalletClient connected {@Connected}", "Beacon",
-                        _beaconWalletClient.Connected);
+
+                    Log.Debug("{@Sender}: WalletClient connected {@Connected}", "Beacon", _beaconWalletClient.Connected);
                     Log.Debug("{@Sender}: WalletClient logged in {@LoggedIn}", "Beacon", _beaconWalletClient.LoggedIn);
                 }
                 catch (Exception e)
@@ -201,7 +208,7 @@ namespace atomex.ViewModels.DappsViewModels
 
                 P2PPairingRequest GetPairingRequest()
                 {
-                    var decodedQr = Base58Check.Decode(qrCodeString);
+                    var decodedQr = Base58.Parse(qrCodeString);
                     var message = Encoding.UTF8.GetString(decodedQr.ToArray());
                     return JsonConvert.DeserializeObject<P2PPairingRequest>(message);
                 }
@@ -415,7 +422,7 @@ namespace atomex.ViewModels.DappsViewModels
                         if (!long.TryParse(o.Amount, out var amount))
                             amount = 0;
 
-                        return new TransactionContent
+                        var txContent = new TransactionContent
                         {
                             Source = connectedWalletAddress.Address,
                             Destination = o.Destination,
@@ -423,13 +430,25 @@ namespace atomex.ViewModels.DappsViewModels
                             Counter = ++counter,
                             Fee = 0,
                             GasLimit = 500_000,
-                            StorageLimit = 5000,
-                            Parameters = new Parameters
-                            {
-                                Entrypoint = o?.Parameters?["entrypoint"]!.ToString(),
-                                Value = Micheline.FromJson(o?.Parameters?["value"]!.ToString())
-                            }
+                            StorageLimit = 5000
                         };
+                        
+                        if (o.Parameters == null) return txContent;
+
+                        try
+                        {
+                            txContent.Parameters = new Parameters
+                            {
+                                Entrypoint = o.Parameters?["entrypoint"]!.ToString(),
+                                Value = Micheline.FromJson(o.Parameters?["value"]!.ToString())
+                            };
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Error(ex, "Exception during parsing Beacon operation params");
+                        }
+
+                        return txContent;
                     }));
 
                     var error = await TezosOperationFiller
