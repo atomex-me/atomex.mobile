@@ -165,7 +165,7 @@
                                WidthRequest="10"
                                HeightRequest="10"
                                Margin="0,4,0,0"
-                               IsVisible="{Binding PermissionInfo.Website, Mode=OneWay, Converter={StaticResource NullToBoolean}, TargetNullValue='False', FallbackValue='False'}">
+                               IsVisible="{Binding PermissionInfo.AppMetadata.AppUrl, Mode=OneWay, Converter={StaticResource NullToBoolean}, TargetNullValue='False', FallbackValue='False'}">
                         </Image>
                     </StackLayout>
                     <Image Grid.Column="1"

@@ -13,7 +13,7 @@ namespace atomex.ViewModels.DappsViewModels
     {
         protected INavigationService _navigationService;
         
-        public Func<string, string, Task> OnConnect;
+        public Func<string, Task> OnConnect;
         [Reactive] public string AddressToConnect { get; set; }
         [Reactive] public string QrCodeString { get; set; }
 
@@ -60,7 +60,7 @@ namespace atomex.ViewModels.DappsViewModels
                 {
                     _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular,
                         AppResources.Connecting + "...");
-                    await OnConnect(QrCodeString, AddressToConnect);
+                    await OnConnect(QrCodeString);
                 }
             });
         }
