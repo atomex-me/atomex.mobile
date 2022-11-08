@@ -92,26 +92,4 @@
       <LastGenOutput>AppResources.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <None Remove="configuration.json" />
-    <None Remove="Com.Airbnb.Xamarin.Forms.Lottie" />
-    <None Remove="Xamarin.CommunityToolkit" />
-    <None Remove="Xamarin.CommunityToolkit.Markup" />
-    <None Remove="ReactiveUI" />
-    <None Remove="ReactiveUI.XamForms" />
-    <None Remove="ReactiveUI.Fody" />
-    <None Remove="Xamarin.Forms.InputKit" />
-    <None Remove="Views\Send\" />
-    <None Remove="ViewModel\ConversionViewModels\" />
-    <None Remove="Sentry.Xamarin" />
-    <None Remove="Sentry.Xamarin.Forms" />
-    <None Remove="Views\Delegate\" />
-    <None Remove="Serilog.Extensions.Logging" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="configuration.json" />
-    <Content Remove="obj\Debug\netstandard2.0\atomex.csprojAssemblyReference.cache" />
-    <Content Remove="Views\Portfolio.xaml" />
-    <Content Remove="Views\Portfolio.xaml" />
-  </ItemGroup>
 </Project>
