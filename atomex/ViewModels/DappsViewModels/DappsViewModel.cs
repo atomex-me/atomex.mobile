@@ -47,7 +47,7 @@ namespace atomex.ViewModels.DappsViewModels
     public class DappViewModel : BaseViewModel
     {
         public PermissionInfo PermissionInfo { get; set; }
-        public string Id => PermissionInfo?.AppMetadata.Id.ToString();
+        public string Id => PermissionInfo?.SenderId;
         public string Name => PermissionInfo?.AppMetadata.Name;
         public string ConnectedAddress => PermissionInfo?.Address;
         public string Logo => PermissionInfo?.AppMetadata.Icon;
