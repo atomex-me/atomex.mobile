@@ -19,7 +19,7 @@ namespace atomex.ViewModels.DappsViewModels
 
         [Reactive] public Result ScanResult { get; set; }
         [Reactive] public bool IsScanning { get; set; }
-        [Reactive] public bool IsAnalyzing { get; set; }
+        [Reactive] public bool IsAnalyzing { get; set; }   
 
         public ConnectDappViewModel(INavigationService navigationService)
         {

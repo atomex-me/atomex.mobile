@@ -66,10 +66,12 @@ namespace atomex.ViewModels.CurrencyViewModels
             _delegateViewModel = new DelegateViewModel(_app, _navigationService);
             TezosTokensViewModel = new TezosTokensViewModel(_app, _navigationService);
             CollectiblesViewModel = new CollectiblesViewModel(_app, _navigationService);
-            HasDapps = Device.RuntimePlatform == Device.Android;
 
-            if (Device.RuntimePlatform == Device.Android)
-                DappsViewModel = new DappsViewModel(_app, _navigationService);
+            //HasDapps = Device.RuntimePlatform == Device.Android;
+            HasDapps = true;
+
+            //if (Device.RuntimePlatform == Device.Android)
+            DappsViewModel = new DappsViewModel(_app, _navigationService);
         }
 
         private async Task LoadDelegationInfoAsync()

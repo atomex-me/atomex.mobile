@@ -3,7 +3,6 @@ using System.Runtime.InteropServices;
 using Foundation;
 using Sentry;
 using Serilog;
-using Serilog.Events;
 using UIKit;
 using UserNotifications;
 using Xamarin.Forms;
@@ -31,6 +30,10 @@ namespace atomex.iOS
 
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            //Atomex.Common.Libsodium.Sodium.Initialize();
+            
+            var hash = new Atomex.Cryptography.Libsodium.Sha256().Hash(new byte[] {0x00, 0x01});
+            
             ConfigureLogging();
 
             FileSystem.UseFileSystem(new IosFileSystem());

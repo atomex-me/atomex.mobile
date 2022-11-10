@@ -30,6 +30,7 @@
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
     <CodesignProvision>VS: com.atomex.ios Development</CodesignProvision>
     <LangVersion>8.0</LangVersion>
+    <MtouchExtraArgs>--interpreter -gcc_flags "-L${ProjectDir} -lsodium -force_load ${ProjectDir}/libsodium.a"</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -42,6 +43,7 @@
     <MtouchArch>x86_64</MtouchArch>
     <CodesignKey>Apple Distribution: ATOMEX OU (BJT6S7XYJV)</CodesignKey>
     <LangVersion>8.0</LangVersion>
+    <MtouchExtraArgs>-gcc_flags "-L${ProjectDir} -lsodium -force_load ${ProjectDir}/libsodium.a"</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,7 +60,7 @@
     <MtouchLink>None</MtouchLink>
     <LangVersion>8.0</LangVersion>
     <MtouchInterpreter>-all</MtouchInterpreter>
-    <MtouchExtraArgs>--interpreter</MtouchExtraArgs>
+    <MtouchExtraArgs>--interpreter -gcc_flags "-L${ProjectDir} -lsodium -force_load ${ProjectDir}/libsodium.a"</MtouchExtraArgs>
     <CodesignProvision>Atomex Development</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
@@ -74,6 +76,7 @@
     <MtouchLink>SdkOnly</MtouchLink>
     <LangVersion>8.0</LangVersion>
     <BuildIpa>true</BuildIpa>
+    <MtouchExtraArgs>-gcc_flags "-L${ProjectDir} -lsodium -force_load ${ProjectDir}/libsodium.a"</MtouchExtraArgs>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -90,6 +93,9 @@
     <Compile Include="CustomElements\CustomPickerRenderer.cs" />
     <Compile Include="CustomElements\CustomViewCellRenderer.cs" />
     <None Include="EntitlementsDev.plist" />
+    <None Include="libsodium.a">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -763,6 +769,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
+    <ProjectReference Include="..\atomex.client.core\Atomex.Cryptography\Atomex.Cryptography.csproj">
+      <Project>{268686ab-cea1-4a0b-9234-7f0267ede059}</Project>
+      <Name>Atomex.Cryptography</Name>
+    </ProjectReference>
     <ProjectReference Include="..\atomex\atomex.csproj">
       <Project>{6A6C43B1-1489-4B8D-AA37-941EF60E36F0}</Project>
       <Name>atomex</Name>
@@ -979,5 +989,11 @@
     <BundleResource Include="Resources\Inter-Regular.ttf" />
     <BundleResource Include="Resources\Inter-SemiBold.ttf" />
     <BundleResource Include="Resources\Inter-Thin.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <NativeReference Include="libsodium.a">
+      <Kind>Static</Kind>
+      <SmartLink>False</SmartLink>
+    </NativeReference>
   </ItemGroup>
 </Project>
