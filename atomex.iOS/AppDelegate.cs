@@ -30,10 +30,6 @@ namespace atomex.iOS
 
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            //Atomex.Common.Libsodium.Sodium.Initialize();
-            
-            var hash = new Atomex.Cryptography.Libsodium.Sha256().Hash(new byte[] {0x00, 0x01});
-            
             ConfigureLogging();
 
             FileSystem.UseFileSystem(new IosFileSystem());
@@ -77,7 +73,6 @@ namespace atomex.iOS
         {
             try
             {
-                //DeviceToken = Regex.Replace(deviceToken.ToString(), "[^0-9a-zA-Z]+", "");
                 byte[] result = new byte[deviceToken.Length];
                 Marshal.Copy(deviceToken.Bytes, result, 0, (int) deviceToken.Length);
                 DeviceToken = BitConverter.ToString(result).Replace("-", "");

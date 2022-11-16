@@ -30,7 +30,7 @@
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
     <CodesignProvision>VS: com.atomex.ios Development</CodesignProvision>
     <LangVersion>8.0</LangVersion>
-    <MtouchExtraArgs>--interpreter -gcc_flags "-L${ProjectDir} -lsodium -force_load ${ProjectDir}/libsodium.a"</MtouchExtraArgs>
+    <MtouchExtraArgs>--interpreter</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -43,7 +43,6 @@
     <MtouchArch>x86_64</MtouchArch>
     <CodesignKey>Apple Distribution: ATOMEX OU (BJT6S7XYJV)</CodesignKey>
     <LangVersion>8.0</LangVersion>
-    <MtouchExtraArgs>-gcc_flags "-L${ProjectDir} -lsodium -force_load ${ProjectDir}/libsodium.a"</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>
@@ -60,8 +59,9 @@
     <MtouchLink>None</MtouchLink>
     <LangVersion>8.0</LangVersion>
     <MtouchInterpreter>-all</MtouchInterpreter>
-    <MtouchExtraArgs>--interpreter -gcc_flags "-L${ProjectDir} -lsodium -force_load ${ProjectDir}/libsodium.a"</MtouchExtraArgs>
     <CodesignProvision>Atomex Development</CodesignProvision>
+    <MtouchExtraArgs>--interpreter</MtouchExtraArgs>
+    <MtouchFastDev>false</MtouchFastDev>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -76,7 +76,6 @@
     <MtouchLink>SdkOnly</MtouchLink>
     <LangVersion>8.0</LangVersion>
     <BuildIpa>true</BuildIpa>
-    <MtouchExtraArgs>-gcc_flags "-L${ProjectDir} -lsodium -force_load ${ProjectDir}/libsodium.a"</MtouchExtraArgs>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -93,9 +92,6 @@
     <Compile Include="CustomElements\CustomPickerRenderer.cs" />
     <Compile Include="CustomElements\CustomViewCellRenderer.cs" />
     <None Include="EntitlementsDev.plist" />
-    <None Include="libsodium.a">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -991,9 +987,8 @@
     <BundleResource Include="Resources\Inter-Thin.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <NativeReference Include="libsodium.a">
-      <Kind>Static</Kind>
-      <SmartLink>False</SmartLink>
-    </NativeReference>
+    <Content Include="libsodium.dylib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>
