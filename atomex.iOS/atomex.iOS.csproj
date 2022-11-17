@@ -92,6 +92,7 @@
     <Compile Include="CustomElements\CustomPickerRenderer.cs" />
     <Compile Include="CustomElements\CustomViewCellRenderer.cs" />
     <None Include="EntitlementsDev.plist" />
+    <None Include="libsodium.framework\libsodium" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -958,6 +959,7 @@
     <Folder Include="Assets.xcassets\ic_exchange.imageset\" />
     <Folder Include="Assets.xcassets\USDT_XTZ.imageset\" />
     <Folder Include="Assets.xcassets\ic_forward.imageset\" />
+    <Folder Include="libsodium.framework\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

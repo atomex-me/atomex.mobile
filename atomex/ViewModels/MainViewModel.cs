@@ -72,14 +72,14 @@ namespace atomex.ViewModels
 
         public void SignOut()
         {
-            AtomexApp.ChangeAtomexClient(atomexClient: null, account: null);
+            AtomexApp?.ChangeAtomexClient(atomexClient: null, account: null);
 
             ConversionViewModel?.Reset();
             CurrencyViewModelCreator.Reset();
             TezosTokenViewModelCreator.Reset();
 
+            if (AtomexApp == null) return;
             AtomexApp.AtomexClientChanged -= OnAtomexClientChangedEventHandler;
-
         }
 
         private void SubscribeToServices()

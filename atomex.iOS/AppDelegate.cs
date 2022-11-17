@@ -9,6 +9,7 @@ using Xamarin.Forms;
 using atomex.Common.FileSystem;
 using atomex.Services;
 using Atomex.Common;
+using Serilog.Events;
 
 namespace atomex.iOS
 {

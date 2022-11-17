@@ -703,8 +703,11 @@ namespace atomex.ViewModels.DappsViewModels
         {
             if (_app.Account != null && _app.AtomexClient != null) return;
 
-            _beaconWalletClient.Disconnect();
             _app.AtomexClientChanged -= OnAtomexClientChangedEventHandler;
+            
+            if (_beaconWalletClient == null) return;
+            
+            _beaconWalletClient.Disconnect();
             _beaconWalletClient.OnBeaconMessageReceived -= OnBeaconWalletClientMessageReceived;
             _beaconWalletClient.OnConnectedClientsListChanged -= OnDappsListChanged;
         }
