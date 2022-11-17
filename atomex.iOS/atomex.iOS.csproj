@@ -988,9 +988,4 @@
     <BundleResource Include="Resources\Inter-SemiBold.ttf" />
     <BundleResource Include="Resources\Inter-Thin.ttf" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="libsodium.dylib">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
 </Project>
