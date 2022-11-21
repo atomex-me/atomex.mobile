@@ -910,6 +910,9 @@
     <data name="HideTxDetails" xml:space="preserve">
         <value>Hide extra tx details</value>
     </data>
+    <data name="ConnectionError" xml:space="preserve">
+        <value>Connection error</value>
+    </data>
 
     <!-- Settings Page -->
     <data name="SettingsPageTitle" xml:space="preserve">

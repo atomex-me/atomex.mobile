@@ -1294,4 +1294,7 @@ NOTE: Do not sign out or close the application until the swap is completed, othe
     <data name="HideTxDetails" xml:space="preserve">
         <value>Hide extra tx details</value>
     </data>
+    <data name="ConnectionError" xml:space="preserve">
+        <value>Connection error</value>
+    </data>
 </root>

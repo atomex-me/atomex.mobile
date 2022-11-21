@@ -1294,4 +1294,7 @@
     <data name="HideTxDetails" xml:space="preserve">
         <value>Скрыть доп. информацию о транзакции</value>
     </data>
+    <data name="ConnectionError" xml:space="preserve">
+        <value>Ошибка подключения</value>
+    </data>
 </root>

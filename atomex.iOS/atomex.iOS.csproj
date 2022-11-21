@@ -30,6 +30,7 @@
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
     <CodesignProvision>VS: com.atomex.ios Development</CodesignProvision>
     <LangVersion>8.0</LangVersion>
+    <MtouchExtraArgs>--interpreter</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -58,8 +59,9 @@
     <MtouchLink>None</MtouchLink>
     <LangVersion>8.0</LangVersion>
     <MtouchInterpreter>-all</MtouchInterpreter>
-    <MtouchExtraArgs>--interpreter</MtouchExtraArgs>
     <CodesignProvision>Atomex Development</CodesignProvision>
+    <MtouchExtraArgs>--interpreter</MtouchExtraArgs>
+    <MtouchFastDev>false</MtouchFastDev>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -90,6 +92,7 @@
     <Compile Include="CustomElements\CustomPickerRenderer.cs" />
     <Compile Include="CustomElements\CustomViewCellRenderer.cs" />
     <None Include="EntitlementsDev.plist" />
+    <None Include="libsodium.framework\libsodium" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -763,6 +766,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
+    <ProjectReference Include="..\atomex.client.core\Atomex.Cryptography\Atomex.Cryptography.csproj">
+      <Project>{268686ab-cea1-4a0b-9234-7f0267ede059}</Project>
+      <Name>Atomex.Cryptography</Name>
+    </ProjectReference>
     <ProjectReference Include="..\atomex\atomex.csproj">
       <Project>{6A6C43B1-1489-4B8D-AA37-941EF60E36F0}</Project>
       <Name>atomex</Name>
@@ -952,6 +959,7 @@
     <Folder Include="Assets.xcassets\ic_exchange.imageset\" />
     <Folder Include="Assets.xcassets\USDT_XTZ.imageset\" />
     <Folder Include="Assets.xcassets\ic_forward.imageset\" />
+    <Folder Include="libsodium.framework\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

@@ -985,7 +985,7 @@
                                                 <VisualState Name="Normal">
                                                     <VisualState.Setters>
                                                         <Setter Property="BackgroundColor"
-                                                                Value="Transparent"/>
+                                                                Value="Transparent" />
                                                     </VisualState.Setters>
                                                 </VisualState>
                                                 <VisualState Name="Selected">
@@ -1234,7 +1234,7 @@
                                        HorizontalTextAlignment="Start"
                                        VerticalTextAlignment="End"
                                        VerticalOptions="FillAndExpand"
-                                       Padding="0,14"/>
+                                       Padding="0,14" />
                                 <StackLayout Style="{DynamicResource SeparatorStyle}"
                                              Margin="16,0,0,0" />
                             </StackLayout>
@@ -1283,7 +1283,7 @@
                                                BackgroundColor="Transparent">
                                             <Frame.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding ShowDisconnectionCommand}"
-                                                                      CommandParameter="{Binding .}"/>
+                                                                      CommandParameter="{Binding .}" />
                                             </Frame.GestureRecognizers>
                                             <Image Source="ic_disconnect"
                                                    WidthRequest="20"
@@ -1295,25 +1295,27 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                         <ListView.Footer>
-                            <Frame Style="{DynamicResource AdditionalClickableFrame}"
-                                   Margin="16,32"
-                                   VerticalOptions="End"
-                                   HorizontalOptions="FillAndExpand">
-                                <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding DappsViewModel.NewDappCommand}"/>
-                                </Frame.GestureRecognizers>
-                                <StackLayout Spacing="10"
-                                             Orientation="Horizontal"
-                                             HorizontalOptions="Center">
-                                    <Image HeightRequest="20"
-                                           WidthRequest="20"
-                                           Source="ic_qr__blue"
-                                           VerticalOptions="Center" />
-                                    <Label Text="{helpers:Translate ConnectDapp}"
-                                           Style="{DynamicResource AdditionalClickableLabel}"
-                                           VerticalTextAlignment="Center" />
-                                </StackLayout>
-                            </Frame>
+                            <StackLayout Spacing="0">
+                                <Frame Style="{DynamicResource AdditionalClickableFrame}"
+                                       Margin="16,32"
+                                       VerticalOptions="End"
+                                       HorizontalOptions="FillAndExpand">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding DappsViewModel.NewDappCommand}" />
+                                    </Frame.GestureRecognizers>
+                                    <StackLayout Spacing="10"
+                                                 Orientation="Horizontal"
+                                                 HorizontalOptions="Center">
+                                        <Image HeightRequest="20"
+                                               WidthRequest="20"
+                                               Source="ic_qr__blue"
+                                               VerticalOptions="Center" />
+                                        <Label Text="{helpers:Translate ConnectDapp}"
+                                               Style="{DynamicResource AdditionalClickableLabel}"
+                                               VerticalTextAlignment="Center" />
+                                    </StackLayout>
+                                </Frame>
+                            </StackLayout>
                         </ListView.Footer>
                     </ListView>
                 </StackLayout>

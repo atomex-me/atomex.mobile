@@ -3,13 +3,13 @@ using System.Runtime.InteropServices;
 using Foundation;
 using Sentry;
 using Serilog;
-using Serilog.Events;
 using UIKit;
 using UserNotifications;
 using Xamarin.Forms;
 using atomex.Common.FileSystem;
 using atomex.Services;
 using Atomex.Common;
+using Serilog.Events;
 
 namespace atomex.iOS
 {
@@ -74,7 +74,6 @@ namespace atomex.iOS
         {
             try
             {
-                //DeviceToken = Regex.Replace(deviceToken.ToString(), "[^0-9a-zA-Z]+", "");
                 byte[] result = new byte[deviceToken.Length];
                 Marshal.Copy(deviceToken.Bytes, result, 0, (int) deviceToken.Length);
                 DeviceToken = BitConverter.ToString(result).Replace("-", "");

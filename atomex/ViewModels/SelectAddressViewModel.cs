@@ -209,9 +209,7 @@ namespace atomex.ViewModels
                     tokenId: selectedTokenId)
                 .WaitForResult()
                 .Where(address => !onlyAddressesWithBalances || address.Balance != 0)
-                .OrderByDescending(address => address.Balance)
-                .Where(address => SelectAddressMode != SelectAddressMode.Connect ||
-                                  address.WalletAddress.KeyType == CurrencyConfig.StandardKey);
+                .OrderByDescending(address => address.Balance);
 
             MyAddresses = new ObservableCollection<WalletAddressViewModel>(addresses);
             _initialMyAddresses = new ObservableCollection<WalletAddressViewModel>(addresses);
