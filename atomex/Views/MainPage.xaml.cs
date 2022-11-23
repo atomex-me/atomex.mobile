@@ -15,8 +15,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xamarin.CommunityToolkit.Extensions;
 using System;
+using System.Linq;
+using Atomex;
 using atomex.ViewModels;
 using atomex.ViewModels.ConversionViewModels;
+using atomex.ViewModels.CurrencyViewModels;
 using static atomex.Models.SnackbarMessage;
 using Rg.Plugins.Popup.Services;
 using Rg.Plugins.Popup.Pages;
@@ -29,10 +32,10 @@ namespace atomex.Views
     [DesignTimeVisible(false)]
     public partial class MainPage : CustomTabbedPage, INavigationService
     {
-        private readonly NavigationPage NavigationConversionPage;
-        private readonly NavigationPage NavigationPortfolioPage;
-        private readonly NavigationPage NavigationBuyPage;
-        private readonly NavigationPage NavigationSettingsPage;
+        private readonly NavigationPage _navigationConversionPage;
+        private readonly NavigationPage _navigationPortfolioPage;
+        private readonly NavigationPage _navigationBuyPage;
+        private readonly NavigationPage _navigationSettingsPage;
 
         public MainViewModel MainViewModel { get; }
 
@@ -44,41 +47,41 @@ namespace atomex.Views
 
             On<Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
 
-            MainViewModel = mainViewModel;
+            MainViewModel = mainViewModel ?? throw new ArgumentNullException(nameof(mainViewModel));
 
-            NavigationPortfolioPage = new NavigationPage(new Portfolio(MainViewModel.PortfolioViewModel))
+            _navigationPortfolioPage = new NavigationPage(new Portfolio(MainViewModel.PortfolioViewModel))
             {
                 IconImageSource = "ic_navbar__portfolio",
                 Title = AppResources.PortfolioTab
             };
 
-            NavigationConversionPage = new NavigationPage(new ExchangePage(MainViewModel.ConversionViewModel))
+            _navigationConversionPage = new NavigationPage(new ExchangePage(MainViewModel.ConversionViewModel))
             {
                 IconImageSource = "ic_navbar__dex",
                 Title = AppResources.ConversionTab
             };
 
-            NavigationSettingsPage = new NavigationPage(new SettingsPage(MainViewModel.SettingsViewModel))
+            _navigationSettingsPage = new NavigationPage(new SettingsPage(MainViewModel.SettingsViewModel))
             {
                 IconImageSource = "ic_navbar__settings",
                 Title = AppResources.SettingsTab
             };
 
-            NavigationBuyPage = new NavigationPage(new CurrenciesPage(MainViewModel.BuyViewModel))
+            _navigationBuyPage = new NavigationPage(new CurrenciesPage(MainViewModel.BuyViewModel))
             {
                 IconImageSource = "ic_navbar__buy",
                 Title = AppResources.BuyTab
             };
 
-            MainViewModel?.SettingsViewModel?.SetNavigationService(this);
-            MainViewModel?.BuyViewModel?.SetNavigationService(this);
-            MainViewModel?.ConversionViewModel?.SetNavigationService(this);
-            MainViewModel?.PortfolioViewModel?.SetNavigationService(this);
+            MainViewModel.SettingsViewModel.SetNavigationService(this);
+            MainViewModel.BuyViewModel.SetNavigationService(this);
+            MainViewModel.ConversionViewModel.SetNavigationService(this);
+            MainViewModel.PortfolioViewModel.SetNavigationService(this);
 
-            Children.Add(NavigationPortfolioPage);
-            Children.Add(NavigationConversionPage);
-            Children.Add(NavigationBuyPage);
-            Children.Add(NavigationSettingsPage);
+            Children.Add(_navigationPortfolioPage);
+            Children.Add(_navigationConversionPage);
+            Children.Add(_navigationBuyPage);
+            Children.Add(_navigationSettingsPage);
 
             mainViewModel.Locked += (s, a) => { SignOut(); };
 
@@ -88,12 +91,12 @@ namespace atomex.Views
             };
         }
 
-        public void LocalizeNavTabs()
+        private void LocalizeNavTabs()
         {
-            NavigationPortfolioPage.Title = AppResources.PortfolioTab;
-            NavigationConversionPage.Title = AppResources.ConversionTab;
-            NavigationSettingsPage.Title = AppResources.SettingsTab;
-            NavigationBuyPage.Title = AppResources.BuyTab;
+            _navigationPortfolioPage.Title = AppResources.PortfolioTab;
+            _navigationConversionPage.Title = AppResources.ConversionTab;
+            _navigationSettingsPage.Title = AppResources.SettingsTab;
+            _navigationBuyPage.Title = AppResources.BuyTab;
         }
 
         private void SignOut()
@@ -104,7 +107,7 @@ namespace atomex.Views
                 StartViewModel startViewModel = new StartViewModel(MainViewModel?.AtomexApp);
                 var mainPage = new StartPage(startViewModel);
                 Application.Current.MainPage = new NavigationPage(mainPage);
-                startViewModel?.SetNavigationService(mainPage);
+                startViewModel.SetNavigationService(mainPage);
             }
             catch (Exception e)
             {
@@ -116,10 +119,10 @@ namespace atomex.Views
         {
             try
             {
-                if (NavigationBuyPage.RootPage.BindingContext is BuyViewModel buyViewModel)
+                if (_navigationBuyPage.RootPage.BindingContext is BuyViewModel buyViewModel)
                 {
-                    _ = NavigationBuyPage.Navigation.PopToRootAsync(false);
-                    CurrentPage = NavigationBuyPage;
+                    _ = _navigationBuyPage.Navigation.PopToRootAsync(false);
+                    CurrentPage = _navigationBuyPage;
                     buyViewModel.BuyCurrency(currency);
                 }
             }
@@ -133,14 +136,14 @@ namespace atomex.Views
         {
             try
             {
-                if (NavigationConversionPage.RootPage.BindingContext is ConversionViewModel conversionViewModel)
+                if (_navigationConversionPage.RootPage.BindingContext is ConversionViewModel conversionViewModel)
                 {
-                    _ = NavigationConversionPage.Navigation.PopToRootAsync(false);
-                    CurrentPage = NavigationConversionPage;
+                    _ = _navigationConversionPage.Navigation.PopToRootAsync(false);
+                    CurrentPage = _navigationConversionPage;
                     if (currency == null)
-                        conversionViewModel?.FromViewModel?.SelectCurrencyCommand.Execute(null);
+                        conversionViewModel.FromViewModel?.SelectCurrencyCommand.Execute(null);
                     else
-                        conversionViewModel?.SetFromCurrency(currency);
+                        conversionViewModel.SetFromCurrency(currency);
                 }
             }
             catch (Exception e)
@@ -161,16 +164,16 @@ namespace atomex.Views
                 switch (tab)
                 {
                     case TabNavigation.Portfolio:
-                        NavigationPortfolioPage.PushAsync(page);
+                        _navigationPortfolioPage.PushAsync(page);
                         break;
                     case TabNavigation.Exchange:
-                        NavigationConversionPage.PushAsync(page);
+                        _navigationConversionPage.PushAsync(page);
                         break;
                     case TabNavigation.Buy:
-                        NavigationBuyPage.PushAsync(page);
+                        _navigationBuyPage.PushAsync(page);
                         break;
                     case TabNavigation.Settings:
-                        NavigationSettingsPage.PushAsync(page);
+                        _navigationSettingsPage.PushAsync(page);
                         break;
                     case TabNavigation.None:
                         break;
@@ -189,16 +192,16 @@ namespace atomex.Views
                 switch (tab)
                 {
                     case TabNavigation.Portfolio:
-                        NavigationPortfolioPage.PopAsync();
+                        _navigationPortfolioPage.PopAsync();
                         break;
                     case TabNavigation.Exchange:
-                        NavigationConversionPage.PopAsync();
+                        _navigationConversionPage.PopAsync();
                         break;
                     case TabNavigation.Buy:
-                        NavigationBuyPage.PopAsync();
+                        _navigationBuyPage.PopAsync();
                         break;
                     case TabNavigation.Settings:
-                        NavigationSettingsPage.PopAsync();
+                        _navigationSettingsPage.PopAsync();
                         break;
                     case TabNavigation.None:
                         break;
@@ -217,24 +220,20 @@ namespace atomex.Views
                 switch (tab)
                 {
                     case TabNavigation.Portfolio:
-                        NavigationPortfolioPage.Navigation.RemovePage(
-                            NavigationPortfolioPage.Navigation.NavigationStack[
-                                NavigationPortfolioPage.Navigation.NavigationStack.Count - 2]);
+                        _navigationPortfolioPage.Navigation.RemovePage(
+                            _navigationPortfolioPage.Navigation.NavigationStack[^2]);
                         break;
                     case TabNavigation.Exchange:
-                        NavigationConversionPage.Navigation.RemovePage(
-                            NavigationConversionPage.Navigation.NavigationStack[
-                                NavigationConversionPage.Navigation.NavigationStack.Count - 2]);
+                        _navigationConversionPage.Navigation.RemovePage(
+                            _navigationConversionPage.Navigation.NavigationStack[^2]);
                         break;
                     case TabNavigation.Buy:
-                        NavigationBuyPage.Navigation.RemovePage(
-                            NavigationBuyPage.Navigation.NavigationStack[
-                                NavigationBuyPage.Navigation.NavigationStack.Count - 2]);
+                        _navigationBuyPage.Navigation.RemovePage(
+                            _navigationBuyPage.Navigation.NavigationStack[^2]);
                         break;
                     case TabNavigation.Settings:
-                        NavigationSettingsPage.Navigation.RemovePage(
-                            NavigationSettingsPage.Navigation.NavigationStack[
-                                NavigationSettingsPage.Navigation.NavigationStack.Count - 2]);
+                        _navigationSettingsPage.Navigation.RemovePage(
+                            _navigationSettingsPage.Navigation.NavigationStack[^2]);
                         break;
                     case TabNavigation.None:
                         break;
@@ -297,8 +296,6 @@ namespace atomex.Views
             {
                 string snackBarBgColorName;
                 string snackBarTextColorName;
-                Color backgroundColor = Color.White;
-                Color textColor = Color.Black;
 
                 switch (messageType)
                 {
@@ -336,9 +333,13 @@ namespace atomex.Views
                     : snackBarTextColorName;
 
                 Application.Current.Resources.TryGetValue(snackBarBgColorName, out var bgColor);
-                backgroundColor = (Color)bgColor;
                 Application.Current.Resources.TryGetValue(snackBarTextColorName, out var txtColor);
-                textColor = (Color)txtColor;
+
+                txtColor ??= Color.Black;
+                bgColor ??= Color.White;
+                
+                var textColor = (Color)txtColor;
+                var backgroundColor = (Color)bgColor;
 
                 var messageOptions = new MessageOptions
                 {
@@ -357,7 +358,7 @@ namespace atomex.Views
                         Font = Font.SystemFontOfSize(17),
                         Text = buttonText,
                         Padding = new Thickness(20, 16),
-                        Action = () => { return Task.CompletedTask; }
+                        Action = () => Task.CompletedTask
                     }
                 };
 
@@ -436,16 +437,16 @@ namespace atomex.Views
                 switch (tab)
                 {
                     case TabNavigation.Portfolio:
-                        _initiatedPageNumber = NavigationPortfolioPage.Navigation.NavigationStack.Count;
+                        _initiatedPageNumber = _navigationPortfolioPage.Navigation.NavigationStack.Count;
                         break;
                     case TabNavigation.Exchange:
-                        _initiatedPageNumber = NavigationConversionPage.Navigation.NavigationStack.Count;
+                        _initiatedPageNumber = _navigationConversionPage.Navigation.NavigationStack.Count;
                         break;
                     case TabNavigation.Buy:
-                        _initiatedPageNumber = NavigationBuyPage.Navigation.NavigationStack.Count;
+                        _initiatedPageNumber = _navigationBuyPage.Navigation.NavigationStack.Count;
                         break;
                     case TabNavigation.Settings:
-                        _initiatedPageNumber = NavigationSettingsPage.Navigation.NavigationStack.Count;
+                        _initiatedPageNumber = _navigationSettingsPage.Navigation.NavigationStack.Count;
                         break;
                     case TabNavigation.None:
                         break;
@@ -464,49 +465,49 @@ namespace atomex.Views
                 switch (tab)
                 {
                     case TabNavigation.Portfolio:
-                        for (int i = NavigationPortfolioPage.Navigation.NavigationStack.Count - 1;
+                        for (int i = _navigationPortfolioPage.Navigation.NavigationStack.Count - 1;
                              i > _initiatedPageNumber;
                              i--)
                         {
-                            NavigationPortfolioPage.Navigation.RemovePage(
-                                NavigationPortfolioPage.Navigation.NavigationStack[i - 1]);
+                            _navigationPortfolioPage.Navigation.RemovePage(
+                                _navigationPortfolioPage.Navigation.NavigationStack[i - 1]);
                         }
 
-                        if (NavigationPortfolioPage.Navigation.NavigationStack.Count > _initiatedPageNumber)
-                            await NavigationPortfolioPage.Navigation.PopAsync();
+                        if (_navigationPortfolioPage.Navigation.NavigationStack.Count > _initiatedPageNumber)
+                            await _navigationPortfolioPage.Navigation.PopAsync();
                         break;
                     case TabNavigation.Exchange:
-                        for (int i = NavigationConversionPage.Navigation.NavigationStack.Count - 1;
+                        for (int i = _navigationConversionPage.Navigation.NavigationStack.Count - 1;
                              i > _initiatedPageNumber;
                              i--)
                         {
-                            NavigationConversionPage.Navigation.RemovePage(
-                                NavigationConversionPage.Navigation.NavigationStack[i - 1]);
+                            _navigationConversionPage.Navigation.RemovePage(
+                                _navigationConversionPage.Navigation.NavigationStack[i - 1]);
                         }
 
-                        await NavigationConversionPage.Navigation.PopAsync();
+                        await _navigationConversionPage.Navigation.PopAsync();
                         break;
                     case TabNavigation.Buy:
-                        for (int i = NavigationBuyPage.Navigation.NavigationStack.Count - 1;
+                        for (int i = _navigationBuyPage.Navigation.NavigationStack.Count - 1;
                              i > _initiatedPageNumber;
                              i--)
                         {
-                            NavigationBuyPage.Navigation.RemovePage(
-                                NavigationBuyPage.Navigation.NavigationStack[i - 1]);
+                            _navigationBuyPage.Navigation.RemovePage(
+                                _navigationBuyPage.Navigation.NavigationStack[i - 1]);
                         }
 
-                        await NavigationBuyPage.Navigation.PopAsync();
+                        await _navigationBuyPage.Navigation.PopAsync();
                         break;
                     case TabNavigation.Settings:
-                        for (int i = NavigationSettingsPage.Navigation.NavigationStack.Count - 1;
+                        for (int i = _navigationSettingsPage.Navigation.NavigationStack.Count - 1;
                              i > _initiatedPageNumber;
                              i--)
                         {
-                            NavigationSettingsPage.Navigation.RemovePage(
-                                NavigationSettingsPage.Navigation.NavigationStack[i - 1]);
+                            _navigationSettingsPage.Navigation.RemovePage(
+                                _navigationSettingsPage.Navigation.NavigationStack[i - 1]);
                         }
 
-                        await NavigationSettingsPage.Navigation.PopAsync();
+                        await _navigationSettingsPage.Navigation.PopAsync();
                         break;
                     case TabNavigation.None:
                         break;
@@ -516,6 +517,15 @@ namespace atomex.Views
             {
                 Log.Error(e, "Return to initiated page error");
             }
+        }
+
+        public void ConnectDappByDeepLink(string qrCode)
+        {
+            var tezosViewModel = MainViewModel.PortfolioViewModel.AllCurrencies
+                .First(c => c.CurrencyViewModel.CurrencyCode == TezosConfig.Xtz)
+                .CurrencyViewModel as TezosCurrencyViewModel;
+            
+            tezosViewModel?.DappsViewModel.Connect(qrCode);
         }
     }
 }

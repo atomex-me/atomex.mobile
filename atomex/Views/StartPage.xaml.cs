@@ -31,8 +31,6 @@ namespace atomex.Views
             {
                 string snackBarBgColorName;
                 string snackBarTextColorName;
-                Color backgroundColor = Color.White;
-                Color textColor = Color.Black;
 
                 switch (messageType)
                 {
@@ -70,9 +68,13 @@ namespace atomex.Views
                     : snackBarTextColorName;
 
                 Application.Current.Resources.TryGetValue(snackBarBgColorName, out var bgColor);
-                backgroundColor = (Color)bgColor;
                 Application.Current.Resources.TryGetValue(snackBarTextColorName, out var txtColor);
-                textColor = (Color)txtColor;
+                
+                txtColor ??= Color.Black;
+                bgColor ??= Color.White;
+                
+                var textColor = (Color)txtColor;
+                var backgroundColor = (Color)bgColor;
 
                 var messageOptions = new MessageOptions
                 {
@@ -91,7 +93,7 @@ namespace atomex.Views
                         Font = Font.SystemFontOfSize(17),
                         Text = buttonText,
                         Padding = new Thickness(20, 16),
-                        Action = () => { return Task.CompletedTask; }
+                        Action = () => Task.CompletedTask
                     }
                 };
 
@@ -180,6 +182,11 @@ namespace atomex.Views
         public Task ReturnToInitiatedPage(TabNavigation tab)
         {
             throw new NotImplementedException();
+        }
+
+        public void ConnectDappByDeepLink(string qrCode)
+        {
+            //todo: Sign In + dApp connect
         }
 
         public Task<string> DisplayActionSheet(string cancel, string[] actions, string title = null)

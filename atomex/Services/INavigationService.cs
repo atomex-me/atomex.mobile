@@ -31,5 +31,6 @@ namespace atomex
         Task<string> DisplayActionSheet(string cancel, string[] actions, string title = null);
         void SetInitiatedPage(TabNavigation tab);
         Task ReturnToInitiatedPage(TabNavigation tab);
+        void ConnectDappByDeepLink(string qrCode);
     }
 }

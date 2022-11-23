@@ -218,10 +218,10 @@ namespace atomex.ViewModels
         public ICommand UnlockCommand => _unlockCommand ??= new Command(async () => await UnlockAsync());
 
         private ICommand _addCharCommand;
-        public ICommand AddCharCommand => _addCharCommand ??= new Command<string>((value) => AddChar(value));
+        public ICommand AddCharCommand => _addCharCommand ??= new Command<string>(AddChar);
 
         private ICommand _deleteCharCommand;
-        public ICommand DeleteCharCommand => _deleteCharCommand ??= new Command(() => RemoveChar());
+        public ICommand DeleteCharCommand => _deleteCharCommand ??= new Command(RemoveChar);
 
         private ICommand _backCommand;
 
@@ -234,7 +234,7 @@ namespace atomex.ViewModels
         private ICommand _textChangedCommand;
 
         public ICommand TextChangedCommand =>
-            _textChangedCommand ??= new Command<string>((value) => SetPassword(value));
+            _textChangedCommand ??= new Command<string>(SetPassword);
 
         private ICommand _cancelCommand;
 
@@ -358,7 +358,7 @@ namespace atomex.ViewModels
 
         private async Task CheckPinExist()
         {
-            string authType = await SecureStorage.GetAsync(WalletName + "-" + "AuthType");
+            var authType = await SecureStorage.GetAsync(WalletName + "-" + "AuthType");
 
             if (authType == "Pin")
             {
@@ -544,7 +544,7 @@ namespace atomex.ViewModels
                     IsLocked = true;
 
                     var lockTime = DateTime.UtcNow.ToLocalTime().AddMinutes(LockTime.Minutes);
-                    await SecureStorage.SetAsync(WalletName + "-" + "LockTime", lockTime.ToString());
+                    await SecureStorage.SetAsync(WalletName + "-" + "LockTime", lockTime.ToString(CultureInfo.InvariantCulture));
                     _ = StartLockTimer();
                 }
             }

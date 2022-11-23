@@ -189,7 +189,7 @@ namespace atomex.ViewModels.DappsViewModels
             });
         }
 
-        private async Task Connect(string qrCodeString)
+        public async Task Connect(string qrCodeString)
         {
             if (_app.Account == null) return;
 

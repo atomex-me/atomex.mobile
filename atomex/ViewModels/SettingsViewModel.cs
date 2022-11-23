@@ -409,7 +409,7 @@ namespace atomex.ViewModels
             {
                 try
                 {
-                    var res = await _navigationService?.ShowAlert(
+                    var res = await _navigationService.ShowAlert(
                         title: AppResources.SignOut,
                         text: AppResources.AreYouSure,
                         accept: AppResources.AcceptButton,
@@ -433,14 +433,14 @@ namespace atomex.ViewModels
                     WalletInfo selectedWallet = Wallets
                         .Single(w => w.Name == name);
 
-                    var confirm = await _navigationService?.ShowAlert(
+                    var confirm = await _navigationService.ShowAlert(
                         title: AppResources.DeletingWallet,
                         text: AppResources.DeletingWalletText,
                         accept: AppResources.UnderstandButton,
                         cancel: AppResources.CancelButton);
                     if (confirm)
                     {
-                        var confirm2 = await _navigationService?.ShowAlert(
+                        var confirm2 = await _navigationService.ShowAlert(
                             title: AppResources.DeletingWallet,
                             text: string.Format(CultureInfo.InvariantCulture,
                                 AppResources.DeletingWalletConfirmationText,
