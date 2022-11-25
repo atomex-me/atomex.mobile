@@ -85,11 +85,13 @@ namespace atomex.Droid
         protected override void OnNewIntent(Intent intent)
         {
             base.OnNewIntent(intent);
-            if (intent == null) return;
+            if (Intent.ActionView != intent.Action || string.IsNullOrWhiteSpace(intent.DataString))
+                return;
             
-            if (intent.Data?.Host?.EndsWith("tzip-10", StringComparison.OrdinalIgnoreCase) ?? false)
+            var type = intent.Data?.GetQueryParameter("type");
+            if (string.IsNullOrEmpty(intent.Data?.Host) && type == "tzip10")
             {
-                string data = intent.Data.GetQueryParameter("data");
+                string data = intent.Data?.GetQueryParameter("data");
                 _app.OnDeepLinkReceived(data);
             }
         }

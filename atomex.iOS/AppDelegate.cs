@@ -77,9 +77,10 @@ namespace atomex.iOS
         public override bool OpenUrl(UIApplication app, NSUrl url, NSDictionary options)
         {
             NSUrlComponents urlComponents = new NSUrlComponents(url, false);
-            if (urlComponents.Host?.EndsWith("tzip-10", StringComparison.OrdinalIgnoreCase) ?? false)
+            NSUrlQueryItem[] allItems = urlComponents.QueryItems;
+            var type = allItems?.First(i => i.Name == "type").Value;
+            if (string.IsNullOrEmpty(urlComponents.Host) && type == "tzip10")
             {
-                NSUrlQueryItem[] allItems = urlComponents.QueryItems;
                 var qrCodeString = allItems?.First(i => i.Name == "data").Value;
                 _app.OnDeepLinkReceived(qrCodeString);
             }
