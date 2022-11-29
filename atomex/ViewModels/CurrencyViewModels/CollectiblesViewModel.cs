@@ -260,7 +260,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         public ReactiveCommand<Unit, Unit> ManageCollectiblesCommand => _manageCollectiblesCommand ??=
             ReactiveCommand.Create(() =>
-                _navigationService?.ShowBottomSheet(new ManageCollectiblesBottomSheet(this)));
+                _navigationService?.ShowPopup(new ManageCollectiblesBottomSheet(this)));
 
         private ReactiveCommand<CollectibleViewModel, Unit> _selectCollectible;
 
@@ -313,6 +313,6 @@ namespace atomex.ViewModels.CurrencyViewModels
         private ICommand _closeActionSheetCommand;
 
         public ICommand CloseActionSheetCommand => _closeActionSheetCommand ??=
-            new Command(() => _navigationService?.CloseBottomSheet());
+            new Command(() => _navigationService?.ClosePopup());
     }
 }

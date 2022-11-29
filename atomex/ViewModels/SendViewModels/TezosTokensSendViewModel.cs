@@ -324,7 +324,7 @@ namespace atomex.ViewModels.SendViewModels
         public ICommand UndoConfirmStageCommand => _undoConfirmStageCommand ??= new Command(() => ConfirmStage = false);
 
         private ICommand _closeConfirmationCommand;
-        public ICommand CloseConfirmationCommand => _closeConfirmationCommand ??= new Command(() => _navigationService?.CloseBottomSheet());
+        public ICommand CloseConfirmationCommand => _closeConfirmationCommand ??= new Command(() => _navigationService?.ClosePopup());
 
         private void FromClick()
         {
@@ -465,7 +465,7 @@ namespace atomex.ViewModels.SendViewModels
                             return;
                         }
 
-                        _navigationService?.CloseBottomSheet();
+                        _navigationService?.ClosePopup();
                         await _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
 
                         _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Success, string.Format(CultureInfo.InvariantCulture, AppResources.SuccessSending));
@@ -489,7 +489,7 @@ namespace atomex.ViewModels.SendViewModels
             else
             {
                 ConfirmStage = true;
-                _navigationService?.ShowBottomSheet(new SendingConfirmationBottomSheet(this));
+                _navigationService?.ShowPopup(new SendingConfirmationBottomSheet(this));
             }
         }
 

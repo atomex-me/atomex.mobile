@@ -18,6 +18,8 @@ using Xamarin.Forms;
 using atomex.Common.FileSystem;
 using Atomex.Common;
 using Atomex.TzktEvents;
+using Firebase;
+using Xamarin.Forms.Platform.Android.AppLinks;
 
 namespace atomex.Droid
 {
@@ -33,7 +35,8 @@ namespace atomex.Droid
         },
         DataScheme = "atomex",
         DataPathPrefix = "",
-        DataHost = "")]
+        DataHost = "",
+        AutoVerify = true)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         public static MainActivity Instance { get; private set; }
@@ -67,6 +70,8 @@ namespace atomex.Droid
             Rg.Plugins.Popup.Popup.Init(this);
             Xamarin.Essentials.Platform.Init(this, bundle);
             Forms.Init(this, bundle);
+            FirebaseApp.InitializeApp(this);
+            AndroidAppLinks.Init(this);
 
             Instance = this;
 

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                 xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+                 xmlns:helpers="clr-namespace:atomex.Helpers"
+                 xmlns:behaviors="clr-namespace:atomex.Behaviors"
+                 xmlns:converters="clr-namespace:atomex.Converters"
+                 xmlns:events="clr-namespace:EventToCommandBehavior"
+                 xmlns:controls="clr-namespace:atomex.CustomElements"
+                 x:Class="atomex.Views.Dapps.SelectAddressBottomSheet"
+                 xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 mc:Ignorable="d"
+                 d:BindingContext="{d:DesignInstance vm:SelectAddressViewModel}">
+    <pages:PopupPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBoolConverter x:Key="InverseBool" />
+        </ResourceDictionary>
+    </pages:PopupPage.Resources>
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation
+            PositionIn="Bottom"
+            PositionOut="Bottom"
+            DurationIn="400"
+            DurationOut="300"
+            EasingIn="SinOut"
+            EasingOut="SinIn"
+            HasBackgroundAnimation="True" />
+    </pages:PopupPage.Animation>
+    <StackLayout VerticalOptions="EndAndExpand"
+                 HorizontalOptions="FillAndExpand">
+        <StackLayout.Behaviors>
+            <behaviors:SwipeDownToClosePopupPage CloseAction="OnClose"
+                                                 ClosingEdge="248"
+                                                 ClosingTimeInMs="300" />
+        </StackLayout.Behaviors>
+        <controls:CustomFrame CornerRadius="20,20,0,0"
+                              Padding="0,14,0,0"
+                              HorizontalOptions="FillAndExpand"
+                              HeightRequest="358"
+                              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
+            <StackLayout Spacing="0">
+                <Image Source="ic_swipe__indicator"
+                       WidthRequest="35"
+                       HeightRequest="4"
+                       Margin="0,0,0,40"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+                <Label Text="{helpers:Translate AddressToConnect}"
+                       Style="{DynamicResource MainTextH1}"
+                       Margin="16,0,16,10"
+                       HorizontalTextAlignment="Start"
+                       VerticalTextAlignment="Center" />
+                <ListView ItemsSource="{Binding MyAddresses}"
+                          SelectionMode="Single"
+                          SelectedItem="{Binding SelectedAddress}"
+                          BackgroundColor="Transparent"
+                          HasUnevenRows="True"
+                          SeparatorVisibility="Default"
+                          VerticalOptions="FillAndExpand"
+                          RowHeight="64"
+                          Footer="">
+                    <ListView.Behaviors>
+                        <events:EventToCommandBehavior EventName="ItemTapped"
+                                                       Command="{Binding SelectAddressCommand}"/>
+                    </ListView.Behaviors>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:CustomViewCell
+                                SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
+                                <Grid ColumnSpacing="0"
+                                      RowSpacing="0"
+                                      Padding="16,5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="32" />
+                                        <RowDefinition Height="32" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.ColumnSpan="2"
+                                           Text="{Binding Address}"
+                                           Style="{DynamicResource MainTextH4}"
+                                           LineBreakMode="MiddleTruncation"
+                                           Padding="0,3"
+                                           VerticalTextAlignment="End"
+                                           HorizontalTextAlignment="Start" />
+                                    <Label Grid.Row="1"
+                                           Grid.Column="1"
+                                           Style="{DynamicResource AdditionalTextH5}"
+                                           VerticalTextAlignment="Start"
+                                           HorizontalTextAlignment="Start"
+                                           IsVisible="{Binding IsFreeAddress, Converter={StaticResource InverseBool}, FallbackValue=True, TargetNullValue=True}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding AvailableBalance, StringFormat='{0:0.########}'}" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding CurrencyCode}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Frame Grid.Row="1"
+                                           Padding="5,0"
+                                           Margin="0,6"
+                                           HasShadow="False"
+                                           BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
+                                           CornerRadius="4"
+                                           IsVisible="{Binding IsFreeAddress, FallbackValue=False, TargetNullValue=False}">
+                                        <Label Text="{helpers:Translate New}"
+                                               Style="{DynamicResource MainTextH6}"
+                                               TextTransform="Lowercase"
+                                               VerticalTextAlignment="Center"
+                                               HorizontalTextAlignment="Center" />
+                                    </Frame>
+                                </Grid>
+                            </controls:CustomViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </controls:CustomFrame>
+    </StackLayout>
+</pages:PopupPage>

@@ -163,19 +163,19 @@ namespace atomex.ViewModels.TransactionViewModels
         private ReactiveCommand<Unit, Unit> _openBottomSheetCommand;
 
         public ReactiveCommand<Unit, Unit> OpenBottomSheetCommand => _openBottomSheetCommand ??=
-            ReactiveCommand.Create(() => _navigationService?.ShowBottomSheet(new RemoveTxBottomSheet(this)));
+            ReactiveCommand.Create(() => _navigationService?.ShowPopup(new RemoveTxBottomSheet(this)));
 
         private ReactiveCommand<Unit, Unit> _deleteTxCommand;
 
         public ReactiveCommand<Unit, Unit> DeleteTxCommand => _deleteTxCommand ??= ReactiveCommand.Create(() =>
         {
             RemoveClicked?.Invoke(this, new TransactionEventArgs(Transaction));
-            _navigationService?.CloseBottomSheet();
+            _navigationService?.ClosePopup();
         });
 
         private ICommand _closeBottomSheetCommand;
 
         public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??=
-            ReactiveCommand.Create(() => _navigationService?.CloseBottomSheet());
+            ReactiveCommand.Create(() => _navigationService?.ClosePopup());
     }
 }

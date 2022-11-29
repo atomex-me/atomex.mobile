@@ -14,7 +14,6 @@ namespace atomex.ViewModels.DappsViewModels
         protected INavigationService _navigationService;
         
         public Func<string, Task> OnConnect;
-        [Reactive] public string AddressToConnect { get; set; }
         [Reactive] public string QrCodeString { get; set; }
 
         [Reactive] public Result ScanResult { get; set; }
@@ -56,12 +55,24 @@ namespace atomex.ViewModels.DappsViewModels
                 
                 _navigationService?.ClosePage(TabNavigation.Portfolio);
 
-                if (QrCodeString != null && AddressToConnect != null)
+                if (QrCodeString != null)
                 {
                     _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular,
                         AppResources.Connecting + "...");
                     await OnConnect(QrCodeString);
                 }
+            });
+        }
+
+        public void OnDeepLinkResult(string value)
+        {
+            if (string.IsNullOrEmpty(value)) return;
+            
+            Device.InvokeOnMainThreadAsync(async () =>
+            {
+                _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular,
+                        AppResources.Connecting + "...");
+                await OnConnect(value);
             });
         }
     }

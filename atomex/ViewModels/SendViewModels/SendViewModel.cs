@@ -332,7 +332,7 @@ namespace atomex.ViewModels.SendViewModels
         private ICommand _closeConfirmationCommand;
 
         public ICommand CloseConfirmationCommand =>
-            _closeConfirmationCommand ??= new Command(() => _navigationService?.CloseBottomSheet());
+            _closeConfirmationCommand ??= new Command(() => _navigationService?.ClosePopup());
 
         private ReactiveCommand<Unit, Unit> _maxCommand;
 
@@ -423,7 +423,7 @@ namespace atomex.ViewModels.SendViewModels
                             return;
                         }
 
-                        _navigationService?.CloseBottomSheet();
+                        _navigationService?.ClosePopup();
                         await _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
 
                         _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Success,
@@ -449,12 +449,12 @@ namespace atomex.ViewModels.SendViewModels
             else if (Stage == SendStage.Confirmation && ShowAdditionalConfirmation)
             {
                 Stage = SendStage.AdditionalConfirmation;
-                _navigationService?.ShowBottomSheet(new WarningConfirmationBottomSheet(this));
+                _navigationService?.ShowPopup(new WarningConfirmationBottomSheet(this));
             }
             else
             {
                 Stage = SendStage.Confirmation;
-                _navigationService?.ShowBottomSheet(new SendingConfirmationBottomSheet(this));
+                _navigationService?.ShowPopup(new SendingConfirmationBottomSheet(this));
             }
         }
 

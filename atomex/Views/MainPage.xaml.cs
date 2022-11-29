@@ -245,13 +245,15 @@ namespace atomex.Views
             }
         }
 
-        public void ShowBottomSheet(PopupPage popup)
+        public void ShowPopup(PopupPage popup, bool removePrevious = true)
         {
             try
             {
-                if (PopupNavigation.Instance.PopupStack.Count > 0)
-                    _ = PopupNavigation.Instance.PopAsync();
-
+                if (removePrevious)
+                {
+                    for ( ; PopupNavigation.Instance.PopupStack.Count > 0 ; )
+                        _ = PopupNavigation.Instance.PopAsync();
+                }
                 _ = PopupNavigation.Instance.PushAsync(popup);
             }
             catch (Exception e)
@@ -260,7 +262,7 @@ namespace atomex.Views
             }
         }
 
-        public void CloseBottomSheet()
+        public void ClosePopup()
         {
             try
             {
@@ -521,11 +523,18 @@ namespace atomex.Views
 
         public void ConnectDappByDeepLink(string qrCode)
         {
-            var tezosViewModel = MainViewModel.PortfolioViewModel.AllCurrencies
-                .First(c => c.CurrencyViewModel.CurrencyCode == TezosConfig.Xtz)
-                .CurrencyViewModel as TezosCurrencyViewModel;
-            
-            tezosViewModel?.DappsViewModel.Connect(qrCode);
+            try
+            {
+                var tezosViewModel = MainViewModel.PortfolioViewModel.AllCurrencies
+                    .First(c => c.CurrencyViewModel.CurrencyCode == TezosConfig.Xtz)
+                    .CurrencyViewModel as TezosCurrencyViewModel;
+
+                tezosViewModel?.DappsViewModel.ConnectDappViewModel.OnDeepLinkResult(qrCode);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Connect dApp by deepLink error");
+            }
         }
     }
 }

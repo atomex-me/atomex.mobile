@@ -98,7 +98,7 @@ namespace atomex.ViewModels
                     if (!ExportKeyConfirm)
                     {
                         ExportKeyConfirm = true;
-                        _navigationService?.ShowBottomSheet(new ExportKeyBottomSheet(this));
+                        _navigationService?.ShowPopup(new ExportKeyBottomSheet(this));
                         return;
                     }
 
@@ -129,7 +129,7 @@ namespace atomex.ViewModels
                     }
                     else if (Currencies.IsTezosBased(_currency.Name))
                     {
-                        var base58 = unsecuredPrivateKey.Length == 32
+                        var base58 = unsecuredPrivateKey?.Length == 32
                             ? Base58Check.Encode(unsecuredPrivateKey, Prefix.Edsk)
                             : Base58Check.Encode(unsecuredPrivateKey, Prefix.EdskSecretKey);
 
@@ -149,7 +149,7 @@ namespace atomex.ViewModels
                     CopyButtonName = AppResources.CopyKeyButton;
                     ExportKeyConfirm = false;
 
-                    _navigationService?.CloseBottomSheet();
+                    _navigationService?.ClosePopup();
                 }
                 catch (Exception e)
                 {
@@ -192,7 +192,7 @@ namespace atomex.ViewModels
         public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= ReactiveCommand.Create(() =>
         {
             ExportKeyConfirm = false;
-            _navigationService?.CloseBottomSheet();
+            _navigationService?.ClosePopup();
         });
     }
 
@@ -352,7 +352,7 @@ namespace atomex.ViewModels
                 if (HasTokens)
                 {
                     var account = _app.Account
-                        .GetCurrencyAccount(_currency.Name);
+                        .GetCurrencyAccount(_currency?.Name);
 
                     var tezosAccount = account as TezosAccount;
                     

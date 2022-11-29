@@ -250,7 +250,7 @@ namespace atomex.ViewModels.ConversionViewModels
                         _navigationService?.ShowPage(new SelectAddressPage(_selectAddressViewModel),
                             TabNavigation.Exchange);
                     else
-                        _navigationService?.ShowBottomSheet(new AddressesBottomSheet(this));
+                        _navigationService?.ShowPopup(new AddressesBottomSheet(this));
                 }
             });
 
@@ -259,7 +259,7 @@ namespace atomex.ViewModels.ConversionViewModels
         public ICommand EnterExternalAddressCommand => _enterExternalAddressCommand ??= ReactiveCommand.Create(() =>
         {
             _selectAddressViewModel?.SetAddressMode(SelectAddressMode.EnterExternalAddress);
-            _navigationService?.CloseBottomSheet();
+            _navigationService?.ClosePopup();
             _navigationService?.ShowPage(new SelectAddressPage(_selectAddressViewModel), TabNavigation.Exchange);
         });
 
@@ -268,14 +268,14 @@ namespace atomex.ViewModels.ConversionViewModels
         public ICommand ChooseMyAddressCommand => _chooseMyAddressCommand ??= ReactiveCommand.Create(() =>
         {
             _selectAddressViewModel?.SetAddressMode(SelectAddressMode.ChooseMyAddress);
-            _navigationService?.CloseBottomSheet();
+            _navigationService?.ClosePopup();
             _navigationService?.ShowPage(new SelectAddressPage(_selectAddressViewModel), TabNavigation.Exchange);
         });
 
         private ICommand _closeBottomSheetCommand;
 
         public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??=
-            ReactiveCommand.Create(() => _navigationService?.CloseBottomSheet());
+            ReactiveCommand.Create(() => _navigationService?.ClosePopup());
 
         private readonly IAccount _account;
         private readonly INavigationService _navigationService;

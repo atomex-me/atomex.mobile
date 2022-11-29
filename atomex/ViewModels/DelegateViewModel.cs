@@ -85,7 +85,7 @@ namespace atomex.ViewModels
         private ICommand _undoConfirmStageCommand;
 
         public ICommand UndoConfirmStageCommand =>
-            _undoConfirmStageCommand ??= new Command(() => _navigationService?.CloseBottomSheet());
+            _undoConfirmStageCommand ??= new Command(() => _navigationService?.ClosePopup());
 
         private ReactiveCommand<Unit, Unit> _setSortTypeCommand;
 
@@ -223,7 +223,7 @@ namespace atomex.ViewModels
             }
 
             UndelegateWarning = string.Format(AppResources.UndelegateWarning, address, tx.Fee);
-            _navigationService?.ShowBottomSheet(new UndoDelegationBottomSheet(this));
+            _navigationService?.ShowPopup(new UndoDelegationBottomSheet(this));
         }
 
         private async Task Delegate(decimal fee)
@@ -304,7 +304,7 @@ namespace atomex.ViewModels
                     return;
                 }
 
-                _navigationService?.CloseBottomSheet();
+                _navigationService?.ClosePopup();
                 await _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
 
                 var operationType = SelectedBaker?.Address != null
@@ -399,7 +399,7 @@ namespace atomex.ViewModels
                             text: AppResources.BakerIsOverdelegatedWarning);
                     _ = CheckDelegation();
 
-                    _navigationService?.ShowBottomSheet(new DelegationConfirmationBottomSheet(this));
+                    _navigationService?.ShowPopup(new DelegationConfirmationBottomSheet(this));
                 });
 
             this.WhenAnyValue(

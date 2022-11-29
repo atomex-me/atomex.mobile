@@ -217,7 +217,7 @@ namespace atomex.ViewModels
             SelectedAddress = selectedAddress != null
                 ? MyAddresses.FirstOrDefault(vm =>
                     vm.Address == selectedAddress && vm.TokenId == selectedTokenId)
-                : SelectAddressMode == SelectAddressMode.SendFrom
+                : SelectAddressMode is SelectAddressMode.SendFrom or SelectAddressMode.Connect
                     ? SelectDefaultAddress()
                     : null;
             Title = SelectAddressMode == SelectAddressMode.ReceiveTo
@@ -509,5 +509,10 @@ namespace atomex.ViewModels
                 Log.Error(e, "Confirm external address error");
             }
         }
+        
+        private ICommand _closeBottomSheetCommand;
+
+        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= new Command(() =>
+            _navigationService?.ClosePopup());
     }
 }

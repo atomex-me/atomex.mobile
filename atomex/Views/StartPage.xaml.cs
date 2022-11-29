@@ -149,7 +149,7 @@ namespace atomex.Views
             throw new NotImplementedException();
         }
 
-        public void ShowBottomSheet(PopupPage popup)
+        public void ShowPopup(PopupPage popup, bool removePrevious)
         {
             throw new NotImplementedException();
         }
@@ -159,7 +159,7 @@ namespace atomex.Views
             throw new NotImplementedException();
         }
 
-        public void CloseBottomSheet()
+        public void ClosePopup()
         {
             throw new NotImplementedException();
         }

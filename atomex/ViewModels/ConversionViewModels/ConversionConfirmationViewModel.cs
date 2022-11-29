@@ -76,7 +76,7 @@ namespace atomex.ViewModels.ConversionViewModels
         public ICommand NextCommand => _nextCommand ??= ReactiveCommand.Create(Send);
 
         private ICommand _undoConfirmStageCommand;
-        public ICommand UndoConfirmStageCommand => _undoConfirmStageCommand ??= new Command(() => _navigationService?.CloseBottomSheet());
+        public ICommand UndoConfirmStageCommand => _undoConfirmStageCommand ??= new Command(() => _navigationService?.ClosePopup());
 
         public ConversionConfirmationViewModel(IAtomexApp app, INavigationService navigationService)
         {
@@ -100,7 +100,7 @@ namespace atomex.ViewModels.ConversionViewModels
                 {
                     if (error != null)
                     {
-                        _navigationService?.CloseBottomSheet();
+                        _navigationService?.ClosePopup();
                         
                         if (error.Code == Errors.PriceHasChanged)
                             _navigationService?.DisplaySnackBar(MessageType.Error, AppResources.PriceChangedError);

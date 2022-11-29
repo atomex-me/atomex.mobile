@@ -64,7 +64,7 @@ namespace atomex.ViewModels
                     SelectedAddress = walletAddressViewModel;
 
                     _navigationService.ReturnToInitiatedPage(TabNavigation.Portfolio);
-                    _navigationService?.ShowBottomSheet(new ReceiveBottomSheet(this));
+                    _navigationService?.ShowPopup(new ReceiveBottomSheet(this));
                 }
             };
 
@@ -86,7 +86,7 @@ namespace atomex.ViewModels
         public ReactiveCommand<Unit, Unit> ShowReceiveAddressesCommand => _showReceiveAddressesCommand ??=
             ReactiveCommand.Create(() =>
             {
-                _navigationService?.CloseBottomSheet();
+                _navigationService?.ClosePopup();
                 _navigationService?.ShowPage(new SelectAddressPage(SelectAddressViewModel), TabNavigation.Portfolio);
             });
 
@@ -132,6 +132,6 @@ namespace atomex.ViewModels
         private ICommand _closeBottomSheetCommand;
 
         public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??=
-            ReactiveCommand.Create(() => _navigationService?.CloseBottomSheet());
+            ReactiveCommand.Create(() => _navigationService?.ClosePopup());
     }
 }

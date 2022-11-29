@@ -386,7 +386,7 @@ namespace atomex.ViewModels.ConversionViewModels
                 .WhereNotNull()
                 .SubscribeInMainThread(s =>
                 {
-                    _navigationService?.ShowBottomSheet(new SwapBottomSheet(s));
+                    _navigationService?.ShowPopup(new SwapBottomSheet(s));
                     SelectedSwap = null;
                 });
 
@@ -649,7 +649,7 @@ namespace atomex.ViewModels.ConversionViewModels
             var receivingAddresses = await AddressesHelper
                 .GetReceivingAddressesAsync(
                     account: _app.Account,
-                    currency: currencyViewModel.Currency)
+                    currency: currencyViewModel?.Currency)
                 .ConfigureAwait(false);
 
             var selectedAddress = ToCurrencyViewModelItem?.CurrencyViewModel?.Currency?.Name == currencyName
@@ -954,11 +954,11 @@ namespace atomex.ViewModels.ConversionViewModels
 
                     if (_amountType == AmountType.Sold)
                     {
-                        ToViewModel.SetAmountFromString(swapPriceEstimation.ToAmount.ToString());
+                        ToViewModel.SetAmountFromString(swapPriceEstimation.ToAmount.ToString(CultureInfo.InvariantCulture));
                     }
                     else
                     {
-                        FromViewModel.SetAmountFromString(swapPriceEstimation.FromAmount.ToString());
+                        FromViewModel.SetAmountFromString(swapPriceEstimation.FromAmount.ToString(CultureInfo.InvariantCulture));
                     }
 
                     EstimatedPrice = swapPriceEstimation.Price;
@@ -1056,7 +1056,7 @@ namespace atomex.ViewModels.ConversionViewModels
                         this.RaisePropertyChanged(nameof(Swaps));
 
                         GroupingSwaps();
-                        _navigationService?.ShowBottomSheet(new SwapBottomSheet(swapViewModel));
+                        _navigationService?.ShowPopup(new SwapBottomSheet(swapViewModel));
                     }
                 });
             }
@@ -1197,7 +1197,7 @@ namespace atomex.ViewModels.ConversionViewModels
 
                 var qty = AmountHelper.AmountToSellQty(
                     side: side,
-                    amount: FromViewModel.Amount,
+                    amount: FromViewModel?.Amount ?? 0m,
                     price: price,
                     digitsMultiplier: baseCurrency.DigitsMultiplier);
 
@@ -1207,13 +1207,13 @@ namespace atomex.ViewModels.ConversionViewModels
                         side: side,
                         qty: symbol.MinimumQty,
                         price: price,
-                        digitsMultiplier: FromViewModel.CurrencyViewModel.Currency.DigitsMultiplier);
+                        digitsMultiplier: FromViewModel?.CurrencyViewModel.Currency.DigitsMultiplier ?? 0m);
 
                     var message = string.Format(
                         provider: CultureInfo.CurrentCulture,
                         format: AppResources.MinimumAllowedQtyWarning,
                         arg0: minimumAmount,
-                        arg1: FromViewModel.CurrencyViewModel.Currency.Name);
+                        arg1: FromViewModel?.CurrencyViewModel.Currency.Name);
 
                     _navigationService?.ShowAlert(
                         AppResources.Warning,
@@ -1233,7 +1233,7 @@ namespace atomex.ViewModels.ConversionViewModels
 
                     BaseCurrencyCode = BaseCurrencyCode,
                     QuoteCurrencyCode = QuoteCurrencyCode,
-                    Amount = FromViewModel.Amount,
+                    Amount = FromViewModel?.Amount ?? 0m,
                     AmountInBase = FromViewModel?.AmountInBase ?? 0m,
                     TargetAmount = ToViewModel?.Amount ?? 0m,
                     TargetAmountInBase = ToViewModel?.AmountInBase ?? 0m,
@@ -1246,7 +1246,7 @@ namespace atomex.ViewModels.ConversionViewModels
 
                 viewModel.OnSuccess += OnSuccessConvertion;
 
-                _navigationService?.ShowBottomSheet(new ExchangeConfirmationBottomSheet(viewModel));
+                _navigationService?.ShowPopup(new ExchangeConfirmationBottomSheet(viewModel));
             }
             catch (Exception e)
             {

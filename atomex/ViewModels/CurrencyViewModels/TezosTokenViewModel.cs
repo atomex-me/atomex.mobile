@@ -81,7 +81,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         public class Grouping<T> : ObservableCollection<T>
         {
             public double GroupHeight { get; set; } = DefaultTxGroupHeight;
-            public DateTime Date { get; private set; }
+            private DateTime Date { get; set; }
 
             public Grouping(DateTime date, IEnumerable<T> items)
             {
@@ -107,7 +107,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         [Reactive] public ImageSource TokenPreview { get; set; }
 
-        protected ImageSource GetTokenPreview(string url)
+        private ImageSource GetTokenPreview(string url)
         {
             var hasImageInCache = CacheHelper
                 .HasCacheAsync(new Uri(url))
@@ -140,7 +140,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             return null;
         }
 
-        protected void InitTokenPreview()
+        private void InitTokenPreview()
         {
             if (TokenBalance == null) return;
 
@@ -224,7 +224,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             InitTokenPreview();
         }
 
-        protected void OnAddresesChangedEventHandler()
+        private void OnAddresesChangedEventHandler()
         {
             try
             {
@@ -240,7 +240,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, $"Error for token {CurrencyCode}");
+                Log.Error(e, "Error for token {@Token}", CurrencyCode);
             }
         }
 
@@ -259,7 +259,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, $"LoadAddresses error for contract {Contract?.Name} ({Contract?.Address})");
+                Log.Error(e, "LoadAddresses error for contract {@Contract}", Contract?.Name);
             }
         }
 
@@ -295,28 +295,28 @@ namespace atomex.ViewModels.CurrencyViewModels
                             .Take(TxsNumberPerPage)
                             .GroupBy(p => p.LocalTime.Date)
                             .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                                new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))))
+                                new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))))
                         : Transactions
                             .GroupBy(p => p.LocalTime.Date)
                             .OrderByDescending(g => g.Key)
                             .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                                new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
+                                new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))));
 
                     GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
                 });
             }
             catch (OperationCanceledException)
             {
-                Log.Debug($"LoadTransfers for {Contract} canceled");
+                Log.Debug("LoadTransfers for {@Contract} canceled", Contract);
             }
             catch (Exception e)
             {
-                Log.Error(e, $"LoadTransfers error for contract {Contract}");
+                Log.Error(e, "LoadTransfers error for contract {@Contract}", Contract);
             }
             finally
             {
                 IsTransfersLoading = false;
-                Log.Debug($"Token transfers loaded for contract {Contract}");
+                Log.Debug("Token transfers loaded for contract {@Contract}", Contract);
             }
         }
 
@@ -335,7 +335,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, $"Balance updated event handler error for tezos token {CurrencyCode}");
+                Log.Error(e, "Balance updated event handler error for tezos token {@Token}", CurrencyCode);
             }
         }
 
@@ -353,7 +353,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             UpdateQuotesInBaseCurrency(quotesProvider);
         }
 
-        public void UpdateQuotesInBaseCurrency(IQuotesProvider quotesProvider)
+        private void UpdateQuotesInBaseCurrency(IQuotesProvider quotesProvider)
         {
             try
             {
@@ -366,7 +366,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, $"Update quotes error on tezos token {CurrencyCode}");
+                Log.Error(e, "Update quotes error on tezos token {@Token}", CurrencyCode);
             }
         }
 
@@ -374,7 +374,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         public ReactiveCommand<Unit, Unit> TokenActionSheetCommand => _tokenActionSheetCommand ??=
             ReactiveCommand.Create(() =>
-                _navigationService?.ShowBottomSheet(new TokenActionBottomSheet(this)));
+                _navigationService?.ShowPopup(new TokenActionBottomSheet(this)));
 
         private ReactiveCommand<Unit, Unit> _receiveCommand;
         public ReactiveCommand<Unit, Unit> ReceiveCommand => _receiveCommand ??= ReactiveCommand.Create(OnReceiveClick);
@@ -382,23 +382,21 @@ namespace atomex.ViewModels.CurrencyViewModels
         private ReactiveCommand<Unit, Unit> _sendCommand;
         public ReactiveCommand<Unit, Unit> SendCommand => _sendCommand ??= ReactiveCommand.Create(OnSendClick);
 
-        protected ReactiveCommand<Unit, Unit> _convertCurrencyCommand;
+        private ReactiveCommand<Unit, Unit> _convertCurrencyCommand;
 
         public ReactiveCommand<Unit, Unit> ConvertCurrencyCommand => _convertCurrencyCommand ??= ReactiveCommand.Create(
             () =>
             {
-                if (IsConvertable)
-                {
-                    var currency = _app.Account.Currencies
-                        .FirstOrDefault(c => c is Fa12Config fa12 && fa12.TokenContractAddress == Contract.Address);
+                if (!IsConvertable) return;
+                var currency = _app.Account.Currencies
+                    .FirstOrDefault(c => c is Fa12Config fa12 && fa12.TokenContractAddress == Contract.Address);
 
-                    if (currency == null)
-                        return; // TODO: msg to user
+                if (currency == null)
+                    return; // TODO: msg to user
 
-                    _navigationService?.CloseBottomSheet();
-                    _navigationService?.SetInitiatedPage(TabNavigation.Exchange);
-                    _navigationService?.GoToExchange(currency);
-                }
+                _navigationService?.ClosePopup();
+                _navigationService?.SetInitiatedPage(TabNavigation.Exchange);
+                _navigationService?.GoToExchange(currency);
             });
 
         private ICommand _refreshCommand;
@@ -431,7 +429,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         }
 
 
-        public async Task ScanCurrency()
+        private async Task ScanCurrency()
         {
             _cancellationTokenSource = new CancellationTokenSource();
             IsRefreshing = true;
@@ -460,7 +458,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, $"Tezos tokens scanner error for {CurrencyCode}");
+                Log.Error(e, "Tezos tokens scanner error for {@Token}", CurrencyCode);
             }
             finally
             {
@@ -468,9 +466,9 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
         }
 
-        protected void OnReceiveClick()
+        private void OnReceiveClick()
         {
-            _navigationService?.CloseBottomSheet();
+            _navigationService?.ClosePopup();
             var receiveViewModel = new ReceiveViewModel(
                 app: _app,
                 navigationService: _navigationService,
@@ -478,13 +476,13 @@ namespace atomex.ViewModels.CurrencyViewModels
                 tokenContract: Contract.Address,
                 tokenType: Contract.GetContractType(),
                 tokenId: (int)TokenBalance.TokenId);
-            _navigationService?.ShowBottomSheet(new ReceiveBottomSheet(receiveViewModel));
+            _navigationService?.ShowPopup(new ReceiveBottomSheet(receiveViewModel));
         }
 
-        protected void OnSendClick()
+        private void OnSendClick()
         {
             if (TotalAmount <= 0) return;
-            _navigationService?.CloseBottomSheet();
+            _navigationService?.ClosePopup();
 
             _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
             var sendViewModel = TokenBalance.IsNft
@@ -510,7 +508,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         private ICommand _closeActionSheetCommand;
 
         public ICommand CloseActionSheetCommand => _closeActionSheetCommand ??= new Command(() =>
-            _navigationService?.CloseBottomSheet());
+            _navigationService?.ClosePopup());
 
         private ReactiveCommand<string, Unit> _changeCurrencyTabCommand;
 
@@ -533,7 +531,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 Log.Error("Invalid uri for ipfs asset");
         });
 
-        protected void CopyAddress(string value)
+        private void CopyAddress(string value)
         {
             Device.InvokeOnMainThreadAsync(() =>
             {
@@ -550,7 +548,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             });
         }
 
-        protected void CopyTxId(string value)
+        private void CopyTxId(string value)
         {
             Device.InvokeOnMainThreadAsync(() =>
             {
@@ -570,7 +568,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         private ICommand _copyAddressCommand;
 
         public ICommand CopyAddressCommand =>
-            _copyAddressCommand ??= new Command<string>((value) => CopyAddress(value));
+            _copyAddressCommand ??= new Command<string>(CopyAddress);
 
         private ReactiveCommand<string, Unit> _showTokenInExplorerCommand;
 
@@ -579,10 +577,10 @@ namespace atomex.ViewModels.CurrencyViewModels
                 Launcher.OpenAsync(
                     new Uri($"{TezosConfig.AddressExplorerUri}{Contract?.Address}/tokens/{TokenBalance?.TokenId}")));
 
-        public bool IsIpfsAsset =>
+        private bool IsIpfsAsset =>
             TokenBalance.ArtifactUri != null && ThumbsApi.HasIpfsPrefix(TokenBalance.ArtifactUri);
 
-        public string AssetUrl => IsIpfsAsset
+        private string AssetUrl => IsIpfsAsset
             ? $"http://ipfs.io/ipfs/{ThumbsApi.RemoveIpfsPrefix(TokenBalance.ArtifactUri)}"
             : null;
 
@@ -598,7 +596,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 .GroupBy(p => p.LocalTime.Date)
                 .OrderByDescending(g => g.Key)
                 .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                    new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
+                    new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))));
 
             GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
         });
@@ -607,12 +605,12 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         public ReactiveCommand<Unit, Unit> ShowDescriptionCommand => _showDescriptionCommand ??=
             ReactiveCommand.Create(() =>
-                _navigationService?.ShowBottomSheet(new NftDescriptionPopup(this)));
+                _navigationService?.ShowPopup(new NftDescriptionPopup(this)));
 
         private ICommand _closeBottomSheetCommand;
 
         public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= new Command(() =>
-            _navigationService?.CloseBottomSheet());
+            _navigationService?.ClosePopup());
 
         #region IDisposable Support
 

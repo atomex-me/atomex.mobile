@@ -106,7 +106,7 @@ namespace atomex.ViewModels
                             SelectedCurrency = null;
                             break;
                         case CurrencyActionType.Send:
-                            _navigationService?.CloseBottomSheet();
+                            _navigationService?.ClosePopup();
                             var sendViewModel = SendViewModelCreator.CreateViewModel(_app, c, _navigationService);
                             if (c.Currency is BitcoinBasedConfig)
                             {
@@ -128,7 +128,7 @@ namespace atomex.ViewModels
                             break;
                         case CurrencyActionType.Receive:
                             var receiveViewModel = new ReceiveViewModel(_app, c?.Currency, _navigationService);
-                            _navigationService?.ShowBottomSheet(new ReceiveBottomSheet(receiveViewModel));
+                            _navigationService?.ShowPopup(new ReceiveBottomSheet(receiveViewModel));
                             SelectCurrencyUseCase = CurrencyActionType.Show;
                             SelectedCurrency = null;
                             break;
@@ -282,18 +282,18 @@ namespace atomex.ViewModels
         private ReactiveCommand<Unit, Unit> _manageAssetsCommand;
 
         public ReactiveCommand<Unit, Unit> ManageAssetsCommand => _manageAssetsCommand ??=
-            ReactiveCommand.Create(() => _navigationService?.ShowBottomSheet(new ManageAssetsBottomSheet(this)));
+            ReactiveCommand.Create(() => _navigationService?.ShowPopup(new ManageAssetsBottomSheet(this)));
 
         private ReactiveCommand<Unit, Unit> _showAvailableAmountCommand;
 
         public ReactiveCommand<Unit, Unit> ShowAvailableAmountCommand => _showAvailableAmountCommand ??=
             ReactiveCommand.Create(() =>
-                _navigationService?.ShowBottomSheet(new AvailableAmountPopup(this)));
+                _navigationService?.ShowPopup(new AvailableAmountPopup(this)));
 
         private ICommand _closeBottomSheetCommand;
 
         public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??=
-            ReactiveCommand.Create(() => _navigationService?.CloseBottomSheet());
+            ReactiveCommand.Create(() => _navigationService?.ClosePopup());
 
         private ReactiveCommand<Unit, Unit> _sendCommand;
 
@@ -316,7 +316,7 @@ namespace atomex.ViewModels
                 };
 
             SelectCurrencyUseCase = CurrencyActionType.Show;
-            _navigationService?.ShowBottomSheet(new SelectCurrencyBottomSheet(selectCurrencyViewModel));
+            _navigationService?.ShowPopup(new SelectCurrencyBottomSheet(selectCurrencyViewModel));
         });
 
         private ReactiveCommand<Unit, Unit> _receiveCommand;
@@ -339,7 +339,7 @@ namespace atomex.ViewModels
                 };
 
             SelectCurrencyUseCase = CurrencyActionType.Show;
-            _navigationService?.ShowBottomSheet(new SelectCurrencyBottomSheet(selectCurrencyViewModel));
+            _navigationService?.ShowPopup(new SelectCurrencyBottomSheet(selectCurrencyViewModel));
         });
 
         private ReactiveCommand<Unit, Unit> _exchangeCommand;

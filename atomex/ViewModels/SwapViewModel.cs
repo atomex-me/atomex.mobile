@@ -302,7 +302,7 @@ namespace atomex.ViewModels
         );
 
         private ICommand _closeBottomSheetCommand;
-        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= new Command(() => _navigationService?.CloseBottomSheet());
+        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= new Command(() => _navigationService?.ClosePopup());
     }
 }
 
