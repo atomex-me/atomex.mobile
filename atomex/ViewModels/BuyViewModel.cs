@@ -9,6 +9,7 @@ using Atomex;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.Cryptography.Abstract;
+using atomex.Models;
 using Atomex.ViewModels;
 using Atomex.Wallet.Abstract;
 using ReactiveUI;
@@ -30,15 +31,6 @@ namespace atomex.ViewModels
 
         private string _userId;
 
-        private string[] _redirectedUrls =
-        {
-            "https://widget.wert.io/terms-and-conditions",
-            "https://widget.wert.io/privacy-policy",
-            "https://support.wert.io/",
-            "https://sandbox.wert.io/terms-and-conditions",
-            "https://sandbox.wert.io/privacy-policy"
-        };
-
         public static ObservableCollection<string> Currencies { get; } =
             new ObservableCollection<string>
             {
@@ -51,7 +43,7 @@ namespace atomex.ViewModels
 
         public BuyViewModel(IAtomexApp app)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(_app));
+            _app = app ?? throw new ArgumentNullException(nameof(app));
             AvailableCurrencies = new ObservableCollection<string>(Currencies);
             IsLoading = true;
             _userId = GetUserId();
@@ -60,7 +52,7 @@ namespace atomex.ViewModels
 
         public void SetNavigationService(INavigationService navigationService)
         {
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
         }
 
         private ReactiveCommand<string, Unit> _selectCurrencyCommand;
@@ -101,7 +93,7 @@ namespace atomex.ViewModels
         {
             IsLoading = false;
 
-            if (_redirectedUrls.Any(u => args.Url.StartsWith(u)))
+            if (Constants.WertRedirectedUrls.Any(u => args.Url.StartsWith(u)))
             {
                 Launcher.OpenAsync(new Uri(args.Url));
                 args.Cancel = true;

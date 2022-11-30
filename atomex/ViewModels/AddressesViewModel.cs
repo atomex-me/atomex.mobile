@@ -13,7 +13,9 @@ using Atomex.Blockchain.Tezos.Internal;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.Cryptography;
+using atomex.Models;
 using Atomex.ViewModels;
+using atomex.ViewModels.Abstract;
 using Atomex.Wallet;
 using Atomex.Wallet.Tezos;
 using ReactiveUI;
@@ -121,6 +123,7 @@ namespace atomex.ViewModels
                     {
                         var btcBasedConfig = _currency as BitcoinBasedConfig;
 
+                        if (btcBasedConfig == null) return;
                         var wif = new NBitcoin.Key(unsecuredPrivateKey)
                             .GetWif(btcBasedConfig.Network)
                             .ToWif();
@@ -179,7 +182,7 @@ namespace atomex.ViewModels
                 }
                 catch (Exception e)
                 {
-                    Log.Error("Update address error", e);
+                    Log.Error(e, "Update address error");
                 }
                 finally
                 {
@@ -380,7 +383,7 @@ namespace atomex.ViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "Error while reload addresses list.");
+                Log.Error(e, "Error while reload addresses list");
             }
         }
 

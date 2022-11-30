@@ -14,6 +14,7 @@ using Atomex;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.ViewModels;
+using atomex.ViewModels.Abstract;
 using Atomex.Wallet.Abstract;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -25,24 +26,6 @@ using static atomex.Models.Message;
 
 namespace atomex.ViewModels
 {
-    public enum SelectAddressFrom
-    {
-        [Description("Init")] Init,
-        [Description("Change")] Change,
-        [Description("InitSearch")] InitSearch,
-        [Description("ChangeSearch")] ChangeSearch
-    }
-
-    public enum SelectAddressMode
-    {
-        [Description("SendFrom")] SendFrom,
-        [Description("ReceiveTo")] ReceiveTo,
-        [Description("ChangeRedeemAddress")] ChangeRedeemAddress,
-        [Description("EnterExternalAddress")] EnterExternalAddress,
-        [Description("ChooseMyAddress")] ChooseMyAddress,
-        [Description("Connect")] Connect
-    }
-
     public class SelectAddressViewModel : BaseViewModel
     {
         protected INavigationService _navigationService { get; set; }

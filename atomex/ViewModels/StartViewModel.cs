@@ -104,7 +104,7 @@ namespace atomex.ViewModels
         public ICommand CreateNewWalletCommand => _createNewWalletCommand ??= ReactiveCommand.Create(() =>
         {
             CreateNewWalletViewModel createNewWalletViewModel = new CreateNewWalletViewModel(_app, _navigationService);
-            createNewWalletViewModel.CurrentAction = CreateNewWalletViewModel.Action.Create;
+            createNewWalletViewModel.CurrentAction = WalletAction.Create;
             _navigationService?.ShowPage(new WalletTypePage(createNewWalletViewModel));
         });
 
@@ -113,7 +113,7 @@ namespace atomex.ViewModels
         public ICommand RestoreWalletCommand => _restoreWalletCommand ??= new Command(() =>
         {
             CreateNewWalletViewModel createNewWalletViewModel = new CreateNewWalletViewModel(_app, _navigationService);
-            createNewWalletViewModel.CurrentAction = CreateNewWalletViewModel.Action.Restore;
+            createNewWalletViewModel.CurrentAction = WalletAction.Restore;
             _navigationService?.ShowPage(new WalletTypePage(createNewWalletViewModel));
         });
 
@@ -143,7 +143,7 @@ namespace atomex.ViewModels
 
                 if (!isLatest)
                 {
-                    var update = await _navigationService?.ShowAlert(
+                    var update = await _navigationService!.ShowAlert(
                         title: AppResources.UpdateAvailable,
                         text: AppResources.UpdateApp,
                         accept: AppResources.Yes,

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -11,6 +10,7 @@ using atomex.Views;
 using atomex.Views.Popup;
 using Atomex;
 using Atomex.Common;
+using atomex.Models;
 using atomex.ViewModels.CurrencyViewModels;
 using atomex.ViewModels.SendViewModels;
 using ReactiveUI;
@@ -20,12 +20,7 @@ using Xamarin.Forms;
 
 namespace atomex.ViewModels
 {
-    public enum CurrencyActionType
-    {
-        [Description("Show")] Show,
-        [Description("Send")] Send,
-        [Description("Receive")] Receive
-    }
+
 
     public class PortfolioCurrencyViewModel : BaseViewModel
     {

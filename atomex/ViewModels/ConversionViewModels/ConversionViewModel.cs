@@ -27,6 +27,7 @@ using atomex.Views;
 using static atomex.Models.Message;
 using Atomex.MarketData.Common;
 using Atomex.Client.Common;
+using atomex.ViewModels.Abstract;
 using atomex.ViewModels.CurrencyViewModels;
 
 namespace atomex.ViewModels.ConversionViewModels
@@ -508,11 +509,11 @@ namespace atomex.ViewModels.ConversionViewModels
                 if (swapParams == null)
                     return;
 
-                FromViewModel?.SetAmountFromString(Math.Min(swapParams.Amount, EstimatedMaxFromAmount).ToString());
+                FromViewModel?.SetAmountFromString(Math.Min(swapParams.Amount, EstimatedMaxFromAmount).ToString(CultureInfo.CurrentCulture));
             }
             catch (Exception e)
             {
-                Log.Error(e, "Max amount error.");
+                Log.Error(e, "Max amount error");
             }
         }
 
@@ -758,7 +759,7 @@ namespace atomex.ViewModels.ConversionViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "EstimateSwapParamsAsync error.");
+                Log.Error(e, "EstimateSwapParamsAsync error");
             }
         }
 
@@ -781,7 +782,7 @@ namespace atomex.ViewModels.ConversionViewModels
             currency: FromViewModel?.CurrencyViewModel?.CurrencyCode,
             baseCurrency: FromViewModel?.CurrencyViewModel?.BaseCurrencyCode,
             provider: _app.QuotesProvider,
-            defaultAmountInBase: FromViewModel.AmountInBase);
+            defaultAmountInBase: FromViewModel?.AmountInBase ?? 0m);
 
         private void UpdateToAmountInBase() => ToViewModel.AmountInBase = TryGetAmountInBase(
             amount: ToViewModel?.Amount ?? 0m,
@@ -1110,12 +1111,12 @@ namespace atomex.ViewModels.ConversionViewModels
                     .Take(_swapNumberPerPage)
                     .GroupBy(p => p.LocalTime.Date)
                     .Select(g => new Grouping<SwapViewModel>(g.Key,
-                        new ObservableCollection<SwapViewModel>(g.OrderByDescending(g => g.LocalTime))))
+                        new ObservableCollection<SwapViewModel>(g.OrderByDescending(t => t.LocalTime))))
                 : Swaps
                     .GroupBy(p => p.LocalTime.Date)
                     .OrderByDescending(g => g.Key)
                     .Select(g => new Grouping<SwapViewModel>(g.Key,
-                        new ObservableCollection<SwapViewModel>(g.OrderByDescending(g => g.LocalTime))));
+                        new ObservableCollection<SwapViewModel>(g.OrderByDescending(t => t.LocalTime))));
 
             GroupedSwaps = new ObservableCollection<Grouping<SwapViewModel>>(groups);
             this.RaisePropertyChanged(nameof(GroupedSwaps));
@@ -1250,7 +1251,7 @@ namespace atomex.ViewModels.ConversionViewModels
             }
             catch (Exception e)
             {
-                Log.Error("On convert click error", e);
+                Log.Error(e, "On convert click error");
             }
             finally
             {

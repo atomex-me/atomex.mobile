@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using atomex.Resources;
@@ -69,7 +70,7 @@ namespace atomex.ViewModels.SendViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "{@currency}: update amount error", _currency?.Description);
+                Log.Error(e, "{@Currency}: update amount error", _currency?.Description);
             }
         }
 
@@ -109,7 +110,7 @@ namespace atomex.ViewModels.SendViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "{@currency}: update gas price error", _currency?.Description);
+                Log.Error(e, "{@Currency}: update gas price error", _currency?.Description);
             }
         }
 
@@ -146,11 +147,11 @@ namespace atomex.ViewModels.SendViewModels
                 var amount = maxAmountEstimation.Amount > 0
                     ? maxAmountEstimation.Amount
                     : 0;
-                SetAmountFromString(amount.ToString());
+                SetAmountFromString(amount.ToString(CultureInfo.CurrentCulture));
             }
             catch (Exception e)
             {
-                Log.Error(e, "{@currency}: max click error", _currency?.Description);
+                Log.Error(e, "{@Currency}: max click error", _currency?.Description);
             }
         }
 

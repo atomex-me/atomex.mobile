@@ -7,6 +7,7 @@ using atomex.Resources;
 using atomex.Views;
 using Atomex;
 using Atomex.Core;
+using atomex.Models;
 using Atomex.ViewModels;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;

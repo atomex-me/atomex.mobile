@@ -16,6 +16,7 @@ using Atomex.Blockchain;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
+using atomex.Models;
 using atomex.ViewModels.SendViewModels;
 using atomex.ViewModels.TransactionViewModels;
 using Atomex.Wallet;
@@ -29,16 +30,7 @@ using static atomex.Models.SnackbarMessage;
 
 namespace atomex.ViewModels.CurrencyViewModels
 {
-    public enum CurrencyTab
-    {
-        [Description("Activity")] Activity,
-        [Description("Collectibles")] Collectibles,
-        [Description("Addresses")] Addresses,
-        [Description("Delegations")] Delegations,
-        [Description("Tokens")] Tokens,
-        [Description("Details")] Details,
-        [Description("Dapps")] Dapps
-    }
+
 
     public class CurrencyViewModel : BaseViewModel, IDisposable
     {

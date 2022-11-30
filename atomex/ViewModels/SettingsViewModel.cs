@@ -7,7 +7,6 @@ using System.Linq;
 using System.Reactive;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
@@ -74,10 +73,7 @@ namespace atomex.ViewModels
         public string Header => AppResources.EnterPin;
         private const string LanguageKey = nameof(LanguageKey);
 
-        private const string YoutubeUrl = "https://www.youtube.com/c/BakingBad";
-        private const string TwitterUrl = "https://twitter.com/atomex_official";
-        private const string TelegramUrl = "https://t.me/atomex_official";
-        private const string SupportUrl = "mailto:support@atomex.me";
+
 
         public SettingsViewModel(
             IAtomexApp app,
@@ -130,7 +126,7 @@ namespace atomex.ViewModels
             catch (Exception ex)
             {
                 UseBiometric = false;
-                Log.Error(ex, AppResources.NotSupportSecureStorage);
+                Log.Error(ex, "Device doesn't support secure storage on device");
             }
         }
 
@@ -385,22 +381,22 @@ namespace atomex.ViewModels
         private ReactiveCommand<Unit, Unit> _youtubeCommand;
 
         public ReactiveCommand<Unit, Unit> YoutubeCommand => _youtubeCommand ??= ReactiveCommand.CreateFromTask(() =>
-            Launcher.OpenAsync(new Uri(YoutubeUrl)));
+            Launcher.OpenAsync(new Uri(Constants.YoutubeUrl)));
 
         private ReactiveCommand<Unit, Unit> _telegramCommand;
 
         public ReactiveCommand<Unit, Unit> TelegramCommand => _telegramCommand ??= ReactiveCommand.CreateFromTask(() =>
-            Launcher.OpenAsync(new Uri(TelegramUrl)));
+            Launcher.OpenAsync(new Uri(Constants.TelegramUrl)));
 
         private ReactiveCommand<Unit, Unit> _twitterCommand;
 
         public ReactiveCommand<Unit, Unit> TwitterCommand => _twitterCommand ??= ReactiveCommand.CreateFromTask(() =>
-            Launcher.OpenAsync(new Uri(TwitterUrl)));
+            Launcher.OpenAsync(new Uri(Constants.TwitterUrl)));
 
         private ReactiveCommand<Unit, Unit> _supportCommand;
 
         public ReactiveCommand<Unit, Unit> SupportCommand => _supportCommand ??= ReactiveCommand.CreateFromTask(() =>
-            Launcher.OpenAsync(new Uri(SupportUrl)));
+            Launcher.OpenAsync(new Uri(Constants.SupportUrl)));
 
         private ReactiveCommand<Unit, Unit> _signOutCommand;
 

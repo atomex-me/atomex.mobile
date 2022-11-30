@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
@@ -30,20 +29,6 @@ using static atomex.Models.Message;
 
 namespace atomex.ViewModels
 {
-    public enum DelegationSortField
-    {
-        ByRating,
-        ByRoi,
-        ByValidator,
-        ByMinTez
-    }
-
-    public enum SortDirection
-    {
-        [Description("Asc")] Asc,
-        [Description("Desc")] Desc
-    }
-
     public class DelegateViewModel : BaseViewModel
     {
         private IAtomexApp _app { get; }

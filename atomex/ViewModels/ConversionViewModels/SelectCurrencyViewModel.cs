@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Windows.Input;
@@ -12,6 +11,7 @@ using Atomex;
 using Atomex.Blockchain.BitcoinBased;
 using Atomex.Common;
 using Atomex.Core;
+using atomex.Models;
 using atomex.ViewModels.CurrencyViewModels;
 using Atomex.Wallet.Abstract;
 using Atomex.Wallet.BitcoinBased;
@@ -20,12 +20,6 @@ using ReactiveUI.Fody.Helpers;
 
 namespace atomex.ViewModels.ConversionViewModels
 {
-    public enum SelectCurrencyType
-    {
-        [Description("From")] From,
-        [Description("To")] To
-    }
-
     public abstract class SelectCurrencyViewModelItem : BaseViewModel
     {
         [Reactive] public CurrencyViewModel CurrencyViewModel { get; set; }
@@ -58,7 +52,7 @@ namespace atomex.ViewModels.ConversionViewModels
         {
             this.WhenAnyValue(vm => vm.SelectedOutputs)
                 .WhereNotNull()
-                .Select(outputs => { return $"from {outputs.Count()} outputs"; })
+                .Select(outputs => $"from {outputs.Count()} outputs")
                 .ToPropertyExInMainThread(this, vm => vm.SelectedAddressDescription);
 
 
@@ -138,7 +132,7 @@ namespace atomex.ViewModels.ConversionViewModels
 
             this.WhenAnyValue(vm => vm.SelectedAddress)
                 .WhereNotNull()
-                .Select(address => { return address.Balance; })
+                .Select(address => address.Balance)
                 .ToPropertyExInMainThread(this, vm => vm.SelectedBalance);
 
             AvailableAddresses = availableAddresses ?? throw new ArgumentNullException(nameof(availableAddresses));

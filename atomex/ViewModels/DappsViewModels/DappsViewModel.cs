@@ -38,6 +38,7 @@ using Serilog;
 using Serilog.Extensions.Logging;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using Constants = Beacon.Sdk.Constants;
 using Hex = Atomex.Common.Hex;
 
 namespace atomex.ViewModels.DappsViewModels
@@ -149,16 +150,7 @@ namespace atomex.ViewModels.DappsViewModels
                         AppName = "Atomex mobile",
                         AppUrl = "https://atomex.me",
                         IconUrl = "https://bcd-static-assets.fra1.digitaloceanspaces.com/dapps/atomex/atomex_logo.jpg",
-                        KnownRelayServers = new[]
-                        {
-                            "beacon-node-1.diamond.papers.tech",
-                            "beacon-node-1.sky.papers.tech",
-                            "beacon-node-2.sky.papers.tech",
-                            "beacon-node-1.hope.papers.tech",
-                            "beacon-node-1.hope-2.papers.tech",
-                            "beacon-node-1.hope-3.papers.tech",
-                            "beacon-node-1.hope-4.papers.tech",
-                        },
+                        KnownRelayServers = Constants.KnownRelayServers,
                         DatabaseConnectionString = $"Filename={path}"
                     };
 

@@ -15,6 +15,7 @@ using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Common;
 using Atomex.MarketData.Abstract;
+using atomex.Models;
 using Atomex.TezosTokens;
 using atomex.ViewModels.SendViewModels;
 using atomex.ViewModels.TransactionViewModels;

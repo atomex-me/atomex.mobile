@@ -117,11 +117,11 @@ namespace atomex.ViewModels
                 if (State != "Completed")
                 {
                     if (_status == SwapDetailingStatus.Initialization.ToString())
-                        initMessages.LastOrDefault().IsCompleted = false;
+                        initMessages.LastOrDefault()!.IsCompleted = false;
                     else if (_status == SwapDetailingStatus.Exchanging.ToString())
-                        exchangeMessages.LastOrDefault().IsCompleted = false;
+                        exchangeMessages.LastOrDefault()!.IsCompleted = false;
                     else if (_status == SwapDetailingStatus.Completion.ToString())
-                        completionMessages.LastOrDefault().IsCompleted = false;
+                        completionMessages.LastOrDefault()!.IsCompleted = false;
                 }
 
                 Device.BeginInvokeOnMainThread(() =>
@@ -271,7 +271,7 @@ namespace atomex.ViewModels
 
         public void SetNavigationService(INavigationService navigationService)
         {
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
         }
 
         public void UpdateSwap(Swap swap)

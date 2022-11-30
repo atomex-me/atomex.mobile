@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,7 +9,9 @@ using Atomex;
 using Atomex.Blockchain.Abstract;
 using Atomex.Common;
 using Atomex.MarketData.Abstract;
+using atomex.Models;
 using Atomex.TezosTokens;
+using atomex.ViewModels.Abstract;
 using atomex.ViewModels.CurrencyViewModels;
 using Atomex.Wallet.Tezos;
 using Serilog;
@@ -51,6 +54,8 @@ namespace atomex.ViewModels.SendViewModels
         protected override void FromClick()
         {
             var selectFromViewModel = SelectFromViewModel as SelectAddressViewModel;
+            
+            if (selectFromViewModel == null) return;
             selectFromViewModel.SelectAddressFrom = SelectAddressFrom.Change;
 
             _navigationService?.ShowPage(new SelectAddressPage(selectFromViewModel), TabNavigation.Portfolio);
@@ -77,7 +82,7 @@ namespace atomex.ViewModels.SendViewModels
                         reserve: false);
 
                 if (UseDefaultFee && maxAmountEstimation.Fee > 0)
-                    SetFeeFromString(maxAmountEstimation.Fee.ToString());
+                    SetFeeFromString(maxAmountEstimation.Fee.ToString(CultureInfo.CurrentCulture));
 
                 if (maxAmountEstimation.Error != null)
                 {
@@ -106,7 +111,7 @@ namespace atomex.ViewModels.SendViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "{@currency}: update amount error", _currency?.Description);
+                Log.Error(e, "{@Currency}: update amount error", _currency?.Description);
             }
         }
 
@@ -153,7 +158,7 @@ namespace atomex.ViewModels.SendViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "{@currency}: update fee error", _currency?.Description);
+                Log.Error(e, "{@Currency}: update fee error", _currency?.Description);
             }
         }
 
@@ -188,7 +193,7 @@ namespace atomex.ViewModels.SendViewModels
                 var amount = maxAmountEstimation.Amount > 0
                     ? maxAmountEstimation.Amount
                     : 0;
-                SetAmountFromString(amount.ToString());
+                SetAmountFromString(amount.ToString(CultureInfo.CurrentCulture));
 
                 if (Fee < maxAmountEstimation.Fee)
                     ShowMessage(
@@ -198,7 +203,7 @@ namespace atomex.ViewModels.SendViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "{@currency}: max click error", _currency?.Description);
+                Log.Error(e, "{@Currency}: max click error", _currency?.Description);
             }
         }
 

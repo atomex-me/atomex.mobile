@@ -4,6 +4,7 @@ using System.Reactive;
 using System.Threading.Tasks;
 using Atomex;
 using atomex.Common;
+using atomex.Models;
 using atomex.Resources;
 using Atomex.ViewModels;
 using Beacon.Sdk.Beacon.Permission;
