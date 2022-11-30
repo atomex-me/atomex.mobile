@@ -844,6 +844,15 @@
     <data name="ConnectDapp" xml:space="preserve">
         <value>Connect Dapp</value>
     </data>
+    <data name="DappPairingRequest" xml:space="preserve">
+        <value>Dapp pairing request</value>
+    </data>
+    <data name="ScanQr" xml:space="preserve">
+        <value>Scan QR</value>
+    </data>
+    <data name="PasteQr" xml:space="preserve">
+        <value>Paste QR</value>
+    </data>
     <data name="DappIsConnected" xml:space="preserve">
         <value>{0} is connected to your account</value>
     </data>

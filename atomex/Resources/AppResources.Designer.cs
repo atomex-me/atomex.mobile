@@ -1617,6 +1617,24 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string DappPairingRequest {
+            get {
+                return ResourceManager.GetString("DappPairingRequest", resourceCulture);
+            }
+        }
+        
+        internal static string ScanQr {
+            get {
+                return ResourceManager.GetString("ScanQr", resourceCulture);
+            }
+        }
+        
+        internal static string PasteQr {
+            get {
+                return ResourceManager.GetString("PasteQr", resourceCulture);
+            }
+        }
+        
         internal static string DappIsConnected {
             get {
                 return ResourceManager.GetString("DappIsConnected", resourceCulture);

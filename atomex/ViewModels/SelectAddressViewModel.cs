@@ -380,9 +380,7 @@ namespace atomex.ViewModels
         {
             IsScanning = false;
             IsAnalyzing = false;
-            this.RaisePropertyChanged(nameof(IsScanning));
-            this.RaisePropertyChanged(nameof(IsAnalyzing));
-
+            
             if (ScanResult == null)
             {
                 _navigationService?.ShowAlert(AppResources.Error, AppResources.IncorrectQrCodeFormat,
@@ -417,8 +415,6 @@ namespace atomex.ViewModels
 
             IsScanning = true;
             IsAnalyzing = true;
-            this.RaisePropertyChanged(nameof(IsScanning));
-            this.RaisePropertyChanged(nameof(IsAnalyzing));
 
             _navigationService?.ShowPage(new ScanningQrPage(this), TabNavigation);
         }

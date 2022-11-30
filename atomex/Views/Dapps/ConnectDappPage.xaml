@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="atomex.Views.Dapps.ConnectDappPage"
+             xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
+             Title="{helpers:Translate ConnectDapp}"
+             xmlns:converters="clr-namespace:atomex.Converters"
+             xmlns:custom="clr-namespace:atomex.CustomElements"
+             xmlns:vm="clr-namespace:atomex.ViewModels.DappsViewModels;assembly=atomex"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:BindingContext="{d:DesignInstance vm:ConnectDappViewModel}"
+             Style="{DynamicResource MainBackgroundStyle}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBoolConverter x:Key="InverseBool" />
+            <converters:StringToBoolConverter x:Key="StringToBool" />
+            <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert" />
+            <converters:AllTrueMultiConverter x:Key="AllTrueConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid VerticalOptions="FillAndExpand"
+          HorizontalOptions="FillAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Margin="14,12"
+              HorizontalOptions="FillAndExpand"
+              ColumnSpacing="0"
+              RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="36" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="5*" />
+            </Grid.ColumnDefinitions>
+            <Frame Grid.ColumnSpan="2"
+                   CornerRadius="18"
+                   HasShadow="False"
+                   Padding="0"
+                   BackgroundColor="{AppThemeBinding Dark={StaticResource TabSwitcherBackgroundColorDark}, Light={StaticResource TabSwitcherBackgroundColor}}" />
+            <Button Text="{helpers:Translate ScanQr}"
+                    Style="{DynamicResource TabButton}"
+                    Command="{Binding ChangeConnectionTypeCommand}">
+                <Button.CommandParameter>
+                    <x:Boolean>True</x:Boolean>
+                </Button.CommandParameter>
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button"
+                                 Binding="{Binding IsScanQrCodeTab}"
+                                 Value="True">
+                        <Setter Property="TextColor"
+                                Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
+                        <Setter Property="BackgroundColor"
+                                Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="Button"
+                                 Binding="{Binding IsScanQrCodeTab}"
+                                 Value="False">
+                        <Setter Property="TextColor"
+                                Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
+                        <Setter Property="BackgroundColor"
+                                Value="Transparent" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+            <Button Grid.Column="1"
+                    Style="{DynamicResource TabButton}"
+                    Text="{helpers:Translate PasteQr}"
+                    Command="{Binding ChangeConnectionTypeCommand}">
+                <Button.CommandParameter>
+                    <x:Boolean>False</x:Boolean>
+                </Button.CommandParameter>
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button"
+                                 Binding="{Binding IsScanQrCodeTab}"
+                                 Value="False">
+                        <Setter Property="TextColor"
+                                Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
+                        <Setter Property="BackgroundColor"
+                                Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="Button"
+                                 Binding="{Binding IsScanQrCodeTab}"
+                                 Value="True">
+                        <Setter Property="TextColor"
+                                Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
+                        <Setter Property="BackgroundColor"
+                                Value="Transparent" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+        </Grid>
+        <zxing:ZXingScannerView Grid.Row="1"
+                                Result="{Binding ScanResult, Mode=TwoWay}"
+                                ScanResultCommand="{Binding ScanResultCommand}"
+                                IsScanning="{Binding IsScanning}"
+                                IsAnalyzing="{Binding IsAnalyzing}"
+                                IsVisible="{Binding IsScanQrCodeTab}"
+                                IsEnabled="{Binding IsScanQrCodeTab}" />
+        <StackLayout Grid.Row="1"
+                     Spacing="16"
+                     IsVisible="{Binding IsScanQrCodeTab, Mode=OneWay, Converter={StaticResource InverseBool}, FallbackValue='False', TargetNullValue='False'}">
+            <Frame Padding="0"
+                   Margin="16,12"
+                   HeightRequest="56"
+                   BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
+                   BackgroundColor="Transparent"
+                   CornerRadius="8"
+                   HasShadow="False">
+                <Grid HorizontalOptions="Fill"
+                      ColumnSpacing="0"
+                      RowSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <custom:CustomEntry Placeholder="{helpers:Translate DappPairingRequest}"
+                                        Text="{Binding QrCodeString, Mode=TwoWay}"
+                                        Style="{DynamicResource EntryStyle}"
+                                        FontSize="16"
+                                        HorizontalTextAlignment="Start"
+                                        VerticalTextAlignment="Center"
+                                        Margin="16,0" />
+                    <Button Grid.Column="1"
+                            Text="{helpers:Translate PasteButton}"
+                            BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
+                            BackgroundColor="Transparent"
+                            BorderWidth="1"
+                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                            FontSize="12"
+                            TextTransform="None"
+                            HeightRequest="28"
+                            Padding="10,0"
+                            Margin="16,10"
+                            CornerRadius="14"
+                            HorizontalOptions="End"
+                            VerticalOptions="Center"
+                            Command="{Binding PasteCommand}"
+                            IsVisible="{Binding QrCodeString, Mode=OneWay, Converter={StaticResource StringToBoolInvert}, FallbackValue='True'}" />
+                    <ImageButton Grid.Column="1"
+                                 Source="ic_close"
+                                 BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
+                                 BackgroundColor="Transparent"
+                                 BorderWidth="1"
+                                 Padding="7"
+                                 WidthRequest="24"
+                                 HeightRequest="24"
+                                 Margin="16,0"
+                                 CornerRadius="12"
+                                 VerticalOptions="Center"
+                                 Command="{Binding ClearQrCodeCommand}"
+                                 IsVisible="{Binding QrCodeString, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}" />
+                </Grid>
+            </Frame>
+            <StackLayout VerticalOptions="EndAndExpand"
+                         Spacing="0"
+                         BackgroundColor="{AppThemeBinding Dark={StaticResource ButtonContainerColorDark}, Light={StaticResource ButtonContainerColorDark}}">
+                <StackLayout.IsVisible>
+                    <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                        <Binding Path="QrCodeString"
+                                 Mode="OneWay"
+                                 Converter="{StaticResource StringToBool}" />
+                        <Binding Path="IsScanQrCodeTab"
+                                 Mode="OneWay"
+                                 Converter="{StaticResource InverseBool}" />
+                    </MultiBinding>
+                </StackLayout.IsVisible>
+                <StackLayout Style="{DynamicResource SeparatorStyle}" />
+                <Button Text="{helpers:Translate ConnectDapp}"
+                        Style="{DynamicResource MainButton}"
+                        Margin="16,14"
+                        Command="{Binding ConnectCommand}"
+                        IsVisible="{Binding QrCodeString, Mode=OneWay, Converter={StaticResource StringToBool}}" />
+            </StackLayout>
+        </StackLayout>
+    </Grid>
+</ContentPage>

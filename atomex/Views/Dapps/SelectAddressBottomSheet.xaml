@@ -50,7 +50,7 @@
                        HorizontalOptions="Center"
                        VerticalOptions="Center" />
                 <Label Text="{helpers:Translate AddressToConnect}"
-                       Style="{DynamicResource MainTextH1}"
+                       Style="{DynamicResource MainTextH2}"
                        Margin="16,0,16,10"
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Center" />

@@ -15,7 +15,6 @@ using atomex.Common;
 using Atomex.Common;
 using atomex.Models;
 using atomex.Resources;
-using atomex.Views;
 using atomex.Views.Dapps;
 using Atomex.Wallet;
 using Atomex.Wallet.Tezos;
@@ -125,9 +124,9 @@ namespace atomex.ViewModels.DappsViewModels
 
             this.WhenAnyValue(vm => vm.SelectedDapp)
                 .WhereNotNull()
-                .SubscribeInMainThread(async (dapp) =>
+                .SubscribeInMainThread(async dApp =>
                 {
-                    _navigationService?.ShowPage(new DappInfoPage(dapp), TabNavigation.Portfolio);
+                    _navigationService?.ShowPage(new DappInfoPage(dApp), TabNavigation.Portfolio);
                     SelectedDapp = null;
                 });
 
@@ -203,7 +202,6 @@ namespace atomex.ViewModels.DappsViewModels
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    _navigationService?.ClosePage(TabNavigation.Portfolio); // todo: remove
                     _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Error,
                         AppResources.ConnectionError);
                 });
@@ -230,7 +228,7 @@ namespace atomex.ViewModels.DappsViewModels
 
                     ConnectDappViewModel!.IsScanning = true;
                     ConnectDappViewModel!.IsAnalyzing = true;
-                    _navigationService?.ShowPage(new ScanningQrPage(ConnectDappViewModel), TabNavigation.Portfolio);
+                    _navigationService?.ShowPage(new ConnectDappPage(ConnectDappViewModel), TabNavigation.Portfolio);
                 }
                 catch (Exception e)
                 {

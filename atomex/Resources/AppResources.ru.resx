@@ -1297,4 +1297,13 @@
     <data name="ConnectionError" xml:space="preserve">
         <value>Ошибка подключения</value>
     </data>
+    <data name="DappPairingRequest" xml:space="preserve">
+        <value>Dapp pairing request</value>
+    </data>
+    <data name="ScanQr" xml:space="preserve">
+        <value>Сканировать QR</value>
+    </data>
+    <data name="PasteQr" xml:space="preserve">
+        <value>Вставить QR</value>
+    </data>
 </root>

@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Reactive;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Models;
 using atomex.Resources;
+using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using ZXing;
 
@@ -18,13 +21,72 @@ namespace atomex.ViewModels.DappsViewModels
 
         [Reactive] public Result ScanResult { get; set; }
         [Reactive] public bool IsScanning { get; set; }
-        [Reactive] public bool IsAnalyzing { get; set; }   
+        [Reactive] public bool IsAnalyzing { get; set; }  
+        
+        [Reactive] public bool IsScanQrCodeTab { get; set; }
 
         public ConnectDappViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            IsScanQrCodeTab = true;
         }
+        
+        private ReactiveCommand<Unit, Unit> _connectCommand;
+        public ReactiveCommand<Unit, Unit> ConnectCommand => 
+            _connectCommand ??= ReactiveCommand.Create(() =>
+            {
+                IsScanning = false;
+                IsAnalyzing = false;
+                
+                Device.InvokeOnMainThreadAsync(async () =>
+                {
+                    _navigationService?.ClosePage(TabNavigation.Portfolio);
+                    
+                    if (QrCodeString != null)
+                    {
+                        _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular,
+                            AppResources.Connecting + "...");
+                        await OnConnect(QrCodeString);
+                    }
+                    
+                    QrCodeString = string.Empty;
+                    this.RaisePropertyChanged(nameof(QrCodeString));
+                });
+            });
+        
+        private ReactiveCommand<bool, Unit> _changeConnectionTypeCommand;
+        
+        public ReactiveCommand<bool, Unit> ChangeConnectionTypeCommand =>
+            _changeConnectionTypeCommand ??= _changeConnectionTypeCommand = ReactiveCommand.Create<bool>(value =>
+            {
+                IsScanQrCodeTab = value;
+            });
+        
+        private ReactiveCommand<Unit, Unit> _pasteCommand;
 
+        public ReactiveCommand<Unit, Unit> PasteCommand =>
+            _pasteCommand ??= _pasteCommand = ReactiveCommand.CreateFromTask(async () =>
+            {
+                if (Clipboard.HasText)
+                {
+                    var text = await Clipboard.GetTextAsync();
+                    QrCodeString = text;
+                }
+                else
+                {
+                    _navigationService?.ShowAlert(AppResources.Error, AppResources.EmptyClipboard,
+                        AppResources.AcceptButton);
+                }
+            });
+        
+        private ReactiveCommand<Unit, Unit> _clearQrCodeCommand;
+        
+        public ReactiveCommand<Unit, Unit> ClearQrCodeCommand =>
+            _clearQrCodeCommand ??= _clearQrCodeCommand = ReactiveCommand.Create(() =>
+            {
+                QrCodeString = string.Empty;
+            });
+        
         private ICommand _scanResultCommand;
 
         public ICommand ScanResultCommand =>
@@ -61,6 +123,9 @@ namespace atomex.ViewModels.DappsViewModels
                         AppResources.Connecting + "...");
                     await OnConnect(QrCodeString);
                 }
+
+                QrCodeString = string.Empty;
+                this.RaisePropertyChanged(nameof(QrCodeString));
             });
         }
 
