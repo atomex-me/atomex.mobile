@@ -25,8 +25,6 @@
 	<string>com.atomex.ios</string>
 	<key>CFBundleVersion</key>
 	<string>1.21.0</string>
-	<key>Executable</key>
-	<string>libsodium</string>
 	<key>UILaunchStoryboardName</key>
 	<string>AtomexLaunchScreen</string>
 	<key>CFBundleName</key>

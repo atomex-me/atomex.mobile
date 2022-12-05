@@ -14,6 +14,7 @@
     <AssemblyName>atomex.iOS</AssemblyName>
     <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
+    <MtouchExtraArgs>--interpreter -gcc_flags "-L${ProjectDir} -lsodium -force_load ${ProjectDir}/libsodium.a"</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,6 +30,7 @@
     <CodesignKey>Apple Development: Igor Matcak (572BY3ZBQR)</CodesignKey>
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
     <CodesignProvision>VS: com.atomex.ios Development</CodesignProvision>
+    <MtouchExtraArgs>--interpreter -gcc_flags "-L${ProjectDir} -lsodium -force_load ${ProjectDir}/libsodium.a"</MtouchExtraArgs>
     <LangVersion>8.0</LangVersion>
     <MtouchExtraArgs>--interpreter</MtouchExtraArgs>
   </PropertyGroup>
@@ -42,6 +44,7 @@
     <MtouchLink>None</MtouchLink>
     <MtouchArch>x86_64</MtouchArch>
     <CodesignKey>Apple Distribution: ATOMEX OU (BJT6S7XYJV)</CodesignKey>
+    <MtouchExtraArgs>--interpreter -gcc_flags "-L${ProjectDir} -lsodium -force_load ${ProjectDir}/libsodium.a"</MtouchExtraArgs>
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
@@ -60,7 +63,7 @@
     <LangVersion>8.0</LangVersion>
     <MtouchInterpreter>-all</MtouchInterpreter>
     <CodesignProvision>Atomex Development</CodesignProvision>
-    <MtouchExtraArgs>--interpreter</MtouchExtraArgs>
+    <MtouchExtraArgs>--interpreter -gcc_flags "-L${ProjectDir} -lsodium -force_load ${ProjectDir}/libsodium.a"</MtouchExtraArgs>
     <MtouchFastDev>false</MtouchFastDev>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
@@ -71,6 +74,7 @@
     <WarningLevel>4</WarningLevel>
     <MtouchArch>ARM64</MtouchArch>
     <CodesignKey>iPhone Distribution</CodesignKey>
+    <MtouchExtraArgs>--interpreter -gcc_flags "-L${ProjectDir} -lsodium -force_load ${ProjectDir}/libsodium.a"</MtouchExtraArgs>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchFloat32>true</MtouchFloat32>
     <MtouchLink>SdkOnly</MtouchLink>
@@ -92,7 +96,6 @@
     <Compile Include="CustomElements\CustomPickerRenderer.cs" />
     <Compile Include="CustomElements\CustomViewCellRenderer.cs" />
     <None Include="EntitlementsDev.plist" />
-    <None Include="libsodium.framework\libsodium" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -959,7 +962,6 @@
     <Folder Include="Assets.xcassets\ic_exchange.imageset\" />
     <Folder Include="Assets.xcassets\USDT_XTZ.imageset\" />
     <Folder Include="Assets.xcassets\ic_forward.imageset\" />
-    <Folder Include="libsodium.framework\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />
@@ -987,5 +989,16 @@
     <BundleResource Include="Resources\Inter-Regular.ttf" />
     <BundleResource Include="Resources\Inter-SemiBold.ttf" />
     <BundleResource Include="Resources\Inter-Thin.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="libsodium.a">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <NativeReference Include="libsodium.a">
+      <Kind>Static</Kind>
+      <SmartLink>False</SmartLink>
+    </NativeReference>
   </ItemGroup>
 </Project>
