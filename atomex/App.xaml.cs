@@ -121,7 +121,7 @@ namespace atomex
         public void OnDeepLinkReceived(string value)
         {
             var mainPage = MainPage;
-            if (MainPage is NavigationPage)
+            if (mainPage is NavigationPage)
             {
                 var navigation = mainPage as NavigationPage;
                 var root = navigation?.RootPage as INavigationService;

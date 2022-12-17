@@ -179,24 +179,25 @@ namespace atomex.ViewModels.DappsViewModels
 
         public async Task Connect(string qrCodeString)
         {
-            if (_app.Account == null) return;
+            if (_app.Account == null || !_beaconWalletClient.Connected || !_beaconWalletClient.LoggedIn)
+                return;
 
             try
             {
                 var pairingRequest = _beaconWalletClient.GetPairingRequest(qrCodeString);
                 await _beaconWalletClient.AddPeerAsync(pairingRequest);
 
-                Device.BeginInvokeOnMainThread(() => _navigationService?.DisplaySnackBar(
-                    SnackbarMessage.MessageType.Regular,
-                    AppResources.ConnectedSuccessfully));
+                Device.BeginInvokeOnMainThread(() => 
+                    _navigationService?.DisplaySnackBar(
+                        SnackbarMessage.MessageType.Regular,
+                        AppResources.ConnectedSuccessfully)
+                );
             }
             catch (Exception e)
             {
                 Device.BeginInvokeOnMainThread(() =>
-                {
                     _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Error,
-                        AppResources.ConnectionError);
-                });
+                        AppResources.ConnectionError));
                 Log.Error(e, "Connect dApp error");
             }
         }

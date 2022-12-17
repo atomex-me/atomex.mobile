@@ -13,7 +13,6 @@ using atomex.Views;
 using Atomex;
 using Atomex.Common;
 using Atomex.LiteDb;
-using atomex.ViewModels;
 using Atomex.Wallet;
 using Plugin.Fingerprint;
 using Plugin.Fingerprint.Abstractions;

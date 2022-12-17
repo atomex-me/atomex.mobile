@@ -7,6 +7,7 @@ using Rg.Plugins.Popup.Pages;
 using Serilog;
 using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.CommunityToolkit.UI.Views.Options;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using static atomex.Models.SnackbarMessage;
 
@@ -184,9 +185,16 @@ namespace atomex.Views
             throw new NotImplementedException();
         }
 
-        public void ConnectDappByDeepLink(string qrCode)
+        public async void ConnectDappByDeepLink(string qrCode)
         {
-            //todo: Sign In + dApp connect
+            try
+            {
+                await SecureStorage.SetAsync("DappDeepLink", qrCode);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Device doesn't support secure storage on device");
+            }
         }
 
         public Task<string> DisplayActionSheet(string cancel, string[] actions, string title = null)

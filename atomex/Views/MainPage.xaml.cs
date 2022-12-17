@@ -15,15 +15,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xamarin.CommunityToolkit.Extensions;
 using System;
-using System.Linq;
-using Atomex;
 using atomex.ViewModels;
 using atomex.ViewModels.ConversionViewModels;
-using atomex.ViewModels.CurrencyViewModels;
 using static atomex.Models.SnackbarMessage;
 using Rg.Plugins.Popup.Services;
 using Rg.Plugins.Popup.Pages;
 using Serilog;
+using Xamarin.Essentials;
 
 namespace atomex.Views
 {
@@ -49,25 +47,29 @@ namespace atomex.Views
 
             MainViewModel = mainViewModel ?? throw new ArgumentNullException(nameof(mainViewModel));
 
-            _navigationPortfolioPage = new NavigationPage(new Portfolio(MainViewModel.PortfolioViewModel))
+            _navigationPortfolioPage = new NavigationPage(
+                new Portfolio(MainViewModel.PortfolioViewModel))
             {
                 IconImageSource = "ic_navbar__portfolio",
                 Title = AppResources.PortfolioTab
             };
 
-            _navigationConversionPage = new NavigationPage(new ExchangePage(MainViewModel.ConversionViewModel))
+            _navigationConversionPage = new NavigationPage(
+                new ExchangePage(MainViewModel.ConversionViewModel))
             {
                 IconImageSource = "ic_navbar__dex",
                 Title = AppResources.ConversionTab
             };
 
-            _navigationSettingsPage = new NavigationPage(new SettingsPage(MainViewModel.SettingsViewModel))
+            _navigationSettingsPage = new NavigationPage(
+                new SettingsPage(MainViewModel.SettingsViewModel))
             {
                 IconImageSource = "ic_navbar__settings",
                 Title = AppResources.SettingsTab
             };
 
-            _navigationBuyPage = new NavigationPage(new CurrenciesPage(MainViewModel.BuyViewModel))
+            _navigationBuyPage = new NavigationPage(
+                new CurrenciesPage(MainViewModel.BuyViewModel))
             {
                 IconImageSource = "ic_navbar__buy",
                 Title = AppResources.BuyTab
@@ -89,6 +91,8 @@ namespace atomex.Views
             {
                 Device.BeginInvokeOnMainThread(LocalizeNavTabs);
             };
+
+            _ = CheckStartupData();
         }
 
         private void LocalizeNavTabs()
@@ -112,6 +116,23 @@ namespace atomex.Views
             catch (Exception e)
             {
                 Log.Error(e, "Sign out error");
+            }
+        }
+        
+        public async Task CheckStartupData()
+        {
+            try
+            {
+                string deepLink = await SecureStorage.GetAsync("DappDeepLink");
+                
+                if (string.IsNullOrEmpty(deepLink)) return;
+                
+                await SecureStorage.SetAsync("DappDeepLink", string.Empty);
+                ConnectDappByDeepLink(deepLink);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Device doesn't support secure storage on device");
             }
         }
 
@@ -524,12 +545,8 @@ namespace atomex.Views
         public void ConnectDappByDeepLink(string qrCode)
         {
             try
-            {
-                var tezosViewModel = MainViewModel.PortfolioViewModel.AllCurrencies
-                    .First(c => c.CurrencyViewModel.CurrencyCode == TezosConfig.Xtz)
-                    .CurrencyViewModel as TezosCurrencyViewModel;
-
-                tezosViewModel?.DappsViewModel.ConnectDappViewModel.OnDeepLinkResult(qrCode);
+            { 
+                MainViewModel?.PortfolioViewModel.ConnectDappByDeepLink(qrCode);
             }
             catch (Exception e)
             {

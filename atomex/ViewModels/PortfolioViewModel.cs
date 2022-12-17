@@ -21,7 +21,6 @@ using Xamarin.Forms;
 namespace atomex.ViewModels
 {
 
-
     public class PortfolioCurrencyViewModel : BaseViewModel
     {
         public CurrencyViewModel CurrencyViewModel { get; set; }
@@ -63,13 +62,11 @@ namespace atomex.ViewModels
         [Reactive] public CurrencyViewModel SelectedCurrency { get; set; }
 
         private bool _startCurrenciesScan;
+        private bool _connectByDeepLink;
         private string[] _currenciesForScan { get; set; }
+        private string _dappConnectionString { get; set; }
 
         [Reactive] public bool IsRestoring { get; set; }
-
-        public PortfolioViewModel()
-        {
-        }
 
         public PortfolioViewModel(IAtomexApp app)
         {
@@ -83,6 +80,10 @@ namespace atomex.ViewModels
 
                     if (_startCurrenciesScan)
                         await StartCurrenciesScan();
+
+                    if (!_connectByDeepLink) return;
+
+                    await ConnectDappByDeepLink(_dappConnectionString);
                 });
 
             this.WhenAnyValue(vm => vm._navigationService)
@@ -150,6 +151,23 @@ namespace atomex.ViewModels
             _currenciesForScan = currenciesArr;
         }
 
+        public async Task ConnectDappByDeepLink(string qrCodeString)
+        {
+            _connectByDeepLink = true;
+            _dappConnectionString = qrCodeString;
+            
+            if (AllCurrencies == null) return;
+                
+            var tezosViewModel = AllCurrencies!
+                .First(c => c.CurrencyViewModel.CurrencyCode == TezosConfig.Xtz)
+                .CurrencyViewModel as TezosCurrencyViewModel;
+
+            if (tezosViewModel == null) return;
+            
+            await tezosViewModel.DappsViewModel.ConnectDappViewModel.OnDeepLinkResult(_dappConnectionString);
+            _dappConnectionString = string.Empty;
+        }
+
         private async Task StartCurrenciesScan()
         {
             IsRestoring = true;
@@ -174,7 +192,7 @@ namespace atomex.ViewModels
                         .Select(currency => currency.ScanCurrency())));
 
                 var tezosTokens = primaryCurrencies
-                    .Where(c => c.HasTokens && c.CurrencyCode == "XTZ")
+                    .Where(c => c.HasTokens && c.CurrencyCode == TezosConfig.Xtz)
                     .Cast<TezosCurrencyViewModel>()
                     .FirstOrDefault()
                     ?.TezosTokensViewModel;

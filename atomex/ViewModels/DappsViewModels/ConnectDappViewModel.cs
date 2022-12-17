@@ -129,11 +129,11 @@ namespace atomex.ViewModels.DappsViewModels
             });
         }
 
-        public void OnDeepLinkResult(string value)
+        public async Task OnDeepLinkResult(string value)
         {
             if (string.IsNullOrEmpty(value)) return;
             
-            Device.InvokeOnMainThreadAsync(async () =>
+            await Device.InvokeOnMainThreadAsync(async () =>
             {
                 _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular,
                         AppResources.Connecting + "...");
