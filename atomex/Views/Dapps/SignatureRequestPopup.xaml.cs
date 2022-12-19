@@ -12,5 +12,16 @@ namespace atomex.Views.Dapps
             InitializeComponent();
             BindingContext = signatureRequestViewModel;
         }
+        
+        protected override bool OnBackgroundClicked()
+        {
+            if (BindingContext is SignatureRequestViewModel)
+            {
+                var vm = (SignatureRequestViewModel)BindingContext;
+                vm?.OnRejectCommand.Execute();
+            }
+            
+            return true;
+        }   
     }
 }

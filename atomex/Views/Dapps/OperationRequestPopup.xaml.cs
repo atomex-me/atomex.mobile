@@ -13,6 +13,17 @@ namespace atomex.Views.Dapps
             InitializeComponent();
             BindingContext = operationRequestViewModel;
         }
+        
+        protected override bool OnBackgroundClicked()
+        {
+            if (BindingContext is OperationRequestViewModel)
+            {
+                var vm = (OperationRequestViewModel)BindingContext;
+                vm?.OnRejectCommand.Execute();
+            }
+            
+            return true;
+        }   
 
         protected override void OnDisappearing()
         {
