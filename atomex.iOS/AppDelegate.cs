@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Foundation;
 using Sentry;
@@ -28,6 +29,8 @@ namespace atomex.iOS
         // You have 17 seconds to return from this method, or iOS will terminate your application.
         //
         private string DeviceToken { get; set; }
+
+        private App _app { get; set; }
 
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
@@ -63,11 +66,26 @@ namespace atomex.iOS
 
             UIApplication.SharedApplication.RegisterForRemoteNotifications();
 
-            LoadApplication(new App());
+            _app = new App();
+            LoadApplication(_app);
 
             Plugin.InputKit.Platforms.iOS.Config.Init();
 
             return base.FinishedLaunching(app, options);
+        }
+
+        public override bool OpenUrl(UIApplication app, NSUrl url, NSDictionary options)
+        {
+            NSUrlComponents urlComponents = new NSUrlComponents(url, false);
+            NSUrlQueryItem[] allItems = urlComponents.QueryItems;
+            var type = allItems?.First(i => i.Name == "type").Value;
+            if (string.IsNullOrEmpty(urlComponents.Host) && type == "tzip10")
+            {
+                var qrCodeString = allItems?.First(i => i.Name == "data").Value;
+                _app.OnDeepLinkReceived(qrCodeString);
+            }
+
+            return true;
         }
 
         public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)

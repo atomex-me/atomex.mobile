@@ -30,14 +30,14 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         public override async Task LoadTransactionsAsync()
         {
-            Log.Debug("UpdateTransactionsAsync for {@currency}", Currency.Name);
+            Log.Debug("UpdateTransactionsAsync for {@Currency}", Currency.Name);
 
             try
             {
                 if (_app.Account == null)
                     return;
 
-                var fa12currency = Currency as Fa12Config;
+                var fa12Currency = Currency as Fa12Config;
 
                 var tezosConfig = _app.Account
                     .Currencies
@@ -46,7 +46,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 var transactions = (await _app.Account
                         .GetCurrencyAccount<Fa12Account>(Currency.Name)
                         .DataRepository
-                        .GetTezosTokenTransfersAsync(fa12currency.TokenContractAddress)
+                        .GetTezosTokenTransfersAsync(fa12Currency?.TokenContractAddress)
                         .ConfigureAwait(false))
                     .ToList();
 
@@ -69,30 +69,30 @@ namespace atomex.ViewModels.CurrencyViewModels
                             .Take(TxsNumberPerPage)
                             .GroupBy(p => p.LocalTime.Date)
                             .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                                new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))))
+                                new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))))
                         : Transactions
                             .GroupBy(p => p.LocalTime.Date)
                             .OrderByDescending(g => g.Key)
                             .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                                new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
+                                new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))));
 
                     GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
                 });
             }
             catch (OperationCanceledException)
             {
-                Log.Debug("LoadTransactionsAsync canceled.");
+                Log.Debug("LoadTransactionsAsync canceled");
             }
             catch (Exception e)
             {
-                Log.Error(e, "LoadTransactionsAsync error for {@currency}.", Currency?.Name);
+                Log.Error(e, "LoadTransactionsAsync error for {@Currency}", Currency?.Name);
             }
         }
 
         protected override void OnReceiveClick()
         {
             var tezosConfig = _app.Account.Currencies.GetByName(TezosConfig.Xtz);
-            string tokenContractAddress = (Currency as Fa12Config).TokenContractAddress;
+            string tokenContractAddress = (Currency as Fa12Config)?.TokenContractAddress;
 
             var receiveViewModel = new ReceiveViewModel(
                 app: _app,
@@ -100,7 +100,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 navigationService: _navigationService,
                 tokenContract: tokenContractAddress,
                 tokenType: "FA12");
-            _navigationService?.ShowBottomSheet(new ReceiveBottomSheet(receiveViewModel));
+            _navigationService?.ShowPopup(new ReceiveBottomSheet(receiveViewModel));
         }
 
         public override async Task ScanCurrency()
@@ -124,11 +124,11 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
             catch (OperationCanceledException)
             {
-                Log.Debug("Wallet update operation canceled.");
+                Log.Debug("Wallet update operation canceled");
             }
             catch (Exception e)
             {
-                Log.Error(e, "Fa12WalletViewModel.OnUpdateClick error.");
+                Log.Error(e, "Fa12WalletViewModel.OnUpdateClick error");
                 // todo: message to user!?
             }
             finally
@@ -139,13 +139,13 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         protected override void LoadAddresses()
         {
-            var fa12currency = Currency as Fa12Config;
+            var fa12Currency = Currency as Fa12Config;
 
             AddressesViewModel = new AddressesViewModel(
                 app: _app,
-                currency: fa12currency,
+                currency: fa12Currency,
                 navigationService: _navigationService,
-                tokenContract: fa12currency.TokenContractAddress);
+                tokenContract: fa12Currency?.TokenContractAddress);
         }
 
         protected override async void OnBalanceUpdatedEventHandler(object sender, CurrencyEventArgs args)

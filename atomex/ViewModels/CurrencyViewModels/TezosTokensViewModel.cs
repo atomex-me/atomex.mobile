@@ -173,7 +173,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                     isNft: false);
                 tokens.AddRange(contractTokens);
 
-                Log.Debug("{@count} tokens for {@contract} loaded", contractTokens.Count(), contract.Address);
+                Log.Debug("{@Count} tokens for {@Contract} loaded", contractTokens.Count(), contract.Address);
             }
 
             return tokens.OrderByDescending(token => token.IsConvertable)
@@ -224,7 +224,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         public ReactiveCommand<Unit, Unit> HideLowBalancesCommand => _hideLowBalancesCommand ??= ReactiveCommand.Create(
             () =>
             {
-                _navigationService?.CloseBottomSheet();
+                _navigationService?.ClosePopup();
                 // TODO: filters tezos tokens
             });
 
@@ -344,18 +344,18 @@ namespace atomex.ViewModels.CurrencyViewModels
         private ReactiveCommand<Unit, Unit> _manageTokensCommand;
 
         public ReactiveCommand<Unit, Unit> ManageTokensCommand => _manageTokensCommand ??= ReactiveCommand.Create(() =>
-            _navigationService?.ShowBottomSheet(new ManageTokensBottomSheet(this)));
+            _navigationService?.ShowPopup(new ManageTokensBottomSheet(this)));
 
         private ReactiveCommand<Unit, Unit> _tokensActionSheetCommand;
 
         public ReactiveCommand<Unit, Unit> TokensActionSheetCommand => _tokensActionSheetCommand ??=
             ReactiveCommand.Create(() =>
-                _navigationService?.ShowBottomSheet(new TokensActionBottomSheet(this)));
+                _navigationService?.ShowPopup(new TokensActionBottomSheet(this)));
 
         private ICommand _closeActionSheetCommand;
 
         public ICommand CloseActionSheetCommand => _closeActionSheetCommand ??=
-            new Command(() => _navigationService?.CloseBottomSheet());
+            new Command(() => _navigationService?.ClosePopup());
 
         #region IDisposable Support
 

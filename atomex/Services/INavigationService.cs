@@ -22,8 +22,8 @@ namespace atomex
         void ShowPage(Page page, TabNavigation tab = TabNavigation.None);
         void ClosePage(TabNavigation tab = TabNavigation.None);
         void RemovePreviousPage(TabNavigation tab);
-        void ShowBottomSheet(PopupPage popup);
-        void CloseBottomSheet();
+        void ShowPopup(PopupPage popup, bool removePrevious = true);
+        void ClosePopup();
         bool HasMultipleBottomSheets();
         void DisplaySnackBar(MessageType messageType, string text, string btnTxt = "OK", int duration = 3000);
         Task ShowAlert(string title, string text, string cancel);
@@ -31,5 +31,6 @@ namespace atomex
         Task<string> DisplayActionSheet(string cancel, string[] actions, string title = null);
         void SetInitiatedPage(TabNavigation tab);
         Task ReturnToInitiatedPage(TabNavigation tab);
+        void ConnectDappByDeepLink(string qrCode);
     }
 }

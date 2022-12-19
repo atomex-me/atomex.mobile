@@ -58,6 +58,9 @@
                     <Label Style="{DynamicResource MainTextH2}"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowAvailableAmountCommand}" />
+                        </Label.GestureRecognizers>
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="{Binding AvailableAmount, StringFormat='{0:0.#########}'}" />

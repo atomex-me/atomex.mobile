@@ -100,7 +100,7 @@ namespace atomex
             StartViewModel startViewModel = new StartViewModel(AtomexApp);
             var mainPage = new StartPage(startViewModel);
             MainPage = new NavigationPage(mainPage);
-            startViewModel?.SetNavigationService(mainPage);
+            startViewModel.SetNavigationService(mainPage);
         }
 
         protected override void OnStart()
@@ -116,6 +116,22 @@ namespace atomex
         protected override void OnResume()
         {
             // Handle when your app resumes
+        }
+
+        public void OnDeepLinkReceived(string value)
+        {
+            var mainPage = MainPage;
+            if (mainPage is NavigationPage)
+            {
+                var navigation = mainPage as NavigationPage;
+                var root = navigation?.RootPage as INavigationService;
+                root?.ConnectDappByDeepLink(value);
+                
+                return;
+            }
+
+            var tabbedPage = mainPage as INavigationService;
+            tabbedPage?.ConnectDappByDeepLink(value);
         }
 
         private void LoadStyles()

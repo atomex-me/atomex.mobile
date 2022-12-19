@@ -15,6 +15,7 @@ using Atomex.Common;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
 using Atomex.ViewModels;
+using atomex.ViewModels.Abstract;
 using atomex.ViewModels.CurrencyViewModels;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -24,13 +25,6 @@ using static atomex.Models.Message;
 
 namespace atomex.ViewModels.SendViewModels
 {
-    public enum SendStage
-    {
-        Edit,
-        Confirmation,
-        AdditionalConfirmation
-    }
-
     public abstract class SendViewModel : BaseViewModel, IDisposable
     {
         protected IAtomexApp _app { get; }
@@ -171,7 +165,7 @@ namespace atomex.ViewModels.SendViewModels
                     vm => vm.Amount,
                     vm => vm.Fee,
                     (amount, fee) => _currency.IsToken ? amount : amount + fee)
-                .Select(totalAmount => totalAmount.ToString())
+                .Select(totalAmount => totalAmount.ToString(CultureInfo.CurrentCulture))
                 .ToPropertyExInMainThread(this, vm => vm.TotalAmountString);
 
             this.WhenAnyValue(
@@ -332,7 +326,7 @@ namespace atomex.ViewModels.SendViewModels
         private ICommand _closeConfirmationCommand;
 
         public ICommand CloseConfirmationCommand =>
-            _closeConfirmationCommand ??= new Command(() => _navigationService?.CloseBottomSheet());
+            _closeConfirmationCommand ??= new Command(() => _navigationService?.ClosePopup());
 
         private ReactiveCommand<Unit, Unit> _maxCommand;
 
@@ -423,7 +417,7 @@ namespace atomex.ViewModels.SendViewModels
                             return;
                         }
 
-                        _navigationService?.CloseBottomSheet();
+                        _navigationService?.ClosePopup();
                         await _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
 
                         _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Success,
@@ -432,7 +426,7 @@ namespace atomex.ViewModels.SendViewModels
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e, "Transaction send error.");
+                    Log.Error(e, "Transaction send error");
                     await Device.InvokeOnMainThreadAsync(() =>
                     {
                         _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Error,
@@ -449,12 +443,12 @@ namespace atomex.ViewModels.SendViewModels
             else if (Stage == SendStage.Confirmation && ShowAdditionalConfirmation)
             {
                 Stage = SendStage.AdditionalConfirmation;
-                _navigationService?.ShowBottomSheet(new WarningConfirmationBottomSheet(this));
+                _navigationService?.ShowPopup(new WarningConfirmationBottomSheet(this));
             }
             else
             {
                 Stage = SendStage.Confirmation;
-                _navigationService?.ShowBottomSheet(new SendingConfirmationBottomSheet(this));
+                _navigationService?.ShowPopup(new SendingConfirmationBottomSheet(this));
             }
         }
 

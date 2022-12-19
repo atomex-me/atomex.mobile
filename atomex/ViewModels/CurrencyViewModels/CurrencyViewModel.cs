@@ -16,6 +16,7 @@ using Atomex.Blockchain;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
+using atomex.Models;
 using atomex.ViewModels.SendViewModels;
 using atomex.ViewModels.TransactionViewModels;
 using Atomex.Wallet;
@@ -29,16 +30,7 @@ using static atomex.Models.SnackbarMessage;
 
 namespace atomex.ViewModels.CurrencyViewModels
 {
-    public enum CurrencyTab
-    {
-        [Description("Activity")] Activity,
-        [Description("Collectibles")] Collectibles,
-        [Description("Addresses")] Addresses,
-        [Description("Delegations")] Delegations,
-        [Description("Tokens")] Tokens,
-        [Description("Details")] Details,
-        [Description("Dapps")] Dapps
-    }
+
 
     public class CurrencyViewModel : BaseViewModel, IDisposable
     {
@@ -213,7 +205,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, $"Error for currency {Currency}");
+                Log.Error(e, "Error for currency {@Currency}", Currency?.Name);
             }
         }
 
@@ -229,7 +221,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, $"Error for currency {args.Currency}");
+                Log.Error(e, "Error for currency {@Currency}", args?.Currency);
             }
         }
 
@@ -254,7 +246,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, $"UpdateBalanceAsync error for {Currency?.Name}");
+                Log.Error(e, "UpdateBalanceAsync error for {@Currency}", Currency?.Name);
             }
         }
 
@@ -295,13 +287,13 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
             catch (Exception ex)
             {
-                Log.Error(ex, $"UnconfirmedTxAddedEventHandler error for {Currency?.Name}");
+                Log.Error(ex, "UnconfirmedTxAddedEventHandler error for {@Currency}", Currency?.Name);
             }
         }
 
         public virtual async Task LoadTransactionsAsync()
         {
-            Log.Debug($"LoadTransactionsAsync for {Currency?.Name}");
+            Log.Debug("LoadTransactionsAsync for {@Currency}", Currency?.Name);
 
             try
             {
@@ -309,7 +301,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                     return;
 
                 var transactions = (await _app.Account
-                        .GetTransactionsAsync(Currency.Name))
+                    .GetTransactionsAsync(Currency?.Name))
                     .ToList();
 
                 await Device.InvokeOnMainThreadAsync(() =>
@@ -332,19 +324,19 @@ namespace atomex.ViewModels.CurrencyViewModels
                             .Take(TxsNumberPerPage)
                             .GroupBy(p => p.LocalTime.Date)
                             .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                                new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))))
+                                new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))))
                         : Transactions
                             .GroupBy(p => p.LocalTime.Date)
                             .OrderByDescending(g => g.Key)
                             .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                                new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
+                                new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))));
 
                     GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
                 });
             }
             catch (Exception e)
             {
-                Log.Error(e, $"LoadTransactionAsync error for {Currency?.Name}");
+                Log.Error(e, "LoadTransactionAsync error for {@Currency}", Currency?.Name);
             }
         }
 
@@ -377,20 +369,20 @@ namespace atomex.ViewModels.CurrencyViewModels
         private ReactiveCommand<Unit, Unit> _sendCommand;
         public ReactiveCommand<Unit, Unit> SendCommand => _sendCommand ??= ReactiveCommand.Create(OnSendClick);
 
-        protected ReactiveCommand<Unit, Unit> _convertCurrencyCommand;
+        private ReactiveCommand<Unit, Unit> _convertCurrencyCommand;
 
         public ReactiveCommand<Unit, Unit> ConvertCurrencyCommand => _convertCurrencyCommand ??= ReactiveCommand.Create(() =>
         {
-            _navigationService?.CloseBottomSheet();
+            _navigationService?.ClosePopup();
             _navigationService?.SetInitiatedPage(TabNavigation.Exchange);
             _navigationService?.GoToExchange(Currency);
         });
 
-        protected ReactiveCommand<Unit, Unit> _buyCurrencyCommand;
+        private ReactiveCommand<Unit, Unit> _buyCurrencyCommand;
 
         public ReactiveCommand<Unit, Unit> BuyCurrencyCommand => _buyCurrencyCommand ??= ReactiveCommand.Create(() =>
         {
-            _navigationService?.CloseBottomSheet();
+            _navigationService?.ClosePopup();
             _navigationService?.GoToBuy(Currency);
         });
 
@@ -400,7 +392,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         private ICommand _closeBottomSheetCommand;
 
         public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= new Command(() =>
-            _navigationService?.CloseBottomSheet());
+            _navigationService?.ClosePopup());
 
         public virtual async Task ScanCurrency()
         {
@@ -449,7 +441,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         public ReactiveCommand<Unit, Unit> ShowAvailableAmountCommand => _showAvailableAmountCommand ??=
             ReactiveCommand.Create(() =>
-                _navigationService?.ShowBottomSheet(new AvailableAmountPopup(this)));
+                _navigationService?.ShowPopup(new AvailableAmountPopup(this)));
 
         protected void CopyAddress(string value)
         {
@@ -498,22 +490,22 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         public ReactiveCommand<Unit, Unit> ShowCurrencyActionBottomSheet => _showCurrencyActionBottomSheet ??=
             ReactiveCommand.Create(() =>
-                _navigationService?.ShowBottomSheet(new CurrencyActionBottomSheet(this)));
+                _navigationService?.ShowPopup(new CurrencyActionBottomSheet(this)));
 
         protected virtual void OnReceiveClick()
         {
-            _navigationService?.CloseBottomSheet();
+            _navigationService?.ClosePopup();
             var receiveViewModel = new ReceiveViewModel(
                 app: _app,
                 currency: Currency,
                 navigationService: _navigationService);
-            _navigationService?.ShowBottomSheet(new ReceiveBottomSheet(receiveViewModel));
+            _navigationService?.ShowPopup(new ReceiveBottomSheet(receiveViewModel));
         }
 
         protected virtual void OnSendClick()
         {
             if (TotalAmount <= 0) return;
-            _navigationService?.CloseBottomSheet();
+            _navigationService?.ClosePopup();
 
             _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
             var sendViewModel = SendViewModelCreator.CreateViewModel(_app, this, _navigationService);
@@ -541,7 +533,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 .GroupBy(p => p.LocalTime.Date)
                 .OrderByDescending(g => g.Key)
                 .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                    new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
+                    new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))));
 
             GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
         });

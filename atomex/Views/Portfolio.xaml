@@ -52,7 +52,11 @@
                                Style="{DynamicResource MainTextH1}"
                                Margin="16,0"
                                HorizontalTextAlignment="Center"
-                               VerticalTextAlignment="Center" />
+                               VerticalTextAlignment="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShowAvailableAmountCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
                         <Grid RowSpacing="4"
                               ColumnSpacing="24"
                               HorizontalOptions="CenterAndExpand"

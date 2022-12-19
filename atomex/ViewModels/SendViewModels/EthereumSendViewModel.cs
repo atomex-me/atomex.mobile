@@ -12,6 +12,8 @@ using Atomex;
 using Atomex.Blockchain.Abstract;
 using Atomex.Common;
 using Atomex.EthereumTokens;
+using atomex.Models;
+using atomex.ViewModels.Abstract;
 using atomex.ViewModels.CurrencyViewModels;
 using Atomex.Wallet.Abstract;
 using Atomex.Wallet.Ethereum;
@@ -135,6 +137,7 @@ namespace atomex.ViewModels.SendViewModels
         protected override void FromClick()
         {
             var selectFromViewModel = SelectFromViewModel as SelectAddressViewModel;
+            if (selectFromViewModel == null) return;
             selectFromViewModel.SelectAddressFrom = SelectAddressFrom.Change;
 
             _navigationService?.ShowPage(new SelectAddressPage(selectFromViewModel), TabNavigation.Portfolio);
@@ -206,7 +209,7 @@ namespace atomex.ViewModels.SendViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "{@currency}: update amount error", _currency?.Description);
+                Log.Error(e, "{@Currency}: update amount error", _currency?.Description);
             }
         }
 
@@ -232,7 +235,7 @@ namespace atomex.ViewModels.SendViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "{@currency}: update gas price error", _currency?.Description);
+                Log.Error(e, "{@Currency}: update gas price error", _currency?.Description);
             }
         }
 
@@ -281,13 +284,13 @@ namespace atomex.ViewModels.SendViewModels
                         ? RecommendedMaxAmount
                         : maxAmountEstimation.Amount
                     : 0;
-                SetAmountFromString(amount.ToString());
+                SetAmountFromString(amount.ToString(CultureInfo.CurrentCulture));
 
                 CheckAmountCommand?.Execute(maxAmountEstimation).Subscribe();
             }
             catch (Exception e)
             {
-                Log.Error(e, "{@currency}: max click error", _currency?.Description);
+                Log.Error(e, "{@Currency}: max click error", _currency?.Description);
             }
         }
 
@@ -377,15 +380,13 @@ namespace atomex.ViewModels.SendViewModels
                 return;
             }
 
-            if (!HasActiveSwaps)
-            {
-                SetRecommededAmountWarning(
-                    MessageType.Regular,
-                    RelatedTo.Amount,
-                    null,
-                    null);
-                ShowAdditionalConfirmation = false;
-            }
+            if (HasActiveSwaps) return;
+            SetRecommededAmountWarning(
+                MessageType.Regular,
+                RelatedTo.Amount,
+                null,
+                null);
+            ShowAdditionalConfirmation = false;
         }
 
         protected override Task<Error> Send(CancellationToken cancellationToken = default)

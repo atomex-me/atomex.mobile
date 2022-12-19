@@ -66,11 +66,8 @@ namespace atomex.ViewModels.CurrencyViewModels
             _delegateViewModel = new DelegateViewModel(_app, _navigationService);
             TezosTokensViewModel = new TezosTokensViewModel(_app, _navigationService);
             CollectiblesViewModel = new CollectiblesViewModel(_app, _navigationService);
-
-            //HasDapps = Device.RuntimePlatform == Device.Android;
+            
             HasDapps = true;
-
-            //if (Device.RuntimePlatform == Device.Android)
             DappsViewModel = new DappsViewModel(_app, _navigationService);
         }
 
@@ -157,11 +154,11 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
             catch (OperationCanceledException)
             {
-                Log.Debug("LoadDelegationInfoAsync canceled.");
+                Log.Debug("LoadDelegationInfoAsync canceled");
             }
             catch (Exception e)
             {
-                Log.Error(e, "LoadDelegationInfoAsync error.");
+                Log.Error(e, "LoadDelegationInfoAsync error");
             }
         }
 
@@ -181,12 +178,12 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         private void ShowActionBottomSheet(DelegationViewModel delegation)
         {
-            _navigationService?.ShowBottomSheet(new DelegationActionBottomSheet(delegation));
+            _navigationService?.ShowPopup(new DelegationActionBottomSheet(delegation));
         }
 
         private void CloseActionBottomSheet()
         {
-            _navigationService?.CloseBottomSheet();
+            _navigationService?.ClosePopup();
         }
 
         protected override async void OnBalanceUpdatedEventHandler(object sender, CurrencyEventArgs args)

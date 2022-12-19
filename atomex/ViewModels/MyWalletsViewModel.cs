@@ -49,7 +49,7 @@ namespace atomex.ViewModels
             }
             catch (Exception ex)
             {
-                Log.Error(ex, AppResources.NotSupportSecureStorage);
+                Log.Error(ex, "Device doesn't support secure storage on device");
             }
         });
     }

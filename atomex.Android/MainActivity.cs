@@ -4,11 +4,11 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.Gms.Extensions;
 using Android.OS;
 using Android.Runtime;
-using Android.Views;
 using Firebase.Messaging;
 using Plugin.Fingerprint;
 using Sentry;
@@ -18,15 +18,29 @@ using Xamarin.Forms;
 using atomex.Common.FileSystem;
 using Atomex.Common;
 using Atomex.TzktEvents;
+using Firebase;
+using Xamarin.Forms.Platform.Android.AppLinks;
 
 namespace atomex.Droid
 {
     [Activity(Label = "Atomex", Icon = "@mipmap/icon", Theme = "@style/MainTheme",
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, LaunchMode = LaunchMode.SingleTask,
         ScreenOrientation = ScreenOrientation.Locked)]
+    
+    [IntentFilter(new[] { Intent.ActionView },
+        Categories = new[]
+        {
+            Intent.CategoryDefault,
+            Intent.CategoryBrowsable
+        },
+        DataScheme = "atomex",
+        DataPathPrefix = "",
+        DataHost = "",
+        AutoVerify = true)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         public static MainActivity Instance { get; private set; }
+        private App _app { get; set; }
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -44,7 +58,7 @@ namespace atomex.Droid
 
             //Window.DecorView.SystemUiVisibility = (StatusBarVisibility)SystemUiFlags.LightNavigationBar;
 
-            Window.SetNavigationBarColor(
+            Window?.SetNavigationBarColor(
                 Android.Graphics.Color.ParseColor(ApplicationContext.Resources.GetString(Resource.Color.colorPrimary)));
 
             CrossFingerprint.SetCurrentActivityResolver(() => this);
@@ -56,10 +70,12 @@ namespace atomex.Droid
             Rg.Plugins.Popup.Popup.Init(this);
             Xamarin.Essentials.Platform.Init(this, bundle);
             Forms.Init(this, bundle);
+            FirebaseApp.InitializeApp(this);
+            AndroidAppLinks.Init(this);
 
             Instance = this;
 
-            global::ZXing.Net.Mobile.Forms.Android.Platform.Init();
+            ZXing.Net.Mobile.Forms.Android.Platform.Init();
 
             App.FileSystem = Device.Android;
 
@@ -67,7 +83,22 @@ namespace atomex.Droid
 
             AndroidEnvironment.UnhandledExceptionRaiser += AndroidUnhandledExceptionRaiser;
 
-            LoadApplication(new App());
+            _app = new App();
+            LoadApplication(_app);
+        }
+
+        protected override void OnNewIntent(Intent intent)
+        {
+            base.OnNewIntent(intent);
+            if (Intent.ActionView != intent.Action || string.IsNullOrWhiteSpace(intent.DataString))
+                return;
+            
+            var type = intent.Data?.GetQueryParameter("type");
+            if (string.IsNullOrEmpty(intent.Data?.Host) && type == "tzip10")
+            {
+                string data = intent.Data?.GetQueryParameter("data");
+                _app.OnDeepLinkReceived(data);
+            }
         }
 
         protected override void OnDestroy()

@@ -7,6 +7,7 @@ using Rg.Plugins.Popup.Pages;
 using Serilog;
 using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.CommunityToolkit.UI.Views.Options;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using static atomex.Models.SnackbarMessage;
 
@@ -31,8 +32,6 @@ namespace atomex.Views
             {
                 string snackBarBgColorName;
                 string snackBarTextColorName;
-                Color backgroundColor = Color.White;
-                Color textColor = Color.Black;
 
                 switch (messageType)
                 {
@@ -70,9 +69,13 @@ namespace atomex.Views
                     : snackBarTextColorName;
 
                 Application.Current.Resources.TryGetValue(snackBarBgColorName, out var bgColor);
-                backgroundColor = (Color)bgColor;
                 Application.Current.Resources.TryGetValue(snackBarTextColorName, out var txtColor);
-                textColor = (Color)txtColor;
+                
+                txtColor ??= Color.Black;
+                bgColor ??= Color.White;
+                
+                var textColor = (Color)txtColor;
+                var backgroundColor = (Color)bgColor;
 
                 var messageOptions = new MessageOptions
                 {
@@ -91,7 +94,7 @@ namespace atomex.Views
                         Font = Font.SystemFontOfSize(17),
                         Text = buttonText,
                         Padding = new Thickness(20, 16),
-                        Action = () => { return Task.CompletedTask; }
+                        Action = () => Task.CompletedTask
                     }
                 };
 
@@ -147,7 +150,7 @@ namespace atomex.Views
             throw new NotImplementedException();
         }
 
-        public void ShowBottomSheet(PopupPage popup)
+        public void ShowPopup(PopupPage popup, bool removePrevious)
         {
             throw new NotImplementedException();
         }
@@ -157,7 +160,7 @@ namespace atomex.Views
             throw new NotImplementedException();
         }
 
-        public void CloseBottomSheet()
+        public void ClosePopup()
         {
             throw new NotImplementedException();
         }
@@ -180,6 +183,18 @@ namespace atomex.Views
         public Task ReturnToInitiatedPage(TabNavigation tab)
         {
             throw new NotImplementedException();
+        }
+
+        public async void ConnectDappByDeepLink(string qrCode)
+        {
+            try
+            {
+                await SecureStorage.SetAsync("DappDeepLink", qrCode);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Device doesn't support secure storage on device");
+            }
         }
 
         public Task<string> DisplayActionSheet(string cancel, string[] actions, string title = null)

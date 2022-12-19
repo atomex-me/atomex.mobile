@@ -17,6 +17,7 @@ using Atomex.Core;
 using Atomex.MarketData.Abstract;
 using Atomex.TezosTokens;
 using Atomex.ViewModels;
+using atomex.ViewModels.Abstract;
 using Atomex.Wallet.Abstract;
 using Atomex.Wallet.Tezos;
 using ReactiveUI;
@@ -228,7 +229,7 @@ namespace atomex.ViewModels.SendViewModels
                 .InvokeCommandInMainThread(updateFeeCommand);
 
             this.WhenAnyValue(vm => vm.Amount)
-                .Select(totalAmount => totalAmount.ToString())
+                .Select(totalAmount => totalAmount.ToString(CultureInfo.CurrentCulture))
                 .ToPropertyExInMainThread(this, vm => vm.TotalAmountString);
 
             this.WhenAnyValue(
@@ -324,7 +325,7 @@ namespace atomex.ViewModels.SendViewModels
         public ICommand UndoConfirmStageCommand => _undoConfirmStageCommand ??= new Command(() => ConfirmStage = false);
 
         private ICommand _closeConfirmationCommand;
-        public ICommand CloseConfirmationCommand => _closeConfirmationCommand ??= new Command(() => _navigationService?.CloseBottomSheet());
+        public ICommand CloseConfirmationCommand => _closeConfirmationCommand ??= new Command(() => _navigationService?.ClosePopup());
 
         private void FromClick()
         {
@@ -465,7 +466,7 @@ namespace atomex.ViewModels.SendViewModels
                             return;
                         }
 
-                        _navigationService?.CloseBottomSheet();
+                        _navigationService?.ClosePopup();
                         await _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
 
                         _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Success, string.Format(CultureInfo.InvariantCulture, AppResources.SuccessSending));
@@ -489,7 +490,7 @@ namespace atomex.ViewModels.SendViewModels
             else
             {
                 ConfirmStage = true;
-                _navigationService?.ShowBottomSheet(new SendingConfirmationBottomSheet(this));
+                _navigationService?.ShowPopup(new SendingConfirmationBottomSheet(this));
             }
         }
 
@@ -609,7 +610,7 @@ namespace atomex.ViewModels.SendViewModels
                         return;
                     }
 
-                    SetFeeFromString(estimatedFee.ToString());
+                    SetFeeFromString(estimatedFee.ToString(CultureInfo.CurrentCulture));
                 }
                 else
                 {
@@ -626,7 +627,7 @@ namespace atomex.ViewModels.SendViewModels
                     }
 
                     var fee = Math.Min(Fee, tezosConfig.GetMaximumFee());
-                    SetFeeFromString(fee.ToString());
+                    SetFeeFromString(fee.ToString(CultureInfo.CurrentCulture));
 
                     if (xtzAddress.AvailableBalance() < Fee)
                     {
@@ -709,7 +710,7 @@ namespace atomex.ViewModels.SendViewModels
                 }
 
                 var amount = fromTokenAddress.Balance;
-                SetAmountFromString(amount.ToString());
+                SetAmountFromString(amount.ToString(CultureInfo.CurrentCulture));
             }
             catch (Exception e)
             {

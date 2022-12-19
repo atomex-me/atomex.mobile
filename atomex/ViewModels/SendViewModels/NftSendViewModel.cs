@@ -28,7 +28,7 @@ namespace atomex.ViewModels.SendViewModels
                     if (Amount > long.MaxValue)
                         Amount = long.MaxValue;
                 }
-                SetAmountFromString(Amount.ToString());
+                SetAmountFromString(Amount.ToString(CultureInfo.CurrentCulture));
                 
                 Device.InvokeOnMainThreadAsync(() =>
                 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using atomex.Common;
+using atomex.Models;
 using atomex.ViewModels.CurrencyViewModels;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -28,7 +29,7 @@ namespace atomex.ViewModels
             IEnumerable<CurrencyViewModel> currencies,
             INavigationService navigationService)
         {
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
 
             Type = type;
             Currencies = new ObservableCollection<CurrencyViewModel>(currencies);
@@ -37,7 +38,7 @@ namespace atomex.ViewModels
                 .WhereNotNull()
                 .SubscribeInMainThread(_ =>
                 {
-                    if (SelectedCurrency.AvailableAmount <= 0 && Type == CurrencyActionType.Send)
+                    if (SelectedCurrency?.AvailableAmount <= 0 && Type == CurrencyActionType.Send)
                         return;
 
                     OnSelected?.Invoke(SelectedCurrency);
@@ -47,6 +48,6 @@ namespace atomex.ViewModels
         private ICommand _closeBottomSheetCommand;
 
         public ICommand CloseBottomSheetCommand =>
-            _closeBottomSheetCommand ??= new Command(() => _navigationService?.CloseBottomSheet());
+            _closeBottomSheetCommand ??= new Command(() => _navigationService?.ClosePopup());
     }
 }

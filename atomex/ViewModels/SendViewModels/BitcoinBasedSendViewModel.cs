@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
@@ -11,6 +12,7 @@ using atomex.Views;
 using Atomex;
 using Atomex.Blockchain.BitcoinBased;
 using Atomex.Common;
+using atomex.ViewModels.Abstract;
 using atomex.ViewModels.CurrencyViewModels;
 using Atomex.Wallet.BitcoinBased;
 using ReactiveUI;
@@ -148,7 +150,7 @@ namespace atomex.ViewModels.SendViewModels
                     }
 
                     var feeVal = _config.SatoshiToCoin((long)transactionParams.FeeInSatoshi);
-                    SetFeeFromString(feeVal.ToString());
+                    SetFeeFromString(feeVal.ToString(CultureInfo.CurrentCulture));
                 }
                 else
                 {
@@ -241,7 +243,7 @@ namespace atomex.ViewModels.SendViewModels
 
                 if (UseDefaultFee)
                 {
-                    if (_outputs.Count() == 0)
+                    if (!_outputs.Any())
                     {
                         ShowMessage(
                             messageType: MessageType.Error,
@@ -262,13 +264,13 @@ namespace atomex.ViewModels.SendViewModels
 
                     if (maxAmountEstimation.Amount > 0)
                     {
-                        SetAmountFromString(maxAmountEstimation.Amount.ToString());
+                        SetAmountFromString(maxAmountEstimation.Amount.ToString(CultureInfo.CurrentCulture));
 
                         return;
                     }
 
                     var fee = maxAmountEstimation.Fee;
-                    SetFeeFromString(fee.ToString());
+                    SetFeeFromString(fee.ToString(CultureInfo.CurrentCulture));
                 }
                 else
                 {
@@ -297,7 +299,7 @@ namespace atomex.ViewModels.SendViewModels
 
                     if (Amount != maxAmount)
                     {
-                        SetAmountFromString(maxAmount.ToString());
+                        SetAmountFromString(maxAmount.ToString(CultureInfo.CurrentCulture));
                     }
                     else
                     {
@@ -357,6 +359,8 @@ namespace atomex.ViewModels.SendViewModels
             };
 
             var selectFromViewModel = SelectFromViewModel as SelectOutputsViewModel;
+            
+            if (selectFromViewModel == null) return;
             selectFromViewModel.SelectAddressFrom = SelectAddressFrom.Change;
 
             _navigationService?.ShowPage(new SelectOutputsPage(SelectFromViewModel as SelectOutputsViewModel), TabNavigation.Portfolio);

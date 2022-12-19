@@ -14,6 +14,7 @@ using Atomex;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.ViewModels;
+using atomex.ViewModels.Abstract;
 using Atomex.Wallet.Abstract;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -25,24 +26,6 @@ using static atomex.Models.Message;
 
 namespace atomex.ViewModels
 {
-    public enum SelectAddressFrom
-    {
-        [Description("Init")] Init,
-        [Description("Change")] Change,
-        [Description("InitSearch")] InitSearch,
-        [Description("ChangeSearch")] ChangeSearch
-    }
-
-    public enum SelectAddressMode
-    {
-        [Description("SendFrom")] SendFrom,
-        [Description("ReceiveTo")] ReceiveTo,
-        [Description("ChangeRedeemAddress")] ChangeRedeemAddress,
-        [Description("EnterExternalAddress")] EnterExternalAddress,
-        [Description("ChooseMyAddress")] ChooseMyAddress,
-        [Description("Connect")] Connect
-    }
-
     public class SelectAddressViewModel : BaseViewModel
     {
         protected INavigationService _navigationService { get; set; }
@@ -217,7 +200,7 @@ namespace atomex.ViewModels
             SelectedAddress = selectedAddress != null
                 ? MyAddresses.FirstOrDefault(vm =>
                     vm.Address == selectedAddress && vm.TokenId == selectedTokenId)
-                : SelectAddressMode == SelectAddressMode.SendFrom
+                : SelectAddressMode is SelectAddressMode.SendFrom or SelectAddressMode.Connect
                     ? SelectDefaultAddress()
                     : null;
             Title = SelectAddressMode == SelectAddressMode.ReceiveTo
@@ -380,9 +363,7 @@ namespace atomex.ViewModels
         {
             IsScanning = false;
             IsAnalyzing = false;
-            this.RaisePropertyChanged(nameof(IsScanning));
-            this.RaisePropertyChanged(nameof(IsAnalyzing));
-
+            
             if (ScanResult == null)
             {
                 _navigationService?.ShowAlert(AppResources.Error, AppResources.IncorrectQrCodeFormat,
@@ -417,8 +398,6 @@ namespace atomex.ViewModels
 
             IsScanning = true;
             IsAnalyzing = true;
-            this.RaisePropertyChanged(nameof(IsScanning));
-            this.RaisePropertyChanged(nameof(IsAnalyzing));
 
             _navigationService?.ShowPage(new ScanningQrPage(this), TabNavigation);
         }
@@ -509,5 +488,10 @@ namespace atomex.ViewModels
                 Log.Error(e, "Confirm external address error");
             }
         }
+        
+        private ICommand _closeBottomSheetCommand;
+
+        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= new Command(() =>
+            _navigationService?.ClosePopup());
     }
 }

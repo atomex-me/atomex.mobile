@@ -19,23 +19,5 @@ namespace atomex.Views
             InitializeComponent();
             BindingContext = selectAddressViewModel;
         }
-
-        public ScanningQrPage(TezosTokensSendViewModel tezosTokensSendViewModel)
-        {
-            InitializeComponent();
-            BindingContext = tezosTokensSendViewModel;
-        }
-
-        public ScanningQrPage(ConversionViewModel conversionViewModel)
-        {
-            InitializeComponent();
-            BindingContext = conversionViewModel;
-        }
-        
-        public ScanningQrPage(ConnectDappViewModel connectDappViewModel)
-        {
-            InitializeComponent();
-            BindingContext = connectDappViewModel;
-        }
     }
 }

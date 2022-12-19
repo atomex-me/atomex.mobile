@@ -91,6 +91,9 @@
                    CornerRadius="8"
                    BackgroundColor="Transparent"
                    BorderColor="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColor}}">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OnChangeAddressCommand}"/>
+                </Frame.GestureRecognizers>
                 <Grid ColumnSpacing="13"
                       RowSpacing="4"
                       Padding="16">
@@ -101,6 +104,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="22" />
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="44" />
                     </Grid.ColumnDefinitions>
                     <Image Grid.RowSpan="2"
                            Source="XTZ"
@@ -125,6 +129,13 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
+                    <Image Grid.RowSpan="2"
+                           Grid.Column="2"
+                           Source="ic_forward"
+                           HorizontalOptions="End"
+                           WidthRequest="8"
+                           HeightRequest="12"
+                           Margin="8,16"/>
                 </Grid>
             </Frame>
             <Grid RowSpacing="0"

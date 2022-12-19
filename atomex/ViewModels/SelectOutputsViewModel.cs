@@ -14,6 +14,7 @@ using atomex.Views;
 using Atomex;
 using Atomex.Blockchain.BitcoinBased;
 using Atomex.Core;
+using atomex.ViewModels.Abstract;
 using Atomex.Wallet.BitcoinBased;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -48,9 +49,9 @@ namespace atomex.ViewModels
             INavigationService navigationService,
             TabNavigation tab = TabNavigation.Portfolio)
         {
-            _account = account ?? throw new ArgumentNullException(nameof(_account));
-            Currency = config ?? throw new ArgumentNullException(nameof(Currency));
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
+            _account = account ?? throw new ArgumentNullException(nameof(account));
+            Currency = config ?? throw new ArgumentNullException(nameof(config));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
 
             Outputs = new ObservableCollection<OutputViewModel>(outputs);
 

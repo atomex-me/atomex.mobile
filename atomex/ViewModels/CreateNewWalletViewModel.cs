@@ -30,30 +30,16 @@ namespace atomex.ViewModels
     {
         private IAtomexApp _app { get; set; }
         private INavigationService _navigationService { get; set; }
+        
+        private WalletAction _currentAction;
 
-        public enum Action
-        {
-            Create,
-            Restore
-        }
-
-        public enum PasswordType
-        {
-            DerivedPassword,
-            DerivedPasswordConfirmation,
-            StoragePassword,
-            StoragePasswordConfirmation
-        }
-
-        private Action _currentAction;
-
-        public Action CurrentAction
+        public WalletAction CurrentAction
         {
             get => _currentAction;
             set
             {
                 _currentAction = value;
-                Title = _currentAction == Action.Restore
+                Title = _currentAction == WalletAction.Restore
                     ? AppResources.RestoreWalletPageTitle
                     : AppResources.CreateNewWalletPageTitle;
 
@@ -260,8 +246,8 @@ namespace atomex.ViewModels
 
         public CreateNewWalletViewModel(IAtomexApp app, INavigationService navigationService)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(_app));
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
+            _app = app ?? throw new ArgumentNullException(nameof(app));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             Network = Network.MainNet;
             Language = Languages.FirstOrDefault();
             Entropy = WordCountToEntropyLength.FirstOrDefault();
@@ -503,7 +489,7 @@ namespace atomex.ViewModels
                         }
                         catch (Exception ex)
                         {
-                            Log.Error(ex, AppResources.NotSupportSecureStorage);
+                            Log.Error(ex, "Device doesn't support secure storage on device");
                         }
 
                         MainViewModel mainViewModel = null;
@@ -514,7 +500,7 @@ namespace atomex.ViewModels
                                 app: _app,
                                 account: account);
 
-                            if (CurrentAction == Action.Restore)
+                            if (CurrentAction == WalletAction.Restore)
                                 mainViewModel.InitCurrenciesScan();
                         });
 
@@ -567,7 +553,7 @@ namespace atomex.ViewModels
             if (Warning != string.Empty)
                 return;
             ClearDerivedPswd();
-            if (CurrentAction == Action.Restore)
+            if (CurrentAction == WalletAction.Restore)
                 _navigationService?.ShowPage(new WriteMnemonicPage(this));
             else
                 _navigationService?.ShowPage(new CreateMnemonicPage(this));
@@ -744,7 +730,7 @@ namespace atomex.ViewModels
             {
                 if (StoragePassword?.Length != 0)
                 {
-                    StoragePassword.RemoveAt(StoragePassword.Length - 1);
+                    StoragePassword?.RemoveAt(StoragePassword.Length - 1);
                     this.RaisePropertyChanged(nameof(StoragePassword));
                 }
             }
@@ -752,7 +738,7 @@ namespace atomex.ViewModels
             {
                 if (StoragePasswordConfirmation?.Length != 0)
                 {
-                    StoragePasswordConfirmation.RemoveAt(StoragePasswordConfirmation.Length - 1);
+                    StoragePasswordConfirmation?.RemoveAt(StoragePasswordConfirmation.Length - 1);
                     this.RaisePropertyChanged(nameof(StoragePasswordConfirmation));
                 }
             }
