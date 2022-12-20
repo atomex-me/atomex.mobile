@@ -5,7 +5,9 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Atomex;
 using atomex.Common;
+using Atomex.Core;
 using Atomex.MarketData.Abstract;
+using atomex.Models;
 using atomex.Resources;
 using Netezos.Forging.Models;
 using Newtonsoft.Json;
@@ -22,7 +24,7 @@ namespace atomex.ViewModels.DappsViewModels
         protected static string BaseCurrencyCode => "USD";
         public abstract string JsonStringOperation { get; }
         [Reactive] public IQuotesProvider QuotesProvider { get; set; }
-        [Reactive] public bool IsDetailsOpened { get; set; }
+        
         [Reactive] public string CopyButtonName { get; set; }
         [Reactive] public string DetailsButtonName { get; set; }
         [ObservableAsProperty] public bool IsCopied { get; }
@@ -47,17 +49,6 @@ namespace atomex.ViewModels.DappsViewModels
         }
 
         protected abstract void OnQuotesUpdatedEventHandler(object sender, EventArgs args);
-
-        private ReactiveCommand<Unit, Unit> _onOpenDetailsCommand;
-
-        public ReactiveCommand<Unit, Unit> OnOpenDetailsCommand =>
-            _onOpenDetailsCommand ??= ReactiveCommand.Create(() =>
-            {
-                IsDetailsOpened = !IsDetailsOpened;
-                DetailsButtonName = IsDetailsOpened 
-                    ? AppResources.HideTxDetails 
-                    : AppResources.DisplayTxDetails;
-            });
 
         private ReactiveCommand<string, Unit> _copyCommand;
 
@@ -127,8 +118,14 @@ namespace atomex.ViewModels.DappsViewModels
     public class OperationRequestViewModel : BaseViewModel, IDisposable
     {
         public string DappName { get; set; }
+
+        public WalletAddress ConnectedWalletAddress { get; set; }
         public string Title => string.Format(AppResources.RequestFromDapp, DappName);
         public string SubTitle => string.Format(AppResources.ConfirmDappOperations, DappName);
+        [Reactive] public OperationRequestTab SelectedTab { get; set; }
+        [Reactive] public bool UseDefaultFee { get; set; }
+        
+        [Reactive] public bool IsDetailsOpened { get; set; }
         public string DappLogo { get; set; }
 
         [Reactive] public IEnumerable<BaseBeaconOperationViewModel> Operations { get; set; }
@@ -144,6 +141,9 @@ namespace atomex.ViewModels.DappsViewModels
             OnRejectCommand
                 .IsExecuting
                 .ToPropertyExInMainThread(this, vm => vm.IsRejecting);
+            
+            SelectedTab = OperationRequestTab.Preview;
+            UseDefaultFee = true;
         }
 
         public Func<Task> OnConfirm { get; set; }
@@ -166,5 +166,19 @@ namespace atomex.ViewModels.DappsViewModels
                 operation.Dispose();
             }
         }
+        
+        private ReactiveCommand<string, Unit> _changeTabCommand;
+
+        public ReactiveCommand<string, Unit> ChangeTabCommand => _changeTabCommand ??=
+            ReactiveCommand.Create<string>(value =>
+            {
+                Enum.TryParse(value, out OperationRequestTab selectedTab);
+                SelectedTab = selectedTab;
+            });
+        
+        private ReactiveCommand<Unit, Unit> _onOpenDetailsCommand;
+
+        public ReactiveCommand<Unit, Unit> OnOpenDetailsCommand =>
+            _onOpenDetailsCommand ??= ReactiveCommand.Create(() => { IsDetailsOpened = !IsDetailsOpened; });
     }
 }

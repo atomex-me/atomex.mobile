@@ -19,7 +19,7 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Spacing="0"
-                         Margin="24,0">
+                         Margin="24,12">
                 <Frame Padding="0"
                        HasShadow="False"
                        CornerRadius="20"

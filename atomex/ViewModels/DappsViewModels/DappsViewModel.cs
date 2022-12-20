@@ -15,6 +15,7 @@ using atomex.Common;
 using Atomex.Common;
 using atomex.Models;
 using atomex.Resources;
+using Atomex.ViewModels;
 using atomex.Views.Dapps;
 using Atomex.Wallet;
 using Atomex.Wallet.Tezos;
@@ -453,11 +454,12 @@ namespace atomex.ViewModels.DappsViewModels
                                     break;
                             }
                         }
-
+                        
                         var operationRequestViewModel = new OperationRequestViewModel
                         {
                             DappName = permissions.AppMetadata.Name,
                             DappLogo = permissions.AppMetadata.Icon,
+                            ConnectedWalletAddress = connectedWalletAddress,
                             Operations = operationsViewModel,
                             OnReject = async () =>
                             {

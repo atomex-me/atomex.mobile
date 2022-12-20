@@ -122,6 +122,30 @@
     <data name="Search" xml:space="preserve">
         <value>Search...</value>
     </data>
+    <data name="PasteButton" xml:space="preserve">
+        <value>Paste</value>
+    </data>
+    <data name="GasPriceLabel" xml:space="preserve">
+        <value>Gas price</value>
+    </data>
+    <data name="GasLimitLabel" xml:space="preserve">
+        <value>Gas limit</value>
+    </data>
+    <data name="GasUsedLabel" xml:space="preserve">
+        <value>Gas used</value>
+    </data>
+    <data name="GasFeeLabel" xml:space="preserve">
+        <value>Gas fee</value>
+    </data>
+    <data name="StorageLimitLabel" xml:space="preserve">
+        <value>Storage limit</value>
+    </data>
+    <data name="StorageFeeLabel" xml:space="preserve">
+        <value>Storage fee</value>
+    </data>
+    <data name="TotalFees" xml:space="preserve">
+        <value>Total Fees</value>
+    </data>
     
     <!-- Start Page -->
     <data name="MyWalletsButton" xml:space="preserve">
@@ -437,18 +461,6 @@
     </data>
     <data name="ScannerBottomOverlayText" xml:space="preserve">
         <value>Scanning will happen automatically</value>
-    </data>
-    <data name="PasteButton" xml:space="preserve">
-        <value>Paste</value>
-    </data>
-    <data name="GasPriceLabel" xml:space="preserve">
-        <value>Gas price</value>
-    </data>
-    <data name="GasLimitLabel" xml:space="preserve">
-        <value>Gas limit</value>
-    </data>
-    <data name="GasUsedLabel" xml:space="preserve">
-        <value>Gas used</value>
     </data>
     <data name="IsInternalLabel" xml:space="preserve">
         <value>Is Internal</value>
@@ -921,6 +933,18 @@
     </data>
     <data name="ConnectionError" xml:space="preserve">
         <value>Connection error</value>
+    </data>
+    <data name="Preview" xml:space="preserve">
+        <value>Preview</value>
+    </data>
+    <data name="Raw" xml:space="preserve">
+        <value>Raw</value>
+    </data>
+    <data name="Bytes" xml:space="preserve">
+        <value>Bytes</value>
+    </data>
+    <data name="ShowDetails" xml:space="preserve">
+        <value>Show Details</value>
     </data>
 
     <!-- Settings Page -->

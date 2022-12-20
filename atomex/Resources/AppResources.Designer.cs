@@ -261,6 +261,54 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string PasteButton {
+            get {
+                return ResourceManager.GetString("PasteButton", resourceCulture);
+            }
+        }
+        
+        internal static string GasPriceLabel {
+            get {
+                return ResourceManager.GetString("GasPriceLabel", resourceCulture);
+            }
+        }
+        
+        internal static string GasLimitLabel {
+            get {
+                return ResourceManager.GetString("GasLimitLabel", resourceCulture);
+            }
+        }
+        
+        internal static string GasUsedLabel {
+            get {
+                return ResourceManager.GetString("GasUsedLabel", resourceCulture);
+            }
+        }
+        
+        internal static string GasFeeLabel {
+            get {
+                return ResourceManager.GetString("GasFeeLabel", resourceCulture);
+            }
+        }
+        
+        internal static string StorageLimitLabel {
+            get {
+                return ResourceManager.GetString("StorageLimitLabel", resourceCulture);
+            }
+        }
+        
+        internal static string StorageFeeLabel {
+            get {
+                return ResourceManager.GetString("StorageFeeLabel", resourceCulture);
+            }
+        }
+        
+        internal static string TotalFees {
+            get {
+                return ResourceManager.GetString("TotalFees", resourceCulture);
+            }
+        }
+        
         internal static string MyWalletsButton {
             get {
                 return ResourceManager.GetString("MyWalletsButton", resourceCulture);
@@ -846,30 +894,6 @@ namespace atomex.Resources {
         internal static string ScannerBottomOverlayText {
             get {
                 return ResourceManager.GetString("ScannerBottomOverlayText", resourceCulture);
-            }
-        }
-        
-        internal static string PasteButton {
-            get {
-                return ResourceManager.GetString("PasteButton", resourceCulture);
-            }
-        }
-        
-        internal static string GasPriceLabel {
-            get {
-                return ResourceManager.GetString("GasPriceLabel", resourceCulture);
-            }
-        }
-        
-        internal static string GasLimitLabel {
-            get {
-                return ResourceManager.GetString("GasLimitLabel", resourceCulture);
-            }
-        }
-        
-        internal static string GasUsedLabel {
-            get {
-                return ResourceManager.GetString("GasUsedLabel", resourceCulture);
             }
         }
         
@@ -1770,6 +1794,30 @@ namespace atomex.Resources {
         internal static string ConnectionError {
             get {
                 return ResourceManager.GetString("ConnectionError", resourceCulture);
+            }
+        }
+        
+        internal static string Preview {
+            get {
+                return ResourceManager.GetString("Preview", resourceCulture);
+            }
+        }
+        
+        internal static string Raw {
+            get {
+                return ResourceManager.GetString("Raw", resourceCulture);
+            }
+        }
+        
+        internal static string Bytes {
+            get {
+                return ResourceManager.GetString("Bytes", resourceCulture);
+            }
+        }
+        
+        internal static string ShowDetails {
+            get {
+                return ResourceManager.GetString("ShowDetails", resourceCulture);
             }
         }
         
