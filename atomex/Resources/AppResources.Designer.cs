@@ -1767,15 +1767,9 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string RequestFromDapp {
+        internal static string DappRequestToConfirm {
             get {
-                return ResourceManager.GetString("RequestFromDapp", resourceCulture);
-            }
-        }
-        
-        internal static string ConfirmDappOperations {
-            get {
-                return ResourceManager.GetString("ConfirmDappOperations", resourceCulture);
+                return ResourceManager.GetString("DappRequestToConfirm", resourceCulture);
             }
         }
         
@@ -2364,6 +2358,12 @@ namespace atomex.Resources {
         internal static string RemoveTxWarning {
             get {
                 return ResourceManager.GetString("RemoveTxWarning", resourceCulture);
+            }
+        }
+        
+        internal static string ChangingTxFeeWarning {
+            get {
+                return ResourceManager.GetString("ChangingTxFeeWarning", resourceCulture);
             }
         }
         

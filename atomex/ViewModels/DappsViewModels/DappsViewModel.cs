@@ -96,7 +96,7 @@ namespace atomex.ViewModels.DappsViewModels
     public class DappsViewModel : BaseViewModel
     {
         private const int GasLimitPerBlock = 5_200_000;
-        private const int StorageLimitPerOperation = 5000;
+        public const int StorageLimitPerOperation = 5000;
         private readonly IAtomexApp _app;
         private INavigationService _navigationService;
         private IWalletBeaconClient _beaconWalletClient;
@@ -455,12 +455,12 @@ namespace atomex.ViewModels.DappsViewModels
                             }
                         }
                         
-                        var operationRequestViewModel = new OperationRequestViewModel
+                        var operationRequestViewModel = new OperationRequestViewModel(operations, connectedWalletAddress,
+                            operationGasLimit, _tezos)
                         {
+                            QuotesProvider = _app.QuotesProvider,
                             DappName = permissions.AppMetadata.Name,
                             DappLogo = permissions.AppMetadata.Icon,
-                            ConnectedWalletAddress = connectedWalletAddress,
-                            Operations = operationsViewModel,
                             OnReject = async () =>
                             {
                                 await _beaconWalletClient.SendResponseAsync(

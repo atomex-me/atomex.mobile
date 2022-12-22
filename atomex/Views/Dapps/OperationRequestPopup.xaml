@@ -18,6 +18,7 @@
             <converters:NotEqualsConverter x:Key="NotEqualsConverter" />
             <converters:AllTrueMultiConverter x:Key="AllTrueConverter" />
             <converters:InverseBoolConverter x:Key="InverseBool" />
+            <converters:GreaterThanValueConverter x:Key="GreaterThanValue" />
         </ResourceDictionary>
     </rg:PopupPage.Resources>
     <rg:PopupPage.Animation>
@@ -43,7 +44,7 @@
                 <StackLayout Spacing="0"
                              Padding="16,0">
                     <Frame Padding="0"
-                           Margin="0,8"
+                           Margin="0,12,0,8"
                            HasShadow="False"
                            CornerRadius="20"
                            HeightRequest="40"
@@ -59,8 +60,6 @@
                     <Label Text="{Binding Title}"
                            Style="{DynamicResource MainTextH2}"
                            HorizontalTextAlignment="Center" />
-
-
                     <Frame Padding="0"
                            Margin="0,16"
                            HeightRequest="45"
@@ -119,7 +118,7 @@
                           ColumnSpacing="0"
                           RowSpacing="0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="32" />
+                            <RowDefinition Height="36" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="3.3*" />
@@ -205,12 +204,18 @@
                     </Grid>
                 </StackLayout>
 
-
-                <ScrollView HeightRequest="190"
-                            BackgroundColor="#0B1C33"
-                            Margin="0,16"
+                <!--BackgroundColor="#0B1C33"-->
+                <ScrollView BackgroundColor="Transparent"
+                            HeightRequest="76"
+                            Margin="0,16,0,0"
                             IsVisible="False">
                     <ScrollView.Triggers>
+                        <DataTrigger TargetType="ScrollView"
+                                     Binding="{Binding Operations.Count, Mode=OneWay, Converter={StaticResource GreaterThanValue}, ConverterParameter=2}"
+                                     Value="True">
+                            <Setter Property="HeightRequest"
+                                    Value="190" />
+                        </DataTrigger>
                         <DataTrigger TargetType="ScrollView"
                                      Binding="{Binding SelectedTab}"
                                      Value="Preview">
@@ -226,226 +231,76 @@
                                 <Grid HorizontalOptions="Fill"
                                       VerticalOptions="EndAndExpand"
                                       ColumnSpacing="12"
-                                      RowSpacing="0">
+                                      RowSpacing="0"
+                                      Margin="16">
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding OpenDestinationInExplorer}" />
+                                    </Grid.GestureRecognizers>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="17" />
                                         <RowDefinition Height="24" />
-                                        <RowDefinition Height="24" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="24" />
-                                        <RowDefinition Height="56" />
-                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="20" />
+                                        <RowDefinition Height="0.5" />
+                                        <RowDefinition Height="0.5" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="4*" />
-                                        <ColumnDefinition Width="6*" />
+                                        <ColumnDefinition Width="40" />
+                                        <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <StackLayout Grid.ColumnSpan="2"
-                                                 Style="{DynamicResource SeparatorStyle}"
-                                                 Margin="0,0,0,16" />
-                                    <Label Grid.Row="1"
-                                           Grid.ColumnSpan="2"
+                                    <Image Grid.RowSpan="2"
+                                           Source="{Binding DestinationIcon}"
+                                           WidthRequest="40"
+                                           HeightRequest="40"
+                                           VerticalOptions="Center" />
+                                    <Label Grid.Column="1"
                                            Style="{DynamicResource MainTextH4}"
                                            HorizontalTextAlignment="Start"
                                            VerticalTextAlignment="Center"
-                                           Padding="0,2">
+                                           LineBreakMode="TailTruncation">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{helpers:Translate Transaction}" />
-                                                <Span Text="{Binding Id, StringFormat=' #{0}'}" />
+                                                <Span Text="{Binding Entrypoint}" />
+                                                <Span Text="{Binding DestinationAlias}"></Span>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                                    <Label Grid.Row="2"
+                                    <Label Grid.Row="1"
+                                           Grid.Column="1"
                                            Style="{DynamicResource AdditionalTextH4}"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Start"
-                                           Text="{helpers:Translate FromLabel}"
-                                           Padding="0,2" />
-                                    <Label Grid.Row="2"
-                                           Grid.Column="1"
-                                           Style="{DynamicResource MainTextH5}"
-                                           LineBreakMode="MiddleTruncation"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="End"
-                                           Text="{Binding Operation.Source}"
-                                           Padding="0,2" />
-                                    <Label Grid.Row="3"
-                                           Style="{DynamicResource AdditionalTextH4}"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="Start"
-                                           Text="{helpers:Translate ToLabel}"
-                                           HeightRequest="24"
-                                           Padding="0,2">
-                                        <Label.Triggers>
-                                            <DataTrigger TargetType="Label"
-                                                         Binding="{Binding Operation.Kind}"
-                                                         Value="reveal">
-                                                <Setter Property="IsVisible"
-                                                        Value="False" />
-                                            </DataTrigger>
-                                        </Label.Triggers>
-                                    </Label>
-                                    <Label Grid.Row="3"
-                                           Grid.Column="1"
-                                           Style="{DynamicResource MainTextH5}"
-                                           LineBreakMode="MiddleTruncation"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="End"
-                                           Text="{Binding Operation.Destination}"
-                                           HeightRequest="24"
-                                           Padding="0,2">
-                                        <Label.Triggers>
-                                            <DataTrigger TargetType="Label"
-                                                         Binding="{Binding Operation.Kind}"
-                                                         Value="reveal">
-                                                <Setter Property="IsVisible"
-                                                        Value="False" />
-                                            </DataTrigger>
-                                        </Label.Triggers>
-                                    </Label>
-                                    <Label Grid.Row="4"
-                                           Style="{DynamicResource AdditionalTextH4}"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="Start"
-                                           Text="{helpers:Translate AmountLabel}"
-                                           HeightRequest="24"
-                                           Padding="0,2">
-                                        <Label.Triggers>
-                                            <DataTrigger TargetType="Label"
-                                                         Binding="{Binding Operation.Kind}"
-                                                         Value="reveal">
-                                                <Setter Property="IsVisible"
-                                                        Value="False" />
-                                            </DataTrigger>
-                                        </Label.Triggers>
-                                    </Label>
-                                    <Label Grid.Row="4"
-                                           Grid.Column="1"
-                                           Style="{DynamicResource MainTextH5}"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="End"
-                                           Text="{Binding AmountInTez}"
-                                           HeightRequest="24"
-                                           Padding="0,2">
+                                           Text="">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding AmountInTez, StringFormat='{0:0.#####} XTZ /'}" />
-                                                <Span Text="{Binding AmountInBase, StringFormat=' ${0:f2}'}"></Span>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                        <Label.Triggers>
-                                            <DataTrigger TargetType="Label"
-                                                         Binding="{Binding Operation.Kind}"
-                                                         Value="reveal">
-                                                <Setter Property="IsVisible"
-                                                        Value="False" />
-                                            </DataTrigger>
-                                        </Label.Triggers>
-                                    </Label>
-                                    <Label Grid.Row="5"
-                                           Style="{DynamicResource AdditionalTextH4}"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="Start"
-                                           Text="{helpers:Translate FeeLabel}"
-                                           Padding="0,2" />
-                                    <Label Grid.Row="5"
-                                           Grid.Column="1"
-                                           Style="{DynamicResource MainTextH5}"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="End"
-                                           Text="{Binding FeeInTez}"
-                                           Padding="0,2">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{Binding FeeInTez, StringFormat='{0:0.#####} XTZ /'}" />
-                                                <Span Text="{Binding FeeInBase, StringFormat=' ${0:f2}'}"></Span>
+                                                <Span Text="{Binding AmountInTez, StringFormat='{0:0.########}'}" />
+                                                <Span Text=" XTZ" />
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                                    <Button Grid.Row="6"
-                                            Grid.ColumnSpan="2"
-                                            Text="{Binding DetailsButtonName}"
-                                            Style="{DynamicResource TransparentButton}"
-                                            Margin="0,0,0,6"
-                                            Command="{Binding OnOpenDetailsCommand}" />
-                                    <StackLayout Grid.Row="7"
+                                    <StackLayout Grid.Row="2"
                                                  Grid.ColumnSpan="2"
-                                                 Spacing="0"
-                                                 IsVisible="{Binding IsDetailsOpened}">
-                                        <Label Style="{DynamicResource MainTextH5}"
-                                               Text="{Binding JsonStringOperation}" />
-                                        <Frame Style="{DynamicResource AdditionalClickableFrame}"
-                                               Margin="0,24"
-                                               VerticalOptions="EndAndExpand"
-                                               HorizontalOptions="FillAndExpand">
-                                            <Frame.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding CopyCommand}"
-                                                                      CommandParameter="{Binding JsonStringOperation}" />
-                                            </Frame.GestureRecognizers>
-                                            <Frame.Triggers>
-                                                <DataTrigger TargetType="Frame"
-                                                             Binding="{Binding IsCopied}"
-                                                             Value="False">
-                                                    <Setter Property="BackgroundColor"
-                                                            Value="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}" />
-                                                </DataTrigger>
-                                                <DataTrigger TargetType="Frame"
-                                                             Binding="{Binding IsCopied}"
-                                                             Value="True">
-                                                    <Setter Property="BackgroundColor"
-                                                            Value="{AppThemeBinding Dark={StaticResource HighlightingButtonBackgroundColorDark}, Light={StaticResource HighlightingButtonBackgroundColor}}" />
-                                                </DataTrigger>
-                                            </Frame.Triggers>
-                                            <StackLayout Spacing="10"
-                                                         Orientation="Horizontal"
-                                                         HorizontalOptions="Center">
-                                                <Image HeightRequest="18"
-                                                       WidthRequest="15"
-                                                       Source="ic_copy__blue"
-                                                       VerticalOptions="Center">
-                                                    <Image.Triggers>
-                                                        <DataTrigger TargetType="Image"
-                                                                     Binding="{Binding IsCopied}"
-                                                                     Value="False">
-                                                            <Setter Property="Source"
-                                                                    Value="ic_copy__blue" />
-                                                        </DataTrigger>
-                                                        <DataTrigger TargetType="Image"
-                                                                     Binding="{Binding IsCopied}"
-                                                                     Value="True">
-                                                            <Setter Property="Source"
-                                                                    Value="ic_tick" />
-                                                        </DataTrigger>
-                                                    </Image.Triggers>
-                                                </Image>
-                                                <Label Text="{Binding CopyButtonName}"
-                                                       Style="{DynamicResource AdditionalClickableLabel}"
-                                                       VerticalTextAlignment="Center">
-                                                    <Label.Triggers>
-                                                        <DataTrigger TargetType="Label"
-                                                                     Binding="{Binding IsCopied}"
-                                                                     Value="False">
-                                                            <Setter Property="TextColor"
-                                                                    Value="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}" />
-                                                        </DataTrigger>
-                                                        <DataTrigger TargetType="Label"
-                                                                     Binding="{Binding IsCopied}"
-                                                                     Value="True">
-                                                            <Setter Property="TextColor"
-                                                                    Value="{AppThemeBinding Dark={StaticResource HighlightingButtonTextColorDark}, Light={StaticResource HighlightingButtonTextColor}}" />
-                                                        </DataTrigger>
-                                                    </Label.Triggers>
-                                                </Label>
-                                            </StackLayout>
-                                        </Frame>
-                                    </StackLayout>
+                                                 Style="{DynamicResource SeparatorStyle}"
+                                                 Margin="16,16,0,0" />
                                 </Grid>
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>
                     </StackLayout>
                 </ScrollView>
+
+                <StackLayout Spacing="0"
+                             Margin="16,16,16,0"
+                             IsVisible="False">
+                    <StackLayout.Triggers>
+                        <DataTrigger TargetType="StackLayout"
+                                     Binding="{Binding SelectedTab}"
+                                     Value="Bytes">
+                            <Setter Property="IsVisible"
+                                    Value="True" />
+                        </DataTrigger>
+                    </StackLayout.Triggers>
+                    <Label Style="{DynamicResource MainTextH5}"
+                           Text="{Binding OperationsBytes}" />
+                </StackLayout>
+
 
                 <StackLayout Spacing="0">
                     <input:CheckBox Text="{helpers:Translate UseDefaultFeeLabel}"
@@ -516,9 +371,8 @@
                                HorizontalTextAlignment="Start"
                                VerticalTextAlignment="Center" />
                         <Label Grid.Column="1"
-                               Text="23.46980"
+                               Text="{Binding TotalGasLimit}"
                                Style="{DynamicResource MainTextH5}"
-                               Padding="13,0"
                                HorizontalOptions="End"
                                HorizontalTextAlignment="End"
                                VerticalTextAlignment="Center" />
@@ -529,12 +383,11 @@
                                VerticalTextAlignment="Center" />
                         <Label Grid.Row="1"
                                Grid.Column="1"
-                               Text="0.345682"
+                               Text="{Binding TotalStorageLimit}"
                                Style="{DynamicResource MainTextH5}"
                                HorizontalOptions="End"
                                HorizontalTextAlignment="End"
                                VerticalTextAlignment="Center" />
-
                         <Label Grid.Row="2"
                                Text="{helpers:Translate GasFeeLabel}"
                                Style="{DynamicResource AdditionalTextH4}"
@@ -547,12 +400,12 @@
                                VerticalTextAlignment="Center">
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="{Binding GasFee, StringFormat='{0:0.######}'}" />
+                                    <Span Text="{Binding TotalGasFee, StringFormat='{0:0.######}'}" />
                                     <Span Text=" XTZ " />
                                     <Span Text="/ "
                                           FontSize="12"
                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
-                                    <Span Text="{Binding GasFeeInBase, StringFormat='${0:0.00}'}"
+                                    <Span Text="{Binding TotalGasFeeInBase, StringFormat='${0:0.00}'}"
                                           FontSize="12"
                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
                                 </FormattedString>
@@ -570,12 +423,12 @@
                                VerticalTextAlignment="Center">
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="{Binding StorageFee, StringFormat='{0:0.#########}'}" />
+                                    <Span Text="{Binding TotalStorageFee, StringFormat='{0:0.#########}'}" />
                                     <Span Text=" XTZ " />
                                     <Span Text="/ "
                                           FontSize="12"
                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
-                                    <Span Text="{Binding StorageFeeInBase, StringFormat='${0:0.00}'}"
+                                    <Span Text="{Binding TotalStorageFeeInBase, StringFormat='${0:0.00}'}"
                                           FontSize="12"
                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
                                 </FormattedString>
@@ -584,7 +437,83 @@
                     </Grid>
                     <RelativeLayout IsVisible="{Binding UseDefaultFee, Converter={StaticResource InverseBool}}"
                                     HeightRequest="45"
-                                    Margin="16,0">
+                                    Margin="16,8">
+                        <Frame Padding="0"
+                               Margin="0"
+                               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                               RelativeLayout.HeightConstraint="45"
+                               HeightRequest="45"
+                               BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
+                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                               CornerRadius="8"
+                               HasShadow="False">
+                            <Grid ColumnSpacing="0"
+                                  RowSpacing="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <custom:CustomEntry Text="{Binding TotalGasLimit}"
+                                                    Keyboard="Numeric"
+                                                    Margin="16,0"
+                                                    Style="{DynamicResource EntryStyle}"
+                                                    IsReadOnly="True"
+                                                    Opacity="0.7"
+                                                    FontSize="16"
+                                                    HorizontalTextAlignment="Start"
+                                                    VerticalTextAlignment="Center" />
+                            </Grid>
+                        </Frame>
+                        <Label Style="{DynamicResource HintTextH6}"
+                               Padding="4,0"
+                               Text="{helpers:Translate GasLimitLabel}"
+                               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=8}"
+                               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=-8}"
+                               RelativeLayout.HeightConstraint="16"
+                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}" />
+                    </RelativeLayout>
+                    <RelativeLayout IsVisible="{Binding UseDefaultFee, Converter={StaticResource InverseBool}}"
+                                    HeightRequest="45"
+                                    Margin="16,8">
+                        <Frame Padding="0"
+                               Margin="0"
+                               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                               RelativeLayout.HeightConstraint="45"
+                               HeightRequest="45"
+                               BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
+                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                               CornerRadius="8"
+                               HasShadow="False">
+                            <Grid ColumnSpacing="0"
+                                  RowSpacing="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <custom:CustomEntry Text="{Binding TotalStorageLimit}"
+                                                    Keyboard="Numeric"
+                                                    Margin="16,0"
+                                                    Style="{DynamicResource EntryStyle}"
+                                                    FontSize="16"
+                                                    HorizontalTextAlignment="Start"
+                                                    VerticalTextAlignment="Center" />
+                            </Grid>
+                        </Frame>
+                        <Label Style="{DynamicResource HintTextH6}"
+                               Padding="4,0"
+                               Text="{helpers:Translate StorageLimitLabel}"
+                               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=8}"
+                               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=-8}"
+                               RelativeLayout.HeightConstraint="16"
+                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}" />
+                    </RelativeLayout>
+                    <RelativeLayout IsVisible="{Binding UseDefaultFee, Converter={StaticResource InverseBool}}"
+                                    HeightRequest="45"
+                                    Margin="16,8">
                         <Frame Padding="0"
                                Margin="0"
                                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
@@ -603,9 +532,9 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <custom:CustomEntry Text="{Binding GasFee}"
+                                <custom:CustomEntry Text="{Binding TotalGasFee}"
                                                     Keyboard="Numeric"
-                                                    x:Name="AmountEntry"
+                                                    x:Name="GasFeeEntry"
                                                     Margin="16,0"
                                                     Style="{DynamicResource EntryStyle}"
                                                     FontSize="16"
@@ -613,12 +542,13 @@
                                                     VerticalTextAlignment="Center" />
                                 <Label Grid.Column="1"
                                        Style="{DynamicResource MainTextH4}"
+                                       Padding="16,0"
                                        VerticalTextAlignment="Center"
                                        HorizontalTextAlignment="End"
-                                       Text="{Binding GasFeeInBase, StringFormat='${0:0.00}'}">
-                                    <!-- <Label.GestureRecognizers> -->
-                                    <!--     <TapGestureRecognizer Tapped="GasFeeEntryFocus" /> -->
-                                    <!-- </Label.GestureRecognizers> -->
+                                       Text="{Binding TotalGasFeeInBase, StringFormat='${0:0.00}'}">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="GasFeeEntryFocus" />
+                                    </Label.GestureRecognizers>
                                 </Label>
                             </Grid>
                         </Frame>
@@ -630,8 +560,60 @@
                                BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="{helpers:Translate GasFeeLabel}"/>
-                                    <Span Text=", XTZ"/>
+                                    <Span Text="{helpers:Translate GasFeeLabel}" />
+                                    <Span Text=", XTZ" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </RelativeLayout>
+                    <RelativeLayout IsVisible="{Binding UseDefaultFee, Converter={StaticResource InverseBool}}"
+                                    HeightRequest="45"
+                                    Margin="16,8">
+                        <Frame Padding="0"
+                               Margin="0"
+                               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                               RelativeLayout.HeightConstraint="45"
+                               HeightRequest="45"
+                               BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
+                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                               CornerRadius="8"
+                               HasShadow="False">
+                            <Grid ColumnSpacing="0"
+                                  RowSpacing="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <custom:CustomEntry Text="{Binding TotalStorageFee}"
+                                                    Keyboard="Numeric"
+                                                    Margin="16,0"
+                                                    Style="{DynamicResource EntryStyle}"
+                                                    IsReadOnly="True"
+                                                    FontSize="16"
+                                                    HorizontalTextAlignment="Start"
+                                                    VerticalTextAlignment="Center" />
+                                <Label Grid.Column="1"
+                                       Style="{DynamicResource MainTextH4}"
+                                       Padding="16,0"
+                                       Opacity="0.7"
+                                       VerticalTextAlignment="Center"
+                                       HorizontalTextAlignment="End"
+                                       Text="{Binding TotalStorageFeeInBase, StringFormat='${0:0.00}'}" />
+                            </Grid>
+                        </Frame>
+                        <Label Style="{DynamicResource HintTextH6}"
+                               Padding="4,0"
+                               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=8}"
+                               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=-8}"
+                               RelativeLayout.HeightConstraint="16"
+                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{helpers:Translate StorageFeeLabel}" />
+                                    <Span Text=", XTZ" />
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
@@ -656,29 +638,26 @@
                                VerticalTextAlignment="Center">
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="{Binding TotalFee, StringFormat='{0:0.#########}'}" />
+                                    <Span Text="{Binding TotalFees, StringFormat='{0:0.#########}'}" />
                                     <Span Text=" XTZ" />
                                     <Span Text=" / "
                                           FontSize="12"
                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
-                                    <Span Text="{Binding TotalFeeInBase, StringFormat='(${0:0.00})'}" />
+                                    <Span Text="{Binding TotalFeesInBase, StringFormat='${0:0.00}'}" />
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
                     </Grid>
                 </StackLayout>
-
                 <StackLayout Spacing="0"
-                             BackgroundColor="#1FFFA800"
+                             BackgroundColor="{AppThemeBinding Dark={StaticResource WarningPanelBackgroudColorDark}, Light={StaticResource WarningPanelBackgroudColor}}"
                              Padding="16,12"
                              Margin="0,20"
                              IsVisible="{Binding UseDefaultFee, Converter={StaticResource InverseBool}}">
                     <Label
-                        Text="Warning! Changing fee, gas limit or storage limit can lead to the cancellation of the transaction."
+                        Text="{helpers:Translate ChangingTxFeeWarning}"
                         Style="{DynamicResource WarningTextH5}" />
                 </StackLayout>
-
-
                 <Grid HorizontalOptions="Fill"
                       VerticalOptions="EndAndExpand"
                       ColumnSpacing="8"

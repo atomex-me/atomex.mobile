@@ -14,6 +14,11 @@ namespace atomex.Views.Dapps
             BindingContext = operationRequestViewModel;
         }
         
+        private void GasFeeEntryFocus(object sender, EventArgs args)
+        {
+            GasFeeEntry.Focus();
+        }
+
         protected override bool OnBackgroundClicked()
         {
             if (BindingContext is OperationRequestViewModel)

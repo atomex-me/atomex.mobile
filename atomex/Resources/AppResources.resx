@@ -919,11 +919,8 @@
     <data name="DoYouWantToSignData" xml:space="preserve">
         <value>Do you want to sign the following data?</value>
     </data>
-    <data name="RequestFromDapp" xml:space="preserve">
-        <value>Request from {0}</value>
-    </data>
-    <data name="ConfirmDappOperations" xml:space="preserve">
-        <value>By confirming, you are allowing {0} to make the following operations</value>
+    <data name="DappRequestToConfirm" xml:space="preserve">
+        <value>{0} requests to confirm operations</value>
     </data>
     <data name="DisplayTxDetails" xml:space="preserve">
         <value>Display extra tx details</value>
@@ -1232,6 +1229,9 @@
     </data>
     <data name="RemoveTxWarning" xml:space="preserve">
         <value>Do you confirm the removal from the transaction list? This action affects only the local database and does not affect the blockchain</value>
+    </data>
+    <data name="ChangingTxFeeWarning" xml:space="preserve">
+        <value>Warning! Changing fee, gas limit or storage limit can lead to the cancellation of the transaction</value>
     </data>
     <data name="UpdateApp" xml:space="preserve">
         <value>There is a new version of this app available. Would you like to update now?</value>
