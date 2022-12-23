@@ -50,6 +50,7 @@
     <Color x:Key="SuccessTextColor">#008B00</Color>
     
     <Color x:Key="WarningPanelBackgroudColor">#1FFFA800</Color>
+    <Color x:Key="ErrorPanelBackgroudColor">#1FE1457C</Color>
 
     <Color x:Key="RegularSnackBarBgColor">#11233C</Color>
     <Color x:Key="ErrorSnackBarBgColor">#E1457C</Color>
@@ -120,6 +121,7 @@
     <Color x:Key="SuccessTextColorDark">#48C3AD</Color>
     
     <Color x:Key="WarningPanelBackgroudColorDark">#1FFFA800</Color>
+    <Color x:Key="ErrorPanelBackgroudColorDark">#1FE1457C</Color>
 
     <Color x:Key="RegularSnackBarBgColorDark">#c4deff</Color>
     <Color x:Key="ErrorSnackBarBgColorDark">#E1457C</Color>

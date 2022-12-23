@@ -2367,6 +2367,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string FailedTxParametersWarning {
+            get {
+                return ResourceManager.GetString("FailedTxParametersWarning", resourceCulture);
+            }
+        }
+        
         internal static string UpdateApp {
             get {
                 return ResourceManager.GetString("UpdateApp", resourceCulture);

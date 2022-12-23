@@ -1330,4 +1330,7 @@ NOTE: Do not sign out or close the application until the swap is completed, othe
     <data name="ChangingTxFeeWarning" xml:space="preserve">
         <value>Warning! Changing fee, gas limit or storage limit can lead to the cancellation of the transaction</value>
     </data>
+    <data name="FailedTxParametersWarning" xml:space="preserve">
+        <value>Warning! Transaction with this parameters is likely to fail</value>
+    </data>
 </root>

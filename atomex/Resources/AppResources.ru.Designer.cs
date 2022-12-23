@@ -2564,5 +2564,11 @@ namespace atomex.Resources {
                 return ResourceManager.GetString("ChangingTxFeeWarning", resourceCulture);
             }
         }
+        
+        internal static string FailedTxParametersWarning {
+            get {
+                return ResourceManager.GetString("FailedTxParametersWarning", resourceCulture);
+            }
+        }
     }
 }

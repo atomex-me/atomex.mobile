@@ -1233,6 +1233,9 @@
     <data name="ChangingTxFeeWarning" xml:space="preserve">
         <value>Warning! Changing fee, gas limit or storage limit can lead to the cancellation of the transaction</value>
     </data>
+    <data name="FailedTxParametersWarning" xml:space="preserve">
+        <value>Warning! Transaction with this parameters is likely to fail</value>
+    </data>
     <data name="UpdateApp" xml:space="preserve">
         <value>There is a new version of this app available. Would you like to update now?</value>
     </data>

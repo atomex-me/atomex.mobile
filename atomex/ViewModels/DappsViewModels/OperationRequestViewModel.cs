@@ -195,8 +195,8 @@ namespace atomex.ViewModels.DappsViewModels
             DecimalExtensions.GetFormatWithPrecision((int) Math.Round(Math.Log10(TezosConfig.XtzDigitsMultiplier)));
 
         [Reactive] public IEnumerable<BaseBeaconOperationViewModel> Operations { get; set; }
-        private IEnumerable<ManagerOperationContent> InitialOperations { get; set; }
-        [Reactive] private byte[] ForgedOperations { get; set; }
+        private IEnumerable<ManagerOperationContent> _initialOperations { get; set; }
+        [Reactive] private byte[] _forgedOperations { get; set; }
         [ObservableAsProperty] public string OperationsBytes { get; set; }
         [Reactive] public BaseBeaconOperationViewModel SelectedOperation { get; set; }
         [Reactive] public decimal TotalFees { get; set; }
@@ -210,11 +210,11 @@ namespace atomex.ViewModels.DappsViewModels
         [Reactive] public bool UseDefaultFee { get; set; }
         [Reactive] public bool AutofillError { get; set; }
         [Reactive] public IQuotesProvider QuotesProvider { get; set; }
-        private TezosConfig Tezos { get; }
-        private static string BaseCurrencyCode => "USD";
-        private static string BaseCurrencyFormat => "$0.##";
-        private int? ByteCost { get; set; }
-        private int DefaultOperationGasLimit { get; }
+        private TezosConfig _tezos { get; }
+        private static string _baseCurrencyCode => "USD";
+        private static string _baseCurrencyFormat => "$0.##";
+        private int? _byteCost { get; set; }
+        private int _defaultOperationGasLimit { get; }
         [ObservableAsProperty] public bool IsSending { get; }
         [ObservableAsProperty] public bool IsRejecting { get; }
 
@@ -224,10 +224,10 @@ namespace atomex.ViewModels.DappsViewModels
             int operationGasLimit,
             TezosConfig tezosConfig)
         {
-            Tezos = tezosConfig;
+            _tezos = tezosConfig;
             ConnectedWalletAddress = connectedAddress;
-            InitialOperations = operations;
-            DefaultOperationGasLimit = operationGasLimit;
+            _initialOperations = operations;
+            _defaultOperationGasLimit = operationGasLimit;
 
             OnConfirmCommand
                 .IsExecuting
@@ -236,18 +236,6 @@ namespace atomex.ViewModels.DappsViewModels
             OnRejectCommand
                 .IsExecuting
                 .ToPropertyExInMainThread(this, vm => vm.IsRejecting);
-
-            // this.WhenAnyValue(vm => vm.SelectedOperation)
-            //     .WhereNotNull()
-            //     .SubscribeInMainThread(c =>
-            //     {
-            //         if (SelectedOperation is not TransactionContentViewModel operation) return;
-            //         SelectedOperation = null;
-            //
-            //         if (Uri.TryCreate($"{operation.ExplorerUri}{operation.Operation.Destination}", UriKind.Absolute,
-            //                 out var uri))
-            //             Launcher.OpenAsync(new Uri(uri.ToString()));
-            //     });
 
             this.WhenAnyValue(vm => vm.QuotesProvider)
                 .WhereNotNull()
@@ -300,7 +288,7 @@ namespace atomex.ViewModels.DappsViewModels
                         if (!int.TryParse(responseJObj?["constants"]?["byteCost"]?.ToString(), out var byteCost))
                             return;
 
-                        ByteCost = byteCost;
+                        _byteCost = byteCost;
                         TotalStorageFee = TezosConfig.MtzToTz(Convert.ToDecimal(byteCost)) * TotalStorageLimit;
                     }
                     catch (Exception ex)
@@ -324,8 +312,8 @@ namespace atomex.ViewModels.DappsViewModels
                 .Skip(1)
                 .SubscribeInMainThread(totalStorageLimit =>
                 {
-                    if (ByteCost != null)
-                        TotalStorageFee = TezosConfig.MtzToTz(Convert.ToDecimal(ByteCost)) * totalStorageLimit;
+                    if (_byteCost != null)
+                        TotalStorageFee = TezosConfig.MtzToTz(Convert.ToDecimal(_byteCost)) * totalStorageLimit;
                 });
 
             this.WhenAnyValue(vm => vm.UseDefaultFee)
@@ -339,7 +327,7 @@ namespace atomex.ViewModels.DappsViewModels
                 .Where(_ => !UseDefaultFee)
                 .SubscribeInMainThread(_ => { AutofillOperations(); });
 
-            this.WhenAnyValue(vm => vm.ForgedOperations)
+            this.WhenAnyValue(vm => vm._forgedOperations)
                 .WhereNotNull()
                 .Select(forgedOperations => forgedOperations.ToHexString())
                 .ToPropertyExInMainThread(this, vm => vm.OperationsBytes);
@@ -352,12 +340,12 @@ namespace atomex.ViewModels.DappsViewModels
         {
             AutofillError = false;
 
-            var rpc = new Rpc(Tezos.RpcNodeUri);
+            var rpc = new Rpc(_tezos.RpcNodeUri);
             var head = await rpc
                 .GetHeader()
                 .ConfigureAwait(false);
 
-            var operations = InitialOperations.Select(op => op switch
+            var operations = _initialOperations.Select(op => op switch
                 {
                     TransactionContent txContent => new TransactionContent
                     {
@@ -367,7 +355,7 @@ namespace atomex.ViewModels.DappsViewModels
                         Source = txContent.Source,
                         Fee = UseDefaultFee ? 0 : txContent.Fee,
                         Counter = txContent.Counter,
-                        GasLimit = UseDefaultFee ? DefaultOperationGasLimit : txContent.GasLimit,
+                        GasLimit = UseDefaultFee ? _defaultOperationGasLimit : txContent.GasLimit,
                         StorageLimit = UseDefaultFee ? DappsViewModel.StorageLimitPerOperation : txContent.StorageLimit
                     },
                     RevealContent revealContent => new RevealContent
@@ -376,7 +364,7 @@ namespace atomex.ViewModels.DappsViewModels
                         Source = revealContent.Source,
                         Fee = UseDefaultFee ? 0 : revealContent.Fee,
                         Counter = revealContent.Counter,
-                        GasLimit = UseDefaultFee ? DefaultOperationGasLimit : revealContent.GasLimit,
+                        GasLimit = UseDefaultFee ? _defaultOperationGasLimit : revealContent.GasLimit,
                         StorageLimit = UseDefaultFee
                             ? DappsViewModel.StorageLimitPerOperation
                             : revealContent.StorageLimit
@@ -408,13 +396,13 @@ namespace atomex.ViewModels.DappsViewModels
                     operations,
                     head["hash"]!.ToString(),
                     head["chain_id"]!.ToString(),
-                    Tezos)
+                    _tezos)
                 .ConfigureAwait(false);
 
             if (error != null)
                 AutofillError = true;
 
-            ForgedOperations = await TezosForge.ForgeAsync(
+            _forgedOperations = await TezosForge.ForgeAsync(
                 operations: operations,
                 branch: head["hash"]!.ToString());
 
@@ -434,7 +422,7 @@ namespace atomex.ViewModels.DappsViewModels
                             Id = index + 1,
                             Operation = transactionOperation,
                             QuotesProvider = QuotesProvider,
-                            ExplorerUri = Tezos.AddressExplorerUri
+                            ExplorerUri = _tezos.AddressExplorerUri
                         });
                         break;
                     case RevealContent revealOperation:
@@ -457,7 +445,7 @@ namespace atomex.ViewModels.DappsViewModels
                 }
             }
 
-            InitialOperations = operations;
+            _initialOperations = operations;
             Operations = operationsViewModel;
         }
 
@@ -466,7 +454,7 @@ namespace atomex.ViewModels.DappsViewModels
             if (sender is not IQuotesProvider quotesProvider)
                 return;
 
-            var xtzQuote = quotesProvider.GetQuote(TezosConfig.Xtz, BaseCurrencyCode);
+            var xtzQuote = quotesProvider.GetQuote(TezosConfig.Xtz, _baseCurrencyCode);
             TotalGasFeeInBase = TotalGasFee.SafeMultiply(xtzQuote?.Bid ?? 0);
             TotalStorageFeeInBase = TotalStorageFee.SafeMultiply(xtzQuote?.Bid ?? 0);
             TotalFeesInBase = TotalFees.SafeMultiply(xtzQuote?.Bid ?? 0);
@@ -487,14 +475,6 @@ namespace atomex.ViewModels.DappsViewModels
         public ReactiveCommand<Unit, Unit> OnRejectCommand =>
             _onRejectCommand ??= ReactiveCommand.CreateFromTask(async () => await OnReject());
 
-        public void Dispose()
-        {
-            foreach (var operation in Operations)
-            {
-                operation.Dispose();
-            }
-        }
-
         private ReactiveCommand<string, Unit> _changeTabCommand;
 
         public ReactiveCommand<string, Unit> ChangeTabCommand => _changeTabCommand ??=
@@ -508,5 +488,13 @@ namespace atomex.ViewModels.DappsViewModels
 
         public ReactiveCommand<Unit, Unit> OnOpenDetailsCommand =>
             _onOpenDetailsCommand ??= ReactiveCommand.Create(() => { IsDetailsOpened = !IsDetailsOpened; });
+        
+        public void Dispose()
+        {
+            foreach (var operation in Operations)
+            {
+                operation.Dispose();
+            }
+        }
     }
 }

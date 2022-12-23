@@ -658,6 +658,15 @@
                         Text="{helpers:Translate ChangingTxFeeWarning}"
                         Style="{DynamicResource WarningTextH5}" />
                 </StackLayout>
+                <StackLayout Spacing="0"
+                             BackgroundColor="{AppThemeBinding Dark={StaticResource ErrorPanelBackgroudColorDark}, Light={StaticResource ErrorPanelBackgroudColor}}"
+                             Padding="16,12"
+                             Margin="0,20"
+                             IsVisible="{Binding AutofillError}">
+                    <Label
+                        Text="{helpers:Translate FailedTxParametersWarning}"
+                        Style="{DynamicResource ErrorTextH5}" />
+                </StackLayout>
                 <Grid HorizontalOptions="Fill"
                       VerticalOptions="EndAndExpand"
                       ColumnSpacing="8"
