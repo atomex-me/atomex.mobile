@@ -571,7 +571,7 @@ namespace atomex.ViewModels.DappsViewModels
                         {
                             DappName = permissionInfo!.AppMetadata.Name,
                             DappLogo = permissionInfo!.AppMetadata.Icon,
-                            Payload = signRequest.Payload,
+                            BytesPayload = signRequest.Payload,
                             OnSign = async () =>
                             {
                                 var hdWallet = _app.Account.Wallet as HdWallet;
