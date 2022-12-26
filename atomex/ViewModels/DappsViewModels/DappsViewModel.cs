@@ -15,7 +15,6 @@ using atomex.Common;
 using Atomex.Common;
 using atomex.Models;
 using atomex.Resources;
-using Atomex.ViewModels;
 using atomex.Views.Dapps;
 using Atomex.Wallet;
 using Atomex.Wallet.Tezos;
@@ -67,8 +66,8 @@ namespace atomex.ViewModels.DappsViewModels
         public ReactiveCommand<Unit, Unit> OpenDappSiteCommand =>
             _openDappSiteCommand ??= ReactiveCommand.Create(() =>
             {
-                if (PermissionInfo?.AppMetadata?.AppUrl != null)
-                    Launcher.OpenAsync(new Uri(PermissionInfo.AppMetadata.AppUrl));
+                if (Uri.TryCreate(PermissionInfo?.AppMetadata?.AppUrl, UriKind.Absolute, out var uri))
+                    Launcher.OpenAsync(uri.ToString());
             });
 
         private ReactiveCommand<DappViewModel, Unit> _showDisconnectionCommand;
@@ -95,7 +94,7 @@ namespace atomex.ViewModels.DappsViewModels
 
     public class DappsViewModel : BaseViewModel
     {
-        private const int GasLimitPerBlock = 5_200_000;
+        private const int _gasLimitPerBlock = 5_200_000;
         public const int StorageLimitPerOperation = 5000;
         private readonly IAtomexApp _app;
         private INavigationService _navigationService;
@@ -190,7 +189,7 @@ namespace atomex.ViewModels.DappsViewModels
                 var pairingRequest = _beaconWalletClient.GetPairingRequest(qrCodeString);
                 await _beaconWalletClient.AddPeerAsync(pairingRequest);
 
-                Device.BeginInvokeOnMainThread(() => 
+                Device.BeginInvokeOnMainThread(() =>
                     _navigationService?.DisplaySnackBar(
                         SnackbarMessage.MessageType.Regular,
                         AppResources.ConnectedSuccessfully)
@@ -331,30 +330,42 @@ namespace atomex.ViewModels.DappsViewModels
                         }
 
                         var rpc = new Rpc(_tezos.RpcNodeUri);
+                        JObject account;
+                        bool revealed;
 
-                        var head = await rpc
-                            .GetHeader()
-                            .ConfigureAwait(false);
+                        try
+                        {
+                            var head = await rpc
+                                .GetHeader()
+                                .ConfigureAwait(false);
 
-                        var managerKey = await rpc
-                            .GetManagerKey(connectedWalletAddress.Address)
-                            .ConfigureAwait(false);
+                            var managerKey = await rpc
+                                .GetManagerKey(connectedWalletAddress.Address)
+                                .ConfigureAwait(false);
 
-                        var revealed = managerKey.Value<string>() != null;
+                            revealed = managerKey.Value<string>() != null;
+                            account = await rpc
+                                .GetAccountForBlock(head["hash"]!.ToString(), connectedWalletAddress.Address)
+                                .ConfigureAwait(false);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Error(ex, "Error during querying rpc, {Message}", ex.Message);
+                            await _beaconWalletClient.SendResponseAsync(
+                                receiverId: message.SenderId,
+                                response: new BeaconAbortedError(operationRequest.Id, _beaconWalletClient.SenderId));
 
-                        var account = await rpc
-                            .GetAccountForBlock(head["hash"]!.ToString(), connectedWalletAddress.Address)
-                            .ConfigureAwait(false);
+                            return;
+                        }
 
                         var counter = int.Parse(account["counter"]!.ToString());
-
                         var operations = new List<ManagerOperationContent>();
-                        
+
                         var totalOperations = revealed
                             ? operationRequest.OperationDetails.Count
                             : operationRequest.OperationDetails.Count + 1;
-                        
-                        var operationGasLimit = Math.Min(GasLimitPerBlock / totalOperations, 500_000);
+
+                        var operationGasLimit = Math.Min(_gasLimitPerBlock / totalOperations, 500_000);
 
                         if (!revealed)
                         {
@@ -402,60 +413,9 @@ namespace atomex.ViewModels.DappsViewModels
 
                             return txContent;
                         }));
-
-                        var error = await TezosOperationFiller
-                            .AutoFillAsync(
-                                operations,
-                                head["hash"]!.ToString(),
-                                head["chain_id"]!.ToString(),
-                                _tezos)
-                            .ConfigureAwait(false);
-
-                        if (error != null)
-                        {
-                            await _beaconWalletClient.SendResponseAsync(
-                                receiverId: message.SenderId,
-                                response: new TransactionInvalidBeaconError(operationRequest.Id,
-                                    _beaconWalletClient.SenderId));
-
-                            Log.Error("{@Sender}: error during AutoFill transaction, {@Msg}", "Beacon",
-                                error.Description);
-                            return;
-                        }
-
-                        var forgedOperations = await TezosForge.ForgeAsync(
-                            operations: operations,
-                            branch: head["hash"]!.ToString());
-
-                        var operationsViewModel = new ObservableCollection<BaseBeaconOperationViewModel>();
-
-                        foreach (var item in operations.Select((value, idx) => new {idx, value}))
-                        {
-                            var operation = item.value;
-                            var index = item.idx;
-
-                            switch (operation)
-                            {
-                                case TransactionContent transactionOperation:
-                                    operationsViewModel.Add(new TransactionContentViewModel
-                                    {
-                                        Id = index + 1,
-                                        Operation = transactionOperation,
-                                        QuotesProvider = _app.QuotesProvider,
-                                    });
-                                    break;
-                                case RevealContent revealOperation:
-                                    operationsViewModel.Add(new RevealContentViewModel
-                                    {
-                                        Id = index + 1,
-                                        Operation = revealOperation,
-                                        QuotesProvider = _app.QuotesProvider,
-                                    });
-                                    break;
-                            }
-                        }
                         
-                        var operationRequestViewModel = new OperationRequestViewModel(operations, connectedWalletAddress,
+                        var operationRequestViewModel = new OperationRequestViewModel(operations,
+                            connectedWalletAddress,
                             operationGasLimit, _tezos)
                         {
                             QuotesProvider = _app.QuotesProvider,
@@ -471,7 +431,7 @@ namespace atomex.ViewModels.DappsViewModels
                                 _navigationService?.ClosePopup();
                             },
 
-                            OnConfirm = async () =>
+                            OnConfirm = async forgedOperations =>
                             {
                                 var wallet = (HdWallet) _app.Account.Wallet;
                                 var keyStorage = wallet.KeyStorage;
@@ -501,7 +461,7 @@ namespace atomex.ViewModels.DappsViewModels
                                     return;
                                 }
 
-                                string operationId = null;
+                                string? operationId;
 
                                 try
                                 {
@@ -556,10 +516,17 @@ namespace atomex.ViewModels.DappsViewModels
                         {
                             dataToSign = Hex.FromString(signRequest.Payload);
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
-                            // data is not in HEX format
-                            dataToSign = Encoding.UTF8.GetBytes(signRequest.Payload);
+                            Log.Error(ex, "{Sender}: Can't parse income payload to sign, {Payload}", "Beacon",
+                                signRequest.Payload);
+
+                            await _beaconWalletClient.SendResponseAsync(
+                                receiverId: message.SenderId,
+                                response: new SignatureTypeNotSupportedBeaconError(signRequest.Id,
+                                    _beaconWalletClient.SenderId));
+
+                            return;
                         }
 
                         var permissionInfo =
@@ -626,57 +593,6 @@ namespace atomex.ViewModels.DappsViewModels
             catch (Exception ex)
             {
                 Log.Error(ex, "On beacon message received error");
-            }
-        }
-
-        private async Task<Result<(TezosTransaction tx, bool isSuccess, bool isRunSuccess)>> RunAutofillOperation(
-            string fromAddress,
-            string toAddress,
-            long amount,
-            JObject operationParams,
-            CancellationToken cancellationToken = default)
-        {
-            try
-            {
-                var tx = new TezosTransaction
-                {
-                    From = fromAddress,
-                    To = toAddress,
-                    Fee = 0,
-                    GasLimit = 1_000_000,
-                    StorageLimit = 5000,
-                    Amount = amount,
-                    Currency = _tezos.Name,
-                    CreationTime = DateTime.UtcNow,
-                    Params = operationParams,
-
-                    UseRun = true,
-                    UseSafeStorageLimit = false,
-                    UseOfflineCounter = false
-                };
-
-                var walletAddress = _app.Account
-                    .GetCurrencyAccount(TezosConfig.Xtz)
-                    .GetAddressAsync(fromAddress, cancellationToken)
-                    .WaitForResult();
-
-                using var securePublicKey = _app.Account.Wallet.GetPublicKey(
-                    currency: _tezos,
-                    keyIndex: walletAddress.KeyIndex,
-                    keyType: walletAddress.KeyType);
-
-                var (isSuccess, isRunSuccess, _) = await tx.FillOperationsAsync(
-                    securePublicKey: securePublicKey,
-                    tezosConfig: _tezos,
-                    headOffset: TezosConfig.HeadOffset,
-                    cancellationToken: cancellationToken);
-
-                return (tx, isSuccess, isRunSuccess);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "Autofill transaction error");
-                return new Error(Errors.TransactionCreationError, "Autofill transaction error. Try again later.");
             }
         }
 

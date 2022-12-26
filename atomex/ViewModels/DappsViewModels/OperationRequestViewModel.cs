@@ -34,16 +34,8 @@ namespace atomex.ViewModels.DappsViewModels
         public abstract string JsonStringOperation { get; }
         [Reactive] public IQuotesProvider QuotesProvider { get; set; }
 
-        // [Reactive] public string CopyButtonName { get; set; }
-        // [Reactive] public string DetailsButtonName { get; set; }
-        // [ObservableAsProperty] public bool IsCopied { get; }
-
         protected BaseBeaconOperationViewModel()
         {
-            // CopyCommand
-            //     .IsExecuting
-            //     .ToPropertyExInMainThread(this, vm => vm.IsCopied);
-
             this.WhenAnyValue(vm => vm.QuotesProvider)
                 .WhereNotNull()
                 .Take(1)
@@ -52,31 +44,11 @@ namespace atomex.ViewModels.DappsViewModels
                     quotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
                     OnQuotesUpdatedEventHandler(quotesProvider, EventArgs.Empty);
                 });
-
-            // CopyButtonName = AppResources.CopyButton;
-            // DetailsButtonName = AppResources.DisplayTxDetails;
         }
 
         protected abstract void OnQuotesUpdatedEventHandler(object sender, EventArgs args);
 
-        // private ReactiveCommand<string, Unit> _copyCommand;
-        //
-        // public ReactiveCommand<string, Unit> CopyCommand => _copyCommand ??= ReactiveCommand.CreateFromTask<string>(
-        //     async data =>
-        //     {
-        //         try
-        //         {
-        //             CopyButtonName = AppResources.Copied;
-        //             await Clipboard.SetTextAsync(data);
-        //             await Task.Delay(1500);
-        //             CopyButtonName = AppResources.CopyButton;
-        //         }
-        //         catch (Exception e)
-        //         {
-        //             CopyButtonName = AppResources.CopyButton;
-        //             Log.Error(e, "Copy to clipboard error");
-        //         }
-        //     });
+
 
         public void Dispose()
         {
@@ -141,7 +113,7 @@ namespace atomex.ViewModels.DappsViewModels
                 .ToPropertyExInMainThread(this, vm => vm.Entrypoint);
         }
 
-        protected override void OnQuotesUpdatedEventHandler(object? sender, EventArgs args)
+        protected override void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
             if (sender is not IQuotesProvider quotesProvider)
                 return;
@@ -153,7 +125,7 @@ namespace atomex.ViewModels.DappsViewModels
         }
 
         private ReactiveCommand<Unit, Unit> _openDestinationInExplorer;
-        
+
         public ReactiveCommand<Unit, Unit> OpenDestinationInExplorer => _openDestinationInExplorer ??=
             ReactiveCommand.Create(() =>
             {
@@ -197,8 +169,8 @@ namespace atomex.ViewModels.DappsViewModels
         [Reactive] public IEnumerable<BaseBeaconOperationViewModel> Operations { get; set; }
         private IEnumerable<ManagerOperationContent> _initialOperations { get; set; }
         [Reactive] private byte[] _forgedOperations { get; set; }
+        [Reactive] public string RawOperations { get; set; }
         [ObservableAsProperty] public string OperationsBytes { get; set; }
-        [Reactive] public BaseBeaconOperationViewModel SelectedOperation { get; set; }
         [Reactive] public decimal TotalFees { get; set; }
         [Reactive] public decimal TotalFeesInBase { get; set; }
         [Reactive] public int TotalGasLimit { get; set; }
@@ -217,6 +189,9 @@ namespace atomex.ViewModels.DappsViewModels
         private int _defaultOperationGasLimit { get; }
         [ObservableAsProperty] public bool IsSending { get; }
         [ObservableAsProperty] public bool IsRejecting { get; }
+        
+        [Reactive] public string CopyButtonName { get; set; }
+        [ObservableAsProperty] public bool IsCopied { get; }
 
         public OperationRequestViewModel(
             IEnumerable<ManagerOperationContent> operations,
@@ -228,6 +203,10 @@ namespace atomex.ViewModels.DappsViewModels
             ConnectedWalletAddress = connectedAddress;
             _initialOperations = operations;
             _defaultOperationGasLimit = operationGasLimit;
+            
+            CopyCommand
+                .IsExecuting
+                .ToPropertyExInMainThread(this, vm => vm.IsCopied);
 
             OnConfirmCommand
                 .IsExecuting
@@ -332,6 +311,7 @@ namespace atomex.ViewModels.DappsViewModels
                 .Select(forgedOperations => forgedOperations.ToHexString())
                 .ToPropertyExInMainThread(this, vm => vm.OperationsBytes);
 
+            CopyButtonName = AppResources.CopyButton;
             SelectedTab = OperationRequestTab.Preview;
             UseDefaultFee = true;
         }
@@ -341,9 +321,18 @@ namespace atomex.ViewModels.DappsViewModels
             AutofillError = false;
 
             var rpc = new Rpc(_tezos.RpcNodeUri);
-            var head = await rpc
-                .GetHeader()
-                .ConfigureAwait(false);
+            JObject head;
+            try
+            {
+                head = await rpc
+                    .GetHeader()
+                    .ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error during querying rpc, {Message}", ex.Message);
+                return;
+            }
 
             var operations = _initialOperations.Select(op => op switch
                 {
@@ -373,22 +362,13 @@ namespace atomex.ViewModels.DappsViewModels
                 })
                 .ToList();
 
+            var avgFee = Convert.ToInt64(TotalGasFee * TezosConfig.XtzDigitsMultiplier / operations.Count);
+
             if (!UseDefaultFee)
             {
-                var avgFee = Convert.ToInt64(TotalGasFee * TezosConfig.XtzDigitsMultiplier / operations.Count);
-
                 foreach (var op in operations)
                 {
                     op.Fee = avgFee;
-                }
-
-                if (TotalStorageLimit != 0)
-                {
-                    foreach (var op in operations.Where(op => op.StorageLimit != 0))
-                    {
-                        op.StorageLimit = TotalStorageLimit;
-                        break;
-                    }
                 }
             }
 
@@ -399,12 +379,30 @@ namespace atomex.ViewModels.DappsViewModels
                     _tezos)
                 .ConfigureAwait(false);
 
+            if (!UseDefaultFee)
+            {
+                foreach (var op in operations)
+                {
+                    op.Fee = avgFee;
+                }
+            }
+
             if (error != null)
                 AutofillError = true;
 
+            var branch = head["hash"]!.ToString();
+
             _forgedOperations = await TezosForge.ForgeAsync(
                 operations: operations,
-                branch: head["hash"]!.ToString());
+                branch: branch);
+
+            var rawJObj = new JObject
+            {
+                ["branch"] = branch,
+                ["contents"] = JArray.Parse(JsonConvert.SerializeObject(operations))
+            };
+
+            RawOperations = JsonConvert.SerializeObject(rawJObj, Formatting.Indented);
 
             if (!UseDefaultFee && Operations != null) return;
 
@@ -462,13 +460,17 @@ namespace atomex.ViewModels.DappsViewModels
             Log.Debug("Quotes updated for Operation Request View");
         }
 
-        public Func<Task> OnConfirm { get; set; }
+        public Func<byte[], Task> OnConfirm { get; set; }
         public Func<Task> OnReject { get; set; }
 
         private ReactiveCommand<Unit, Unit> _onConfirmCommand;
 
         public ReactiveCommand<Unit, Unit> OnConfirmCommand =>
-            _onConfirmCommand ??= ReactiveCommand.CreateFromTask(async () => await OnConfirm());
+            _onConfirmCommand ??= ReactiveCommand.CreateFromTask(async () =>
+            {
+                if (_forgedOperations != null)
+                    await OnConfirm(_forgedOperations);
+            });
 
         private ReactiveCommand<Unit, Unit> _onRejectCommand;
 
@@ -483,14 +485,36 @@ namespace atomex.ViewModels.DappsViewModels
                 Enum.TryParse(value, out OperationRequestTab selectedTab);
                 SelectedTab = selectedTab;
             });
+        
+        private ReactiveCommand<string, Unit> _copyCommand;
+        
+        public ReactiveCommand<string, Unit> CopyCommand => _copyCommand ??= ReactiveCommand.CreateFromTask<string>(
+            async data =>
+            {
+                try
+                {
+                    CopyButtonName = AppResources.Copied;
+                    await Clipboard.SetTextAsync(data);
+                    await Task.Delay(1500);
+                    CopyButtonName = AppResources.CopyButton;
+                }
+                catch (Exception e)
+                {
+                    CopyButtonName = AppResources.CopyButton;
+                    Log.Error(e, "Copy to clipboard error");
+                }
+            });
 
         private ReactiveCommand<Unit, Unit> _onOpenDetailsCommand;
 
         public ReactiveCommand<Unit, Unit> OnOpenDetailsCommand =>
             _onOpenDetailsCommand ??= ReactiveCommand.Create(() => { IsDetailsOpened = !IsDetailsOpened; });
-        
+
         public void Dispose()
         {
+            if (QuotesProvider != null)
+                QuotesProvider.QuotesUpdated -= OnQuotesUpdatedEventHandler;
+            
             foreach (var operation in Operations)
             {
                 operation.Dispose();

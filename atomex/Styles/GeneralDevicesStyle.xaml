@@ -197,6 +197,13 @@
     <Style x:Key="WarningTextH6" TargetType="Label" BasedOn="{StaticResource WarningText}">
         <Setter Property="FontSize" Value="12"/>
     </Style>
+    <Style x:Key="WarninPanelText" TargetType="Label">
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource WarningPanelTextColorDark}, Light={StaticResource WarningPanelTextColor}}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+    </Style>
+    <Style x:Key="WarningPanelTextH5" TargetType="Label" BasedOn="{StaticResource WarninPanelText}">
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
     <Style x:Key="HintText" TargetType="Label">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"/>
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
