@@ -205,9 +205,10 @@
                         </Button.Triggers>
                     </Button>
                 </Grid>
-                <ScrollView BackgroundColor="{AppThemeBinding Dark={StaticResource TabContentBackgroundColorDark}, Light={StaticResource TabContentBackgroundColor}}"
-                            HeightRequest="76"
-                            IsVisible="False">
+                <ScrollView
+                    BackgroundColor="{AppThemeBinding Dark={StaticResource TabContentBackgroundColorDark}, Light={StaticResource TabContentBackgroundColor}}"
+                    HeightRequest="76"
+                    IsVisible="False">
                     <ScrollView.Triggers>
                         <DataTrigger TargetType="ScrollView"
                                      Binding="{Binding Operations.Count, Mode=OneWay, Converter={StaticResource GreaterThanValue}, ConverterParameter=2}"
@@ -245,20 +246,73 @@
                                         <ColumnDefinition Width="40" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <Image Grid.RowSpan="2"
-                                           Source="{Binding DestinationIcon}"
-                                           WidthRequest="40"
+                                    <Frame Grid.RowSpan="2"
+                                           Padding="0"
+                                           HasShadow="False"
+                                           CornerRadius="20"
                                            HeightRequest="40"
-                                           VerticalOptions="Center" />
+                                           WidthRequest="40"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center"
+                                           BackgroundColor="{AppThemeBinding Dark={StaticResource IconFrameBackgroundColorDark}, Light={StaticResource IconFrameBackgroundColor}}">
+                                        <Image Source="{Binding DestinationIcon}"
+                                               WidthRequest="40"
+                                               HeightRequest="40"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center">
+                                            <Image.Triggers>
+                                                <DataTrigger TargetType="Image"
+                                                             Binding="{Binding Operation.Kind}"
+                                                             Value="reveal">
+                                                    <Setter Property="Source"
+                                                            Value="ic_search" />
+                                                    <Setter Property="WidthRequest"
+                                                            Value="24" />
+                                                    <Setter Property="HeightRequest"
+                                                            Value="24" />
+                                                </DataTrigger>
+                                            </Image.Triggers>
+                                        </Image>
+                                    </Frame>
                                     <Label Grid.Column="1"
                                            Style="{DynamicResource MainTextH4}"
                                            HorizontalTextAlignment="Start"
                                            VerticalTextAlignment="Center"
                                            LineBreakMode="TailTruncation">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Operation.Kind}"
+                                                         Value="reveal">
+                                                <Setter Property="IsVisible"
+                                                        Value="False" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span Text="{Binding Entrypoint}" />
-                                                <Span Text="{Binding DestinationAlias}"></Span>
+                                                <Span Text="{Binding DestinationAlias}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label Grid.Column="1"
+                                           Grid.RowSpan="2"
+                                           Style="{DynamicResource MainTextH4}"
+                                           HorizontalTextAlignment="Start"
+                                           VerticalTextAlignment="Center"
+                                           LineBreakMode="TailTruncation"
+                                           IsVisible="False">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Operation.Kind}"
+                                                         Value="reveal">
+                                                <Setter Property="IsVisible"
+                                                        Value="True" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="Reveal for " />
+                                                <Span Text="{Binding Operation.Source}" />
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
@@ -266,12 +320,19 @@
                                            Grid.Column="1"
                                            Style="{DynamicResource AdditionalTextH4}"
                                            VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="Start"
-                                           Text="">
+                                           HorizontalTextAlignment="Start">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Operation.Kind}"
+                                                         Value="reveal">
+                                                <Setter Property="IsVisible"
+                                                        Value="False" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding AmountInTez, StringFormat='{0:0.########}'}" />
-                                                <Span Text=" XTZ" />
+                                                <Span Text="{Binding AmountInTez, StringFormat='{0:0.######} XTZ /'}" />
+                                                <Span Text="{Binding AmountInBase, StringFormat=' ${0:f2}'}" />
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
@@ -297,8 +358,8 @@
                     </AbsoluteLayout.Triggers>
                     <ScrollView HeightRequest="190">
                         <Label Style="{DynamicResource MainTextH5}"
-                               Text="{Binding RawOperations}" 
-                               Padding="16,0"/>
+                               Text="{Binding RawOperations}"
+                               Padding="16,0" />
                     </ScrollView>
                     <Frame Style="{DynamicResource AdditionalClickableFrame}"
                            VerticalOptions="EndAndExpand"
@@ -366,9 +427,10 @@
                         </StackLayout>
                     </Frame>
                 </AbsoluteLayout>
-                <ScrollView BackgroundColor="{AppThemeBinding Dark={StaticResource TabContentBackgroundColorDark}, Light={StaticResource TabContentBackgroundColor}}"
-                            HeightRequest="190"
-                            IsVisible="False">
+                <ScrollView
+                    BackgroundColor="{AppThemeBinding Dark={StaticResource TabContentBackgroundColorDark}, Light={StaticResource TabContentBackgroundColor}}"
+                    HeightRequest="190"
+                    IsVisible="False">
                     <ScrollView.Triggers>
                         <DataTrigger TargetType="ScrollView"
                                      Binding="{Binding SelectedTab}"
@@ -577,6 +639,8 @@
                                                     Keyboard="Numeric"
                                                     Margin="16,0"
                                                     Style="{DynamicResource EntryStyle}"
+                                                    IsReadOnly="True"
+                                                    Opacity="0.5"
                                                     FontSize="16"
                                                     HorizontalTextAlignment="Start"
                                                     VerticalTextAlignment="Center" />

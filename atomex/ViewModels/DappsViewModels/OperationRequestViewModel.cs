@@ -49,7 +49,6 @@ namespace atomex.ViewModels.DappsViewModels
         protected abstract void OnQuotesUpdatedEventHandler(object sender, EventArgs args);
 
 
-
         public void Dispose()
         {
             if (QuotesProvider != null)
@@ -189,7 +188,7 @@ namespace atomex.ViewModels.DappsViewModels
         private int _defaultOperationGasLimit { get; }
         [ObservableAsProperty] public bool IsSending { get; }
         [ObservableAsProperty] public bool IsRejecting { get; }
-        
+
         [Reactive] public string CopyButtonName { get; set; }
         [ObservableAsProperty] public bool IsCopied { get; }
 
@@ -203,7 +202,7 @@ namespace atomex.ViewModels.DappsViewModels
             ConnectedWalletAddress = connectedAddress;
             _initialOperations = operations;
             _defaultOperationGasLimit = operationGasLimit;
-            
+
             CopyCommand
                 .IsExecuting
                 .ToPropertyExInMainThread(this, vm => vm.IsCopied);
@@ -334,117 +333,126 @@ namespace atomex.ViewModels.DappsViewModels
                 return;
             }
 
-            var operations = _initialOperations.Select(op => op switch
-                {
-                    TransactionContent txContent => new TransactionContent
+            try
+            {
+                var operations = _initialOperations.Select(op => op switch
                     {
-                        Amount = txContent.Amount,
-                        Destination = txContent.Destination,
-                        Parameters = txContent.Parameters,
-                        Source = txContent.Source,
-                        Fee = UseDefaultFee ? 0 : txContent.Fee,
-                        Counter = txContent.Counter,
-                        GasLimit = UseDefaultFee ? _defaultOperationGasLimit : txContent.GasLimit,
-                        StorageLimit = UseDefaultFee ? DappsViewModel.StorageLimitPerOperation : txContent.StorageLimit
-                    },
-                    RevealContent revealContent => new RevealContent
+                        TransactionContent txContent => new TransactionContent
+                        {
+                            Amount = txContent.Amount,
+                            Destination = txContent.Destination,
+                            Parameters = txContent.Parameters,
+                            Source = txContent.Source,
+                            Fee = UseDefaultFee ? 0 : txContent.Fee,
+                            Counter = txContent.Counter,
+                            GasLimit = UseDefaultFee ? _defaultOperationGasLimit : txContent.GasLimit,
+                            StorageLimit = UseDefaultFee
+                                ? DappsViewModel.StorageLimitPerOperation
+                                : txContent.StorageLimit
+                        },
+                        RevealContent revealContent => new RevealContent
+                        {
+                            PublicKey = revealContent.PublicKey,
+                            Source = revealContent.Source,
+                            Fee = UseDefaultFee ? 0 : revealContent.Fee,
+                            Counter = revealContent.Counter,
+                            GasLimit = UseDefaultFee ? _defaultOperationGasLimit : revealContent.GasLimit,
+                            StorageLimit = UseDefaultFee
+                                ? DappsViewModel.StorageLimitPerOperation
+                                : revealContent.StorageLimit
+                        },
+                        _ => op
+                    })
+                    .ToList();
+
+                var avgFee = Convert.ToInt64(TotalGasFee * TezosConfig.XtzDigitsMultiplier / operations.Count);
+
+                if (!UseDefaultFee)
+                {
+                    foreach (var op in operations)
                     {
-                        PublicKey = revealContent.PublicKey,
-                        Source = revealContent.Source,
-                        Fee = UseDefaultFee ? 0 : revealContent.Fee,
-                        Counter = revealContent.Counter,
-                        GasLimit = UseDefaultFee ? _defaultOperationGasLimit : revealContent.GasLimit,
-                        StorageLimit = UseDefaultFee
-                            ? DappsViewModel.StorageLimitPerOperation
-                            : revealContent.StorageLimit
-                    },
-                    _ => op
-                })
-                .ToList();
-
-            var avgFee = Convert.ToInt64(TotalGasFee * TezosConfig.XtzDigitsMultiplier / operations.Count);
-
-            if (!UseDefaultFee)
-            {
-                foreach (var op in operations)
-                {
-                    op.Fee = avgFee;
+                        op.Fee = avgFee;
+                    }
                 }
-            }
 
-            var error = await TezosOperationFiller.AutoFillAsync(
-                    operations,
-                    head["hash"]!.ToString(),
-                    head["chain_id"]!.ToString(),
-                    _tezos)
-                .ConfigureAwait(false);
+                var error = await TezosOperationFiller.AutoFillAsync(
+                        operations,
+                        head["hash"]!.ToString(),
+                        head["chain_id"]!.ToString(),
+                        _tezos)
+                    .ConfigureAwait(false);
 
-            if (!UseDefaultFee)
-            {
-                foreach (var op in operations)
+                if (!UseDefaultFee)
                 {
-                    op.Fee = avgFee;
+                    foreach (var op in operations)
+                    {
+                        op.Fee = avgFee;
+                    }
                 }
-            }
 
-            if (error != null)
-                AutofillError = true;
+                if (error != null)
+                    AutofillError = true;
 
-            var branch = head["hash"]!.ToString();
+                var branch = head["hash"]!.ToString();
 
-            _forgedOperations = await TezosForge.ForgeAsync(
-                operations: operations,
-                branch: branch);
+                _forgedOperations = await TezosForge.ForgeAsync(
+                    operations: operations,
+                    branch: branch);
 
-            var rawJObj = new JObject
-            {
-                ["branch"] = branch,
-                ["contents"] = JArray.Parse(JsonConvert.SerializeObject(operations))
-            };
-
-            RawOperations = JsonConvert.SerializeObject(rawJObj, Formatting.Indented);
-
-            if (!UseDefaultFee && Operations != null) return;
-
-            var operationsViewModel = new ObservableCollection<BaseBeaconOperationViewModel>();
-            foreach (var item in operations.Select((value, idx) => new {idx, value}))
-            {
-                var operation = item.value;
-                var index = item.idx;
-
-                switch (operation)
+                var rawJObj = new JObject
                 {
-                    case TransactionContent transactionOperation:
-                        operationsViewModel.Add(new TransactionContentViewModel
-                        {
-                            Id = index + 1,
-                            Operation = transactionOperation,
-                            QuotesProvider = QuotesProvider,
-                            ExplorerUri = _tezos.AddressExplorerUri
-                        });
-                        break;
-                    case RevealContent revealOperation:
-                        operationsViewModel.Add(new RevealContentViewModel
-                        {
-                            Id = index + 1,
-                            Operation = revealOperation,
-                            QuotesProvider = QuotesProvider,
-                        });
-                        break;
-                }
-            }
+                    ["branch"] = branch,
+                    ["contents"] = JArray.Parse(JsonConvert.SerializeObject(operations))
+                };
 
-            if (Operations != null)
-            {
-                foreach (var op in Operations)
+                RawOperations = JsonConvert.SerializeObject(rawJObj, Formatting.Indented);
+
+                if (!UseDefaultFee && Operations != null) return;
+
+                var operationsViewModel = new ObservableCollection<BaseBeaconOperationViewModel>();
+                foreach (var item in operations.Select((value, idx) => new {idx, value}))
                 {
-                    if (op is IDisposable disposable)
-                        disposable.Dispose();
-                }
-            }
+                    var operation = item.value;
+                    var index = item.idx;
 
-            _initialOperations = operations;
-            Operations = operationsViewModel;
+                    switch (operation)
+                    {
+                        case TransactionContent transactionOperation:
+                            operationsViewModel.Add(new TransactionContentViewModel
+                            {
+                                Id = index + 1,
+                                Operation = transactionOperation,
+                                QuotesProvider = QuotesProvider,
+                                ExplorerUri = _tezos.AddressExplorerUri
+                            });
+                            break;
+                        case RevealContent revealOperation:
+                            operationsViewModel.Add(new RevealContentViewModel
+                            {
+                                Id = index + 1,
+                                Operation = revealOperation,
+                                QuotesProvider = QuotesProvider,
+                            });
+                            break;
+                    }
+                }
+
+                if (Operations != null)
+                {
+                    foreach (var op in Operations)
+                    {
+                        if (op is IDisposable disposable)
+                            disposable.Dispose();
+                    }
+                }
+
+                _initialOperations = operations;
+                Operations = operationsViewModel;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Autofill operations error");
+            }
         }
 
         private void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
@@ -485,9 +493,9 @@ namespace atomex.ViewModels.DappsViewModels
                 Enum.TryParse(value, out OperationRequestTab selectedTab);
                 SelectedTab = selectedTab;
             });
-        
+
         private ReactiveCommand<string, Unit> _copyCommand;
-        
+
         public ReactiveCommand<string, Unit> CopyCommand => _copyCommand ??= ReactiveCommand.CreateFromTask<string>(
             async data =>
             {
@@ -514,7 +522,7 @@ namespace atomex.ViewModels.DappsViewModels
         {
             if (QuotesProvider != null)
                 QuotesProvider.QuotesUpdated -= OnQuotesUpdatedEventHandler;
-            
+
             foreach (var operation in Operations)
             {
                 operation.Dispose();
