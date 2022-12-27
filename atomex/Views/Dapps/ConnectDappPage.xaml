@@ -46,7 +46,8 @@
                    BackgroundColor="{AppThemeBinding Dark={StaticResource TabSwitcherBackgroundColorDark}, Light={StaticResource TabSwitcherBackgroundColor}}" />
             <Button Text="{helpers:Translate ScanQr}"
                     Style="{DynamicResource TabButton}"
-                    Command="{Binding ChangeConnectionTypeCommand}">
+                    Command="{Binding ChangeConnectionTypeCommand}"
+                    Clicked="EnableScannerOverlay">
                 <Button.CommandParameter>
                     <x:Boolean>True</x:Boolean>
                 </Button.CommandParameter>
@@ -72,7 +73,8 @@
             <Button Grid.Column="1"
                     Style="{DynamicResource TabButton}"
                     Text="{helpers:Translate PasteQr}"
-                    Command="{Binding ChangeConnectionTypeCommand}">
+                    Command="{Binding ChangeConnectionTypeCommand}"
+                    Clicked="DisableScannerOverlay">
                 <Button.CommandParameter>
                     <x:Boolean>False</x:Boolean>
                 </Button.CommandParameter>
@@ -103,6 +105,12 @@
                                 IsAnalyzing="{Binding IsAnalyzing}"
                                 IsVisible="{Binding IsScanQrCodeTab}"
                                 IsEnabled="{Binding IsScanQrCodeTab}" />
+        <zxing:ZXingDefaultOverlay Grid.Row="1"
+                                   x:Name="Overlay"
+                                   IsVisible="{Binding IsScanQrCodeTab}"
+                                   IsEnabled="{Binding IsScanQrCodeTab}"
+                                   TopText="{helpers:Translate ScannerTopOverlayText}"
+                                   BottomText="{helpers:Translate ScannerBottomOverlayText}" />
         <StackLayout Grid.Row="1"
                      Spacing="16"
                      IsVisible="{Binding IsScanQrCodeTab, Mode=OneWay, Converter={StaticResource InverseBool}, FallbackValue='False', TargetNullValue='False'}">

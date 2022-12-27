@@ -224,12 +224,12 @@
                         </DataTrigger>
                     </ScrollView.Triggers>
                     <StackLayout BindableLayout.ItemsSource="{Binding Operations}"
-                                 BackgroundColor="Transparent"
+                                 VerticalOptions="Start"
                                  Spacing="0">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
                                 <Grid HorizontalOptions="Fill"
-                                      VerticalOptions="EndAndExpand"
+                                      VerticalOptions="Start"
                                       ColumnSpacing="12"
                                       RowSpacing="0"
                                       Margin="16">
@@ -472,8 +472,8 @@
                                HorizontalTextAlignment="Start"
                                VerticalTextAlignment="Center" />
                         <Image Grid.Column="1"
-                               Source="DownArrow"
-                               HeightRequest="8"
+                               Source="ic_dropdown"
+                               HeightRequest="4"
                                WidthRequest="8"
                                VerticalOptions="Center"
                                HorizontalOptions="Start"
@@ -490,7 +490,7 @@
                     </Grid>
                     <Grid ColumnSpacing="8"
                           RowSpacing="4"
-                          Margin="24,8">
+                          Margin="24,8,16,8">
                         <Grid.IsVisible>
                             <MultiBinding Converter="{StaticResource AllTrueConverter}">
                                 <Binding Path="IsDetailsOpened" />
@@ -796,7 +796,7 @@
                 <StackLayout Spacing="0"
                              BackgroundColor="{AppThemeBinding Dark={StaticResource WarningPanelBackgroudColorDark}, Light={StaticResource WarningPanelBackgroudColor}}"
                              Padding="16,12"
-                             Margin="0,20"
+                             Margin="0,8"
                              IsVisible="{Binding UseDefaultFee, Converter={StaticResource InverseBool}}">
                     <Label
                         Text="{helpers:Translate ChangingTxFeeWarning}"
@@ -805,7 +805,7 @@
                 <StackLayout Spacing="0"
                              BackgroundColor="{AppThemeBinding Dark={StaticResource ErrorPanelBackgroudColorDark}, Light={StaticResource ErrorPanelBackgroudColor}}"
                              Padding="16,12"
-                             Margin="0,20"
+                             Margin="0,8"
                              IsVisible="{Binding AutofillError}">
                     <Label
                         Text="{helpers:Translate FailedTxParametersWarning}"
@@ -815,6 +815,7 @@
                       VerticalOptions="EndAndExpand"
                       ColumnSpacing="8"
                       RowSpacing="12"
+                      Margin="0,20,0,0"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource ButtonContainerColorDark}, Light={StaticResource ButtonContainerColor}}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1" />
