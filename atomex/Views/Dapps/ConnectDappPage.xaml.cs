@@ -13,13 +13,31 @@ namespace atomex.Views.Dapps
             InitializeComponent();
             BindingContext = connectDappViewModel;
         }
-        private void DisableScannerOverlay(object sender, EventArgs e)
+        private void DisableScanner(object sender, EventArgs e)
         {
-            Overlay.IsVisible = false;
+            SwitchScanner(false);
         }
-        private void EnableScannerOverlay(object sender, EventArgs e)
+        private void EnableScanner(object sender, EventArgs e)
         {
-            Overlay.IsVisible = true;
+            SwitchScanner(true);
+        }
+
+        private void SwitchScanner(bool flag)
+        {
+            Scanner.IsScanning = flag;
+            Scanner.IsAnalyzing = flag;
+            Overlay.IsVisible = flag;
+        }
+
+        protected override void OnDisappearing()
+        {
+            SwitchScanner(false); 
+            
+            if (BindingContext is ConnectDappViewModel)
+            {
+                var vm = (ConnectDappViewModel)BindingContext;
+                vm?.Reset();
+            }
         }
     }
 }

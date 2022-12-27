@@ -47,7 +47,7 @@
             <Button Text="{helpers:Translate ScanQr}"
                     Style="{DynamicResource TabButton}"
                     Command="{Binding ChangeConnectionTypeCommand}"
-                    Clicked="EnableScannerOverlay">
+                    Clicked="EnableScanner">
                 <Button.CommandParameter>
                     <x:Boolean>True</x:Boolean>
                 </Button.CommandParameter>
@@ -74,7 +74,7 @@
                     Style="{DynamicResource TabButton}"
                     Text="{helpers:Translate PasteQr}"
                     Command="{Binding ChangeConnectionTypeCommand}"
-                    Clicked="DisableScannerOverlay">
+                    Clicked="DisableScanner">
                 <Button.CommandParameter>
                     <x:Boolean>False</x:Boolean>
                 </Button.CommandParameter>
@@ -99,16 +99,17 @@
             </Button>
         </Grid>
         <zxing:ZXingScannerView Grid.Row="1"
+                                x:Name="Scanner"
                                 Result="{Binding ScanResult, Mode=TwoWay}"
                                 ScanResultCommand="{Binding ScanResultCommand}"
-                                IsScanning="{Binding IsScanning}"
-                                IsAnalyzing="{Binding IsAnalyzing}"
-                                IsVisible="{Binding IsScanQrCodeTab}"
-                                IsEnabled="{Binding IsScanQrCodeTab}" />
+                                IsScanning="{Binding IsScanning, Mode=TwoWay}"
+                                IsAnalyzing="{Binding IsAnalyzing, Mode=TwoWay}"
+                                IsVisible="{Binding IsScanQrCodeTab, Mode=TwoWay}"
+                                IsEnabled="{Binding IsScanQrCodeTab, Mode=TwoWay}" />
         <zxing:ZXingDefaultOverlay Grid.Row="1"
                                    x:Name="Overlay"
-                                   IsVisible="{Binding IsScanQrCodeTab}"
-                                   IsEnabled="{Binding IsScanQrCodeTab}"
+                                   IsVisible="{Binding IsScanQrCodeTab, Mode=TwoWay}"
+                                   IsEnabled="{Binding IsScanQrCodeTab, Mode=TwoWay}"
                                    TopText="{helpers:Translate ScannerTopOverlayText}"
                                    BottomText="{helpers:Translate ScannerBottomOverlayText}" />
         <StackLayout Grid.Row="1"

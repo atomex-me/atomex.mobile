@@ -15,14 +15,14 @@ namespace atomex.ViewModels.DappsViewModels
     public class ConnectDappViewModel : BaseViewModel
     {
         protected INavigationService _navigationService;
-        
+
         public Func<string, Task> OnConnect;
         [Reactive] public string QrCodeString { get; set; }
 
         [Reactive] public Result ScanResult { get; set; }
         [Reactive] public bool IsScanning { get; set; }
-        [Reactive] public bool IsAnalyzing { get; set; }  
-        
+        [Reactive] public bool IsAnalyzing { get; set; }
+
         [Reactive] public bool IsScanQrCodeTab { get; set; }
 
         public ConnectDappViewModel(INavigationService navigationService)
@@ -30,38 +30,39 @@ namespace atomex.ViewModels.DappsViewModels
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             IsScanQrCodeTab = true;
         }
-        
+
         private ReactiveCommand<Unit, Unit> _connectCommand;
-        public ReactiveCommand<Unit, Unit> ConnectCommand => 
+
+        public ReactiveCommand<Unit, Unit> ConnectCommand =>
             _connectCommand ??= ReactiveCommand.Create(() =>
             {
                 IsScanning = false;
                 IsAnalyzing = false;
-                
+
                 Device.InvokeOnMainThreadAsync(async () =>
                 {
                     _navigationService?.ClosePage(TabNavigation.Portfolio);
-                    
+
                     if (QrCodeString != null)
                     {
                         _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular,
                             AppResources.Connecting + "...");
                         await OnConnect(QrCodeString);
                     }
-                    
+
                     QrCodeString = string.Empty;
                     this.RaisePropertyChanged(nameof(QrCodeString));
                 });
             });
-        
+
         private ReactiveCommand<bool, Unit> _changeConnectionTypeCommand;
-        
+
         public ReactiveCommand<bool, Unit> ChangeConnectionTypeCommand =>
             _changeConnectionTypeCommand ??= _changeConnectionTypeCommand = ReactiveCommand.Create<bool>(value =>
             {
                 IsScanQrCodeTab = value;
             });
-        
+
         private ReactiveCommand<Unit, Unit> _pasteCommand;
 
         public ReactiveCommand<Unit, Unit> PasteCommand =>
@@ -78,20 +79,20 @@ namespace atomex.ViewModels.DappsViewModels
                         AppResources.AcceptButton);
                 }
             });
-        
+
         private ReactiveCommand<Unit, Unit> _clearQrCodeCommand;
-        
+
         public ReactiveCommand<Unit, Unit> ClearQrCodeCommand =>
             _clearQrCodeCommand ??= _clearQrCodeCommand = ReactiveCommand.Create(() =>
             {
                 QrCodeString = string.Empty;
             });
-        
+
         private ICommand _scanResultCommand;
 
         public ICommand ScanResultCommand =>
             _scanResultCommand ??= new Command(OnScanResult);
-        
+
         private void OnScanResult()
         {
             IsScanning = false;
@@ -101,7 +102,7 @@ namespace atomex.ViewModels.DappsViewModels
             {
                 _navigationService?.ShowAlert(AppResources.Error, AppResources.IncorrectQrCodeFormat,
                     AppResources.AcceptButton);
-                Device.BeginInvokeOnMainThread(() =>  _navigationService?.ClosePage(TabNavigation.Portfolio));
+                Device.BeginInvokeOnMainThread(() => _navigationService?.ClosePage(TabNavigation.Portfolio));
 
                 return;
             }
@@ -114,7 +115,7 @@ namespace atomex.ViewModels.DappsViewModels
                     QrCodeString = ScanResult.Text;
                 else
                     QrCodeString = ScanResult.Text.Substring(indexOfChar + key.Length);
-                
+
                 _navigationService?.ClosePage(TabNavigation.Portfolio);
 
                 if (QrCodeString != null)
@@ -132,13 +133,18 @@ namespace atomex.ViewModels.DappsViewModels
         public async Task OnDeepLinkResult(string value)
         {
             if (string.IsNullOrEmpty(value)) return;
-            
+
             await Device.InvokeOnMainThreadAsync(async () =>
             {
                 _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular,
-                        AppResources.Connecting + "...");
+                    AppResources.Connecting + "...");
                 await OnConnect(value);
             });
+        }
+
+        public void Reset()
+        {
+            IsScanQrCodeTab = true;
         }
     }
 }
