@@ -19,6 +19,7 @@
             <converters:AllTrueMultiConverter x:Key="AllTrueConverter" />
             <converters:InverseBoolConverter x:Key="InverseBool" />
             <converters:GreaterThanValueConverter x:Key="GreaterThanValue" />
+            <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter" />
         </ResourceDictionary>
     </rg:PopupPage.Resources>
     <rg:PopupPage.Animation>
@@ -116,7 +117,7 @@
 
                 <!-- Tab switcher -->
                 <Grid HorizontalOptions="FillAndExpand"
-                      BackgroundColor="{AppThemeBinding Dark='#0B1C33', Light='#EFF1F4'}"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource TabContentBackgroundColorDark}, Light={StaticResource TabContentBackgroundColor}}"
                       Padding="16"
                       ColumnSpacing="0"
                       RowSpacing="0">
@@ -207,14 +208,14 @@
                 </Grid>
                 <ScrollView
                     BackgroundColor="{AppThemeBinding Dark={StaticResource TabContentBackgroundColorDark}, Light={StaticResource TabContentBackgroundColor}}"
-                    HeightRequest="76"
+                    HeightRequest="62"
                     IsVisible="False">
                     <ScrollView.Triggers>
                         <DataTrigger TargetType="ScrollView"
                                      Binding="{Binding Operations.Count, Mode=OneWay, Converter={StaticResource GreaterThanValue}, ConverterParameter=2}"
                                      Value="True">
                             <Setter Property="HeightRequest"
-                                    Value="190" />
+                                    Value="176" />
                         </DataTrigger>
                         <DataTrigger TargetType="ScrollView"
                                      Binding="{Binding SelectedTab}"
@@ -232,14 +233,14 @@
                                       VerticalOptions="Start"
                                       ColumnSpacing="12"
                                       RowSpacing="0"
-                                      Margin="16">
+                                      Margin="16,0,0,16">
                                     <Grid.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding OpenDestinationInExplorer}" />
                                     </Grid.GestureRecognizers>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="24" />
                                         <RowDefinition Height="20" />
-                                        <RowDefinition Height="0.5" />
+                                        <RowDefinition Height="16.5" />
                                         <RowDefinition Height="0.5" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
@@ -254,7 +255,7 @@
                                            WidthRequest="40"
                                            HorizontalOptions="Center"
                                            VerticalOptions="Center"
-                                           BackgroundColor="{AppThemeBinding Dark={StaticResource IconFrameBackgroundColorDark}, Light={StaticResource IconFrameBackgroundColor}}">
+                                           BackgroundColor="Transparent">
                                         <Image Source="{Binding DestinationIcon}"
                                                WidthRequest="40"
                                                HeightRequest="40"
@@ -278,13 +279,20 @@
                                            Style="{DynamicResource MainTextH4}"
                                            HorizontalTextAlignment="Start"
                                            VerticalTextAlignment="Center"
-                                           LineBreakMode="TailTruncation">
+                                           LineBreakMode="TailTruncation"
+                                           Margin="0,0,16,0">
                                         <Label.Triggers>
                                             <DataTrigger TargetType="Label"
                                                          Binding="{Binding Operation.Kind}"
                                                          Value="reveal">
                                                 <Setter Property="IsVisible"
                                                         Value="False" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding AmountInTez, Converter={StaticResource GreaterThanZeroConverter}, FallbackValue='False', TargetNullValue='False'}"
+                                                         Value="False">
+                                                <Setter Property="Grid.RowSpan"
+                                                        Value="2" />
                                             </DataTrigger>
                                         </Label.Triggers>
                                         <Label.FormattedText>
@@ -300,6 +308,7 @@
                                            HorizontalTextAlignment="Start"
                                            VerticalTextAlignment="Center"
                                            LineBreakMode="TailTruncation"
+                                           Margin="0,0,16,0"
                                            IsVisible="False">
                                         <Label.Triggers>
                                             <DataTrigger TargetType="Label"
@@ -320,11 +329,18 @@
                                            Grid.Column="1"
                                            Style="{DynamicResource AdditionalTextH4}"
                                            VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="Start">
+                                           HorizontalTextAlignment="Start"
+                                           Margin="0,0,16,0">
                                         <Label.Triggers>
                                             <DataTrigger TargetType="Label"
                                                          Binding="{Binding Operation.Kind}"
                                                          Value="reveal">
+                                                <Setter Property="IsVisible"
+                                                        Value="False" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding AmountInTez, Converter={StaticResource GreaterThanZeroConverter}, FallbackValue='False', TargetNullValue='False'}"
+                                                         Value="False">
                                                 <Setter Property="IsVisible"
                                                         Value="False" />
                                             </DataTrigger>
@@ -345,7 +361,7 @@
                         </BindableLayout.ItemTemplate>
                     </StackLayout>
                 </ScrollView>
-                <AbsoluteLayout HeightRequest="190"
+                <AbsoluteLayout HeightRequest="176"
                                 BackgroundColor="{AppThemeBinding Dark={StaticResource TabContentBackgroundColorDark}, Light={StaticResource TabContentBackgroundColor}}"
                                 IsVisible="False">
                     <AbsoluteLayout.Triggers>
@@ -356,7 +372,7 @@
                                     Value="True" />
                         </DataTrigger>
                     </AbsoluteLayout.Triggers>
-                    <ScrollView HeightRequest="190">
+                    <ScrollView HeightRequest="176">
                         <Label Style="{DynamicResource MainTextH5}"
                                Text="{Binding RawOperations}"
                                Padding="16,0" />
@@ -429,7 +445,7 @@
                 </AbsoluteLayout>
                 <ScrollView
                     BackgroundColor="{AppThemeBinding Dark={StaticResource TabContentBackgroundColorDark}, Light={StaticResource TabContentBackgroundColor}}"
-                    HeightRequest="190"
+                    HeightRequest="176"
                     IsVisible="False">
                     <ScrollView.Triggers>
                         <DataTrigger TargetType="ScrollView"
