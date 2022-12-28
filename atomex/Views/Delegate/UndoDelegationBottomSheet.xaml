@@ -80,7 +80,7 @@
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding DelegateCommand}" />
                             </Frame.GestureRecognizers>
-                            <Label Text="{helpers:Translate UndelegateButton}"
+                            <Label Text="{helpers:Translate ConfirmButton}"
                                    Style="{DynamicResource AdditionalClickableLabel}">
                                 <Label.Triggers>
                                     <DataTrigger TargetType="Label"

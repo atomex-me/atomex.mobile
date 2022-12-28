@@ -322,7 +322,7 @@
         <value>Делегировать</value>
     </data>
     <data name="UndelegateButton" xml:space="preserve">
-        <value>Undelegate</value>
+        <value>Отменить делегирование</value>
     </data>
     <data name="UpdateButton" xml:space="preserve">
         <value>Обновить</value>
@@ -1214,7 +1214,7 @@
         <value>Подробнее</value>
     </data>
     <data name="Progress" xml:space="preserve">
-        <value>Progress</value>
+        <value>Прогресс</value>
     </data>
     <data name="IncorrectQrCodeFormat" xml:space="preserve">
         <value>Некорректный формат QR-кода</value>
@@ -1292,7 +1292,7 @@
         <value>Ошибка подключения</value>
     </data>
     <data name="DappPairingRequest" xml:space="preserve">
-        <value>Dapp pairing request</value>
+        <value>Запрос на сопряжение с dApp</value>
     </data>
     <data name="ScanQr" xml:space="preserve">
         <value>Сканировать QR</value>
@@ -1301,36 +1301,36 @@
         <value>Вставить QR</value>
     </data>
     <data name="GasFeeLabel" xml:space="preserve">
-        <value>Gas fee</value>
+        <value>Комиссия за газ</value>
     </data>
     <data name="StorageLimitLabel" xml:space="preserve">
-        <value>Storage limit</value>
+        <value>Лимит для Storage</value>
     </data>
     <data name="StorageFeeLabel" xml:space="preserve">
-        <value>Storage fee</value>
+        <value>Комиссия за Storage</value>
     </data>
     <data name="ShowDetails" xml:space="preserve">
-        <value>Show Details</value>
+        <value>Подробно</value>
     </data>
     <data name="TotalFees" xml:space="preserve">
-        <value>Total Fees</value>
+        <value>Всего комиссия</value>
     </data>
     <data name="Bytes" xml:space="preserve">
         <value>Байты</value>
     </data>
     <data name="Preview" xml:space="preserve">
-        <value>Preview</value>
+        <value>Предпросмотр</value>
     </data>
     <data name="Raw" xml:space="preserve">
-        <value>Raw</value>
+        <value>Данные</value>
     </data>
     <data name="DappRequestToConfirm" xml:space="preserve">
-        <value>{0} requests to confirm operations</value>
+        <value>{0} запрашивает подтверждение операций</value>
     </data>
     <data name="ChangingTxFeeWarning" xml:space="preserve">
-        <value>Warning! Changing fee, gas limit or storage limit can lead to the cancellation of the transaction</value>
+        <value>Внимание! Изменение комиссии, лимита газа или лимита для Storage может привести к отмене транзакции</value>
     </data>
     <data name="FailedTxParametersWarning" xml:space="preserve">
-        <value>Warning! Transaction with this parameters is likely to fail</value>
+        <value>Внимание! Транзакция с такими параметрами, скорее всего, не будет выполнена</value>
     </data>
 </root>
