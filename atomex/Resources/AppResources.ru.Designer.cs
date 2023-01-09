@@ -2570,5 +2570,11 @@ namespace atomex.Resources {
                 return ResourceManager.GetString("FailedTxParametersWarning", resourceCulture);
             }
         }
+        
+        internal static string ConnectionTimeoutError {
+            get {
+                return ResourceManager.GetString("ConnectionTimeoutError", resourceCulture);
+            }
+        }
     }
 }

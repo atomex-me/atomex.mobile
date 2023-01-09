@@ -1336,4 +1336,7 @@ NOTE: Do not sign out or close the application until the swap is completed, othe
     <data name="IncorrectQrCodeFormat" xml:space="preserve">
         <value>Incorrect QR code format</value>
     </data>
+    <data name="ConnectionTimeoutError" xml:space="preserve">
+        <value>The connection has timed out</value>
+    </data>
 </root>

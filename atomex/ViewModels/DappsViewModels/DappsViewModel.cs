@@ -91,6 +91,7 @@ namespace atomex.ViewModels.DappsViewModels
     {
         private const int _gasLimitPerBlock = 5_200_000;
         public const int StorageLimitPerOperation = 5000;
+        private const int _connectionTimeout = 20000;
         private readonly IAtomexApp _app;
         private INavigationService _navigationService;
         private IWalletBeaconClient _beaconWalletClient;
@@ -181,19 +182,43 @@ namespace atomex.ViewModels.DappsViewModels
 
             try
             {
-                var pairingRequest = _beaconWalletClient.GetPairingRequest(qrCodeString);
-                await _beaconWalletClient.AddPeerAsync(pairingRequest);
-
                 Device.BeginInvokeOnMainThread(() =>
                     _navigationService?.DisplaySnackBar(
-                        SnackbarMessage.MessageType.Regular,
-                        AppResources.ConnectedSuccessfully)
+                        SnackbarMessage.MessageType.Regular, 
+                        AppResources.Connecting + "...", 
+                        "OK", 
+                        _connectionTimeout)
                 );
+                
+                var addPeerTask = Task.Run(async () =>
+                {
+                    var pairingRequest = _beaconWalletClient.GetPairingRequest(qrCodeString);
+                    await _beaconWalletClient.AddPeerAsync(pairingRequest);
+                });
+
+                var completedTask = await Task.WhenAny(addPeerTask, Task.Delay(TimeSpan.FromMilliseconds(_connectionTimeout)));
+
+                if (completedTask == addPeerTask)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                        _navigationService?.DisplaySnackBar(
+                            SnackbarMessage.MessageType.Regular,
+                            AppResources.ConnectedSuccessfully)
+                    );
+                }
+                else
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                        _navigationService?.DisplaySnackBar(
+                            SnackbarMessage.MessageType.Error,
+                            AppResources.ConnectionTimeoutError));
+                }
             }
             catch (Exception e)
             {
                 Device.BeginInvokeOnMainThread(() =>
-                    _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Error,
+                    _navigationService?.DisplaySnackBar(
+                        SnackbarMessage.MessageType.Error,
                         AppResources.ConnectionError));
                 Log.Error(e, "Connect dApp error");
             }

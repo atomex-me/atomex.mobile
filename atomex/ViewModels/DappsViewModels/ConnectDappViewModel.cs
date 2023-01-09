@@ -2,7 +2,6 @@
 using System.Reactive;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using atomex.Models;
 using atomex.Resources;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -44,11 +43,7 @@ namespace atomex.ViewModels.DappsViewModels
                     _navigationService?.ClosePage(TabNavigation.Portfolio);
 
                     if (QrCodeString != null)
-                    {
-                        _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular,
-                            AppResources.Connecting + "...");
                         await OnConnect(QrCodeString);
-                    }
 
                     QrCodeString = string.Empty;
                     this.RaisePropertyChanged(nameof(QrCodeString));
@@ -119,11 +114,7 @@ namespace atomex.ViewModels.DappsViewModels
                 _navigationService?.ClosePage(TabNavigation.Portfolio);
 
                 if (QrCodeString != null)
-                {
-                    _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular,
-                        AppResources.Connecting + "...");
                     await OnConnect(QrCodeString);
-                }
 
                 QrCodeString = string.Empty;
                 this.RaisePropertyChanged(nameof(QrCodeString));
@@ -136,8 +127,6 @@ namespace atomex.ViewModels.DappsViewModels
 
             await Device.InvokeOnMainThreadAsync(async () =>
             {
-                _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular,
-                    AppResources.Connecting + "...");
                 await OnConnect(value);
             });
         }

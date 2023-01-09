@@ -520,13 +520,14 @@
                             <RowDefinition Height="24" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="4*" />
-                            <ColumnDefinition Width="6*" />
+                            <ColumnDefinition Width="5*" />
+                            <ColumnDefinition Width="5*" />
                         </Grid.ColumnDefinitions>
                         <Label Text="{helpers:Translate GasLimitLabel}"
                                Style="{DynamicResource AdditionalTextH4}"
                                HorizontalTextAlignment="Start"
-                               VerticalTextAlignment="Center" />
+                               VerticalTextAlignment="Center"
+                               LineBreakMode="TailTruncation" />
                         <Label Grid.Column="1"
                                Text="{Binding TotalGasLimit}"
                                Style="{DynamicResource MainTextH5}"
@@ -537,7 +538,8 @@
                                Text="{helpers:Translate StorageLimitLabel}"
                                Style="{DynamicResource AdditionalTextH4}"
                                HorizontalTextAlignment="Start"
-                               VerticalTextAlignment="Center" />
+                               VerticalTextAlignment="Center"
+                               LineBreakMode="TailTruncation" />
                         <Label Grid.Row="1"
                                Grid.Column="1"
                                Text="{Binding TotalStorageLimit}"
@@ -549,7 +551,8 @@
                                Text="{helpers:Translate GasFeeLabel}"
                                Style="{DynamicResource AdditionalTextH4}"
                                HorizontalTextAlignment="Start"
-                               VerticalTextAlignment="Center" />
+                               VerticalTextAlignment="Center"
+                               LineBreakMode="TailTruncation" />
                         <Label Grid.Row="2"
                                Grid.Column="1"
                                Style="{DynamicResource MainTextH5}"

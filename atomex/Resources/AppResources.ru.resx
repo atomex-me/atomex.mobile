@@ -1333,4 +1333,7 @@
     <data name="FailedTxParametersWarning" xml:space="preserve">
         <value>Внимание! Транзакция с такими параметрами, скорее всего, не будет выполнена</value>
     </data>
+    <data name="ConnectionTimeoutError" xml:space="preserve">
+        <value>Соединение прервалось по таймеру</value>
+    </data>
 </root>
