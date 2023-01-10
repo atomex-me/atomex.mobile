@@ -149,7 +149,9 @@ namespace atomex.ViewModels.DappsViewModels
                         AppUrl = "https://atomex.me",
                         IconUrl = "https://bcd-static-assets.fra1.digitaloceanspaces.com/dapps/atomex/atomex_logo.jpg",
                         KnownRelayServers = Constants.KnownRelayServers,
-                        DatabaseConnectionString = $"Filename={path}"
+                        DatabaseConnectionString = Device.RuntimePlatform == Device.iOS 
+                            ? $"Filename={path}; Mode=Exclusive;"
+                            : $"Filename={path};"
                     };
 
                     _beaconWalletClient = BeaconClientFactory
