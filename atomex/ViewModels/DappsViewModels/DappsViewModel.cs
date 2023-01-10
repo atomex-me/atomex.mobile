@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reactive;
+using System.Threading;
 using System.Threading.Tasks;
 using Atomex;
 using Atomex.Blockchain.Tezos;
@@ -184,12 +185,14 @@ namespace atomex.ViewModels.DappsViewModels
 
             try
             {
+                var cts = new CancellationTokenSource();
+                
                 Device.BeginInvokeOnMainThread(() =>
                     _navigationService?.DisplaySnackBar(
-                        SnackbarMessage.MessageType.Regular, 
-                        AppResources.Connecting + "...", 
-                        "OK", 
-                        _connectionTimeout)
+                        messageType: SnackbarMessage.MessageType.Regular, 
+                        text: AppResources.Connecting + "...",
+                        duration: _connectionTimeout,
+                        cts: cts)
                 );
                 
                 var addPeerTask = Task.Run(async () =>
@@ -200,13 +203,24 @@ namespace atomex.ViewModels.DappsViewModels
 
                 var completedTask = await Task.WhenAny(addPeerTask, Task.Delay(TimeSpan.FromMilliseconds(_connectionTimeout)));
 
+                cts.Cancel();
+                
                 if (completedTask == addPeerTask)
                 {
-                    Device.BeginInvokeOnMainThread(() =>
-                        _navigationService?.DisplaySnackBar(
-                            SnackbarMessage.MessageType.Regular,
-                            AppResources.ConnectedSuccessfully)
-                    );
+                    if (addPeerTask.IsCompletedSuccessfully)
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                            _navigationService?.DisplaySnackBar(
+                                SnackbarMessage.MessageType.Regular,
+                                AppResources.ConnectedSuccessfully));
+                    }
+                    else
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                            _navigationService?.DisplaySnackBar(
+                                SnackbarMessage.MessageType.Error,
+                                AppResources.ConnectionError));
+                    }
                 }
                 else
                 {
@@ -222,6 +236,7 @@ namespace atomex.ViewModels.DappsViewModels
                     _navigationService?.DisplaySnackBar(
                         SnackbarMessage.MessageType.Error,
                         AppResources.ConnectionError));
+                
                 Log.Error(e, "Connect dApp error");
             }
         }

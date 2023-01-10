@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Atomex.Core;
 using Rg.Plugins.Popup.Pages;
 using Xamarin.Forms;
@@ -25,7 +27,7 @@ namespace atomex
         void ShowPopup(PopupPage popup, bool removePrevious = true);
         void ClosePopup();
         bool HasMultipleBottomSheets();
-        void DisplaySnackBar(MessageType messageType, string text, string btnTxt = "OK", int duration = 3000);
+        void DisplaySnackBar(MessageType messageType, string text, string btnTxt = "OK", int duration = 3000, Func<Task> action = null, CancellationTokenSource cts = null);
         Task ShowAlert(string title, string text, string cancel);
         Task<bool> ShowAlert(string title, string text, string accept, string cancel);
         Task<string> DisplayActionSheet(string cancel, string[] actions, string title = null);

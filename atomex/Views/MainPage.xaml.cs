@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xamarin.CommunityToolkit.Extensions;
 using System;
+using System.Threading;
 using atomex.ViewModels;
 using atomex.ViewModels.ConversionViewModels;
 using static atomex.Models.SnackbarMessage;
@@ -313,7 +314,9 @@ namespace atomex.Views
             MessageType messageType,
             string text,
             string buttonText = "OK",
-            int duration = 3000)
+            int duration = 3000,
+            Func<Task> action = null,
+            CancellationTokenSource cts = null)
         {
             try
             {
@@ -360,7 +363,7 @@ namespace atomex.Views
 
                 txtColor ??= Color.Black;
                 bgColor ??= Color.White;
-                
+
                 var textColor = (Color)txtColor;
                 var backgroundColor = (Color)bgColor;
 
@@ -381,7 +384,23 @@ namespace atomex.Views
                         Font = Font.SystemFontOfSize(17),
                         Text = buttonText,
                         Padding = new Thickness(20, 16),
-                        Action = () => Task.CompletedTask
+                        Action = async () =>
+                        {
+                            if (cts != null)
+                            {
+                                try
+                                {
+                                    cts.Cancel();
+                                }
+                                catch (Exception)
+                                {
+                                    // ignored
+                                }
+                            }
+
+                            if (action != null)
+                                await action();
+                        }
                     }
                 };
 
@@ -395,7 +414,33 @@ namespace atomex.Views
                     Actions = actionOptions
                 };
 
-                await this.DisplaySnackBarAsync(options);
+                if (cts == null)
+                {
+                    await this.DisplaySnackBarAsync(options);
+                }
+                else
+                {
+                    var elapsed = 0;
+                    var intervalMs = 1000;
+                    var delayMs = 100;
+                    options.Duration = TimeSpan.FromMilliseconds(intervalMs + delayMs);
+
+                    while (elapsed < duration)
+                    {
+                        if (cts.IsCancellationRequested)
+                            break;
+
+                        _ = this.DisplaySnackBarAsync(options);
+
+                        await Task.Delay(TimeSpan.FromMilliseconds(intervalMs), cts.Token);
+
+                        elapsed += intervalMs;
+                    }
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // nothing to do
             }
             catch (Exception e)
             {
