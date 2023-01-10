@@ -408,12 +408,13 @@ namespace atomex.ViewModels.CurrencyViewModels
                     cancellationToken: _cancellationTokenSource.Token);
 
                 await LoadTransactionsAsync();
-
-                await Device.InvokeOnMainThreadAsync(() =>
-                {
-                    _navigationService?.DisplaySnackBar(MessageType.Regular,
-                        Currency.Description + " " + AppResources.HasBeenUpdated);
-                });
+                
+                if (_cancellationTokenSource is {IsCancellationRequested: false})
+                    await Device.InvokeOnMainThreadAsync(() =>
+                    {
+                        _navigationService?.DisplaySnackBar(MessageType.Regular,
+                            Currency.Description + " " + AppResources.HasBeenUpdated);
+                    });
             }
             catch (OperationCanceledException)
             {
