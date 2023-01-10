@@ -347,7 +347,7 @@
                                         </Label.Triggers>
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding AmountInTez, StringFormat='{0:0.######} XTZ /'}" />
+                                                <Span Text="{Binding AmountInTez, StringFormat='{0:0.####} XTZ /'}" />
                                                 <Span Text="{Binding AmountInBase, StringFormat=' ${0:f2}'}" />
                                             </FormattedString>
                                         </Label.FormattedText>
@@ -377,10 +377,7 @@
                                Text="{Binding RawOperations}"
                                Padding="16,0" />
                     </ScrollView>
-                    <Frame Style="{DynamicResource AdditionalClickableFrame}"
-                           VerticalOptions="EndAndExpand"
-                           HorizontalOptions="FillAndExpand"
-                           HeightRequest="32"
+                    <Frame Style="{DynamicResource OverlayClickableFrame}"
                            AbsoluteLayout.LayoutFlags="PositionProportional"
                            AbsoluteLayout.LayoutBounds="0.9,0.9">
                         <Frame.GestureRecognizers>
@@ -392,7 +389,7 @@
                                          Binding="{Binding IsCopied}"
                                          Value="False">
                                 <Setter Property="BackgroundColor"
-                                        Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}" />
+                                        Value="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}" />
                             </DataTrigger>
                             <DataTrigger TargetType="Frame"
                                          Binding="{Binding IsCopied}"
@@ -423,7 +420,7 @@
                                 </Image.Triggers>
                             </Image>
                             <Label Text="{Binding CopyButtonName}"
-                                   Style="{DynamicResource MainTextH4}"
+                                   Style="{DynamicResource MainTextH5}"
                                    VerticalTextAlignment="Center">
                                 <Label.Triggers>
                                     <DataTrigger TargetType="Label"
@@ -560,7 +557,7 @@
                                VerticalTextAlignment="Center">
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="{Binding TotalGasFee, StringFormat='{0:0.######}'}" />
+                                    <Span Text="{Binding TotalGasFee, StringFormat='{0:0.####}'}" />
                                     <Span Text=" XTZ " />
                                     <Span Text="/ "
                                           FontSize="12"
@@ -583,7 +580,7 @@
                                VerticalTextAlignment="Center">
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="{Binding TotalStorageFee, StringFormat='{0:0.#########}'}" />
+                                    <Span Text="{Binding TotalStorageFee, StringFormat='{0:0.####}'}" />
                                     <Span Text=" XTZ " />
                                     <Span Text="/ "
                                           FontSize="12"
@@ -801,7 +798,7 @@
                                VerticalTextAlignment="Center">
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="{Binding TotalFees, StringFormat='{0:0.#########}'}" />
+                                    <Span Text="{Binding TotalFees, StringFormat='{0:0.####}'}" />
                                     <Span Text=" XTZ" />
                                     <Span Text=" / "
                                           FontSize="12"

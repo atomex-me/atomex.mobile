@@ -95,6 +95,14 @@
         <Setter Property="Padding" Value="20,0"/>
         <Setter Property="HorizontalOptions" Value="Center"/>
     </Style>
+    <Style x:Key="OverlayClickableFrame" TargetType="Frame">
+        <Setter Property="HasShadow" Value="False"/>
+        <Setter Property="HeightRequest" Value="32"/>
+        <Setter Property="CornerRadius" Value="16"/>
+        <Setter Property="Padding" Value="12,0"/>
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
+    </Style>
     <Style x:Key="MainClickableFrame" TargetType="Frame" BasedOn="{StaticResource ClickableFrame}">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
     </Style>
@@ -197,11 +205,11 @@
     <Style x:Key="WarningTextH6" TargetType="Label" BasedOn="{StaticResource WarningText}">
         <Setter Property="FontSize" Value="12"/>
     </Style>
-    <Style x:Key="WarninPanelText" TargetType="Label">
+    <Style x:Key="WarningPanelText" TargetType="Label">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource WarningPanelTextColorDark}, Light={StaticResource WarningPanelTextColor}}"/>
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
     </Style>
-    <Style x:Key="WarningPanelTextH5" TargetType="Label" BasedOn="{StaticResource WarninPanelText}">
+    <Style x:Key="WarningPanelTextH5" TargetType="Label" BasedOn="{StaticResource WarningPanelText}">
         <Setter Property="FontSize" Value="14"/>
     </Style>
     <Style x:Key="HintText" TargetType="Label">
