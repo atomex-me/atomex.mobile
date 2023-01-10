@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Reactive;
@@ -23,6 +24,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 using DecimalExtensions = Atomex.Common.DecimalExtensions;
 
 namespace atomex.ViewModels.DappsViewModels
@@ -175,8 +177,58 @@ namespace atomex.ViewModels.DappsViewModels
         [Reactive] public int TotalGasLimit { get; set; }
         [Reactive] public int TotalStorageLimit { get; set; }
         [Reactive] public decimal TotalGasFee { get; set; }
+        public string TotalGasFeeString
+        {
+            get => TotalGasFee.ToString(CultureInfo.InvariantCulture);
+            set
+            {
+                string temp = value.Replace(",", ".");
+                if (!decimal.TryParse(
+                        s: temp,
+                        style: NumberStyles.AllowDecimalPoint,
+                        provider: CultureInfo.InvariantCulture,
+                        result: out var result))
+                {
+                    TotalGasFee = 0;
+                }
+                else
+                {
+                    TotalGasFee = result;
+
+                    if (TotalGasFee > long.MaxValue)
+                        TotalGasFee = long.MaxValue;
+                }
+
+                Device.InvokeOnMainThreadAsync(() => { this.RaisePropertyChanged(nameof(TotalGasFee)); });
+            }
+        }
         [Reactive] public decimal TotalGasFeeInBase { get; set; }
         [Reactive] public decimal TotalStorageFee { get; set; }
+        public string TotalStorageFeeString
+        {
+            get => TotalStorageFee.ToString(CultureInfo.InvariantCulture);
+            set
+            {
+                string temp = value.Replace(",", ".");
+                if (!decimal.TryParse(
+                        s: temp,
+                        style: NumberStyles.AllowDecimalPoint,
+                        provider: CultureInfo.InvariantCulture,
+                        result: out var result))
+                {
+                    TotalStorageFee = 0;
+                }
+                else
+                {
+                    TotalStorageFee = result;
+
+                    if (TotalStorageFee > long.MaxValue)
+                        TotalStorageFee = long.MaxValue;
+                }
+
+                Device.InvokeOnMainThreadAsync(() => { this.RaisePropertyChanged(nameof(TotalStorageFee)); });
+            }
+        }
         [Reactive] public decimal TotalStorageFeeInBase { get; set; }
         [Reactive] public bool UseDefaultFee { get; set; }
         [Reactive] public bool AutofillError { get; set; }
@@ -248,6 +300,8 @@ namespace atomex.ViewModels.DappsViewModels
                         RevealContentViewModel revealOp => res + revealOp.FeeInTez,
                         _ => res
                     });
+                    TotalGasFeeString = TotalGasFee.ToString();
+                    this.RaisePropertyChanged(nameof(TotalGasFeeString));
 
                     const string url = "v1/protocols/current";
                     try
@@ -268,6 +322,8 @@ namespace atomex.ViewModels.DappsViewModels
 
                         _byteCost = byteCost;
                         TotalStorageFee = TezosConfig.MtzToTz(Convert.ToDecimal(byteCost)) * TotalStorageLimit;
+                        TotalStorageFeeString = TotalStorageFee.ToString();
+                        this.RaisePropertyChanged(nameof(TotalStorageFeeString));
                     }
                     catch (Exception ex)
                     {
@@ -291,7 +347,11 @@ namespace atomex.ViewModels.DappsViewModels
                 .SubscribeInMainThread(totalStorageLimit =>
                 {
                     if (_byteCost != null)
+                    {
                         TotalStorageFee = TezosConfig.MtzToTz(Convert.ToDecimal(_byteCost)) * totalStorageLimit;
+                        TotalStorageFeeString = TotalStorageFee.ToString();
+                        this.RaisePropertyChanged(nameof(TotalStorageFeeString));
+                    }
                 });
 
             this.WhenAnyValue(vm => vm.UseDefaultFee)

@@ -694,7 +694,7 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <custom:CustomEntry Text="{Binding TotalGasFee}"
+                                <custom:CustomEntry Text="{Binding TotalGasFeeString}"
                                                     Keyboard="Numeric"
                                                     x:Name="GasFeeEntry"
                                                     Margin="16,0"
@@ -749,7 +749,7 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <custom:CustomEntry Text="{Binding TotalStorageFee}"
+                                <custom:CustomEntry Text="{Binding TotalStorageFeeString}"
                                                     Keyboard="Numeric"
                                                     Margin="16,0"
                                                     Style="{DynamicResource EntryStyle}"
