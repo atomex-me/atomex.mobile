@@ -28,10 +28,10 @@
                            HasBackgroundAnimation="True" />
     </rg:PopupPage.Animation>
     <Frame CornerRadius="8"
-           WidthRequest="320"
            Padding="0,12"
            HasShadow="False"
-           HorizontalOptions="Center"
+           Margin="20,0"
+           HorizontalOptions="FillAndExpand"
            VerticalOptions="Center"
            BackgroundColor="{AppThemeBinding Dark={StaticResource PopupFrameBackgroundColorDark}, Light={StaticResource PopupFrameBackgroundColor}}">
         <StackLayout Spacing="0"

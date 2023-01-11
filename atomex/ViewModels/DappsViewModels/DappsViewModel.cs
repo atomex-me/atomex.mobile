@@ -92,7 +92,7 @@ namespace atomex.ViewModels.DappsViewModels
     {
         private const int _gasLimitPerBlock = 5_200_000;
         public const int StorageLimitPerOperation = 5000;
-        private const int _connectionTimeout = 20000;
+        private const int _connectionTimeoutMs = 30000;
         private readonly IAtomexApp _app;
         private INavigationService _navigationService;
         private IWalletBeaconClient _beaconWalletClient;
@@ -191,7 +191,7 @@ namespace atomex.ViewModels.DappsViewModels
                     _navigationService?.DisplaySnackBar(
                         messageType: SnackbarMessage.MessageType.Regular, 
                         text: AppResources.Connecting + "...",
-                        duration: _connectionTimeout,
+                        duration: _connectionTimeoutMs,
                         cts: cts)
                 );
                 
@@ -201,7 +201,7 @@ namespace atomex.ViewModels.DappsViewModels
                     await _beaconWalletClient.AddPeerAsync(pairingRequest);
                 });
 
-                var completedTask = await Task.WhenAny(addPeerTask, Task.Delay(TimeSpan.FromMilliseconds(_connectionTimeout)));
+                var completedTask = await Task.WhenAny(addPeerTask, Task.Delay(TimeSpan.FromMilliseconds(_connectionTimeoutMs)));
 
                 cts.Cancel();
                 
