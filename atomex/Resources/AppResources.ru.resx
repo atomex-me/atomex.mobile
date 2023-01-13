@@ -1336,4 +1336,22 @@
     <data name="ConnectionTimeoutError" xml:space="preserve">
         <value>Соединение прервалось по таймеру</value>
     </data>
+    <data name="TryAgainLaterError" xml:space="preserve">
+        <value>Произошла ошибка. Пожалуйста, повторите попытку позже</value>
+    </data>
+    <data name="AtomexConnectsToDapp" xml:space="preserve">
+        <value>Atomex подключается к Dapp.</value>
+    </data>
+    <data name="GoToBrowser" xml:space="preserve">
+        <value>Вернитесь в свой браузер</value>
+    </data>
+    <data name="ReturnToAtomex" xml:space="preserve">
+        <value>Вернитесь обратно в Atomex</value>
+    </data>
+    <data name="TooLongToConnect" xml:space="preserve">
+        <value>Если подключение занимает много времени</value>
+    </data>
+    <data name="WaitFor2Sec" xml:space="preserve">
+        <value>Подождите 2 секунды</value>
+    </data>
 </root>

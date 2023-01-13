@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reactive;
-using System.Threading;
 using System.Threading.Tasks;
 using Atomex;
 using Atomex.Blockchain.Tezos;
@@ -92,7 +91,7 @@ namespace atomex.ViewModels.DappsViewModels
     {
         private const int _gasLimitPerBlock = 5_200_000;
         public const int StorageLimitPerOperation = 5000;
-        private const int _connectionTimeoutMs = 30000;
+        private const int _connectionTimeoutMs = 180000;
         private readonly IAtomexApp _app;
         private INavigationService _navigationService;
         private IWalletBeaconClient _beaconWalletClient;
@@ -101,6 +100,7 @@ namespace atomex.ViewModels.DappsViewModels
         [Reactive] public DappViewModel SelectedDapp { get; set; }
         private TezosConfig _tezos { get; }
         public ConnectDappViewModel ConnectDappViewModel { get; set; }
+        [Reactive] public bool IsConnecting { get; set; }
 
         public const double DefaultDappRowHeight = 72;
         public const double DappListHeaderHeight = 52;
@@ -185,26 +185,28 @@ namespace atomex.ViewModels.DappsViewModels
 
             try
             {
-                var cts = new CancellationTokenSource();
-                
-                Device.BeginInvokeOnMainThread(() =>
-                    _navigationService?.DisplaySnackBar(
-                        messageType: SnackbarMessage.MessageType.Regular, 
-                        text: AppResources.Connecting + "...",
-                        duration: _connectionTimeoutMs,
-                        cts: cts)
-                );
-                
+                IsConnecting = true;
+                // var cts = new CancellationTokenSource();
+                //
+                // Device.BeginInvokeOnMainThread(() =>
+                //     _navigationService?.DisplaySnackBar(
+                //         messageType: SnackbarMessage.MessageType.Regular,
+                //         text: AppResources.Connecting + "...",
+                //         duration: _connectionTimeoutMs,
+                //         cts: cts)
+                // );
+
                 var addPeerTask = Task.Run(async () =>
                 {
                     var pairingRequest = _beaconWalletClient.GetPairingRequest(qrCodeString);
                     await _beaconWalletClient.AddPeerAsync(pairingRequest);
                 });
 
-                var completedTask = await Task.WhenAny(addPeerTask, Task.Delay(TimeSpan.FromMilliseconds(_connectionTimeoutMs)));
+                var completedTask = await Task.WhenAny(addPeerTask,
+                    Task.Delay(TimeSpan.FromMilliseconds(_connectionTimeoutMs)));
 
-                cts.Cancel();
-                
+                // cts.Cancel();
+
                 if (completedTask == addPeerTask)
                 {
                     if (addPeerTask.IsCompletedSuccessfully)
@@ -236,8 +238,12 @@ namespace atomex.ViewModels.DappsViewModels
                     _navigationService?.DisplaySnackBar(
                         SnackbarMessage.MessageType.Error,
                         AppResources.ConnectionError));
-                
+
                 Log.Error(e, "Connect dApp error");
+            }
+            finally
+            {
+                IsConnecting = false;
             }
         }
 
@@ -668,36 +674,58 @@ namespace atomex.ViewModels.DappsViewModels
                     CloseDisconnection = () => _navigationService?.ClosePopup(),
                     OnDisconnect = async disconnectPeer =>
                     {
-                        _ = Device.InvokeOnMainThreadAsync(() =>
+                        try
                         {
-                            _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
-                            _navigationService?.ClosePopup();
-                            _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular,
-                                AppResources.Disconnecting + "...");
-                        });
-                        await _beaconWalletClient.RemovePeerAsync(disconnectPeer.SenderId);
-                        await Device.InvokeOnMainThreadAsync(() =>
+                            _ = Device.InvokeOnMainThreadAsync(() =>
+                            {
+                                _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
+                                _navigationService?.ClosePopup();
+                                _navigationService?.DisplaySnackBar(
+                                    SnackbarMessage.MessageType.Regular,
+                                    AppResources.Disconnecting + "...");
+                            });
+                            await _beaconWalletClient.RemovePeerAsync(disconnectPeer.SenderId);
+                            await Device.InvokeOnMainThreadAsync(() =>
+                                _navigationService?.DisplaySnackBar(
+                                    SnackbarMessage.MessageType.Regular,
+                                    AppResources.DisconnectedSuccessfully));
+                        }
+                        catch (Exception e)
                         {
-                            _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular,
-                                AppResources.DisconnectedSuccessfully);
-                        });
+                            Log.Error(e,"Disconnect peer error");
+                            
+                            await Device.InvokeOnMainThreadAsync(() => 
+                                _navigationService?.DisplaySnackBar(
+                                    SnackbarMessage.MessageType.Error,
+                                    AppResources.TryAgainLaterError));
+                        }
                     },
                     OnCopy = value =>
                     {
-                        _ = Device.InvokeOnMainThreadAsync(() =>
+                        try
                         {
-                            if (value != null)
+                            _ = Device.InvokeOnMainThreadAsync(() =>
                             {
-                                _ = Clipboard.SetTextAsync(value);
-                                _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular,
-                                    AppResources.Copied);
-                            }
-                            else
-                            {
-                                _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError,
-                                    AppResources.AcceptButton);
-                            }
-                        });
+                                if (value != null)
+                                {
+                                    _ = Clipboard.SetTextAsync(value);
+                                    _navigationService?.DisplaySnackBar(
+                                        SnackbarMessage.MessageType.Regular,
+                                        AppResources.Copied);
+                                }
+                                else
+                                {
+                                    _navigationService?.ShowAlert(
+                                        AppResources.Error, 
+                                        AppResources.CopyError, 
+                                        AppResources.AcceptButton);
+                                }
+                            });
+                        }
+                        catch (Exception e)
+                        {
+                            Log.Error(e,"Dapp info copy error");
+                        }
                     }
                 }));
         }

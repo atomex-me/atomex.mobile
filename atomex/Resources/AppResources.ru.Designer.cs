@@ -2576,5 +2576,41 @@ namespace atomex.Resources {
                 return ResourceManager.GetString("ConnectionTimeoutError", resourceCulture);
             }
         }
+        
+        internal static string TryAgainLaterError {
+            get {
+                return ResourceManager.GetString("TryAgainLaterError", resourceCulture);
+            }
+        }
+        
+        internal static string AtomexConnectsToDapp {
+            get {
+                return ResourceManager.GetString("AtomexConnectsToDapp", resourceCulture);
+            }
+        }
+        
+        internal static string GoToBrowser {
+            get {
+                return ResourceManager.GetString("GoToBrowser", resourceCulture);
+            }
+        }
+        
+        internal static string ReturnToAtomex {
+            get {
+                return ResourceManager.GetString("ReturnToAtomex", resourceCulture);
+            }
+        }
+        
+        internal static string TooLongToConnect {
+            get {
+                return ResourceManager.GetString("TooLongToConnect", resourceCulture);
+            }
+        }
+        
+        internal static string WaitFor2Sec {
+            get {
+                return ResourceManager.GetString("WaitFor2Sec", resourceCulture);
+            }
+        }
     }
 }

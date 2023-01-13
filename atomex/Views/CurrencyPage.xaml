@@ -1366,6 +1366,112 @@
                     </Grid>
                 </Frame>
             </StackLayout>
+            <StackLayout Spacing="0"
+                         AbsoluteLayout.LayoutBounds="0,1,1,114"
+                         AbsoluteLayout.LayoutFlags="WidthProportional, YProportional"
+                         IsVisible="{Binding DappsViewModel.IsConnecting, FallbackValue='False', TargetNullValue='False'}">
+                <Frame HasShadow="False"
+                       CornerRadius="4"
+                       HorizontalOptions="FillAndExpand"
+                       Padding="0"
+                       HeightRequest="114"
+                       Margin="16,0"
+                       BackgroundColor="{AppThemeBinding Dark={StaticResource RegularSnackBarBgColorDark}, Light={StaticResource RegularSnackBarBgColor}}">
+                    <Grid Padding="16,12"
+                          HorizontalOptions="FillAndExpand"
+                          ColumnSpacing="10"
+                          RowSpacing="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="18" />
+                            <RowDefinition Height="18" />
+                            <RowDefinition Height="18" />
+                            <RowDefinition Height="18" />
+                            <RowDefinition Height="18" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Image Source="ic_warning"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               WidthRequest="20"
+                               HeightRequest="17"/>
+                        <Label Grid.Column="1"
+                               Text="{helpers:Translate AtomexConnectsToDapp}"
+                               TextColor="{AppThemeBinding Dark={StaticResource RegularSnackBarTextColorDark}, Light={StaticResource RegularSnackBarTextColor}}"
+                               FontFamily="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"
+                               FontSize="14"
+                               VerticalTextAlignment="Center"
+                               HorizontalTextAlignment="Start" />
+                        <Label Grid.Row="1"
+                               Grid.Column="1"
+                               TextColor="{AppThemeBinding Dark={StaticResource RegularSnackBarTextColorDark}, Light={StaticResource RegularSnackBarTextColor}}"
+                               FontFamily="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"
+                               FontSize="14"
+                               VerticalTextAlignment="Center"
+                               HorizontalTextAlignment="Start">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{helpers:Translate TooLongToConnect}"/>
+                                    <Span Text=":"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label Grid.Row="2"
+                               Grid.Column="1"
+                               TextColor="{AppThemeBinding Dark={StaticResource RegularSnackBarTextColorDark}, Light={StaticResource RegularSnackBarTextColor}}"
+                               FontFamily="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"
+                               FontSize="14"
+                               Padding="8,0,0,0"
+                               VerticalTextAlignment="Center"
+                               HorizontalTextAlignment="Start">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="1."/>
+                                    <Span Text=" "/>
+                                    <Span Text="{helpers:Translate GoToBrowser}"/>
+                                    <Span Text=";"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label Grid.Row="3"
+                               Grid.Column="1"
+                               TextColor="{AppThemeBinding Dark={StaticResource RegularSnackBarTextColorDark}, Light={StaticResource RegularSnackBarTextColor}}"
+                               FontFamily="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"
+                               FontSize="14"
+                               Padding="8,0,0,0"
+                               VerticalTextAlignment="Center"
+                               HorizontalTextAlignment="Start">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="2."/>
+                                    <Span Text=" "/>
+                                    <Span Text="{helpers:Translate WaitFor2Sec}"/>
+                                    <Span Text=";"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label Grid.Row="4"
+                               Grid.Column="1"
+                               TextColor="{AppThemeBinding Dark={StaticResource RegularSnackBarTextColorDark}, Light={StaticResource RegularSnackBarTextColor}}"
+                               FontFamily="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"
+                               FontSize="14"
+                               Padding="8,0,0,0"
+                               VerticalTextAlignment="Center"
+                               HorizontalTextAlignment="Start">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="3."/>
+                                    <Span Text=" "/>
+                                    <Span Text="{helpers:Translate ReturnToAtomex}"/>
+                                    <Span Text="."/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Grid>
+                </Frame>
+            </StackLayout>
         </AbsoluteLayout>
     </RefreshView>
 </ContentPage>
