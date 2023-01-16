@@ -744,7 +744,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Beacon.Sdk">
-      <Version>1.0.12</Version>
+      <Version>1.0.13</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2291" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.1" />
