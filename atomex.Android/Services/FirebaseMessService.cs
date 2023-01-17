@@ -7,7 +7,7 @@ using Android.Graphics;
 
 namespace atomex.Droid.Services
 {
-    [Service]
+    [Service(Exported = true)]
     [IntentFilter(new[] { "com.google.firebase.MESSAGING_EVENT" })]
     public class FirebaseMessService : FirebaseMessagingService
     {

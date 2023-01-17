@@ -25,7 +25,7 @@ namespace atomex.Droid
 {
     [Activity(Label = "Atomex", Icon = "@mipmap/icon", Theme = "@style/MainTheme",
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, LaunchMode = LaunchMode.SingleTask,
-        ScreenOrientation = ScreenOrientation.Locked)]
+        ScreenOrientation = ScreenOrientation.Locked, Exported = true)]
     
     [IntentFilter(new[] { Intent.ActionView },
         Categories = new[]
