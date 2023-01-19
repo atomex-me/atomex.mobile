@@ -24,7 +24,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.atomex.ios</string>
 	<key>CFBundleVersion</key>
-	<string>1.22.3</string>
+	<string>1.22.13</string>
 	<key>UILaunchStoryboardName</key>
 	<string>AtomexLaunchScreen</string>
 	<key>CFBundleName</key>
