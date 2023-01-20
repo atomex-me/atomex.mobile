@@ -423,40 +423,63 @@ namespace atomex.ViewModels.DappsViewModels
                             });
                         }
 
-                        operations.AddRange(operationRequest.OperationDetails.Select(o =>
+                        foreach (var operation in operationRequest.OperationDetails)
                         {
-                            if (!long.TryParse(o.Amount, out var amount))
-                                amount = 0;
-
-                            var txContent = new TransactionContent
+                            if (operation is PartialTezosTransactionOperation transactionOperation)
                             {
-                                Source = connectedWalletAddress.Address,
-                                Destination = o.Destination,
-                                Amount = amount,
-                                Counter = ++counter,
-                                Fee = 0,
-                                GasLimit = operationGasLimit,
-                                StorageLimit = StorageLimitPerOperation,
-                            };
+                                if (!long.TryParse(transactionOperation.Amount, out var amount))
+                                    amount = 0;
 
-                            if (o.Parameters == null) return txContent;
-
-                            try
-                            {
-                                txContent.Parameters = new Parameters
+                                var txContent = new TransactionContent
                                 {
-                                    Entrypoint = o.Parameters?["entrypoint"]!.ToString(),
-                                    Value = Micheline.FromJson(o.Parameters?["value"]!.ToString())
+                                    Source = connectedWalletAddress.Address,
+                                    Destination = transactionOperation.Destination,
+                                    Amount = amount,
+                                    Counter = ++counter,
+                                    Fee = 0,
+                                    GasLimit = operationGasLimit,
+                                    StorageLimit = StorageLimitPerOperation,
                                 };
-                            }
-                            catch (Exception ex)
-                            {
-                                Log.Error(ex, "Exception during parsing Beacon operation params");
-                            }
 
-                            return txContent;
-                        }));
-                        
+                                if (transactionOperation.Parameters == null)
+                                {
+                                    operations.Add(txContent);
+                                    continue;
+                                }
+
+                                try
+                                {
+                                    txContent.Parameters = new Parameters
+                                    {
+                                        Entrypoint = transactionOperation.Parameters?["entrypoint"]!.ToString(),
+                                        Value = Micheline.FromJson(transactionOperation.Parameters?["value"]!
+                                            .ToString())
+                                    };
+                                }
+                                catch (Exception ex)
+                                {
+                                    Log.Error(ex, "Exception during parsing Beacon operation params");
+                                }
+
+                                operations.Add(txContent);
+                            }
+                            
+                            if (operation is TezosDelegationOperation delegationOperation)
+                            {
+                                var delegationContent = new DelegationContent
+                                {
+                                    Source = connectedWalletAddress.Address,
+                                    Counter = ++counter,
+                                    Fee = 0,
+                                    GasLimit = operationGasLimit,
+                                    StorageLimit = StorageLimitPerOperation,
+                                    Delegate = delegationOperation.Delegate
+                                };
+
+                                operations.Add(delegationContent);
+                            }
+                        }
+
                         var operationRequestViewModel = new OperationRequestViewModel(operations,
                             connectedWalletAddress,
                             operationGasLimit, _tezos)

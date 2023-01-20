@@ -34,6 +34,7 @@ namespace atomex.ViewModels.DappsViewModels
         public int Id { get; set; }
         protected static string BaseCurrencyCode => "USD";
         public abstract string JsonStringOperation { get; }
+        
         [Reactive] public IQuotesProvider QuotesProvider { get; set; }
 
         protected BaseBeaconOperationViewModel()
@@ -154,6 +155,69 @@ namespace atomex.ViewModels.DappsViewModels
         }
     }
 
+    public class DelegationContentViewModel : BaseBeaconOperationViewModel
+    {
+        [Reactive] public DelegationContent Operation { get; set; }
+        public override string JsonStringOperation => JsonConvert.SerializeObject(Operation, Formatting.Indented);
+        public string DestinationIcon => $"https://services.tzkt.io/v1/avatars/{Operation.Delegate}";
+        [Reactive] public string DestinationAlias { get; set; }
+        public decimal FeeInTez => TezosConfig.MtzToTz(Convert.ToDecimal(Operation.Fee));
+        [Reactive] public decimal FeeInBase { get; set; }
+        public string ExplorerUri { get; set; }
+
+        public DelegationContentViewModel()
+        {
+            this.WhenAnyValue(vm => vm.Operation)
+                .WhereNotNull()
+                .SubscribeInMainThread(async operation =>
+                {
+                    DestinationAlias = operation.Delegate.TruncateAddress();
+                    var url = $"v1/accounts/{operation.Delegate}?metadata=true";
+
+                    try
+                    {
+                        using var response = await HttpHelper.GetAsync(
+                            baseUri: "https://api.tzkt.io/",
+                            relativeUri: url);
+
+                        if (response.StatusCode != HttpStatusCode.OK) return;
+
+                        var responseContent = await response
+                            .Content
+                            .ReadAsStringAsync();
+
+                        var responseJObj = JsonConvert.DeserializeObject<JObject>(responseContent);
+                        var alias = responseJObj?["metadata"]?["alias"]?.ToString();
+                        if (alias != null)
+                            DestinationAlias = alias;
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex, "Error during sending request to {Url}", url);
+                    }
+                });
+        }
+
+        private ReactiveCommand<Unit, Unit> _openDestinationInExplorer;
+
+        public ReactiveCommand<Unit, Unit> OpenDestinationInExplorer => _openDestinationInExplorer ??=
+            ReactiveCommand.Create(() =>
+            {
+                if (Uri.TryCreate($"{ExplorerUri}{Operation.Delegate}", UriKind.Absolute, out var uri))
+                    Launcher.OpenAsync(new Uri(uri.ToString()));
+            });
+
+        protected override void OnQuotesUpdatedEventHandler(object? sender, EventArgs args)
+        {
+            if (sender is not IQuotesProvider quotesProvider)
+                return;
+
+            var xtzQuote = quotesProvider.GetQuote(TezosConfig.Xtz, BaseCurrencyCode);
+            FeeInBase = FeeInTez.SafeMultiply(xtzQuote?.Bid ?? 0);
+            Log.Debug("Quotes updated for beacon DelegationContent operation {Id}", Id);
+        }
+    }
+
     public class OperationRequestViewModel : BaseViewModel, IDisposable
     {
         public string DappName { get; set; }
@@ -177,6 +241,7 @@ namespace atomex.ViewModels.DappsViewModels
         [Reactive] public int TotalGasLimit { get; set; }
         [Reactive] public int TotalStorageLimit { get; set; }
         [Reactive] public decimal TotalGasFee { get; set; }
+
         public string TotalGasFeeString
         {
             get => TotalGasFee.ToString(CultureInfo.InvariantCulture);
@@ -202,8 +267,10 @@ namespace atomex.ViewModels.DappsViewModels
                 Device.InvokeOnMainThreadAsync(() => { this.RaisePropertyChanged(nameof(TotalGasFee)); });
             }
         }
+
         [Reactive] public decimal TotalGasFeeInBase { get; set; }
         [Reactive] public decimal TotalStorageFee { get; set; }
+
         public string TotalStorageFeeString
         {
             get => TotalStorageFee.ToString(CultureInfo.InvariantCulture);
@@ -229,6 +296,7 @@ namespace atomex.ViewModels.DappsViewModels
                 Device.InvokeOnMainThreadAsync(() => { this.RaisePropertyChanged(nameof(TotalStorageFee)); });
             }
         }
+
         [Reactive] public decimal TotalStorageFeeInBase { get; set; }
         [Reactive] public bool UseDefaultFee { get; set; }
         [Reactive] public bool AutofillError { get; set; }
@@ -284,6 +352,7 @@ namespace atomex.ViewModels.DappsViewModels
                     {
                         TransactionContentViewModel transactionOp => res + transactionOp.Operation.GasLimit,
                         RevealContentViewModel revealOp => res + revealOp.Operation.GasLimit,
+                        DelegationContentViewModel delegationOp => res + delegationOp.Operation.GasLimit,
                         _ => res
                     });
 
@@ -291,6 +360,7 @@ namespace atomex.ViewModels.DappsViewModels
                     {
                         TransactionContentViewModel transactionOp => res + transactionOp.Operation.StorageLimit,
                         RevealContentViewModel revealOp => res + revealOp.Operation.StorageLimit,
+                        DelegationContentViewModel delegationOp => res + delegationOp.Operation.StorageLimit,
                         _ => res
                     });
 
@@ -298,6 +368,7 @@ namespace atomex.ViewModels.DappsViewModels
                     {
                         TransactionContentViewModel transactionOp => res + transactionOp.FeeInTez,
                         RevealContentViewModel revealOp => res + revealOp.FeeInTez,
+                        DelegationContentViewModel delegationOp => res + delegationOp.FeeInTez,
                         _ => res
                     });
                     TotalGasFeeString = TotalGasFee.ToString();
@@ -378,7 +449,7 @@ namespace atomex.ViewModels.DappsViewModels
         private async void AutofillOperations()
         {
             AutofillError = false;
-
+            
             var rpc = new Rpc(_tezos.RpcNodeUri);
             JObject head;
             try
@@ -421,10 +492,21 @@ namespace atomex.ViewModels.DappsViewModels
                                 ? DappsViewModel.StorageLimitPerOperation
                                 : revealContent.StorageLimit
                         },
+                        DelegationContent delegateContent => new DelegationContent
+                        {
+                            Delegate = delegateContent.Delegate,
+                            Source = delegateContent.Source,
+                            Fee = UseDefaultFee ? 0 : delegateContent.Fee,
+                            Counter = delegateContent.Counter,
+                            GasLimit = UseDefaultFee ? _defaultOperationGasLimit : delegateContent.GasLimit,
+                            StorageLimit = UseDefaultFee 
+                                ? DappsViewModel.StorageLimitPerOperation
+                                : delegateContent.StorageLimit
+                        },
                         _ => op
                     })
                     .ToList();
-
+                
                 var avgFee = Convert.ToInt64(TotalGasFee * TezosConfig.XtzDigitsMultiplier / operations.Count);
 
                 if (!UseDefaultFee)
@@ -492,6 +574,15 @@ namespace atomex.ViewModels.DappsViewModels
                                 Id = index + 1,
                                 Operation = revealOperation,
                                 QuotesProvider = QuotesProvider,
+                            });
+                            break;
+                        case DelegationContent delegationOperation:
+                            operationsViewModel.Add(new DelegationContentViewModel
+                            {
+                                Id = index + 1,
+                                Operation = delegationOperation,
+                                QuotesProvider = QuotesProvider,
+                                ExplorerUri = _tezos.AddressExplorerUri
                             });
                             break;
                     }

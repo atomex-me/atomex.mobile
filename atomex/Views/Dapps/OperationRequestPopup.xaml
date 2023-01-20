@@ -15,6 +15,7 @@
               d:BindingContext="{d:DesignInstance vm:OperationRequestViewModel}">
     <rg:PopupPage.Resources>
         <ResourceDictionary>
+            <converters:EqualsConverter x:Key="EqualsConverter" />
             <converters:NotEqualsConverter x:Key="NotEqualsConverter" />
             <converters:AllTrueMultiConverter x:Key="AllTrueConverter" />
             <converters:InverseBoolConverter x:Key="InverseBool" />
@@ -256,38 +257,20 @@
                                            HorizontalOptions="Center"
                                            VerticalOptions="Center"
                                            BackgroundColor="Transparent">
-                                        <Image Source="{Binding DestinationIcon}"
+                                        <Image Source="{Binding DestinationIcon, TargetNullValue='AtomexLogo', FallbackValue='AtomexLogo'}"
                                                WidthRequest="40"
                                                HeightRequest="40"
                                                HorizontalOptions="Center"
-                                               VerticalOptions="Center">
-                                            <Image.Triggers>
-                                                <DataTrigger TargetType="Image"
-                                                             Binding="{Binding Operation.Kind}"
-                                                             Value="reveal">
-                                                    <Setter Property="Source"
-                                                            Value="ic_search" />
-                                                    <Setter Property="WidthRequest"
-                                                            Value="24" />
-                                                    <Setter Property="HeightRequest"
-                                                            Value="24" />
-                                                </DataTrigger>
-                                            </Image.Triggers>
-                                        </Image>
+                                               VerticalOptions="Center" />
                                     </Frame>
                                     <Label Grid.Column="1"
                                            Style="{DynamicResource MainTextH4}"
                                            HorizontalTextAlignment="Start"
                                            VerticalTextAlignment="Center"
                                            LineBreakMode="TailTruncation"
-                                           Margin="0,0,16,0">
+                                           Margin="0,0,16,0"
+                                           IsVisible="{Binding Operation.Kind, Converter={StaticResource EqualsConverter}, ConverterParameter='transaction', FallbackValue='False', TargetNullValue='False'}">
                                         <Label.Triggers>
-                                            <DataTrigger TargetType="Label"
-                                                         Binding="{Binding Operation.Kind}"
-                                                         Value="reveal">
-                                                <Setter Property="IsVisible"
-                                                        Value="False" />
-                                            </DataTrigger>
                                             <DataTrigger TargetType="Label"
                                                          Binding="{Binding AmountInTez, Converter={StaticResource GreaterThanZeroConverter}, FallbackValue='False', TargetNullValue='False'}"
                                                          Value="False">
@@ -325,26 +308,36 @@
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
+                                    <Label Grid.Column="1"
+                                           Grid.RowSpan="2"
+                                           Style="{DynamicResource MainTextH4}"
+                                           HorizontalTextAlignment="Start"
+                                           VerticalTextAlignment="Center"
+                                           LineBreakMode="TailTruncation"
+                                           Margin="0,0,16,0"
+                                           IsVisible="False">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Operation.Kind}"
+                                                         Value="delegation">
+                                                <Setter Property="IsVisible"
+                                                        Value="True" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="Delegate for " />
+                                                <Span Text="{Binding DestinationAlias}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
                                     <Label Grid.Row="1"
                                            Grid.Column="1"
                                            Style="{DynamicResource AdditionalTextH4}"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Start"
-                                           Margin="0,0,16,0">
-                                        <Label.Triggers>
-                                            <DataTrigger TargetType="Label"
-                                                         Binding="{Binding Operation.Kind}"
-                                                         Value="reveal">
-                                                <Setter Property="IsVisible"
-                                                        Value="False" />
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="Label"
-                                                         Binding="{Binding AmountInTez, Converter={StaticResource GreaterThanZeroConverter}, FallbackValue='False', TargetNullValue='False'}"
-                                                         Value="False">
-                                                <Setter Property="IsVisible"
-                                                        Value="False" />
-                                            </DataTrigger>
-                                        </Label.Triggers>
+                                           Margin="0,0,16,0"
+                                           IsVisible="{Binding Operation.Kind, Converter={StaticResource EqualsConverter}, ConverterParameter='transaction', FallbackValue='False', TargetNullValue='False'}">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span Text="{Binding AmountInTez, StringFormat='{0:0.####} XTZ /'}" />
@@ -355,7 +348,7 @@
                                     <StackLayout Grid.Row="2"
                                                  Grid.ColumnSpan="2"
                                                  Style="{DynamicResource SeparatorStyle}"
-                                                 Margin="16,16,0,0" />
+                                                 Margin="0,16,0,0" />
                                 </Grid>
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>
