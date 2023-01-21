@@ -338,17 +338,17 @@
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Start"
                                            Margin="0,0,16,0">
-                                    <Label.IsVisible>
+                                        <Label.IsVisible>
                                             <MultiBinding Converter="{StaticResource AllTrueConverter}">
                                                 <Binding Path="Operation.Kind"
                                                          Converter="{StaticResource EqualsConverter}"
                                                          ConverterParameter="transaction"
                                                          FallbackValue="False"
-                                                         TargetNullValue="False"/>
-                                                <Binding Path="AmountInTez" 
+                                                         TargetNullValue="False" />
+                                                <Binding Path="AmountInTez"
                                                          Converter="{StaticResource GreaterThanZeroConverter}"
                                                          FallbackValue="False"
-                                                         TargetNullValue="False"/>
+                                                         TargetNullValue="False" />
                                             </MultiBinding>
                                         </Label.IsVisible>
                                         <Label.FormattedText>
@@ -446,22 +446,85 @@
                         </StackLayout>
                     </Frame>
                 </AbsoluteLayout>
-                <ScrollView
-                    BackgroundColor="{AppThemeBinding Dark={StaticResource TabContentBackgroundColorDark}, Light={StaticResource TabContentBackgroundColor}}"
-                    HeightRequest="176"
-                    IsVisible="False">
-                    <ScrollView.Triggers>
-                        <DataTrigger TargetType="ScrollView"
+                <AbsoluteLayout HeightRequest="176"
+                                BackgroundColor="{AppThemeBinding Dark={StaticResource TabContentBackgroundColorDark}, Light={StaticResource TabContentBackgroundColor}}"
+                                IsVisible="False">
+                    <AbsoluteLayout.Triggers>
+                        <DataTrigger TargetType="AbsoluteLayout"
                                      Binding="{Binding SelectedTab}"
                                      Value="Bytes">
                             <Setter Property="IsVisible"
                                     Value="True" />
                         </DataTrigger>
-                    </ScrollView.Triggers>
-                    <Label Style="{DynamicResource MainTextH5}"
-                           Text="{Binding OperationsBytes}"
-                           Margin="16,0" />
-                </ScrollView>
+                    </AbsoluteLayout.Triggers>
+                    <ScrollView HeightRequest="176">
+                        <Label Style="{DynamicResource MainTextH5}"
+                               Text="{Binding OperationsBytes}"
+                               Padding="16,0" />
+                    </ScrollView>
+                    <Frame Style="{DynamicResource OverlayClickableFrame}"
+                           AbsoluteLayout.LayoutFlags="PositionProportional"
+                           AbsoluteLayout.LayoutBounds="0.9,0.9">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding CopyCommand}"
+                                                  CommandParameter="{Binding OperationsBytes}" />
+                        </Frame.GestureRecognizers>
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding IsCopied}"
+                                         Value="False">
+                                <Setter Property="BackgroundColor"
+                                        Value="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding IsCopied}"
+                                         Value="True">
+                                <Setter Property="BackgroundColor"
+                                        Value="{AppThemeBinding Dark={StaticResource HighlightingButtonBackgroundColorDark}, Light={StaticResource HighlightingButtonBackgroundColor}}" />
+                            </DataTrigger>
+                        </Frame.Triggers>
+                        <StackLayout Spacing="9"
+                                     Orientation="Horizontal"
+                                     HorizontalOptions="Center">
+                            <Image HeightRequest="15"
+                                   WidthRequest="13"
+                                   VerticalOptions="Center">
+                                <Image.Triggers>
+                                    <DataTrigger TargetType="Image"
+                                                 Binding="{Binding IsCopied}"
+                                                 Value="False">
+                                        <Setter Property="Source"
+                                                Value="{AppThemeBinding Dark='ic_copy__white', Light='ic_copy__gray'}" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Image"
+                                                 Binding="{Binding IsCopied}"
+                                                 Value="True">
+                                        <Setter Property="Source"
+                                                Value="ic_tick" />
+                                    </DataTrigger>
+                                </Image.Triggers>
+                            </Image>
+                            <Label Text="{Binding CopyButtonName}"
+                                   Style="{DynamicResource MainTextH5}"
+                                   VerticalTextAlignment="Center">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding IsCopied}"
+                                                 Value="False">
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding IsCopied}"
+                                                 Value="True">
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Dark={StaticResource HighlightingButtonTextColorDark}, Light={StaticResource HighlightingButtonTextColor}}" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </StackLayout>
+                    </Frame>
+                </AbsoluteLayout>
                 <StackLayout Spacing="0">
                     <input:CheckBox Text="{helpers:Translate UseDefaultFeeLabel}"
                                     Margin="16"
