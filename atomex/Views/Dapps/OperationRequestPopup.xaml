@@ -257,11 +257,12 @@
                                            HorizontalOptions="Center"
                                            VerticalOptions="Center"
                                            BackgroundColor="Transparent">
-                                        <Image Source="{Binding DestinationIcon, TargetNullValue='AtomexLogo', FallbackValue='AtomexLogo'}"
-                                               WidthRequest="40"
-                                               HeightRequest="40"
-                                               HorizontalOptions="Center"
-                                               VerticalOptions="Center" />
+                                        <Image
+                                            Source="{Binding DestinationIcon, TargetNullValue='AtomexLogo', FallbackValue='AtomexLogo'}"
+                                            WidthRequest="40"
+                                            HeightRequest="40"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
                                     </Frame>
                                     <Label Grid.Column="1"
                                            Style="{DynamicResource MainTextH4}"
@@ -336,8 +337,20 @@
                                            Style="{DynamicResource AdditionalTextH4}"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Start"
-                                           Margin="0,0,16,0"
-                                           IsVisible="{Binding Operation.Kind, Converter={StaticResource EqualsConverter}, ConverterParameter='transaction', FallbackValue='False', TargetNullValue='False'}">
+                                           Margin="0,0,16,0">
+                                    <Label.IsVisible>
+                                            <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                                                <Binding Path="Operation.Kind"
+                                                         Converter="{StaticResource EqualsConverter}"
+                                                         ConverterParameter="transaction"
+                                                         FallbackValue="False"
+                                                         TargetNullValue="False"/>
+                                                <Binding Path="AmountInTez" 
+                                                         Converter="{StaticResource GreaterThanZeroConverter}"
+                                                         FallbackValue="False"
+                                                         TargetNullValue="False"/>
+                                            </MultiBinding>
+                                        </Label.IsVisible>
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span Text="{Binding AmountInTez, StringFormat='{0:0.####} XTZ /'}" />
