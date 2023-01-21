@@ -659,6 +659,17 @@ namespace atomex.ViewModels.DappsViewModels
                                     .PermissionInfoRepository
                                     .TryReadBySenderIdAsync(message.SenderId);
 
+                            if (permissionInfo == null)
+                            {
+                                Log.Error("Permission info is null for signature request");
+                                await Device.InvokeOnMainThreadAsync(() =>
+                                    _navigationService?.DisplaySnackBar(
+                                        SnackbarMessage.MessageType.Error,
+                                        AppResources.TryAgainLaterError));
+                                
+                                return;
+                            }
+
                             var signatureRequestViewModel = new SignatureRequestViewModel()
                             {
                                 DappName = permissionInfo!.AppMetadata.Name,

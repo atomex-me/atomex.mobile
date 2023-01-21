@@ -37,7 +37,7 @@
                    WidthRequest="40"
                    HorizontalOptions="Center"
                    BackgroundColor="{AppThemeBinding Dark={StaticResource IconFrameBackgroundColorDark}, Light={StaticResource IconFrameBackgroundColor}}">
-                <Image Source="{Binding DappLogo}"
+                <Image Source="{Binding DappLogo, TargetNullValue='AtomexLogo', FallbackValue='AtomexLogo'}"
                        HeightRequest="40"
                        WidthRequest="40"
                        VerticalOptions="Center"
