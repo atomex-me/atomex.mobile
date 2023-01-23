@@ -12,5 +12,16 @@ namespace atomex.Views.Dapps
             InitializeComponent();
             BindingContext = permissionRequestViewModel;
         }
+
+        protected override bool OnBackgroundClicked()
+        {
+            if (BindingContext is PermissionRequestViewModel)
+            {
+                var vm = (PermissionRequestViewModel)BindingContext;
+                vm?.OnRejectCommand.Execute();
+            }
+            
+            return true;
+        }   
     }
 }

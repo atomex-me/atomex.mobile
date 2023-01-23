@@ -408,12 +408,13 @@ namespace atomex.ViewModels.CurrencyViewModels
                     cancellationToken: _cancellationTokenSource.Token);
 
                 await LoadTransactionsAsync();
-
-                await Device.InvokeOnMainThreadAsync(() =>
-                {
-                    _navigationService?.DisplaySnackBar(MessageType.Regular,
-                        Currency.Description + " " + AppResources.HasBeenUpdated);
-                });
+                
+                if (_cancellationTokenSource is {IsCancellationRequested: false})
+                    await Device.InvokeOnMainThreadAsync(() =>
+                    {
+                        _navigationService?.DisplaySnackBar(MessageType.Regular,
+                            Currency.Description + " " + AppResources.HasBeenUpdated);
+                    });
             }
             catch (OperationCanceledException)
             {
@@ -433,8 +434,16 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         public ReactiveCommand<Unit, Unit> CancelUpdateCommand => _cancelUpdateCommand ??= ReactiveCommand.Create(() =>
         {
-            _cancellationTokenSource?.Cancel();
-            _cancellationTokenSource?.Dispose();
+            try
+            {
+                _cancellationTokenSource?.Cancel();
+                _cancellationTokenSource?.Dispose();
+                _cancellationTokenSource = null;
+            }
+            catch (Exception )
+            {
+                // ignored
+            }
         });
 
         private ReactiveCommand<Unit, Unit> _showAvailableAmountCommand;

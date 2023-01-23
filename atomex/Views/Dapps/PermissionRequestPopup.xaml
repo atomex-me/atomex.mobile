@@ -22,10 +22,10 @@
                            HasBackgroundAnimation="True" />
     </rg:PopupPage.Animation>
     <Frame CornerRadius="8"
-           WidthRequest="320"
            Padding="0,12"
            HasShadow="False"
-           HorizontalOptions="Center"
+           Margin="20,0"
+           HorizontalOptions="FillAndExpand"
            VerticalOptions="Center"
            BackgroundColor="{AppThemeBinding Dark={StaticResource PopupFrameBackgroundColorDark}, Light={StaticResource PopupFrameBackgroundColor}}">
         <StackLayout Spacing="0"
@@ -37,7 +37,7 @@
                    WidthRequest="40"
                    HorizontalOptions="Center"
                    BackgroundColor="{AppThemeBinding Dark={StaticResource IconFrameBackgroundColorDark}, Light={StaticResource IconFrameBackgroundColor}}">
-                <Image Source="{Binding DappLogo}"
+                <Image Source="{Binding DappLogo, TargetNullValue='AtomexLogo', FallbackValue='AtomexLogo'}"
                        HeightRequest="40"
                        WidthRequest="40"
                        VerticalOptions="Center"

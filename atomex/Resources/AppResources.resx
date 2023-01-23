@@ -122,6 +122,30 @@
     <data name="Search" xml:space="preserve">
         <value>Search...</value>
     </data>
+    <data name="PasteButton" xml:space="preserve">
+        <value>Paste</value>
+    </data>
+    <data name="GasPriceLabel" xml:space="preserve">
+        <value>Gas price</value>
+    </data>
+    <data name="GasLimitLabel" xml:space="preserve">
+        <value>Gas limit</value>
+    </data>
+    <data name="GasUsedLabel" xml:space="preserve">
+        <value>Gas used</value>
+    </data>
+    <data name="GasFeeLabel" xml:space="preserve">
+        <value>Gas fee</value>
+    </data>
+    <data name="StorageLimitLabel" xml:space="preserve">
+        <value>Storage limit</value>
+    </data>
+    <data name="StorageFeeLabel" xml:space="preserve">
+        <value>Storage fee</value>
+    </data>
+    <data name="TotalFees" xml:space="preserve">
+        <value>Total Fees</value>
+    </data>
     
     <!-- Start Page -->
     <data name="MyWalletsButton" xml:space="preserve">
@@ -437,18 +461,6 @@
     </data>
     <data name="ScannerBottomOverlayText" xml:space="preserve">
         <value>Scanning will happen automatically</value>
-    </data>
-    <data name="PasteButton" xml:space="preserve">
-        <value>Paste</value>
-    </data>
-    <data name="GasPriceLabel" xml:space="preserve">
-        <value>Gas price</value>
-    </data>
-    <data name="GasLimitLabel" xml:space="preserve">
-        <value>Gas limit</value>
-    </data>
-    <data name="GasUsedLabel" xml:space="preserve">
-        <value>Gas used</value>
     </data>
     <data name="IsInternalLabel" xml:space="preserve">
         <value>Is Internal</value>
@@ -907,11 +919,8 @@
     <data name="DoYouWantToSignData" xml:space="preserve">
         <value>Do you want to sign the following data?</value>
     </data>
-    <data name="RequestFromDapp" xml:space="preserve">
-        <value>Request from {0}</value>
-    </data>
-    <data name="ConfirmDappOperations" xml:space="preserve">
-        <value>By confirming, you are allowing {0} to make the following operations</value>
+    <data name="DappRequestToConfirm" xml:space="preserve">
+        <value>{0} requests to confirm operations</value>
     </data>
     <data name="DisplayTxDetails" xml:space="preserve">
         <value>Display extra tx details</value>
@@ -921,6 +930,18 @@
     </data>
     <data name="ConnectionError" xml:space="preserve">
         <value>Connection error</value>
+    </data>
+    <data name="Preview" xml:space="preserve">
+        <value>Preview</value>
+    </data>
+    <data name="Raw" xml:space="preserve">
+        <value>Raw</value>
+    </data>
+    <data name="Bytes" xml:space="preserve">
+        <value>Bytes</value>
+    </data>
+    <data name="ShowDetails" xml:space="preserve">
+        <value>Show Details</value>
     </data>
 
     <!-- Settings Page -->
@@ -1209,6 +1230,12 @@
     <data name="RemoveTxWarning" xml:space="preserve">
         <value>Do you confirm the removal from the transaction list? This action affects only the local database and does not affect the blockchain</value>
     </data>
+    <data name="ChangingTxFeeWarning" xml:space="preserve">
+        <value>Warning! Changing fee, gas limit or storage limit can lead to the cancellation of the transaction</value>
+    </data>
+    <data name="FailedTxParametersWarning" xml:space="preserve">
+        <value>Warning! Transaction with this parameters is likely to fail</value>
+    </data>
     <data name="UpdateApp" xml:space="preserve">
         <value>There is a new version of this app available. Would you like to update now?</value>
     </data>
@@ -1308,5 +1335,26 @@ NOTE: Do not sign out or close the application until the swap is completed, othe
     </data>
     <data name="IncorrectQrCodeFormat" xml:space="preserve">
         <value>Incorrect QR code format</value>
+    </data>
+    <data name="ConnectionTimeoutError" xml:space="preserve">
+        <value>The connection has timed out</value>
+    </data>
+    <data name="TryAgainLaterError" xml:space="preserve">
+        <value>An error occurred. Please try again later</value>
+    </data>
+    <data name="AtomexConnectsToDapp" xml:space="preserve">
+        <value>Atomex connects to Dapp.</value>
+    </data>
+    <data name="TooLongToConnect" xml:space="preserve">
+        <value>If it takes too long to connect</value>
+    </data>
+    <data name="GoToBrowser" xml:space="preserve">
+        <value>Go back to your browser</value>
+    </data>
+    <data name="WaitFor2Sec" xml:space="preserve">
+        <value>Wait for 2 seconds</value>
+    </data>
+    <data name="ReturnToAtomex" xml:space="preserve">
+        <value>Return back to Atomex</value>
     </data>
 </root>

@@ -4,12 +4,18 @@
               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               xmlns:rg="http://rotorgames.com"
               xmlns:helpers="clr-namespace:atomex.Helpers"
+              xmlns:converters="clr-namespace:atomex.Converters"
               x:Class="atomex.Views.Dapps.SignatureRequestPopup"
               xmlns:vm="clr-namespace:atomex.ViewModels.DappsViewModels;assembly=atomex"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
               mc:Ignorable="d"
               d:BindingContext="{d:DesignInstance vm:SignatureRequestViewModel}">
+    <rg:PopupPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBoolConverter x:Key="InverseBool" />
+        </ResourceDictionary>
+    </rg:PopupPage.Resources>
     <rg:PopupPage.Animation>
         <rg:ScaleAnimation PositionIn="Center"
                            PositionOut="Center"
@@ -22,10 +28,10 @@
                            HasBackgroundAnimation="True" />
     </rg:PopupPage.Animation>
     <Frame CornerRadius="8"
-           WidthRequest="320"
            Padding="0,12"
            HasShadow="False"
-           HorizontalOptions="Center"
+           Margin="20,0"
+           HorizontalOptions="FillAndExpand"
            VerticalOptions="Center"
            BackgroundColor="{AppThemeBinding Dark={StaticResource PopupFrameBackgroundColorDark}, Light={StaticResource PopupFrameBackgroundColor}}">
         <StackLayout Spacing="0"
@@ -54,16 +60,97 @@
                    VerticalTextAlignment="Center"
                    LineHeight="1.25"
                    Margin="0,8" />
+            <Grid Margin="0,12"
+                  HorizontalOptions="FillAndExpand"
+                  ColumnSpacing="0"
+                  RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="5*" />
+                </Grid.ColumnDefinitions>
+                <Frame Grid.ColumnSpan="2"
+                       CornerRadius="18"
+                       HasShadow="False"
+                       Padding="0"
+                       BackgroundColor="{AppThemeBinding Dark={StaticResource TabSwitcherBackgroundColorDark}, Light={StaticResource TabSwitcherBackgroundColor}}" />
+                <Button Text="{helpers:Translate Raw}"
+                        Style="{DynamicResource TabButton}"
+                        Command="{Binding ChangeTabCommand}">
+                    <Button.CommandParameter>
+                        <x:Boolean>True</x:Boolean>
+                    </Button.CommandParameter>
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button"
+                                     Binding="{Binding IsRawTab}"
+                                     Value="True">
+                            <Setter Property="TextColor"
+                                    Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
+                            <Setter Property="BackgroundColor"
+                                    Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="Button"
+                                     Binding="{Binding IsRawTab}"
+                                     Value="False">
+                            <Setter Property="TextColor"
+                                    Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
+                            <Setter Property="BackgroundColor"
+                                    Value="Transparent" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="1"
+                        Style="{DynamicResource TabButton}"
+                        Text="{helpers:Translate Bytes}"
+                        Command="{Binding ChangeTabCommand}">
+                    <Button.CommandParameter>
+                        <x:Boolean>False</x:Boolean>
+                    </Button.CommandParameter>
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button"
+                                     Binding="{Binding IsRawTab}"
+                                     Value="False">
+                            <Setter Property="TextColor"
+                                    Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
+                            <Setter Property="BackgroundColor"
+                                    Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="Button"
+                                     Binding="{Binding IsRawTab}"
+                                     Value="True">
+                            <Setter Property="TextColor"
+                                    Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
+                            <Setter Property="BackgroundColor"
+                                    Value="Transparent" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+            </Grid>
             <Frame HasShadow="False"
                    Padding="16"
                    HorizontalOptions="FillAndExpand"
                    CornerRadius="8"
                    BackgroundColor="Transparent"
-                   BorderColor="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColor}}">
+                   BorderColor="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColor}}"
+                   IsVisible="{Binding IsRawTab, Converter={StaticResource InverseBool}}">
                 <Label Style="{DynamicResource AdditionalTextH5}"
                        VerticalTextAlignment="Start"
                        HorizontalTextAlignment="Start"
-                       Text="{Binding Payload}" />
+                       Text="{Binding BytesPayload}" />
+            </Frame>
+            <Frame HasShadow="False"
+                   Padding="16"
+                   HorizontalOptions="FillAndExpand"
+                   CornerRadius="8"
+                   BackgroundColor="Transparent"
+                   BorderColor="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColor}}"
+                   IsVisible="{Binding IsRawTab}">
+                <Label Style="{DynamicResource AdditionalTextH5}"
+                       VerticalTextAlignment="Start"
+                       HorizontalTextAlignment="Start"
+                       Text="{Binding RawPayload}" />
             </Frame>
             <Grid RowSpacing="0"
                   ColumnSpacing="8"

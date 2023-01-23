@@ -56,8 +56,8 @@
     <Style x:Key="TabButton" TargetType="Button">
         <Setter Property="HeightRequest" Value="32"/>
         <Setter Property="CornerRadius" Value="16"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Padding" Value="16,5"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Padding" Value="8,5"/>
         <Setter Property="Margin" Value="2"/>
         <Setter Property="TextTransform" Value="None"/>
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
@@ -94,6 +94,14 @@
         <Setter Property="CornerRadius" Value="22"/>
         <Setter Property="Padding" Value="20,0"/>
         <Setter Property="HorizontalOptions" Value="Center"/>
+    </Style>
+    <Style x:Key="OverlayClickableFrame" TargetType="Frame">
+        <Setter Property="HasShadow" Value="False"/>
+        <Setter Property="HeightRequest" Value="32"/>
+        <Setter Property="CornerRadius" Value="16"/>
+        <Setter Property="Padding" Value="12,0"/>
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
     </Style>
     <Style x:Key="MainClickableFrame" TargetType="Frame" BasedOn="{StaticResource ClickableFrame}">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
@@ -195,6 +203,20 @@
         <Setter Property="FontSize" Value="13"/>
     </Style>
     <Style x:Key="WarningTextH6" TargetType="Label" BasedOn="{StaticResource WarningText}">
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+    <Style x:Key="WarningPanelText" TargetType="Label">
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource WarningPanelTextColorDark}, Light={StaticResource WarningPanelTextColor}}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+    </Style>
+    <Style x:Key="WarningPanelTextH5" TargetType="Label" BasedOn="{StaticResource WarningPanelText}">
+        <Setter Property="FontSize" Value="13"/>
+    </Style>
+    <Style x:Key="HintText" TargetType="Label">
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+    </Style>
+    <Style x:Key="HintTextH6" TargetType="Label" BasedOn="{StaticResource HintText}">
         <Setter Property="FontSize" Value="12"/>
     </Style>
     <Style x:Key="ClickableLabel" TargetType="Label">

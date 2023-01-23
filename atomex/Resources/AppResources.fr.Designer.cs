@@ -8,9 +8,6 @@
 //------------------------------------------------------------------------------
 
 namespace atomex.Resources {
-    using System;
-    
-    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -246,6 +243,36 @@ namespace atomex.Resources {
         internal static string Current {
             get {
                 return ResourceManager.GetString("Current", resourceCulture);
+            }
+        }
+        
+        internal static string PasteButton {
+            get {
+                return ResourceManager.GetString("PasteButton", resourceCulture);
+            }
+        }
+        
+        internal static string GasPriceLabel {
+            get {
+                return ResourceManager.GetString("GasPriceLabel", resourceCulture);
+            }
+        }
+        
+        internal static string GasLimitLabel {
+            get {
+                return ResourceManager.GetString("GasLimitLabel", resourceCulture);
+            }
+        }
+        
+        internal static string GasUsedLabel {
+            get {
+                return ResourceManager.GetString("GasUsedLabel", resourceCulture);
+            }
+        }
+        
+        internal static string IsInternalLabel {
+            get {
+                return ResourceManager.GetString("IsInternalLabel", resourceCulture);
             }
         }
         
@@ -822,36 +849,6 @@ namespace atomex.Resources {
         internal static string ScannerBottomOverlayText {
             get {
                 return ResourceManager.GetString("ScannerBottomOverlayText", resourceCulture);
-            }
-        }
-        
-        internal static string PasteButton {
-            get {
-                return ResourceManager.GetString("PasteButton", resourceCulture);
-            }
-        }
-        
-        internal static string GasPriceLabel {
-            get {
-                return ResourceManager.GetString("GasPriceLabel", resourceCulture);
-            }
-        }
-        
-        internal static string GasLimitLabel {
-            get {
-                return ResourceManager.GetString("GasLimitLabel", resourceCulture);
-            }
-        }
-        
-        internal static string GasUsedLabel {
-            get {
-                return ResourceManager.GetString("GasUsedLabel", resourceCulture);
-            }
-        }
-        
-        internal static string IsInternalLabel {
-            get {
-                return ResourceManager.GetString("IsInternalLabel", resourceCulture);
             }
         }
         
@@ -2463,18 +2460,6 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string ConfirmDappOperations {
-            get {
-                return ResourceManager.GetString("ConfirmDappOperations", resourceCulture);
-            }
-        }
-        
-        internal static string RequestFromDapp {
-            get {
-                return ResourceManager.GetString("RequestFromDapp", resourceCulture);
-            }
-        }
-        
         internal static string Transaction {
             get {
                 return ResourceManager.GetString("Transaction", resourceCulture);
@@ -2514,6 +2499,114 @@ namespace atomex.Resources {
         internal static string PasteQr {
             get {
                 return ResourceManager.GetString("PasteQr", resourceCulture);
+            }
+        }
+        
+        internal static string GasFeeLabel {
+            get {
+                return ResourceManager.GetString("GasFeeLabel", resourceCulture);
+            }
+        }
+        
+        internal static string StorageLimitLabel {
+            get {
+                return ResourceManager.GetString("StorageLimitLabel", resourceCulture);
+            }
+        }
+        
+        internal static string StorageFeeLabel {
+            get {
+                return ResourceManager.GetString("StorageFeeLabel", resourceCulture);
+            }
+        }
+        
+        internal static string ShowDetails {
+            get {
+                return ResourceManager.GetString("ShowDetails", resourceCulture);
+            }
+        }
+        
+        internal static string TotalFees {
+            get {
+                return ResourceManager.GetString("TotalFees", resourceCulture);
+            }
+        }
+        
+        internal static string Bytes {
+            get {
+                return ResourceManager.GetString("Bytes", resourceCulture);
+            }
+        }
+        
+        internal static string Preview {
+            get {
+                return ResourceManager.GetString("Preview", resourceCulture);
+            }
+        }
+        
+        internal static string Raw {
+            get {
+                return ResourceManager.GetString("Raw", resourceCulture);
+            }
+        }
+        
+        internal static string DappRequestToConfirm {
+            get {
+                return ResourceManager.GetString("DappRequestToConfirm", resourceCulture);
+            }
+        }
+        
+        internal static string ChangingTxFeeWarning {
+            get {
+                return ResourceManager.GetString("ChangingTxFeeWarning", resourceCulture);
+            }
+        }
+        
+        internal static string FailedTxParametersWarning {
+            get {
+                return ResourceManager.GetString("FailedTxParametersWarning", resourceCulture);
+            }
+        }
+        
+        internal static string ConnectionTimeoutError {
+            get {
+                return ResourceManager.GetString("ConnectionTimeoutError", resourceCulture);
+            }
+        }
+        
+        internal static string TryAgainLaterError {
+            get {
+                return ResourceManager.GetString("TryAgainLaterError", resourceCulture);
+            }
+        }
+        
+        internal static string AtomexConnectsToDapp {
+            get {
+                return ResourceManager.GetString("AtomexConnectsToDapp", resourceCulture);
+            }
+        }
+        
+        internal static string GoToBrowser {
+            get {
+                return ResourceManager.GetString("GoToBrowser", resourceCulture);
+            }
+        }
+        
+        internal static string ReturnToAtomex {
+            get {
+                return ResourceManager.GetString("ReturnToAtomex", resourceCulture);
+            }
+        }
+        
+        internal static string TooLongToConnect {
+            get {
+                return ResourceManager.GetString("TooLongToConnect", resourceCulture);
+            }
+        }
+        
+        internal static string WaitFor2Sec {
+            get {
+                return ResourceManager.GetString("WaitFor2Sec", resourceCulture);
             }
         }
     }

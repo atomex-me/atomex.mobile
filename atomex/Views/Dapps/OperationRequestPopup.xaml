@@ -4,12 +4,25 @@
               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               xmlns:rg="http://rotorgames.com"
               xmlns:helpers="clr-namespace:atomex.Helpers"
+              xmlns:converters="clr-namespace:atomex.Converters"
+              xmlns:custom="clr-namespace:atomex.CustomElements"
+              xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit"
               x:Class="atomex.Views.Dapps.OperationRequestPopup"
               xmlns:vm="clr-namespace:atomex.ViewModels.DappsViewModels;assembly=atomex"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
               mc:Ignorable="d"
               d:BindingContext="{d:DesignInstance vm:OperationRequestViewModel}">
+    <rg:PopupPage.Resources>
+        <ResourceDictionary>
+            <converters:EqualsConverter x:Key="EqualsConverter" />
+            <converters:NotEqualsConverter x:Key="NotEqualsConverter" />
+            <converters:AllTrueMultiConverter x:Key="AllTrueConverter" />
+            <converters:InverseBoolConverter x:Key="InverseBool" />
+            <converters:GreaterThanValueConverter x:Key="GreaterThanValue" />
+            <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter" />
+        </ResourceDictionary>
+    </rg:PopupPage.Resources>
     <rg:PopupPage.Animation>
         <rg:ScaleAnimation PositionIn="Center"
                            PositionOut="Center"
@@ -22,297 +35,872 @@
                            HasBackgroundAnimation="True" />
     </rg:PopupPage.Animation>
     <Frame CornerRadius="8"
-           WidthRequest="320"
            Padding="0"
            HasShadow="False"
-           HorizontalOptions="Center"
+           Margin="20,0"
+           HorizontalOptions="FillAndExpand"
            VerticalOptions="Center"
-           BackgroundColor="{AppThemeBinding Dark={StaticResource PopupFrameBackgroundColorDark}, Light={StaticResource PopupFrameBackgroundColor}}">
+           BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
         <ScrollView VerticalOptions="FillAndExpand">
             <StackLayout Spacing="0">
                 <StackLayout Spacing="0"
-                             Padding="16,0">
-                    <StackLayout Spacing="0"
-                                 Orientation="Horizontal"
-                                 HorizontalOptions="Center"
-                                 Margin="0,16">
-                        <Frame Padding="0"
-                               HasShadow="False"
-                               CornerRadius="20"
+                             Margin="16,0">
+                    <Frame Padding="0"
+                           Margin="0,12,0,8"
+                           HasShadow="False"
+                           CornerRadius="20"
+                           HeightRequest="40"
+                           WidthRequest="40"
+                           HorizontalOptions="Center"
+                           BackgroundColor="{AppThemeBinding Dark={StaticResource IconFrameBackgroundColorDark}, Light={StaticResource IconFrameBackgroundColor}}">
+                        <Image Source="{Binding DappLogo}"
                                HeightRequest="40"
                                WidthRequest="40"
-                               HorizontalOptions="Center"
-                               BackgroundColor="{AppThemeBinding Dark={StaticResource IconFrameBackgroundColorDark}, Light={StaticResource IconFrameBackgroundColor}}">
-                            <Image Source="{Binding DappLogo}"
-                                   HeightRequest="40"
-                                   WidthRequest="40"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="Start" />
-                        </Frame>
-                        <Label Text="&#8230;"
-                               Style="{DynamicResource AdditionalTextH3}"
                                VerticalOptions="Center"
-                               VerticalTextAlignment="Center"
-                               Margin="10,0,10,4" />
-                        <Frame Padding="0"
-                               HasShadow="False"
-                               CornerRadius="20"
-                               HeightRequest="40"
-                               WidthRequest="40"
-                               HorizontalOptions="Center"
-                               BackgroundColor="{AppThemeBinding Dark={StaticResource IconFrameBackgroundColorDark}, Light={StaticResource IconFrameBackgroundColor}}">
-                            <Image Source="Logo"
-                                   HeightRequest="40"
-                                   WidthRequest="40"
-                                   Margin="8"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="Start" />
-                        </Frame>
-                    </StackLayout>
+                               HorizontalOptions="Start" />
+                    </Frame>
                     <Label Text="{Binding Title}"
                            Style="{DynamicResource MainTextH2}"
                            HorizontalTextAlignment="Center" />
-                    <Label Style="{DynamicResource MainTextH4}"
-                           Margin="0,24">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="{Binding SubTitle}" />
-                                <Span Text=":" />
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
+                    <Frame Padding="0"
+                           Margin="0,16"
+                           HeightRequest="40"
+                           BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
+                           BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                           CornerRadius="20"
+                           HasShadow="False">
+                        <Grid HorizontalOptions="Fill"
+                              ColumnSpacing="0"
+                              RowSpacing="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="48" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Frame Padding="0"
+                                   Margin="13,9"
+                                   HasShadow="False"
+                                   CornerRadius="11"
+                                   HeightRequest="22"
+                                   WidthRequest="22"
+                                   HorizontalOptions="Center"
+                                   BackgroundColor="{AppThemeBinding Dark={StaticResource IconFrameBackgroundColorDark}, Light={StaticResource IconFrameBackgroundColor}}">
+                                <Image Source="XTZ"
+                                       HeightRequest="22"
+                                       WidthRequest="22"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="Start" />
+                            </Frame>
+                            <Label Grid.Column="1"
+                                   Style="{DynamicResource MainTextH5}"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalTextAlignment="Start"
+                                   LineBreakMode="MiddleTruncation"
+                                   Text="{Binding ConnectedWalletAddress.Address}" />
+                            <Label Grid.Column="2"
+                                   Style="{DynamicResource AdditionalTextH5}"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalTextAlignment="Start"
+                                   Padding="24,12,12,12">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding ConnectedWalletAddress.Balance}" />
+                                        <Span Text=" XTZ" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </Grid>
+                    </Frame>
+                </StackLayout>
+
+                <!-- Tab switcher -->
+                <Grid HorizontalOptions="FillAndExpand"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource TabContentBackgroundColorDark}, Light={StaticResource TabContentBackgroundColor}}"
+                      Padding="16"
+                      ColumnSpacing="0"
+                      RowSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="36" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3.3*" />
+                        <ColumnDefinition Width="3.3*" />
+                        <ColumnDefinition Width="3.3*" />
+                    </Grid.ColumnDefinitions>
+                    <Frame Grid.ColumnSpan="3"
+                           CornerRadius="18"
+                           HasShadow="False"
+                           Padding="0"
+                           BackgroundColor="{AppThemeBinding Dark={StaticResource TabSwitcherBackgroundColorDark}, Light={StaticResource TabSwitcherBackgroundColor}}" />
+                    <Button Style="{DynamicResource TabButton}"
+                            Text="{helpers:Translate Preview}"
+                            Command="{Binding ChangeTabCommand}"
+                            CommandParameter="Preview">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button"
+                                         Binding="{Binding SelectedTab}"
+                                         Value="Preview">
+                                <Setter Property="TextColor"
+                                        Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
+                                <Setter Property="BackgroundColor"
+                                        Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Button"
+                                         Binding="{Binding SelectedTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Preview'}"
+                                         Value="True">
+                                <Setter Property="TextColor"
+                                        Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
+                                <Setter Property="BackgroundColor"
+                                        Value="Transparent" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Grid.Column="1"
+                            Style="{DynamicResource TabButton}"
+                            Text="{helpers:Translate Raw}"
+                            Command="{Binding ChangeTabCommand}"
+                            CommandParameter="Raw">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button"
+                                         Binding="{Binding SelectedTab}"
+                                         Value="Raw">
+                                <Setter Property="TextColor"
+                                        Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
+                                <Setter Property="BackgroundColor"
+                                        Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Button"
+                                         Binding="{Binding SelectedTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Raw'}"
+                                         Value="True">
+                                <Setter Property="TextColor"
+                                        Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
+                                <Setter Property="BackgroundColor"
+                                        Value="Transparent" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Grid.Column="2"
+                            Style="{DynamicResource TabButton}"
+                            Text="{helpers:Translate Bytes}"
+                            Command="{Binding ChangeTabCommand}"
+                            CommandParameter="Bytes">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button"
+                                         Binding="{Binding SelectedTab}"
+                                         Value="Bytes">
+                                <Setter Property="TextColor"
+                                        Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
+                                <Setter Property="BackgroundColor"
+                                        Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Button"
+                                         Binding="{Binding SelectedTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Bytes'}"
+                                         Value="True">
+                                <Setter Property="TextColor"
+                                        Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
+                                <Setter Property="BackgroundColor"
+                                        Value="Transparent" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </Grid>
+                <ScrollView
+                    BackgroundColor="{AppThemeBinding Dark={StaticResource TabContentBackgroundColorDark}, Light={StaticResource TabContentBackgroundColor}}"
+                    HeightRequest="62"
+                    IsVisible="False">
+                    <ScrollView.Triggers>
+                        <DataTrigger TargetType="ScrollView"
+                                     Binding="{Binding Operations.Count, Mode=OneWay, Converter={StaticResource GreaterThanValue}, ConverterParameter=2}"
+                                     Value="True">
+                            <Setter Property="HeightRequest"
+                                    Value="176" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="ScrollView"
+                                     Binding="{Binding SelectedTab}"
+                                     Value="Preview">
+                            <Setter Property="IsVisible"
+                                    Value="True" />
+                        </DataTrigger>
+                    </ScrollView.Triggers>
                     <StackLayout BindableLayout.ItemsSource="{Binding Operations}"
-                                 BackgroundColor="Transparent"
+                                 VerticalOptions="Start"
                                  Spacing="0">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
                                 <Grid HorizontalOptions="Fill"
-                                      VerticalOptions="EndAndExpand"
+                                      VerticalOptions="Start"
                                       ColumnSpacing="12"
-                                      RowSpacing="0">
+                                      RowSpacing="0"
+                                      Margin="16,0,0,16">
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding OpenDestinationInExplorer}" />
+                                    </Grid.GestureRecognizers>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="17" />
                                         <RowDefinition Height="24" />
-                                        <RowDefinition Height="24" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="24" />
-                                        <RowDefinition Height="56" />
-                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="20" />
+                                        <RowDefinition Height="16.5" />
+                                        <RowDefinition Height="0.5" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="4*" />
-                                        <ColumnDefinition Width="6*" />
+                                        <ColumnDefinition Width="40" />
+                                        <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <StackLayout Grid.ColumnSpan="2"
-                                                 Style="{DynamicResource SeparatorStyle}"
-                                                 Margin="0,0,0,16" />
-                                    <Label Grid.Row="1"
-                                           Grid.ColumnSpan="2"
+                                    <Frame Grid.RowSpan="2"
+                                           Padding="0"
+                                           HasShadow="False"
+                                           CornerRadius="20"
+                                           HeightRequest="40"
+                                           WidthRequest="40"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center"
+                                           BackgroundColor="Transparent">
+                                        <Image
+                                            Source="{Binding DestinationIcon, TargetNullValue='AtomexLogo', FallbackValue='AtomexLogo'}"
+                                            WidthRequest="40"
+                                            HeightRequest="40"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
+                                    </Frame>
+                                    <Label Grid.Column="1"
                                            Style="{DynamicResource MainTextH4}"
                                            HorizontalTextAlignment="Start"
                                            VerticalTextAlignment="Center"
-                                           Padding="0,2">
+                                           LineBreakMode="TailTruncation"
+                                           Margin="0,0,16,0"
+                                           IsVisible="{Binding Operation.Kind, Converter={StaticResource EqualsConverter}, ConverterParameter='transaction', FallbackValue='False', TargetNullValue='False'}">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding AmountInTez, Converter={StaticResource GreaterThanZeroConverter}, FallbackValue='False', TargetNullValue='False'}"
+                                                         Value="False">
+                                                <Setter Property="Grid.RowSpan"
+                                                        Value="2" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{helpers:Translate Transaction}" />
-                                                <Span Text="{Binding Id, StringFormat=' #{0}'}" />
+                                                <Span Text="{Binding Entrypoint}" />
+                                                <Span Text="{Binding DestinationAlias}" />
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                                    <Label Grid.Row="2"
-                                           Style="{DynamicResource AdditionalTextH4}"
-                                           VerticalTextAlignment="Center"
+                                    <Label Grid.Column="1"
+                                           Grid.RowSpan="2"
+                                           Style="{DynamicResource MainTextH4}"
                                            HorizontalTextAlignment="Start"
-                                           Text="{helpers:Translate FromLabel}"
-                                           Padding="0,2" />
-                                    <Label Grid.Row="2"
-                                           Grid.Column="1"
-                                           Style="{DynamicResource MainTextH5}"
-                                           LineBreakMode="MiddleTruncation"
                                            VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="End"
-                                           Text="{Binding Operation.Source}"
-                                           Padding="0,2" />
-                                    <Label Grid.Row="3"
-                                           Style="{DynamicResource AdditionalTextH4}"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="Start"
-                                           Text="{helpers:Translate ToLabel}"
-                                           HeightRequest="24"
-                                           Padding="0,2">
+                                           LineBreakMode="TailTruncation"
+                                           Margin="0,0,16,0"
+                                           IsVisible="False">
                                         <Label.Triggers>
                                             <DataTrigger TargetType="Label"
                                                          Binding="{Binding Operation.Kind}"
                                                          Value="reveal">
                                                 <Setter Property="IsVisible"
-                                                        Value="False" />
+                                                        Value="True" />
                                             </DataTrigger>
                                         </Label.Triggers>
-                                    </Label>
-                                    <Label Grid.Row="3"
-                                           Grid.Column="1"
-                                           Style="{DynamicResource MainTextH5}"
-                                           LineBreakMode="MiddleTruncation"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="End"
-                                           Text="{Binding Operation.Destination}"
-                                           HeightRequest="24"
-                                           Padding="0,2">
-                                        <Label.Triggers>
-                                            <DataTrigger TargetType="Label"
-                                                         Binding="{Binding Operation.Kind}"
-                                                         Value="reveal">
-                                                <Setter Property="IsVisible"
-                                                        Value="False" />
-                                            </DataTrigger>
-                                        </Label.Triggers>
-                                    </Label>
-                                    <Label Grid.Row="4"
-                                           Style="{DynamicResource AdditionalTextH4}"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="Start"
-                                           Text="{helpers:Translate AmountLabel}"
-                                           HeightRequest="24"
-                                           Padding="0,2">
-                                        <Label.Triggers>
-                                            <DataTrigger TargetType="Label"
-                                                         Binding="{Binding Operation.Kind}"
-                                                         Value="reveal">
-                                                <Setter Property="IsVisible"
-                                                        Value="False" />
-                                            </DataTrigger>
-                                        </Label.Triggers>
-                                    </Label>
-                                    <Label Grid.Row="4"
-                                           Grid.Column="1"
-                                           Style="{DynamicResource MainTextH5}"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="End"
-                                           Text="{Binding AmountInTez}"
-                                           HeightRequest="24"
-                                           Padding="0,2">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding AmountInTez, StringFormat='{0:0.#####} XTZ /'}" />
-                                                <Span Text="{Binding AmountInBase, StringFormat=' ${0:f2}'}"></Span>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                        <Label.Triggers>
-                                            <DataTrigger TargetType="Label"
-                                                         Binding="{Binding Operation.Kind}"
-                                                         Value="reveal">
-                                                <Setter Property="IsVisible"
-                                                        Value="False" />
-                                            </DataTrigger>
-                                        </Label.Triggers>
-                                    </Label>
-                                    <Label Grid.Row="5"
-                                           Style="{DynamicResource AdditionalTextH4}"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="Start"
-                                           Text="{helpers:Translate FeeLabel}"
-                                           Padding="0,2" />
-                                    <Label Grid.Row="5"
-                                           Grid.Column="1"
-                                           Style="{DynamicResource MainTextH5}"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="End"
-                                           Text="{Binding FeeInTez}"
-                                           Padding="0,2">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{Binding FeeInTez, StringFormat='{0:0.#####} XTZ /'}" />
-                                                <Span Text="{Binding FeeInBase, StringFormat=' ${0:f2}'}"></Span>
+                                                <Span Text="Reveal for " />
+                                                <Span Text="{Binding Operation.Source}" />
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                                    <Button Grid.Row="6"
-                                            Grid.ColumnSpan="2"
-                                            Text="{Binding DetailsButtonName}"
-                                            Style="{DynamicResource TransparentButton}"
-                                            Margin="0,0,0,6"
-                                            Command="{Binding OnOpenDetailsCommand}" />
-                                    <StackLayout Grid.Row="7"
+                                    <Label Grid.Column="1"
+                                           Grid.RowSpan="2"
+                                           Style="{DynamicResource MainTextH4}"
+                                           HorizontalTextAlignment="Start"
+                                           VerticalTextAlignment="Center"
+                                           LineBreakMode="TailTruncation"
+                                           Margin="0,0,16,0"
+                                           IsVisible="False">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Operation.Kind}"
+                                                         Value="delegation">
+                                                <Setter Property="IsVisible"
+                                                        Value="True" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="Delegate for " />
+                                                <Span Text="{Binding DestinationAlias}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label Grid.Row="1"
+                                           Grid.Column="1"
+                                           Style="{DynamicResource AdditionalTextH4}"
+                                           VerticalTextAlignment="Center"
+                                           HorizontalTextAlignment="Start"
+                                           Margin="0,0,16,0">
+                                        <Label.IsVisible>
+                                            <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                                                <Binding Path="Operation.Kind"
+                                                         Converter="{StaticResource EqualsConverter}"
+                                                         ConverterParameter="transaction"
+                                                         FallbackValue="False"
+                                                         TargetNullValue="False" />
+                                                <Binding Path="AmountInTez"
+                                                         Converter="{StaticResource GreaterThanZeroConverter}"
+                                                         FallbackValue="False"
+                                                         TargetNullValue="False" />
+                                            </MultiBinding>
+                                        </Label.IsVisible>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding AmountInTez, StringFormat='{0:0.####} XTZ /'}" />
+                                                <Span Text="{Binding AmountInBase, StringFormat=' ${0:f2}'}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <StackLayout Grid.Row="2"
                                                  Grid.ColumnSpan="2"
-                                                 Spacing="0"
-                                                 IsVisible="{Binding IsDetailsOpened}">
-                                        <Label Style="{DynamicResource MainTextH5}"
-                                               Text="{Binding JsonStringOperation}" />
-                                        <Frame Style="{DynamicResource AdditionalClickableFrame}"
-                                               Margin="0,24"
-                                               VerticalOptions="EndAndExpand"
-                                               HorizontalOptions="FillAndExpand">
-                                            <Frame.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding CopyCommand}"
-                                                                      CommandParameter="{Binding JsonStringOperation}" />
-                                            </Frame.GestureRecognizers>
-                                            <Frame.Triggers>
-                                                <DataTrigger TargetType="Frame"
-                                                             Binding="{Binding IsCopied}"
-                                                             Value="False">
-                                                    <Setter Property="BackgroundColor"
-                                                            Value="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}" />
-                                                </DataTrigger>
-                                                <DataTrigger TargetType="Frame"
-                                                             Binding="{Binding IsCopied}"
-                                                             Value="True">
-                                                    <Setter Property="BackgroundColor"
-                                                            Value="{AppThemeBinding Dark={StaticResource HighlightingButtonBackgroundColorDark}, Light={StaticResource HighlightingButtonBackgroundColor}}" />
-                                                </DataTrigger>
-                                            </Frame.Triggers>
-                                            <StackLayout Spacing="10"
-                                                         Orientation="Horizontal"
-                                                         HorizontalOptions="Center">
-                                                <Image HeightRequest="18"
-                                                       WidthRequest="15"
-                                                       Source="ic_copy__blue"
-                                                       VerticalOptions="Center">
-                                                    <Image.Triggers>
-                                                        <DataTrigger TargetType="Image"
-                                                                     Binding="{Binding IsCopied}"
-                                                                     Value="False">
-                                                            <Setter Property="Source"
-                                                                    Value="ic_copy__blue" />
-                                                        </DataTrigger>
-                                                        <DataTrigger TargetType="Image"
-                                                                     Binding="{Binding IsCopied}"
-                                                                     Value="True">
-                                                            <Setter Property="Source"
-                                                                    Value="ic_tick" />
-                                                        </DataTrigger>
-                                                    </Image.Triggers>
-                                                </Image>
-                                                <Label Text="{Binding CopyButtonName}"
-                                                       Style="{DynamicResource AdditionalClickableLabel}"
-                                                       VerticalTextAlignment="Center">
-                                                    <Label.Triggers>
-                                                        <DataTrigger TargetType="Label"
-                                                                     Binding="{Binding IsCopied}"
-                                                                     Value="False">
-                                                            <Setter Property="TextColor"
-                                                                    Value="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}" />
-                                                        </DataTrigger>
-                                                        <DataTrigger TargetType="Label"
-                                                                     Binding="{Binding IsCopied}"
-                                                                     Value="True">
-                                                            <Setter Property="TextColor"
-                                                                    Value="{AppThemeBinding Dark={StaticResource HighlightingButtonTextColorDark}, Light={StaticResource HighlightingButtonTextColor}}" />
-                                                        </DataTrigger>
-                                                    </Label.Triggers>
-                                                </Label>
-                                            </StackLayout>
-                                        </Frame>
-                                    </StackLayout>
+                                                 Style="{DynamicResource SeparatorStyle}"
+                                                 Margin="0,16,0,0" />
                                 </Grid>
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>
                     </StackLayout>
+                </ScrollView>
+                <AbsoluteLayout HeightRequest="176"
+                                BackgroundColor="{AppThemeBinding Dark={StaticResource TabContentBackgroundColorDark}, Light={StaticResource TabContentBackgroundColor}}"
+                                IsVisible="False">
+                    <AbsoluteLayout.Triggers>
+                        <DataTrigger TargetType="AbsoluteLayout"
+                                     Binding="{Binding SelectedTab}"
+                                     Value="Raw">
+                            <Setter Property="IsVisible"
+                                    Value="True" />
+                        </DataTrigger>
+                    </AbsoluteLayout.Triggers>
+                    <ScrollView HeightRequest="176">
+                        <Label Style="{DynamicResource MainTextH5}"
+                               Text="{Binding RawOperations}"
+                               Padding="16,0" />
+                    </ScrollView>
+                    <Frame Style="{DynamicResource OverlayClickableFrame}"
+                           AbsoluteLayout.LayoutFlags="PositionProportional"
+                           AbsoluteLayout.LayoutBounds="0.9,0.9">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding CopyCommand}"
+                                                  CommandParameter="{Binding RawOperations}" />
+                        </Frame.GestureRecognizers>
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding IsCopied}"
+                                         Value="False">
+                                <Setter Property="BackgroundColor"
+                                        Value="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding IsCopied}"
+                                         Value="True">
+                                <Setter Property="BackgroundColor"
+                                        Value="{AppThemeBinding Dark={StaticResource HighlightingButtonBackgroundColorDark}, Light={StaticResource HighlightingButtonBackgroundColor}}" />
+                            </DataTrigger>
+                        </Frame.Triggers>
+                        <StackLayout Spacing="9"
+                                     Orientation="Horizontal"
+                                     HorizontalOptions="Center">
+                            <Image HeightRequest="15"
+                                   WidthRequest="13"
+                                   VerticalOptions="Center">
+                                <Image.Triggers>
+                                    <DataTrigger TargetType="Image"
+                                                 Binding="{Binding IsCopied}"
+                                                 Value="False">
+                                        <Setter Property="Source"
+                                                Value="{AppThemeBinding Dark='ic_copy__white', Light='ic_copy__gray'}" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Image"
+                                                 Binding="{Binding IsCopied}"
+                                                 Value="True">
+                                        <Setter Property="Source"
+                                                Value="ic_tick" />
+                                    </DataTrigger>
+                                </Image.Triggers>
+                            </Image>
+                            <Label Text="{Binding CopyButtonName}"
+                                   Style="{DynamicResource MainTextH5}"
+                                   VerticalTextAlignment="Center">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding IsCopied}"
+                                                 Value="False">
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding IsCopied}"
+                                                 Value="True">
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Dark={StaticResource HighlightingButtonTextColorDark}, Light={StaticResource HighlightingButtonTextColor}}" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </StackLayout>
+                    </Frame>
+                </AbsoluteLayout>
+                <AbsoluteLayout HeightRequest="176"
+                                BackgroundColor="{AppThemeBinding Dark={StaticResource TabContentBackgroundColorDark}, Light={StaticResource TabContentBackgroundColor}}"
+                                IsVisible="False">
+                    <AbsoluteLayout.Triggers>
+                        <DataTrigger TargetType="AbsoluteLayout"
+                                     Binding="{Binding SelectedTab}"
+                                     Value="Bytes">
+                            <Setter Property="IsVisible"
+                                    Value="True" />
+                        </DataTrigger>
+                    </AbsoluteLayout.Triggers>
+                    <ScrollView HeightRequest="176">
+                        <Label Style="{DynamicResource MainTextH5}"
+                               Text="{Binding OperationsBytes}"
+                               Padding="16,0" />
+                    </ScrollView>
+                    <Frame Style="{DynamicResource OverlayClickableFrame}"
+                           AbsoluteLayout.LayoutFlags="PositionProportional"
+                           AbsoluteLayout.LayoutBounds="0.9,0.9">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding CopyCommand}"
+                                                  CommandParameter="{Binding OperationsBytes}" />
+                        </Frame.GestureRecognizers>
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding IsCopied}"
+                                         Value="False">
+                                <Setter Property="BackgroundColor"
+                                        Value="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding IsCopied}"
+                                         Value="True">
+                                <Setter Property="BackgroundColor"
+                                        Value="{AppThemeBinding Dark={StaticResource HighlightingButtonBackgroundColorDark}, Light={StaticResource HighlightingButtonBackgroundColor}}" />
+                            </DataTrigger>
+                        </Frame.Triggers>
+                        <StackLayout Spacing="9"
+                                     Orientation="Horizontal"
+                                     HorizontalOptions="Center">
+                            <Image HeightRequest="15"
+                                   WidthRequest="13"
+                                   VerticalOptions="Center">
+                                <Image.Triggers>
+                                    <DataTrigger TargetType="Image"
+                                                 Binding="{Binding IsCopied}"
+                                                 Value="False">
+                                        <Setter Property="Source"
+                                                Value="{AppThemeBinding Dark='ic_copy__white', Light='ic_copy__gray'}" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Image"
+                                                 Binding="{Binding IsCopied}"
+                                                 Value="True">
+                                        <Setter Property="Source"
+                                                Value="ic_tick" />
+                                    </DataTrigger>
+                                </Image.Triggers>
+                            </Image>
+                            <Label Text="{Binding CopyButtonName}"
+                                   Style="{DynamicResource MainTextH5}"
+                                   VerticalTextAlignment="Center">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding IsCopied}"
+                                                 Value="False">
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding IsCopied}"
+                                                 Value="True">
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Dark={StaticResource HighlightingButtonTextColorDark}, Light={StaticResource HighlightingButtonTextColor}}" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </StackLayout>
+                    </Frame>
+                </AbsoluteLayout>
+                <StackLayout Spacing="0">
+                    <input:CheckBox Text="{helpers:Translate UseDefaultFeeLabel}"
+                                    Margin="16"
+                                    BoxSizeRequest="18"
+                                    TextFontSize="16"
+                                    IsChecked="{Binding UseDefaultFee}"
+                                    Type="Material"
+                                    Color="{AppThemeBinding Dark={StaticResource CheckBoxBackgroundColorDark}, Light={StaticResource CheckBoxBackgroundColor}}"
+                                    IconColor="{AppThemeBinding Dark={StaticResource CheckBoxIconColorDark}, Light={StaticResource CheckBoxIconColor}}"
+                                    TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
+                    <Grid ColumnSpacing="8"
+                          RowSpacing="0"
+                          Margin="16,4"
+                          IsVisible="{Binding UseDefaultFee}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="24" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OnOpenDetailsCommand}" />
+                        </Grid.GestureRecognizers>
+                        <Label Text="{helpers:Translate ShowDetails}"
+                               Style="{DynamicResource AdditionalTextH4}"
+                               HorizontalTextAlignment="Start"
+                               VerticalTextAlignment="Center" />
+                        <Image Grid.Column="1"
+                               Source="ic_dropdown"
+                               HeightRequest="4"
+                               WidthRequest="8"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Start"
+                               Rotation="0">
+                            <Image.Triggers>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding IsDetailsOpened}"
+                                             Value="True">
+                                    <Setter Property="Rotation"
+                                            Value="180" />
+                                </DataTrigger>
+                            </Image.Triggers>
+                        </Image>
+                    </Grid>
+                    <Grid ColumnSpacing="8"
+                          RowSpacing="4"
+                          Margin="24,8,16,8">
+                        <Grid.IsVisible>
+                            <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                                <Binding Path="IsDetailsOpened" />
+                                <Binding Path="UseDefaultFee" />
+                            </MultiBinding>
+                        </Grid.IsVisible>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="24" />
+                            <RowDefinition Height="24" />
+                            <RowDefinition Height="24" />
+                            <RowDefinition Height="24" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5*" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Text="{helpers:Translate GasLimitLabel}"
+                               Style="{DynamicResource AdditionalTextH4}"
+                               HorizontalTextAlignment="Start"
+                               VerticalTextAlignment="Center"
+                               LineBreakMode="TailTruncation" />
+                        <Label Grid.Column="1"
+                               Text="{Binding TotalGasLimit}"
+                               Style="{DynamicResource MainTextH5}"
+                               HorizontalOptions="End"
+                               HorizontalTextAlignment="End"
+                               VerticalTextAlignment="Center" />
+                        <Label Grid.Row="1"
+                               Text="{helpers:Translate StorageLimitLabel}"
+                               Style="{DynamicResource AdditionalTextH4}"
+                               HorizontalTextAlignment="Start"
+                               VerticalTextAlignment="Center"
+                               LineBreakMode="TailTruncation" />
+                        <Label Grid.Row="1"
+                               Grid.Column="1"
+                               Text="{Binding TotalStorageLimit}"
+                               Style="{DynamicResource MainTextH5}"
+                               HorizontalOptions="End"
+                               HorizontalTextAlignment="End"
+                               VerticalTextAlignment="Center" />
+                        <Label Grid.Row="2"
+                               Text="{helpers:Translate GasFeeLabel}"
+                               Style="{DynamicResource AdditionalTextH4}"
+                               HorizontalTextAlignment="Start"
+                               VerticalTextAlignment="Center"
+                               LineBreakMode="TailTruncation" />
+                        <Label Grid.Row="2"
+                               Grid.Column="1"
+                               Style="{DynamicResource MainTextH5}"
+                               HorizontalTextAlignment="End"
+                               VerticalTextAlignment="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding TotalGasFee, StringFormat='{0:0.####}'}" />
+                                    <Span Text=" XTZ " />
+                                    <Span Text="/ "
+                                          FontSize="12"
+                                          TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
+                                    <Span Text="{Binding TotalGasFeeInBase, StringFormat='${0:0.00}'}"
+                                          FontSize="12"
+                                          TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label Grid.Row="3"
+                               Text="{helpers:Translate StorageFeeLabel}"
+                               Style="{DynamicResource AdditionalTextH4}"
+                               HorizontalTextAlignment="Start"
+                               VerticalTextAlignment="Center" />
+                        <Label Grid.Row="3"
+                               Grid.Column="1"
+                               Style="{DynamicResource MainTextH5}"
+                               HorizontalTextAlignment="End"
+                               VerticalTextAlignment="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding TotalStorageFee, StringFormat='{0:0.####}'}" />
+                                    <Span Text=" XTZ " />
+                                    <Span Text="/ "
+                                          FontSize="12"
+                                          TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
+                                    <Span Text="{Binding TotalStorageFeeInBase, StringFormat='${0:0.00}'}"
+                                          FontSize="12"
+                                          TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Grid>
+                    <RelativeLayout IsVisible="{Binding UseDefaultFee, Converter={StaticResource InverseBool}}"
+                                    HeightRequest="44"
+                                    Margin="16,8">
+                        <Frame Padding="0"
+                               Margin="0"
+                               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                               RelativeLayout.HeightConstraint="44"
+                               HeightRequest="44"
+                               BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
+                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                               CornerRadius="8"
+                               HasShadow="False">
+                            <Grid ColumnSpacing="0"
+                                  RowSpacing="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <custom:CustomEntry Text="{Binding TotalGasLimit}"
+                                                    Keyboard="Numeric"
+                                                    Margin="16,0"
+                                                    Style="{DynamicResource EntryStyle}"
+                                                    IsReadOnly="True"
+                                                    Opacity="0.5"
+                                                    FontSize="16"
+                                                    HorizontalTextAlignment="Start"
+                                                    VerticalTextAlignment="Center" />
+                            </Grid>
+                        </Frame>
+                        <Label Style="{DynamicResource HintTextH6}"
+                               Padding="4,0"
+                               Text="{helpers:Translate GasLimitLabel}"
+                               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=8}"
+                               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=-8}"
+                               RelativeLayout.HeightConstraint="16"
+                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}" />
+                    </RelativeLayout>
+                    <RelativeLayout IsVisible="{Binding UseDefaultFee, Converter={StaticResource InverseBool}}"
+                                    HeightRequest="44"
+                                    Margin="16,8">
+                        <Frame Padding="0"
+                               Margin="0"
+                               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                               RelativeLayout.HeightConstraint="44"
+                               HeightRequest="44"
+                               BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
+                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                               CornerRadius="8"
+                               HasShadow="False">
+                            <Grid ColumnSpacing="0"
+                                  RowSpacing="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <custom:CustomEntry Text="{Binding TotalStorageLimit}"
+                                                    Keyboard="Numeric"
+                                                    Margin="16,0"
+                                                    Style="{DynamicResource EntryStyle}"
+                                                    IsReadOnly="True"
+                                                    Opacity="0.5"
+                                                    FontSize="16"
+                                                    HorizontalTextAlignment="Start"
+                                                    VerticalTextAlignment="Center" />
+                            </Grid>
+                        </Frame>
+                        <Label Style="{DynamicResource HintTextH6}"
+                               Padding="4,0"
+                               Text="{helpers:Translate StorageLimitLabel}"
+                               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=8}"
+                               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=-8}"
+                               RelativeLayout.HeightConstraint="16"
+                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}" />
+                    </RelativeLayout>
+                    <RelativeLayout IsVisible="{Binding UseDefaultFee, Converter={StaticResource InverseBool}}"
+                                    HeightRequest="44"
+                                    Margin="16,8">
+                        <Frame Padding="0"
+                               Margin="0"
+                               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                               RelativeLayout.HeightConstraint="44"
+                               HeightRequest="44"
+                               BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
+                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                               CornerRadius="8"
+                               HasShadow="False">
+                            <Grid ColumnSpacing="0"
+                                  RowSpacing="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <custom:CustomEntry Text="{Binding TotalGasFeeString}"
+                                                    Keyboard="Numeric"
+                                                    x:Name="GasFeeEntry"
+                                                    Margin="16,0"
+                                                    Style="{DynamicResource EntryStyle}"
+                                                    FontSize="16"
+                                                    HorizontalTextAlignment="Start"
+                                                    VerticalTextAlignment="Center" />
+                                <Label Grid.Column="1"
+                                       Style="{DynamicResource MainTextH4}"
+                                       Padding="16,0"
+                                       VerticalTextAlignment="Center"
+                                       HorizontalTextAlignment="End"
+                                       Text="{Binding TotalGasFeeInBase, StringFormat='${0:0.00}'}">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="GasFeeEntryFocus" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </Grid>
+                        </Frame>
+                        <Label Style="{DynamicResource HintTextH6}"
+                               Padding="4,0"
+                               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=8}"
+                               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=-8}"
+                               RelativeLayout.HeightConstraint="16"
+                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{helpers:Translate GasFeeLabel}" />
+                                    <Span Text=", XTZ" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </RelativeLayout>
+                    <RelativeLayout IsVisible="{Binding UseDefaultFee, Converter={StaticResource InverseBool}}"
+                                    HeightRequest="44"
+                                    Margin="16,8">
+                        <Frame Padding="0"
+                               Margin="0"
+                               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                               RelativeLayout.HeightConstraint="44"
+                               HeightRequest="44"
+                               BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
+                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                               CornerRadius="8"
+                               HasShadow="False">
+                            <Grid ColumnSpacing="0"
+                                  RowSpacing="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <custom:CustomEntry Text="{Binding TotalStorageFeeString}"
+                                                    Keyboard="Numeric"
+                                                    Margin="16,0"
+                                                    Style="{DynamicResource EntryStyle}"
+                                                    IsReadOnly="True"
+                                                    Opacity="0.5"
+                                                    FontSize="16"
+                                                    HorizontalTextAlignment="Start"
+                                                    VerticalTextAlignment="Center" />
+                                <Label Grid.Column="1"
+                                       Style="{DynamicResource MainTextH4}"
+                                       Padding="16,0"
+                                       Opacity="0.5"
+                                       VerticalTextAlignment="Center"
+                                       HorizontalTextAlignment="End"
+                                       Text="{Binding TotalStorageFeeInBase, StringFormat='${0:0.00}'}" />
+                            </Grid>
+                        </Frame>
+                        <Label Style="{DynamicResource HintTextH6}"
+                               Padding="4,0"
+                               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=8}"
+                               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=-8}"
+                               RelativeLayout.HeightConstraint="16"
+                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{helpers:Translate StorageFeeLabel}" />
+                                    <Span Text=", XTZ" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </RelativeLayout>
+                    <Grid ColumnSpacing="8"
+                          RowSpacing="4"
+                          Margin="16,8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="24" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="4*" />
+                            <ColumnDefinition Width="6*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Text="{helpers:Translate TotalFees}"
+                               Style="{DynamicResource AdditionalTextH4}"
+                               HorizontalTextAlignment="Start"
+                               VerticalTextAlignment="Center" />
+                        <Label Grid.Column="1"
+                               Style="{DynamicResource MainTextH5}"
+                               HorizontalTextAlignment="End"
+                               VerticalTextAlignment="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding TotalFees, StringFormat='{0:0.####}'}" />
+                                    <Span Text=" XTZ" />
+                                    <Span Text=" / "
+                                          FontSize="12"
+                                          TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
+                                    <Span Text="{Binding TotalFeesInBase, StringFormat='${0:0.00}'}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Grid>
+                </StackLayout>
+                <StackLayout Spacing="0"
+                             BackgroundColor="{AppThemeBinding Dark={StaticResource WarningPanelBackgroudColorDark}, Light={StaticResource WarningPanelBackgroudColor}}"
+                             Padding="16,12"
+                             Margin="0,8"
+                             IsVisible="{Binding UseDefaultFee, Converter={StaticResource InverseBool}}">
+                    <Label
+                        Text="{helpers:Translate ChangingTxFeeWarning}"
+                        Style="{DynamicResource WarningPanelTextH5}" />
+                </StackLayout>
+                <StackLayout Spacing="0"
+                             BackgroundColor="{AppThemeBinding Dark={StaticResource ErrorPanelBackgroudColorDark}, Light={StaticResource ErrorPanelBackgroudColor}}"
+                             Padding="16,12"
+                             Margin="0,8"
+                             IsVisible="{Binding AutofillError}">
+                    <Label
+                        Text="{helpers:Translate FailedTxParametersWarning}"
+                        Style="{DynamicResource ErrorTextH5}" />
                 </StackLayout>
                 <Grid HorizontalOptions="Fill"
                       VerticalOptions="EndAndExpand"
                       ColumnSpacing="8"
                       RowSpacing="12"
+                      Margin="0,20,0,0"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource ButtonContainerColorDark}, Light={StaticResource ButtonContainerColor}}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1" />

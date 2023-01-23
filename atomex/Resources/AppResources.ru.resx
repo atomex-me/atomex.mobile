@@ -116,6 +116,21 @@
     <data name="Current" xml:space="preserve">
         <value>Текущий</value>
     </data>
+    <data name="PasteButton" xml:space="preserve">
+        <value>Вставить</value>
+    </data>
+    <data name="GasPriceLabel" xml:space="preserve">
+        <value>Цена газа</value>
+    </data>
+    <data name="GasLimitLabel" xml:space="preserve">
+        <value>Лимит газа</value>
+    </data>
+    <data name="GasUsedLabel" xml:space="preserve">
+        <value>Газа использовано</value>
+    </data>
+    <data name="IsInternalLabel" xml:space="preserve">
+        <value>Внутренняя</value>
+    </data>
     
     <!-- Start Page -->
     <data name="MyWalletsButton" xml:space="preserve">
@@ -307,7 +322,7 @@
         <value>Делегировать</value>
     </data>
     <data name="UndelegateButton" xml:space="preserve">
-        <value>Undelegate</value>
+        <value>Отменить делегирование</value>
     </data>
     <data name="UpdateButton" xml:space="preserve">
         <value>Обновить</value>
@@ -425,21 +440,6 @@
     </data>
     <data name="ScannerBottomOverlayText" xml:space="preserve">
         <value>Сканирование произойдет автоматически</value>
-    </data>
-    <data name="PasteButton" xml:space="preserve">
-        <value>Вставить</value>
-    </data>
-    <data name="GasPriceLabel" xml:space="preserve">
-        <value>Цена газа</value>
-    </data>
-    <data name="GasLimitLabel" xml:space="preserve">
-        <value>Лимит газа</value>
-    </data>
-    <data name="GasUsedLabel" xml:space="preserve">
-        <value>Газа использовано</value>
-    </data>
-    <data name="IsInternalLabel" xml:space="preserve">
-        <value>Внутренняя</value>
     </data>
     <data name="ConfirmTransactionLabel" xml:space="preserve">
         <value>Подтвердите транзакцию</value>
@@ -1214,7 +1214,7 @@
         <value>Подробнее</value>
     </data>
     <data name="Progress" xml:space="preserve">
-        <value>Progress</value>
+        <value>Прогресс</value>
     </data>
     <data name="IncorrectQrCodeFormat" xml:space="preserve">
         <value>Некорректный формат QR-кода</value>
@@ -1279,12 +1279,6 @@
     <data name="DappWantsToConnect" xml:space="preserve">
         <value>{0} хочет подключиться к вашему аккаунту</value>
     </data>
-    <data name="ConfirmDappOperations" xml:space="preserve">
-        <value>Подтверждая, вы разрешаете {0} выполнить следующие операции</value>
-    </data>
-    <data name="RequestFromDapp" xml:space="preserve">
-        <value>Запрос от {0}</value>
-    </data>
     <data name="Transaction" xml:space="preserve">
         <value>Транзакция</value>
     </data>
@@ -1298,12 +1292,66 @@
         <value>Ошибка подключения</value>
     </data>
     <data name="DappPairingRequest" xml:space="preserve">
-        <value>Dapp pairing request</value>
+        <value>Запрос на сопряжение с dApp</value>
     </data>
     <data name="ScanQr" xml:space="preserve">
         <value>Сканировать QR</value>
     </data>
     <data name="PasteQr" xml:space="preserve">
         <value>Вставить QR</value>
+    </data>
+    <data name="GasFeeLabel" xml:space="preserve">
+        <value>Комиссия за газ</value>
+    </data>
+    <data name="StorageLimitLabel" xml:space="preserve">
+        <value>Лимит для Storage</value>
+    </data>
+    <data name="StorageFeeLabel" xml:space="preserve">
+        <value>Комиссия за Storage</value>
+    </data>
+    <data name="ShowDetails" xml:space="preserve">
+        <value>Подробно</value>
+    </data>
+    <data name="TotalFees" xml:space="preserve">
+        <value>Всего комиссия</value>
+    </data>
+    <data name="Bytes" xml:space="preserve">
+        <value>Байты</value>
+    </data>
+    <data name="Preview" xml:space="preserve">
+        <value>Предпросмотр</value>
+    </data>
+    <data name="Raw" xml:space="preserve">
+        <value>Данные</value>
+    </data>
+    <data name="DappRequestToConfirm" xml:space="preserve">
+        <value>{0} запрашивает подтверждение операций</value>
+    </data>
+    <data name="ChangingTxFeeWarning" xml:space="preserve">
+        <value>Внимание! Изменение комиссии, лимита газа или лимита для Storage может привести к отмене транзакции</value>
+    </data>
+    <data name="FailedTxParametersWarning" xml:space="preserve">
+        <value>Внимание! Транзакция с такими параметрами, скорее всего, не будет выполнена</value>
+    </data>
+    <data name="ConnectionTimeoutError" xml:space="preserve">
+        <value>Соединение прервалось по таймеру</value>
+    </data>
+    <data name="TryAgainLaterError" xml:space="preserve">
+        <value>Произошла ошибка. Пожалуйста, повторите попытку позже</value>
+    </data>
+    <data name="AtomexConnectsToDapp" xml:space="preserve">
+        <value>Atomex подключается к Dapp.</value>
+    </data>
+    <data name="GoToBrowser" xml:space="preserve">
+        <value>Вернитесь в свой браузер</value>
+    </data>
+    <data name="ReturnToAtomex" xml:space="preserve">
+        <value>Вернитесь обратно в Atomex</value>
+    </data>
+    <data name="TooLongToConnect" xml:space="preserve">
+        <value>Если подключение занимает много времени</value>
+    </data>
+    <data name="WaitFor2Sec" xml:space="preserve">
+        <value>Подождите 2 секунды</value>
     </data>
 </root>

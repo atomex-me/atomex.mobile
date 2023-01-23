@@ -4,21 +4,16 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reactive;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Blockchain.Tezos.Internal;
 using Atomex.Client.Common;
 using atomex.Common;
-using Atomex.Common;
 using atomex.Models;
 using atomex.Resources;
 using atomex.Views.Dapps;
 using Atomex.Wallet;
-using Atomex.Wallet.Tezos;
-using Atomex.Wallets.Tezos;
 using Beacon.Sdk;
 using Beacon.Sdk.Beacon;
 using Beacon.Sdk.Beacon.Error;
@@ -66,8 +61,8 @@ namespace atomex.ViewModels.DappsViewModels
         public ReactiveCommand<Unit, Unit> OpenDappSiteCommand =>
             _openDappSiteCommand ??= ReactiveCommand.Create(() =>
             {
-                if (PermissionInfo?.AppMetadata?.AppUrl != null)
-                    Launcher.OpenAsync(new Uri(PermissionInfo.AppMetadata.AppUrl));
+                if (Uri.TryCreate(PermissionInfo?.AppMetadata?.AppUrl, UriKind.Absolute, out var uri))
+                    Launcher.OpenAsync(uri.ToString());
             });
 
         private ReactiveCommand<DappViewModel, Unit> _showDisconnectionCommand;
@@ -94,6 +89,9 @@ namespace atomex.ViewModels.DappsViewModels
 
     public class DappsViewModel : BaseViewModel
     {
+        private const int _gasLimitPerBlock = 5_200_000;
+        public const int StorageLimitPerOperation = 5000;
+        private const int _connectionTimeoutMs = 180000;
         private readonly IAtomexApp _app;
         private INavigationService _navigationService;
         private IWalletBeaconClient _beaconWalletClient;
@@ -102,6 +100,7 @@ namespace atomex.ViewModels.DappsViewModels
         [Reactive] public DappViewModel SelectedDapp { get; set; }
         private TezosConfig _tezos { get; }
         public ConnectDappViewModel ConnectDappViewModel { get; set; }
+        [Reactive] public bool IsConnecting { get; set; }
 
         public const double DefaultDappRowHeight = 72;
         public const double DappListHeaderHeight = 52;
@@ -151,7 +150,9 @@ namespace atomex.ViewModels.DappsViewModels
                         AppUrl = "https://atomex.me",
                         IconUrl = "https://bcd-static-assets.fra1.digitaloceanspaces.com/dapps/atomex/atomex_logo.jpg",
                         KnownRelayServers = Constants.KnownRelayServers,
-                        DatabaseConnectionString = $"Filename={path}"
+                        DatabaseConnectionString = Device.RuntimePlatform == Device.iOS
+                            ? $"Filename={path}; Mode=Exclusive;"
+                            : $"Filename={path};"
                     };
 
                     _beaconWalletClient = BeaconClientFactory
@@ -184,21 +185,65 @@ namespace atomex.ViewModels.DappsViewModels
 
             try
             {
-                var pairingRequest = _beaconWalletClient.GetPairingRequest(qrCodeString);
-                await _beaconWalletClient.AddPeerAsync(pairingRequest);
+                IsConnecting = true;
+                // var cts = new CancellationTokenSource();
+                //
+                // Device.BeginInvokeOnMainThread(() =>
+                //     _navigationService?.DisplaySnackBar(
+                //         messageType: SnackbarMessage.MessageType.Regular,
+                //         text: AppResources.Connecting + "...",
+                //         duration: _connectionTimeoutMs,
+                //         cts: cts)
+                // );
 
-                Device.BeginInvokeOnMainThread(() => 
-                    _navigationService?.DisplaySnackBar(
-                        SnackbarMessage.MessageType.Regular,
-                        AppResources.ConnectedSuccessfully)
-                );
+                var addPeerTask = Task.Run(async () =>
+                {
+                    var pairingRequest = _beaconWalletClient.GetPairingRequest(qrCodeString);
+                    await _beaconWalletClient.AddPeerAsync(pairingRequest);
+                });
+
+                var completedTask = await Task.WhenAny(addPeerTask,
+                    Task.Delay(TimeSpan.FromMilliseconds(_connectionTimeoutMs)));
+
+                // cts.Cancel();
+
+                if (completedTask == addPeerTask)
+                {
+                    if (addPeerTask.IsCompletedSuccessfully)
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                            _navigationService?.DisplaySnackBar(
+                                SnackbarMessage.MessageType.Regular,
+                                AppResources.ConnectedSuccessfully));
+                    }
+                    else
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                            _navigationService?.DisplaySnackBar(
+                                SnackbarMessage.MessageType.Error,
+                                AppResources.ConnectionError));
+                    }
+                }
+                else
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                        _navigationService?.DisplaySnackBar(
+                            SnackbarMessage.MessageType.Error,
+                            AppResources.ConnectionTimeoutError));
+                }
             }
             catch (Exception e)
             {
                 Device.BeginInvokeOnMainThread(() =>
-                    _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Error,
+                    _navigationService?.DisplaySnackBar(
+                        SnackbarMessage.MessageType.Error,
                         AppResources.ConnectionError));
+
                 Log.Error(e, "Connect dApp error");
+            }
+            finally
+            {
+                IsConnecting = false;
             }
         }
 
@@ -279,25 +324,38 @@ namespace atomex.ViewModels.DappsViewModels
                             },
                             OnAllow = async walletAddressViewModel =>
                             {
-                                var walletAddress = await _app
-                                    .Account
-                                    .GetAddressAsync(_tezos.Name, walletAddressViewModel?.Address);
+                                try
+                                {
+                                    var walletAddress = await _app
+                                        .Account
+                                        .GetAddressAsync(_tezos.Name, walletAddressViewModel?.Address);
 
-                                var response = new PermissionResponse(
-                                    id: permissionRequest.Id,
-                                    senderId: _beaconWalletClient.SenderId,
-                                    appMetadata: _beaconWalletClient.Metadata,
-                                    network: permissionRequest.Network,
-                                    scopes: permissionRequest.Scopes,
-                                    publicKey: PubKey.FromBase64(walletAddress?.PublicKey).ToString(),
-                                    version: permissionRequest.Version);
+                                    var response = new PermissionResponse(
+                                        id: permissionRequest.Id,
+                                        senderId: _beaconWalletClient.SenderId,
+                                        appMetadata: _beaconWalletClient.Metadata,
+                                        network: permissionRequest.Network,
+                                        scopes: permissionRequest.Scopes,
+                                        publicKey: PubKey.FromBase64(walletAddress?.PublicKey).ToString(),
+                                        version: permissionRequest.Version);
 
-                                await _beaconWalletClient.SendResponseAsync(
-                                    receiverId: message.SenderId,
-                                    response: response);
+                                    await _beaconWalletClient.SendResponseAsync(
+                                        receiverId: message.SenderId,
+                                        response: response);
 
-                                _navigationService?.ClosePopup();
-                                _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
+                                    _navigationService?.ClosePopup();
+                                    _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
+                                }
+                                catch (Exception)
+                                {
+                                    _navigationService?.ClosePopup();
+                                    _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
+                                
+                                    await Device.InvokeOnMainThreadAsync(() =>
+                                        _navigationService?.DisplaySnackBar(
+                                            SnackbarMessage.MessageType.Error,
+                                            AppResources.TryAgainLaterError));
+                                }
                             },
                             OnChangeAddress = async selectAddressViewModel =>
                             {
@@ -308,9 +366,8 @@ namespace atomex.ViewModels.DappsViewModels
                         };
 
                         await Device.InvokeOnMainThreadAsync(() =>
-                        {
-                            _navigationService?.ShowPopup(new PermissionRequestPopup(permissionRequestViewModel));
-                        });
+                            _navigationService?.ShowPopup(new PermissionRequestPopup(permissionRequestViewModel)));
+
                         break;
                     }
                     case BeaconMessageType.operation_request:
@@ -318,223 +375,259 @@ namespace atomex.ViewModels.DappsViewModels
                         if (message is not OperationRequest operationRequest)
                             return;
 
-                        if (permissions == null)
+                        try
                         {
-                            await _beaconWalletClient.SendResponseAsync(
-                                receiverId: message.SenderId,
-                                response: new BeaconAbortedError(operationRequest.Id, _beaconWalletClient.SenderId));
-
-                            return;
-                        }
-
-                        var rpc = new Rpc(_tezos.RpcNodeUri);
-
-                        var head = await rpc
-                            .GetHeader()
-                            .ConfigureAwait(false);
-
-                        var managerKey = await rpc
-                            .GetManagerKey(connectedWalletAddress.Address)
-                            .ConfigureAwait(false);
-
-                        var revealed = managerKey.Value<string>() != null;
-
-                        var account = await rpc
-                            .GetAccountForBlock(head["hash"]!.ToString(), connectedWalletAddress.Address)
-                            .ConfigureAwait(false);
-
-                        var counter = int.Parse(account["counter"]!.ToString());
-
-                        var operations = new List<ManagerOperationContent>();
-
-                        if (!revealed)
-                        {
-                            operations.Add(new RevealContent
-                            {
-                                Counter = ++counter,
-                                Fee = 0,
-                                GasLimit = 1_000_000,
-                                Source = connectedWalletAddress.Address,
-                                PublicKey = PubKey.FromBase64(connectedWalletAddress.PublicKey).ToString(),
-                                StorageLimit = 0
-                            });
-                        }
-
-                        operations.AddRange(operationRequest.OperationDetails.Select(o =>
-                        {
-                            if (!long.TryParse(o.Amount, out var amount))
-                                amount = 0;
-
-                            var txContent = new TransactionContent
-                            {
-                                Source = connectedWalletAddress.Address,
-                                Destination = o.Destination,
-                                Amount = amount,
-                                Counter = ++counter,
-                                Fee = 0,
-                                GasLimit = 500_000,
-                                StorageLimit = 5000
-                            };
-
-                            if (o.Parameters == null) return txContent;
-
-                            try
-                            {
-                                txContent.Parameters = new Parameters
-                                {
-                                    Entrypoint = o.Parameters?["entrypoint"]!.ToString(),
-                                    Value = Micheline.FromJson(o.Parameters?["value"]!.ToString())
-                                };
-                            }
-                            catch (Exception ex)
-                            {
-                                Log.Error(ex, "Exception during parsing Beacon operation params");
-                            }
-
-                            return txContent;
-                        }));
-
-                        var error = await TezosOperationFiller
-                            .AutoFillAsync(
-                                operations,
-                                head["hash"]!.ToString(),
-                                head["chain_id"]!.ToString(),
-                                _tezos)
-                            .ConfigureAwait(false);
-
-                        if (error != null)
-                        {
-                            await _beaconWalletClient.SendResponseAsync(
-                                receiverId: message.SenderId,
-                                response: new TransactionInvalidBeaconError(operationRequest.Id,
-                                    _beaconWalletClient.SenderId));
-
-                            Log.Error("{@Sender}: error during AutoFill transaction, {@Msg}", "Beacon",
-                                error.Description);
-                            return;
-                        }
-
-                        var forgedOperations = await TezosForge.ForgeAsync(
-                            operations: operations,
-                            branch: head["hash"]!.ToString());
-
-                        var operationsViewModel = new ObservableCollection<BaseBeaconOperationViewModel>();
-
-                        foreach (var item in operations.Select((value, idx) => new {idx, value}))
-                        {
-                            var operation = item.value;
-                            var index = item.idx;
-
-                            switch (operation)
-                            {
-                                case TransactionContent transactionOperation:
-                                    operationsViewModel.Add(new TransactionContentViewModel
-                                    {
-                                        Id = index + 1,
-                                        Operation = transactionOperation,
-                                        QuotesProvider = _app.QuotesProvider,
-                                    });
-                                    break;
-                                case RevealContent revealOperation:
-                                    operationsViewModel.Add(new RevealContentViewModel
-                                    {
-                                        Id = index + 1,
-                                        Operation = revealOperation,
-                                        QuotesProvider = _app.QuotesProvider,
-                                    });
-                                    break;
-                            }
-                        }
-
-                        var operationRequestViewModel = new OperationRequestViewModel
-                        {
-                            DappName = permissions.AppMetadata.Name,
-                            DappLogo = permissions.AppMetadata.Icon,
-                            Operations = operationsViewModel,
-                            OnReject = async () =>
+                            if (permissions == null)
                             {
                                 await _beaconWalletClient.SendResponseAsync(
                                     receiverId: message.SenderId,
                                     response: new BeaconAbortedError(operationRequest.Id,
                                         _beaconWalletClient.SenderId));
 
-                                _navigationService?.ClosePopup();
-                            },
+                                return;
+                            }
 
-                            OnConfirm = async () =>
+                            var rpc = new Rpc(_tezos.RpcNodeUri);
+                            JObject account;
+                            bool revealed;
+
+                            try
                             {
-                                var wallet = (HdWallet) _app.Account.Wallet;
-                                var keyStorage = wallet.KeyStorage;
+                                var head = await rpc
+                                    .GetHeader()
+                                    .ConfigureAwait(false);
 
-                                using var securePrivateKey = keyStorage.GetPrivateKey(
-                                    currency: _tezos,
-                                    keyIndex: connectedWalletAddress.KeyIndex,
-                                    keyType: connectedWalletAddress.KeyType);
+                                var managerKey = await rpc
+                                    .GetManagerKey(connectedWalletAddress.Address)
+                                    .ConfigureAwait(false);
 
-                                var privateKey = securePrivateKey.ToUnsecuredBytes();
-
-                                var signedMessage = TezosSigner.SignHash(
-                                    data: forgedOperations,
-                                    privateKey: privateKey,
-                                    watermark: Watermark.Generic,
-                                    isExtendedKey: privateKey.Length == 64);
-
-                                if (signedMessage == null)
-                                {
-                                    Log.Error("Beacon transaction signing error");
-
-                                    await _beaconWalletClient.SendResponseAsync(
-                                        receiverId: message.SenderId,
-                                        response: new TransactionInvalidBeaconError(operationRequest.Id,
-                                            _beaconWalletClient.SenderId));
-
-                                    return;
-                                }
-
-                                string operationId = null;
-
-                                try
-                                {
-                                    var injectedOperation = await rpc
-                                        .InjectOperations(signedMessage.SignedBytes)
-                                        .ConfigureAwait(false);
-
-                                    operationId = injectedOperation.ToString();
-                                }
-                                catch (Exception ex)
-                                {
-                                    Log.Error("Beacon transaction broadcast error {@Description}", ex.Message);
-
-                                    await _beaconWalletClient.SendResponseAsync(
-                                        receiverId: message.SenderId,
-                                        response: new BroadcastBeaconError(operationRequest.Id,
-                                            _beaconWalletClient.SenderId));
-
-                                    return;
-                                }
-
-                                var response = new OperationResponse(
-                                    id: operationRequest.Id,
-                                    senderId: _beaconWalletClient.SenderId,
-                                    transactionHash: operationId,
-                                    operationRequest.Version);
+                                revealed = managerKey.Value<string>() != null;
+                                account = await rpc
+                                    .GetAccountForBlock(head["hash"]!.ToString(), connectedWalletAddress.Address)
+                                    .ConfigureAwait(false);
+                            }
+                            catch (Exception ex)
+                            {
+                                Log.Error(ex, "Error during querying rpc, {Message}", ex.Message);
                                 await _beaconWalletClient.SendResponseAsync(
                                     receiverId: message.SenderId,
-                                    response);
+                                    response: new BeaconAbortedError(operationRequest.Id,
+                                        _beaconWalletClient.SenderId));
 
-                                _navigationService?.ClosePopup();
-
-                                Log.Information("{@Sender}: operation done with transaction hash: {@Hash}",
-                                    "Beacon",
-                                    operationId);
+                                return;
                             }
-                        };
 
-                        await Device.InvokeOnMainThreadAsync(() =>
+                            var counter = int.Parse(account["counter"]!.ToString());
+                            var operations = new List<ManagerOperationContent>();
+
+                            var totalOperations = revealed
+                                ? operationRequest.OperationDetails.Count
+                                : operationRequest.OperationDetails.Count + 1;
+
+                            var operationGasLimit = Math.Min(_gasLimitPerBlock / totalOperations, 500_000);
+
+                            if (!revealed)
+                            {
+                                operations.Add(new RevealContent
+                                {
+                                    Counter = ++counter,
+                                    Source = connectedWalletAddress.Address,
+                                    PublicKey = PubKey.FromBase64(connectedWalletAddress.PublicKey).ToString(),
+                                    Fee = 0,
+                                    GasLimit = operationGasLimit,
+                                    StorageLimit = 0
+                                });
+                            }
+
+                            foreach (var operation in operationRequest.OperationDetails)
+                            {
+                                if (operation is PartialTezosTransactionOperation transactionOperation)
+                                {
+                                    if (!long.TryParse(transactionOperation.Amount, out var amount))
+                                        amount = 0;
+
+                                    var txContent = new TransactionContent
+                                    {
+                                        Source = connectedWalletAddress.Address,
+                                        Destination = transactionOperation.Destination,
+                                        Amount = amount,
+                                        Counter = ++counter,
+                                        Fee = 0,
+                                        GasLimit = operationGasLimit,
+                                        StorageLimit = StorageLimitPerOperation,
+                                    };
+
+                                    if (transactionOperation.Parameters == null)
+                                    {
+                                        operations.Add(txContent);
+                                        continue;
+                                    }
+
+                                    try
+                                    {
+                                        txContent.Parameters = new Parameters
+                                        {
+                                            Entrypoint = transactionOperation.Parameters?["entrypoint"]!.ToString(),
+                                            Value = Micheline.FromJson(transactionOperation.Parameters?["value"]!
+                                                .ToString())
+                                        };
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Log.Error(ex, "Exception during parsing Beacon operation params");
+                                    }
+
+                                    operations.Add(txContent);
+                                }
+
+                                if (operation is TezosDelegationOperation delegationOperation)
+                                {
+                                    var delegationContent = new DelegationContent
+                                    {
+                                        Source = connectedWalletAddress.Address,
+                                        Counter = ++counter,
+                                        Fee = 0,
+                                        GasLimit = operationGasLimit,
+                                        StorageLimit = StorageLimitPerOperation,
+                                        Delegate = delegationOperation.Delegate
+                                    };
+
+                                    operations.Add(delegationContent);
+                                }
+                            }
+
+                            var operationRequestViewModel = new OperationRequestViewModel(operations,
+                                connectedWalletAddress,
+                                operationGasLimit, _tezos)
+                            {
+                                QuotesProvider = _app.QuotesProvider,
+                                DappName = permissions.AppMetadata.Name,
+                                DappLogo = permissions.AppMetadata.Icon,
+                                OnReject = async () =>
+                                {
+                                    try
+                                    {
+                                        await _beaconWalletClient.SendResponseAsync(
+                                            receiverId: message.SenderId,
+                                            response: new BeaconAbortedError(operationRequest.Id,
+                                                _beaconWalletClient.SenderId));
+
+                                        _navigationService?.ClosePopup();
+                                    }
+                                    catch (Exception)
+                                    {
+                                        _navigationService?.ClosePopup();
+                                    }
+                                },
+
+                                OnConfirm = async forgedOperations =>
+                                {
+                                    try
+                                    {
+                                        var wallet = (HdWallet) _app.Account.Wallet;
+                                        var keyStorage = wallet.KeyStorage;
+
+                                        using var securePrivateKey = keyStorage.GetPrivateKey(
+                                            currency: _tezos,
+                                            keyIndex: connectedWalletAddress.KeyIndex,
+                                            keyType: connectedWalletAddress.KeyType);
+
+                                        var privateKey = securePrivateKey.ToUnsecuredBytes();
+
+                                        var signedMessage = TezosSigner.SignHash(
+                                            data: forgedOperations,
+                                            privateKey: privateKey,
+                                            watermark: Watermark.Generic,
+                                            isExtendedKey: privateKey.Length == 64);
+
+                                        if (signedMessage == null)
+                                        {
+                                            Log.Error("Beacon transaction signing error");
+
+                                            await _beaconWalletClient.SendResponseAsync(
+                                                receiverId: message.SenderId,
+                                                response: new TransactionInvalidBeaconError(operationRequest.Id,
+                                                    _beaconWalletClient.SenderId));
+
+                                            return;
+                                        }
+
+                                        string operationId;
+
+                                        try
+                                        {
+                                            var injectedOperation = await rpc
+                                                .InjectOperations(signedMessage.SignedBytes)
+                                                .ConfigureAwait(false);
+
+                                            operationId = injectedOperation.ToString();
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Log.Error("Beacon transaction broadcast error {@Description}", ex.Message);
+
+                                            await _beaconWalletClient.SendResponseAsync(
+                                                receiverId: message.SenderId,
+                                                response: new BroadcastBeaconError(operationRequest.Id,
+                                                    _beaconWalletClient.SenderId));
+
+                                            await Device.InvokeOnMainThreadAsync(() =>
+                                            {
+                                                _navigationService?.ClosePopup();
+                                                _navigationService?.DisplaySnackBar(
+                                                    SnackbarMessage.MessageType.Error,
+                                                    AppResources.SendingTransactionError);
+                                            });
+
+                                            return;
+                                        }
+
+                                        var response = new OperationResponse(
+                                            id: operationRequest.Id,
+                                            senderId: _beaconWalletClient.SenderId,
+                                            transactionHash: operationId,
+                                            operationRequest.Version);
+                                        await _beaconWalletClient.SendResponseAsync(
+                                            receiverId: message.SenderId,
+                                            response);
+
+                                        await Device.InvokeOnMainThreadAsync(() =>
+                                        {
+                                            _navigationService?.ClosePopup();
+                                            _navigationService?.DisplaySnackBar(
+                                                SnackbarMessage.MessageType.Success,
+                                                AppResources.SuccessSending);
+                                        });
+
+                                        Log.Information("{@Sender}: operation done with transaction hash: {@Hash}",
+                                            "Beacon",
+                                            operationId);
+                                    }
+                                    catch (Exception exception)
+                                    {
+                                        Log.Error(exception, "OnConfirm error");
+                                        await Device.InvokeOnMainThreadAsync(() =>
+                                        {
+                                            _navigationService?.ClosePopup();
+                                            _navigationService?.DisplaySnackBar(
+                                                SnackbarMessage.MessageType.Error,
+                                                AppResources.TryAgainLaterError);
+                                        });
+                                    }
+                                }
+                            };
+
+                            await Device.InvokeOnMainThreadAsync(() =>
+                                _navigationService?.ShowPopup(new OperationRequestPopup(operationRequestViewModel)));
+
+                            break;
+                        }
+                        catch (Exception exception)
                         {
-                            _navigationService?.ShowPopup(new OperationRequestPopup(operationRequestViewModel));
-                        });
-                        break;
+                            Log.Error(exception,
+                                "OnBeaconWalletClientMessageReceived error. Message type is operation request");
+                            throw;
+                        }
                     }
                     case BeaconMessageType.sign_payload_request:
                     {
@@ -546,69 +639,123 @@ namespace atomex.ViewModels.DappsViewModels
                         {
                             dataToSign = Hex.FromString(signRequest.Payload);
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
-                            // data is not in HEX format
-                            dataToSign = Encoding.UTF8.GetBytes(signRequest.Payload);
+                            Log.Error(ex, "{Sender}: Can't parse income payload to sign, {Payload}", "Beacon",
+                                signRequest.Payload);
+
+                            await _beaconWalletClient.SendResponseAsync(
+                                receiverId: message.SenderId,
+                                response: new SignatureTypeNotSupportedBeaconError(signRequest.Id,
+                                    _beaconWalletClient.SenderId));
+
+                            return;
                         }
 
-                        var permissionInfo =
-                            await _beaconWalletClient
-                                .PermissionInfoRepository
-                                .TryReadBySenderIdAsync(message.SenderId);
-
-                        var signatureRequestViewModel = new SignatureRequestViewModel()
+                        try
                         {
-                            DappName = permissionInfo!.AppMetadata.Name,
-                            DappLogo = permissionInfo!.AppMetadata.Icon,
-                            Payload = signRequest.Payload,
-                            OnSign = async () =>
+                            var permissionInfo =
+                                await _beaconWalletClient
+                                    .PermissionInfoRepository
+                                    .TryReadBySenderIdAsync(message.SenderId);
+
+                            if (permissionInfo == null)
                             {
-                                var hdWallet = _app.Account.Wallet as HdWallet;
-
-                                using var privateKey = hdWallet!.KeyStorage.GetPrivateKey(
-                                    currency: _tezos,
-                                    keyIndex: connectedWalletAddress.KeyIndex,
-                                    keyType: connectedWalletAddress.KeyType);
-
-                                var signedMessage = TezosSigner.SignHash(
-                                    data: dataToSign,
-                                    privateKey: privateKey.ToUnsecuredBytes(),
-                                    watermark: null,
-                                    isExtendedKey: privateKey.Length == 64);
-
-                                var response = new SignPayloadResponse(
-                                    signature: signedMessage.EncodedSignature,
-                                    version: signRequest.Version,
-                                    id: signRequest.Id,
-                                    senderId: _beaconWalletClient.SenderId);
-
-                                await _beaconWalletClient.SendResponseAsync(
-                                    receiverId: message.SenderId,
-                                    response: response);
-
-                                _navigationService?.ClosePopup();
-
-                                Log.Information("{@Sender}: signed payload for {@Dapp} with signature: {@Signature}",
-                                    "Beacon", permissionInfo.AppMetadata.Name, signedMessage.EncodedSignature);
-                            },
-                            OnReject = async () =>
-                            {
-                                await _beaconWalletClient.SendResponseAsync(
-                                    receiverId: message.SenderId,
-                                    response: new BeaconAbortedError(signRequest.Id, _beaconWalletClient.SenderId));
-
-                                _navigationService?.ClosePopup();
-
-                                Log.Information("{@Sender}: user Aborted signing payload from {@Dapp}", "Beacon",
-                                    permissionInfo.AppMetadata.Name);
+                                Log.Error("Permission info is null for signature request");
+                                await Device.InvokeOnMainThreadAsync(() =>
+                                    _navigationService?.DisplaySnackBar(
+                                        SnackbarMessage.MessageType.Error,
+                                        AppResources.TryAgainLaterError));
+                                
+                                return;
                             }
-                        };
 
-                        await Device.InvokeOnMainThreadAsync(() =>
+                            var signatureRequestViewModel = new SignatureRequestViewModel()
+                            {
+                                DappName = permissionInfo!.AppMetadata.Name,
+                                DappLogo = permissionInfo!.AppMetadata.Icon,
+                                BytesPayload = signRequest.Payload,
+                                OnSign = async () =>
+                                {
+                                    try
+                                    {
+                                        var hdWallet = _app.Account.Wallet as HdWallet;
+
+                                        using var privateKey = hdWallet!.KeyStorage.GetPrivateKey(
+                                            currency: _tezos,
+                                            keyIndex: connectedWalletAddress.KeyIndex,
+                                            keyType: connectedWalletAddress.KeyType);
+
+                                        var signedMessage = TezosSigner.SignHash(
+                                            data: dataToSign,
+                                            privateKey: privateKey.ToUnsecuredBytes(),
+                                            watermark: null,
+                                            isExtendedKey: privateKey.Length == 64);
+
+                                        var response = new SignPayloadResponse(
+                                            signature: signedMessage.EncodedSignature,
+                                            version: signRequest.Version,
+                                            id: signRequest.Id,
+                                            senderId: _beaconWalletClient.SenderId);
+
+                                        await _beaconWalletClient.SendResponseAsync(
+                                            receiverId: message.SenderId,
+                                            response: response);
+
+                                        _navigationService?.ClosePopup();
+
+                                        Log.Information(
+                                            "{@Sender}: signed payload for {@Dapp} with signature: {@Signature}",
+                                            "Beacon", permissionInfo.AppMetadata.Name, signedMessage.EncodedSignature);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Log.Error(ex, "OnSign error");
+                                        await Device.InvokeOnMainThreadAsync(() =>
+                                        {
+                                            _navigationService?.ClosePopup();
+                                            _navigationService?.DisplaySnackBar(
+                                                SnackbarMessage.MessageType.Error,
+                                                AppResources.TryAgainLaterError);
+                                        });
+                                    }
+                                },
+                                OnReject = async () =>
+                                {
+                                    try
+                                    {
+                                        await _beaconWalletClient.SendResponseAsync(
+                                            receiverId: message.SenderId,
+                                            response: new BeaconAbortedError(signRequest.Id,
+                                                _beaconWalletClient.SenderId));
+
+                                        _navigationService?.ClosePopup();
+
+                                        Log.Information("{@Sender}: user Aborted signing payload from {@Dapp}",
+                                            "Beacon",
+                                            permissionInfo.AppMetadata.Name);
+                                    }
+                                    catch (Exception)
+                                    {
+                                        await Device.InvokeOnMainThreadAsync(() =>
+                                            _navigationService?.ClosePopup());
+                                    }
+                                }
+                            };
+
+                            await Device.InvokeOnMainThreadAsync(() =>
+                                _navigationService?.ShowPopup(new SignatureRequestPopup(signatureRequestViewModel)));
+                        }
+                        catch (Exception exception)
                         {
-                            _navigationService?.ShowPopup(new SignatureRequestPopup(signatureRequestViewModel));
-                        });
+                            Log.Error(exception, "Can't create SignatureViewModel");
+
+                            await _beaconWalletClient.SendResponseAsync(
+                                receiverId: message.SenderId,
+                                response: new SignatureTypeNotSupportedBeaconError(signRequest.Id,
+                                    _beaconWalletClient.SenderId));
+                        }
+
                         break;
                     }
                 }
@@ -616,57 +763,6 @@ namespace atomex.ViewModels.DappsViewModels
             catch (Exception ex)
             {
                 Log.Error(ex, "On beacon message received error");
-            }
-        }
-
-        private async Task<Result<(TezosTransaction tx, bool isSuccess, bool isRunSuccess)>> RunAutofillOperation(
-            string fromAddress,
-            string toAddress,
-            long amount,
-            JObject operationParams,
-            CancellationToken cancellationToken = default)
-        {
-            try
-            {
-                var tx = new TezosTransaction
-                {
-                    From = fromAddress,
-                    To = toAddress,
-                    Fee = 0,
-                    GasLimit = 1_000_000,
-                    StorageLimit = 5000,
-                    Amount = amount,
-                    Currency = _tezos.Name,
-                    CreationTime = DateTime.UtcNow,
-                    Params = operationParams,
-
-                    UseRun = true,
-                    UseSafeStorageLimit = false,
-                    UseOfflineCounter = false
-                };
-
-                var walletAddress = _app.Account
-                    .GetCurrencyAccount(TezosConfig.Xtz)
-                    .GetAddressAsync(fromAddress, cancellationToken)
-                    .WaitForResult();
-
-                using var securePublicKey = _app.Account.Wallet.GetPublicKey(
-                    currency: _tezos,
-                    keyIndex: walletAddress.KeyIndex,
-                    keyType: walletAddress.KeyType);
-
-                var (isSuccess, isRunSuccess, _) = await tx.FillOperationsAsync(
-                    securePublicKey: securePublicKey,
-                    tezosConfig: _tezos,
-                    headOffset: TezosConfig.HeadOffset,
-                    cancellationToken: cancellationToken);
-
-                return (tx, isSuccess, isRunSuccess);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "Autofill transaction error");
-                return new Error(Errors.TransactionCreationError, "Autofill transaction error. Try again later.");
             }
         }
 
@@ -691,52 +787,84 @@ namespace atomex.ViewModels.DappsViewModels
 
         private void GetAllDapps()
         {
-            var permissionInfoList = _beaconWalletClient
-                .PermissionInfoRepository
-                .ReadAllAsync()
-                .Result;
+            try
+            {
+                var permissionInfoList = _beaconWalletClient
+                    .PermissionInfoRepository
+                    .ReadAllAsync()
+                    .Result;
 
-            Dapps = new ObservableCollection<DappViewModel>(permissionInfoList
-                .Select(permissionInfo => new DappViewModel
+                Device.InvokeOnMainThreadAsync(() =>
                 {
-                    PermissionInfo = permissionInfo,
-                    ShowDisconnection = connectedDapp =>
-                        _navigationService?.ShowPopup(new DappDisconnectPopup(connectedDapp)),
-                    CloseDisconnection = () => _navigationService?.ClosePopup(),
-                    OnDisconnect = async disconnectPeer =>
-                    {
-                        _ = Device.InvokeOnMainThreadAsync(() =>
+                    Dapps = new ObservableCollection<DappViewModel>(permissionInfoList
+                        .Select(permissionInfo => new DappViewModel
                         {
-                            _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
-                            _navigationService?.ClosePopup();
-                            _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular,
-                                AppResources.Disconnecting + "...");
-                        });
-                        await _beaconWalletClient.RemovePeerAsync(disconnectPeer.SenderId);
-                        await Device.InvokeOnMainThreadAsync(() =>
-                        {
-                            _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular,
-                                AppResources.DisconnectedSuccessfully);
-                        });
-                    },
-                    OnCopy = value =>
-                    {
-                        _ = Device.InvokeOnMainThreadAsync(() =>
-                        {
-                            if (value != null)
+                            PermissionInfo = permissionInfo,
+                            ShowDisconnection = connectedDapp =>
+                                _navigationService?.ShowPopup(new DappDisconnectPopup(connectedDapp)),
+                            CloseDisconnection = () => _navigationService?.ClosePopup(),
+                            OnDisconnect = async disconnectPeer =>
                             {
-                                _ = Clipboard.SetTextAsync(value);
-                                _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular,
-                                    AppResources.Copied);
-                            }
-                            else
+                                try
+                                {
+                                    _ = Device.InvokeOnMainThreadAsync(() =>
+                                    {
+                                        _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
+                                        _navigationService?.ClosePopup();
+                                        _navigationService?.DisplaySnackBar(
+                                            SnackbarMessage.MessageType.Regular,
+                                            AppResources.Disconnecting + "...");
+                                    });
+                                    await _beaconWalletClient.RemovePeerAsync(disconnectPeer.SenderId);
+                                    await Device.InvokeOnMainThreadAsync(() =>
+                                        _navigationService?.DisplaySnackBar(
+                                            SnackbarMessage.MessageType.Regular,
+                                            AppResources.DisconnectedSuccessfully));
+                                }
+                                catch (Exception e)
+                                {
+                                    Log.Error(e, "Disconnect peer error");
+
+                                    await Device.InvokeOnMainThreadAsync(() =>
+                                        _navigationService?.DisplaySnackBar(
+                                            SnackbarMessage.MessageType.Error,
+                                            AppResources.TryAgainLaterError));
+                                }
+                            },
+                            OnCopy = value =>
                             {
-                                _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError,
-                                    AppResources.AcceptButton);
+                                try
+                                {
+                                    _ = Device.InvokeOnMainThreadAsync(() =>
+                                    {
+                                        if (value != null)
+                                        {
+                                            _ = Clipboard.SetTextAsync(value);
+                                            _navigationService?.DisplaySnackBar(
+                                                SnackbarMessage.MessageType.Regular,
+                                                AppResources.Copied);
+                                        }
+                                        else
+                                        {
+                                            _navigationService?.ShowAlert(
+                                                AppResources.Error,
+                                                AppResources.CopyError,
+                                                AppResources.AcceptButton);
+                                        }
+                                    });
+                                }
+                                catch (Exception e)
+                                {
+                                    Log.Error(e, "Dapp info copy error");
+                                }
                             }
-                        });
-                    }
-                }));
+                        }));
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Get dApps error");
+            }
         }
     }
 }

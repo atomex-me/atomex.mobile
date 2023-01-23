@@ -108,9 +108,15 @@
     <ImageAsset Include="Assets.xcassets\ic_disconnect__blue.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_disconnect__blue.imageset\ic_disconnect__blue.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_disconnect__blue.imageset\ic_disconnect__blue__dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_dropdown.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_dropdown.imageset\ic_dropdown.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_dropdown.imageset\ic_dropdown__dark.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_qr__blue.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_qr__blue.imageset\Ic_qr__blue.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_qr__blue.imageset\Ic_qr__blue__dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_warning.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_warning.imageset\ic_warning.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_warning.imageset\ic_warning__dark.pdf" />
     <ImageAsset Include="Assets.xcassets\Logo.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
@@ -737,9 +743,6 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Beacon.Sdk">
-      <Version>1.0.12</Version>
-    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2291" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.1" />
     <PackageReference Include="ZXing.Net.Mobile.Forms">

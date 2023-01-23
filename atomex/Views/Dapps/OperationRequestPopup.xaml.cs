@@ -13,6 +13,22 @@ namespace atomex.Views.Dapps
             InitializeComponent();
             BindingContext = operationRequestViewModel;
         }
+        
+        private void GasFeeEntryFocus(object sender, EventArgs args)
+        {
+            GasFeeEntry.Focus();
+        }
+
+        protected override bool OnBackgroundClicked()
+        {
+            if (BindingContext is OperationRequestViewModel)
+            {
+                var vm = (OperationRequestViewModel)BindingContext;
+                vm?.OnRejectCommand.Execute();
+            }
+            
+            return true;
+        }   
 
         protected override void OnDisappearing()
         {

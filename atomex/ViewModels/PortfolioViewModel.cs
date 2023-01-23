@@ -217,8 +217,15 @@ namespace atomex.ViewModels
 
         private void OnAmountUpdatedEventHandler(object sender, EventArgs args)
         {
-            AvailableAmountInBase = AllCurrencies.Sum(c => c.CurrencyViewModel.TotalAmountInBase);
-            UnconfirmedAmountInBase = AllCurrencies.Sum(c => c.CurrencyViewModel.UnconfirmedAmountInBase);
+            try
+            {
+                AvailableAmountInBase = AllCurrencies.Sum(c => c.CurrencyViewModel.TotalAmountInBase);
+                UnconfirmedAmountInBase = AllCurrencies.Sum(c => c.CurrencyViewModel.UnconfirmedAmountInBase);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Portfolio amount error");
+            }
         }
 
         private void GetCurrencies()

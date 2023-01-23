@@ -3,6 +3,7 @@ using System.Reactive;
 using System.Windows.Input;
 using Atomex.Blockchain.Tezos;
 using Atomex.Common;
+using atomex.Resources;
 using ReactiveUI;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -16,6 +17,8 @@ namespace atomex.ViewModels
         public decimal Balance { get; set; }
         public string ExplorerUri { get; set; }
         public DateTime DelegationTime { get; set; }
+        public DateTime LocalTime => DelegationTime.ToLocalTime();
+        public string LocalTimeString => LocalTime.ToString(AppResources.Culture.DateTimeFormat.FullDateTimePattern, AppResources.Culture);
         public DelegationStatus Status { get; set; }
         public string StatusString => Status.GetDescription();
 

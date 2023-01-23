@@ -144,7 +144,7 @@
                            Padding="0,0,0,6"
                            VerticalTextAlignment="End" />
                     <Label Grid.Row="1"
-                           Text="{Binding DelegationTime, StringFormat='{}{0:MMMM dd yyyy, HH:mm}'}"
+                           Text="{Binding LocalTimeString}"
                            Style="{DynamicResource MainTextH4}"
                            VerticalTextAlignment="Start" />
                     <Line Grid.Row="2"
