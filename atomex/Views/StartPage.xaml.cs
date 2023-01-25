@@ -242,6 +242,11 @@ namespace atomex.Views
             }
         }
 
+        public void AllowCamera()
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<string> DisplayActionSheet(string cancel, string[] actions, string title = null)
         {
             throw new NotImplementedException();

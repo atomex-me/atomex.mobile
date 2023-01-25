@@ -5,6 +5,7 @@ using System.Windows.Input;
 using atomex.Resources;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using ZXing;
@@ -13,21 +14,46 @@ namespace atomex.ViewModels.DappsViewModels
 {
     public class ConnectDappViewModel : BaseViewModel
     {
-        protected INavigationService _navigationService;
+        private INavigationService _navigationService;
 
         public Func<string, Task> OnConnect;
         [Reactive] public string QrCodeString { get; set; }
 
         [Reactive] public Result ScanResult { get; set; }
         [Reactive] public bool IsScanning { get; set; }
-        [Reactive] public bool IsAnalyzing { get; set; }
+
+        [Reactive] public bool CameraPermissionDenied { get; set; }
 
         [Reactive] public bool IsScanQrCodeTab { get; set; }
 
         public ConnectDappViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            _ = CheckCameraPermission();
+
+            this.WhenAnyValue(vm => vm.IsScanQrCodeTab)
+                .Subscribe(value =>
+                    IsScanning = !CameraPermissionDenied && value);
+
+            this.WhenAnyValue(vm => vm.CameraPermissionDenied)
+                .Subscribe(_ => 
+                    IsScanning = IsScanQrCodeTab && !CameraPermissionDenied);
+
             IsScanQrCodeTab = true;
+        }
+
+        private async Task CheckCameraPermission()
+        {
+            try
+            {
+                PermissionStatus permissions = await Permissions.CheckStatusAsync<Permissions.Camera>();
+                CameraPermissionDenied = permissions != PermissionStatus.Granted;
+                this.RaisePropertyChanged(nameof(CameraPermissionDenied));
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Check camera permission error");
+            }
         }
 
         private ReactiveCommand<Unit, Unit> _connectCommand;
@@ -35,11 +61,9 @@ namespace atomex.ViewModels.DappsViewModels
         public ReactiveCommand<Unit, Unit> ConnectCommand =>
             _connectCommand ??= ReactiveCommand.Create(() =>
             {
-                IsScanning = false;
-                IsAnalyzing = false;
-
                 Device.InvokeOnMainThreadAsync(async () =>
                 {
+                    IsScanning = false;
                     _navigationService?.ClosePage(TabNavigation.Portfolio);
 
                     if (QrCodeString != null)
@@ -50,13 +74,42 @@ namespace atomex.ViewModels.DappsViewModels
                 });
             });
 
+        private ReactiveCommand<Unit, Unit> _cameraPermissionRequestCommand;
+
+        public ReactiveCommand<Unit, Unit> CameraPermissionRequestCommand =>
+            _cameraPermissionRequestCommand ??= _cameraPermissionRequestCommand = ReactiveCommand.CreateFromTask(
+                async () =>
+                {
+                    try
+                    {
+                        PermissionStatus permissions = await Permissions.CheckStatusAsync<Permissions.Camera>();
+
+                        if (permissions != PermissionStatus.Granted)
+                        {
+                            if (Device.RuntimePlatform == Device.iOS)
+                                AppInfo.ShowSettingsUI();
+                            else
+                                permissions = await Permissions.RequestAsync<Permissions.Camera>();
+                        }
+
+                        await Device.InvokeOnMainThreadAsync(() =>
+                        {
+                            CameraPermissionDenied = permissions != PermissionStatus.Granted;
+                            this.RaisePropertyChanged(nameof(CameraPermissionDenied));
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e, "Camera permission request error");
+                    }
+                });
+
+
         private ReactiveCommand<bool, Unit> _changeConnectionTypeCommand;
 
         public ReactiveCommand<bool, Unit> ChangeConnectionTypeCommand =>
-            _changeConnectionTypeCommand ??= _changeConnectionTypeCommand = ReactiveCommand.Create<bool>(value =>
-            {
-                IsScanQrCodeTab = value;
-            });
+            _changeConnectionTypeCommand ??= _changeConnectionTypeCommand =
+                ReactiveCommand.Create<bool>(value => IsScanQrCodeTab = value);
 
         private ReactiveCommand<Unit, Unit> _pasteCommand;
 
@@ -70,7 +123,9 @@ namespace atomex.ViewModels.DappsViewModels
                 }
                 else
                 {
-                    _navigationService?.ShowAlert(AppResources.Error, AppResources.EmptyClipboard,
+                    _navigationService?.ShowAlert(
+                        AppResources.Error,
+                        AppResources.EmptyClipboard,
                         AppResources.AcceptButton);
                 }
             });
@@ -78,10 +133,8 @@ namespace atomex.ViewModels.DappsViewModels
         private ReactiveCommand<Unit, Unit> _clearQrCodeCommand;
 
         public ReactiveCommand<Unit, Unit> ClearQrCodeCommand =>
-            _clearQrCodeCommand ??= _clearQrCodeCommand = ReactiveCommand.Create(() =>
-            {
-                QrCodeString = string.Empty;
-            });
+            _clearQrCodeCommand ??=
+                _clearQrCodeCommand = ReactiveCommand.Create(() => { QrCodeString = string.Empty; });
 
         private ICommand _scanResultCommand;
 
@@ -91,11 +144,12 @@ namespace atomex.ViewModels.DappsViewModels
         private void OnScanResult()
         {
             IsScanning = false;
-            IsAnalyzing = false;
 
             if (ScanResult == null)
             {
-                _navigationService?.ShowAlert(AppResources.Error, AppResources.IncorrectQrCodeFormat,
+                _navigationService?.ShowAlert(
+                    AppResources.Error,
+                    AppResources.IncorrectQrCodeFormat,
                     AppResources.AcceptButton);
                 Device.BeginInvokeOnMainThread(() => _navigationService?.ClosePage(TabNavigation.Portfolio));
 
@@ -125,15 +179,26 @@ namespace atomex.ViewModels.DappsViewModels
         {
             if (string.IsNullOrEmpty(value)) return;
 
-            await Device.InvokeOnMainThreadAsync(async () =>
+            await Device.InvokeOnMainThreadAsync(async () => await OnConnect(value));
+        }
+
+        public void AllowCamera()
+        {
+            Device.InvokeOnMainThreadAsync(() =>
             {
-                await OnConnect(value);
+                CameraPermissionDenied = false;
+                this.RaisePropertyChanged(nameof(CameraPermissionDenied));
             });
         }
 
         public void Reset()
         {
-            IsScanQrCodeTab = true;
+            IsScanning = false;
+        }
+
+        public void Init()
+        {
+            IsScanning = !CameraPermissionDenied && IsScanQrCodeTab;
         }
     }
 }

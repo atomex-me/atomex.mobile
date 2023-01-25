@@ -598,5 +598,17 @@ namespace atomex.Views
                 Log.Error(e, "Connect dApp by deepLink error");
             }
         }
+
+        public void AllowCamera()
+        {
+            try
+            { 
+                MainViewModel?.PortfolioViewModel.AllowCamera();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Allow camera error");
+            }
+        }
     }
 }

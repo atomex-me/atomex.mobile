@@ -1354,4 +1354,7 @@ NOTE: Do not sign out or close the application until the swap is completed, othe
     <data name="WaitFor2Sec" xml:space="preserve">
         <value>Wait for 2 seconds</value>
     </data>
+    <data name="CameraPermission" xml:space="preserve">
+        <value>Camera permission</value>
+    </data>
 </root>

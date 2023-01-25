@@ -249,30 +249,8 @@ namespace atomex.ViewModels.DappsViewModels
 
         private ReactiveCommand<Unit, Unit> _newDappCommand;
 
-        public ReactiveCommand<Unit, Unit> NewDappCommand => _newDappCommand ??= ReactiveCommand.CreateFromTask(
-            async () =>
-            {
-                try
-                {
-                    PermissionStatus permissions = await Permissions.CheckStatusAsync<Permissions.Camera>();
-
-                    if (permissions != PermissionStatus.Granted)
-                        permissions = await Permissions.RequestAsync<Permissions.Camera>();
-                    if (permissions != PermissionStatus.Granted)
-                    {
-                        _navigationService?.ClosePage(TabNavigation.Portfolio);
-                        return;
-                    }
-
-                    ConnectDappViewModel!.IsScanning = true;
-                    ConnectDappViewModel!.IsAnalyzing = true;
-                    _navigationService?.ShowPage(new ConnectDappPage(ConnectDappViewModel), TabNavigation.Portfolio);
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e, "New dApp error");
-                }
-            });
+        public ReactiveCommand<Unit, Unit> NewDappCommand => _newDappCommand ??= ReactiveCommand.Create(() =>
+            _navigationService?.ShowPage(new ConnectDappPage(ConnectDappViewModel), TabNavigation.Portfolio));
 
         private async void OnBeaconWalletClientMessageReceived(object sender, BeaconMessageEventArgs e)
         {
@@ -350,7 +328,7 @@ namespace atomex.ViewModels.DappsViewModels
                                 {
                                     _navigationService?.ClosePopup();
                                     _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
-                                
+
                                     await Device.InvokeOnMainThreadAsync(() =>
                                         _navigationService?.DisplaySnackBar(
                                             SnackbarMessage.MessageType.Error,
@@ -666,7 +644,7 @@ namespace atomex.ViewModels.DappsViewModels
                                     _navigationService?.DisplaySnackBar(
                                         SnackbarMessage.MessageType.Error,
                                         AppResources.TryAgainLaterError));
-                                
+
                                 return;
                             }
 
