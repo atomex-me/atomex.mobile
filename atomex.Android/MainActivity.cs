@@ -37,6 +37,16 @@ namespace atomex.Droid
         DataPathPrefix = "",
         DataHost = "",
         AutoVerify = true)]
+    [IntentFilter(new[] { Intent.ActionView },
+        Categories = new[]
+        {
+            Intent.CategoryDefault,
+            Intent.CategoryBrowsable
+        },
+        DataScheme = "tezos",
+        DataPathPrefix = "",
+        DataHost = "",
+        AutoVerify = true)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         public static MainActivity Instance { get; private set; }

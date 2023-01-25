@@ -52,6 +52,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>atomex</string>
+				<string>tezos</string>
 			</array>
 			<key>CFBundleTypeRole</key>
 			<string>None</string>
