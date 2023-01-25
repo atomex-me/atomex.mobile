@@ -167,6 +167,17 @@ namespace atomex.ViewModels
             await tezosViewModel.DappsViewModel.ConnectDappViewModel.OnDeepLinkResult(_dappConnectionString);
             _dappConnectionString = string.Empty;
         }
+        
+        public void AllowCamera()
+        {
+            if (AllCurrencies == null) return;
+                
+            var tezosViewModel = AllCurrencies!
+                .First(c => c.CurrencyViewModel.CurrencyCode == TezosConfig.Xtz)
+                .CurrencyViewModel as TezosCurrencyViewModel;
+
+            tezosViewModel?.DappsViewModel.ConnectDappViewModel.AllowCamera();
+        }
 
         private async Task StartCurrenciesScan()
         {
@@ -279,7 +290,7 @@ namespace atomex.ViewModels
 
                 var disabledCurrencies = AllCurrencies
                     .Where(c => !c.IsSelected)
-                    .Select(currency => currency.CurrencyViewModel.CurrencyCode)
+                    .Select(cur => cur.CurrencyViewModel.CurrencyCode)
                     .ToArray();
 
                 Device.InvokeOnMainThreadAsync(() =>

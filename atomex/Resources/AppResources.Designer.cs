@@ -8,6 +8,9 @@
 //------------------------------------------------------------------------------
 
 namespace atomex.Resources {
+    using System;
+    
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -1809,6 +1812,12 @@ namespace atomex.Resources {
         internal static string ShowDetails {
             get {
                 return ResourceManager.GetString("ShowDetails", resourceCulture);
+            }
+        }
+        
+        internal static string CameraPermission {
+            get {
+                return ResourceManager.GetString("CameraPermission", resourceCulture);
             }
         }
         

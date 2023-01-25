@@ -133,6 +133,12 @@ namespace atomex
             var tabbedPage = mainPage as INavigationService;
             tabbedPage?.ConnectDappByDeepLink(value);
         }
+        
+        public void AllowCamera()
+        {
+            var tabbedPage = MainPage as INavigationService;
+            tabbedPage?.AllowCamera();
+        }
 
         private void LoadStyles()
         {

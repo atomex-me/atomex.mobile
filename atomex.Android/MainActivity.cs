@@ -112,12 +112,17 @@ namespace atomex.Droid
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions,
-            [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+            [GeneratedEnum] Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-            global::ZXing.Net.Mobile.Android.PermissionsHandler.OnRequestPermissionsResult(requestCode, permissions,
-                grantResults);
-
+            for (int i = 0; i < permissions.Length; i++)
+            {
+                if (permissions[i].Equals("android.permission.CAMERA") && grantResults[i] == Permission.Granted)
+                {
+                    ZXing.Net.Mobile.Android.PermissionsHandler.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+                    _app.AllowCamera();
+                }
+            }
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
@@ -129,7 +134,7 @@ namespace atomex.Droid
 
                 App.DeviceToken = token.ToString();
 
-                Log.Debug("DeviceToken: {@token}", App.DeviceToken);
+                Log.Debug("DeviceToken: {@Token}", App.DeviceToken);
 
                 // apply device token to sentry
                 SentrySdk.ConfigureScope(scope => { scope.SetTag("device_token", App.DeviceToken); });

@@ -46,8 +46,7 @@
                    BackgroundColor="{AppThemeBinding Dark={StaticResource TabSwitcherBackgroundColorDark}, Light={StaticResource TabSwitcherBackgroundColor}}" />
             <Button Text="{helpers:Translate ScanQr}"
                     Style="{DynamicResource TabButton}"
-                    Command="{Binding ChangeConnectionTypeCommand}"
-                    Clicked="EnableScanner">
+                    Command="{Binding ChangeConnectionTypeCommand}">
                 <Button.CommandParameter>
                     <x:Boolean>True</x:Boolean>
                 </Button.CommandParameter>
@@ -73,8 +72,7 @@
             <Button Grid.Column="1"
                     Style="{DynamicResource TabButton}"
                     Text="{helpers:Translate PasteQr}"
-                    Command="{Binding ChangeConnectionTypeCommand}"
-                    Clicked="DisableScanner">
+                    Command="{Binding ChangeConnectionTypeCommand}">
                 <Button.CommandParameter>
                     <x:Boolean>False</x:Boolean>
                 </Button.CommandParameter>
@@ -98,20 +96,36 @@
                 </Button.Triggers>
             </Button>
         </Grid>
-        <zxing:ZXingScannerView Grid.Row="1"
-                                x:Name="Scanner"
-                                Result="{Binding ScanResult, Mode=TwoWay}"
-                                ScanResultCommand="{Binding ScanResultCommand}"
-                                IsScanning="{Binding IsScanning, Mode=TwoWay}"
-                                IsAnalyzing="{Binding IsAnalyzing, Mode=TwoWay}"
-                                IsVisible="{Binding IsScanQrCodeTab, Mode=TwoWay}"
-                                IsEnabled="{Binding IsScanQrCodeTab, Mode=TwoWay}" />
-        <zxing:ZXingDefaultOverlay Grid.Row="1"
-                                   x:Name="Overlay"
-                                   IsVisible="{Binding IsScanQrCodeTab, Mode=TwoWay}"
-                                   IsEnabled="{Binding IsScanQrCodeTab, Mode=TwoWay}"
-                                   TopText="{helpers:Translate ScannerTopOverlayText}"
-                                   BottomText="{helpers:Translate ScannerBottomOverlayText}" />
+        <AbsoluteLayout Grid.Row="1"
+                        BackgroundColor="Transparent"
+                        IsVisible="{Binding IsScanQrCodeTab, Mode=OneWay, FallbackValue='True', TargetNullValue='True'}">
+            <zxing:ZXingScannerView AbsoluteLayout.LayoutBounds="0,0,1,1"
+                                    AbsoluteLayout.LayoutFlags="All"
+                                    Result="{Binding ScanResult, Mode=TwoWay}"
+                                    ScanResultCommand="{Binding ScanResultCommand}"
+                                    IsScanning="{Binding IsScanning, Mode=TwoWay}"
+                                    IsAnalyzing="{Binding IsScanning, Mode=TwoWay}"
+                                    IsVisible="{Binding IsScanQrCodeTab, Mode=TwoWay}"
+                                    IsEnabled="{Binding IsScanQrCodeTab, Mode=TwoWay}"/>
+            <zxing:ZXingDefaultOverlay AbsoluteLayout.LayoutBounds="0,0,1,1"
+                                       AbsoluteLayout.LayoutFlags="All"
+                                       TopText="{helpers:Translate ScannerTopOverlayText}"
+                                       BottomText="{helpers:Translate ScannerBottomOverlayText}" />
+            <Frame HeightRequest="36"
+                   CornerRadius="18"
+                   HasShadow="False"
+                   Padding="0"
+                   BackgroundColor="{AppThemeBinding Dark={StaticResource TabSwitcherBackgroundColorDark}, Light={StaticResource TabSwitcherBackgroundColor}}"
+                   AbsoluteLayout.LayoutFlags="PositionProportional"
+                   AbsoluteLayout.LayoutBounds="0.5,0.5"
+                   IsVisible="{Binding CameraPermissionDenied}">
+                <Button Style="{DynamicResource TabButton}"
+                        Text="{helpers:Translate CameraPermission}"
+                        BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"
+                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"
+                        Command="{Binding CameraPermissionRequestCommand}" />
+            </Frame>
+        </AbsoluteLayout>
         <StackLayout Grid.Row="1"
                      Spacing="16"
                      IsVisible="{Binding IsScanQrCodeTab, Mode=OneWay, Converter={StaticResource InverseBool}, FallbackValue='False', TargetNullValue='False'}">

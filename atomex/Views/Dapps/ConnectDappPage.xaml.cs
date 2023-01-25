@@ -1,4 +1,3 @@
-using System;
 using atomex.ViewModels.DappsViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -13,31 +12,17 @@ namespace atomex.Views.Dapps
             InitializeComponent();
             BindingContext = connectDappViewModel;
         }
-        private void DisableScanner(object sender, EventArgs e)
-        {
-            SwitchScanner(false);
-        }
-        private void EnableScanner(object sender, EventArgs e)
-        {
-            SwitchScanner(true);
-        }
 
-        private void SwitchScanner(bool flag)
+        protected override void OnAppearing()
         {
-            Scanner.IsScanning = flag;
-            Scanner.IsAnalyzing = flag;
-            Overlay.IsVisible = flag;
+            if (BindingContext is not ConnectDappViewModel vm) return;
+            vm.Init();
         }
 
         protected override void OnDisappearing()
         {
-            SwitchScanner(false); 
-            
-            if (BindingContext is ConnectDappViewModel)
-            {
-                var vm = (ConnectDappViewModel)BindingContext;
-                vm?.Reset();
-            }
+            if (BindingContext is not ConnectDappViewModel vm) return;
+            vm.Reset();
         }
     }
 }

@@ -1248,13 +1248,13 @@
                                     SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
                                     <Grid Padding="16,0"
                                           HorizontalOptions="FillAndExpand"
-                                          ColumnSpacing="0"
+                                          ColumnSpacing="12"
                                           RowSpacing="0">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="72" />
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="48" />
+                                            <ColumnDefinition Width="24" />
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="38" />
                                         </Grid.ColumnDefinitions>
@@ -1262,7 +1262,7 @@
                                                WidthRequest="24"
                                                HeightRequest="24"
                                                Padding="0"
-                                               Margin="0,24,12,24"
+                                               Margin="0,24"
                                                CornerRadius="12"
                                                IsClippedToBounds="True"
                                                BackgroundColor="Transparent">
@@ -1290,8 +1290,8 @@
                                             </Frame.GestureRecognizers>
                                             <Image Source="ic_disconnect"
                                                    WidthRequest="20"
-                                                   HeightRequest="18"
-                                                   Margin="10,27" />
+                                                   VerticalOptions="FillAndExpand"
+                                                   Margin="0,27" />
                                         </Frame>
                                     </Grid>
                                 </controls:CustomViewCell>

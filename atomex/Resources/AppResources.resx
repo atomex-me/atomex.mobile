@@ -943,6 +943,9 @@
     <data name="ShowDetails" xml:space="preserve">
         <value>Show Details</value>
     </data>
+    <data name="CameraPermission" xml:space="preserve">
+        <value>Camera permission</value>
+    </data>
 
     <!-- Settings Page -->
     <data name="SettingsPageTitle" xml:space="preserve">

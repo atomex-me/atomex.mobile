@@ -34,5 +34,6 @@ namespace atomex
         void SetInitiatedPage(TabNavigation tab);
         Task ReturnToInitiatedPage(TabNavigation tab);
         void ConnectDappByDeepLink(string qrCode);
+        void AllowCamera();
     }
 }

@@ -1354,4 +1354,7 @@
     <data name="WaitFor2Sec" xml:space="preserve">
         <value>Подождите 2 секунды</value>
     </data>
+    <data name="CameraPermission" xml:space="preserve">
+        <value>Доступ к камере</value>
+    </data>
 </root>
