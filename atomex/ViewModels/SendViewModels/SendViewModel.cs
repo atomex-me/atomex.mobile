@@ -413,14 +413,17 @@ namespace atomex.ViewModels.SendViewModels
                     {
                         if (error != null)
                         {
-                            _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Error, error.Description);
+                            _navigationService?.DisplaySnackBar(
+                                SnackbarMessage.MessageType.Error,
+                                error.Description);
                             return;
                         }
 
                         _navigationService?.ClosePopup();
-                        await _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
+                        await _navigationService!.ReturnToInitiatedPage(TabNavigation.Portfolio);
 
-                        _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Success,
+                        _navigationService?.DisplaySnackBar(
+                            SnackbarMessage.MessageType.Success,
                             string.Format(CultureInfo.InvariantCulture, AppResources.SuccessSending));
                     });
                 }
@@ -428,10 +431,9 @@ namespace atomex.ViewModels.SendViewModels
                 {
                     Log.Error(e, "Transaction send error");
                     await Device.InvokeOnMainThreadAsync(() =>
-                    {
-                        _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Error,
-                            AppResources.SendingTransactionError);
-                    });
+                        _navigationService?.DisplaySnackBar(
+                            SnackbarMessage.MessageType.Error,
+                            AppResources.SendingTransactionError));
                 }
                 finally
                 {

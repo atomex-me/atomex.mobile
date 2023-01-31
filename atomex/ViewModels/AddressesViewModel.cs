@@ -79,14 +79,17 @@ namespace atomex.ViewModels
             try
             {
                 Clipboard.SetTextAsync(Address);
-                Device.InvokeOnMainThreadAsync(() =>
-                {
-                    _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.AddressCopied);
-                });
+                Device.InvokeOnMainThreadAsync(() => 
+                    _navigationService?.DisplaySnackBar(
+                        MessageType.Regular,
+                        AppResources.AddressCopied));
             }
             catch (Exception)
             {
-                _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+                _navigationService?.ShowAlert(
+                    AppResources.Error,
+                    AppResources.CopyError,
+                    AppResources.AcceptButton);
             }
         });
 
@@ -202,8 +205,8 @@ namespace atomex.ViewModels
     public class AddressesViewModel : BaseViewModel, IDisposable
     {
         private readonly IAtomexApp _app;
-        private CurrencyConfig _currency { get; set; }
-        private INavigationService _navigationService { get; }
+        private CurrencyConfig _currency;
+        private INavigationService _navigationService;
 
         private readonly string _tokenContract;
         private readonly decimal _tokenId;

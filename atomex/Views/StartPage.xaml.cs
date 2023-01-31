@@ -230,7 +230,7 @@ namespace atomex.Views
             throw new NotImplementedException();
         }
 
-        public async void ConnectDappByDeepLink(string qrCode)
+        public async Task ConnectDappByDeepLink(string qrCode)
         {
             try
             {

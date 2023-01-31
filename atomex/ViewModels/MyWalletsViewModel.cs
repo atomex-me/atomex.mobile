@@ -15,8 +15,8 @@ namespace atomex.ViewModels
 {
     public class MyWalletsViewModel : BaseViewModel
     {
-        private IAtomexApp _app { get; set; }
-        private INavigationService _navigationService { get; set; }
+        private IAtomexApp _app;
+        private INavigationService _navigationService;
         [Reactive] public List<WalletInfo> Wallets { get; set; }
 
         public MyWalletsViewModel(
@@ -38,14 +38,10 @@ namespace atomex.ViewModels
                 string authType = await SecureStorage.GetAsync(wallet.Name + "-" + "AuthType");
 
                 if (authType == "Pin")
-                {
                     _navigationService?.ShowPage(new AuthPage(new UnlockViewModel(_app, wallet, _navigationService)));
-                }
                 else
-                {
                     _navigationService?.ShowPage(
                         new UnlockWalletPage(new UnlockViewModel(_app, wallet, _navigationService)));
-                }
             }
             catch (Exception ex)
             {

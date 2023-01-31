@@ -28,8 +28,9 @@ namespace atomex.ViewModels.ConversionViewModels
         public event EventHandler OnSuccess;
 
         private readonly IAtomexApp _app;
-        private INavigationService _navigationService { get; set; }
+        private INavigationService _navigationService;
         public IFromSource FromSource { get; set; }
+
         public string FromAddressDescription
         {
             get
@@ -76,18 +77,19 @@ namespace atomex.ViewModels.ConversionViewModels
         public ICommand NextCommand => _nextCommand ??= ReactiveCommand.Create(Send);
 
         private ICommand _undoConfirmStageCommand;
-        public ICommand UndoConfirmStageCommand => _undoConfirmStageCommand ??= new Command(() => _navigationService?.ClosePopup());
+
+        public ICommand UndoConfirmStageCommand =>
+            _undoConfirmStageCommand ??= new Command(() => _navigationService?.ClosePopup());
 
         public ConversionConfirmationViewModel(IAtomexApp app, INavigationService navigationService)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(_app));
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
+            _app = app ?? throw new ArgumentNullException(nameof(app));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
         }
 
         private async void Send()
         {
-            if (IsLoading)
-                return;
+            if (IsLoading) return;
 
             IsLoading = true;
             this.RaisePropertyChanged(nameof(IsLoading));
@@ -98,25 +100,25 @@ namespace atomex.ViewModels.ConversionViewModels
 
                 await Device.InvokeOnMainThreadAsync(() =>
                 {
-                    if (error != null)
-                    {
-                        _navigationService?.ClosePopup();
-                        
-                        if (error.Code == Errors.PriceHasChanged)
-                            _navigationService?.DisplaySnackBar(MessageType.Error, AppResources.PriceChangedError);
-                        else
-                            _navigationService?.DisplaySnackBar(MessageType.Error, error.Description);
-                    }
+                    if (error == null) return;
+                    _navigationService?.ClosePopup();
+
+                    _navigationService?.DisplaySnackBar(
+                        MessageType.Error,
+                        error.Code == Errors.PriceHasChanged
+                            ? AppResources.PriceChangedError
+                            : error.Description);
                 });
                 OnSuccess?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception e)
             {
                 await Device.InvokeOnMainThreadAsync(() =>
-                {
-                    _navigationService?.DisplaySnackBar(MessageType.Error, "An error has occurred while sending swap");
-                });
-                Log.Error(e, "Swap error.");
+                    _navigationService?.DisplaySnackBar(
+                        MessageType.Error,
+                        "An error has occurred while sending swap")
+                );
+                Log.Error(e, "Swap error");
             }
             finally
             {
@@ -185,16 +187,16 @@ namespace atomex.ViewModels.ConversionViewModels
 
                 var order = new Order
                 {
-                    ClientOrderId   = Guid.NewGuid().ToByteArray().ToHexString(0, 16),
-                    Status          = OrderStatus.Pending,
-                    Symbol          = symbol.Name,
-                    TimeStamp       = DateTime.UtcNow,
-                    Price           = orderPrice,
-                    Qty             = qty,
-                    LeaveQty        = qty,
-                    Side            = side,
-                    Type            = OrderType.FillOrKill,
-                    FromWallets     = fromWallets.ToList(),
+                    ClientOrderId = Guid.NewGuid().ToByteArray().ToHexString(0, 16),
+                    Status = OrderStatus.Pending,
+                    Symbol = symbol.Name,
+                    TimeStamp = DateTime.UtcNow,
+                    Price = orderPrice,
+                    Qty = qty,
+                    LeaveQty = qty,
+                    Side = side,
+                    Type = OrderType.FillOrKill,
+                    FromWallets = fromWallets.ToList(),
                     MakerNetworkFee = EstimatedMakerNetworkFee,
 
                     FromAddress = FromSource is FromAddress fromAddress ? fromAddress.Address : null,
@@ -218,20 +220,20 @@ namespace atomex.ViewModels.ConversionViewModels
                 atomexClient.OrderSendAsync(new Atomex.Client.V1.Entities.Order
                 {
                     ClientOrderId = order.ClientOrderId,
-                    Symbol        = order.Symbol,
-                    TimeStamp     = order.TimeStamp,
-                    Price         = order.Price,
-                    Qty           = order.Qty,
-                    Side          = order.Side,
-                    Type          = order.Type,
-                    FromWallets   = order.FromWallets
+                    Symbol = order.Symbol,
+                    TimeStamp = order.TimeStamp,
+                    Price = order.Price,
+                    Qty = order.Qty,
+                    Side = order.Side,
+                    Type = order.Type,
+                    FromWallets = order.FromWallets
                         .Select(w => new Atomex.Client.V1.Entities.WalletAddress
                         {
-                            Address           = w.Address,
-                            Currency          = w.Currency,
-                            Nonce             = w.Nonce,
+                            Address = w.Address,
+                            Currency = w.Currency,
+                            Nonce = w.Nonce,
                             ProofOfPossession = w.ProofOfPossession,
-                            PublicKey         = w.PublicKey,
+                            PublicKey = w.PublicKey,
                         })
                         .ToList(),
                     BaseCurrencyContract = GetSwapContract(order.Symbol.BaseCurrency()),
@@ -256,7 +258,7 @@ namespace atomex.ViewModels.ConversionViewModels
                     if (currentOrder.Status == OrderStatus.PartiallyFilled || currentOrder.Status == OrderStatus.Filled)
                     {
                         var swap = (await _app.Account
-                            .GetSwapsAsync())
+                                .GetSwapsAsync())
                             .FirstOrDefault(s => s.OrderId == currentOrder.Id);
 
                         if (swap == null)
@@ -277,7 +279,6 @@ namespace atomex.ViewModels.ConversionViewModels
             catch (Exception e)
             {
                 Log.Error(e, "Conversion error");
-
                 return new Error(Errors.SwapError, AppResources.ConversionError);
             }
         }
@@ -300,17 +301,16 @@ namespace atomex.ViewModels.ConversionViewModels
                 var walletAddress = await _app.Account
                     .GetAddressAsync(FromCurrencyViewModel.Currency.Name, fromAddress.Address);
 
-                return new WalletAddress[] { walletAddress };
+                return new WalletAddress[] {walletAddress};
             }
             else if (FromSource is FromOutputs fromOutputs)
             {
-                var config = (BitcoinBasedConfig)FromCurrencyViewModel.Currency;
+                var config = (BitcoinBasedConfig) FromCurrencyViewModel.Currency;
 
                 return await Task.WhenAll(fromOutputs.Outputs
                     .Select(o => o.DestinationAddress(config.Network))
                     .Distinct()
                     .Select(async a => await _app.Account.GetAddressAsync(FromCurrencyViewModel.Currency.Name, a)));
-
             }
 
             throw new NotSupportedException("Not supported type of From field");
@@ -322,8 +322,8 @@ namespace atomex.ViewModels.ConversionViewModels
             {
                 BalanceErrorType.FailedToGet => $"Balance check for address {e.Address} failed",
                 BalanceErrorType.LessThanExpected => $"Balance for address {e.Address} is " +
-                    $"{e.ActualBalance.ToString(CultureInfo.InvariantCulture)} and less than" +
-                    $" local {e.LocalBalance.ToString(CultureInfo.InvariantCulture)}",
+                                                     $"{e.ActualBalance.ToString(CultureInfo.InvariantCulture)} and less than" +
+                                                     $" local {e.LocalBalance.ToString(CultureInfo.InvariantCulture)}",
                 _ => $"Balance for address {e.Address} has changed and needs to be updated"
             });
 

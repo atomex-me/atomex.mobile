@@ -23,8 +23,8 @@ namespace atomex.ViewModels
 {
     public class StartViewModel : BaseViewModel
     {
-        private IAtomexApp _app { get; set; }
-        private INavigationService _navigationService { get; set; }
+        private IAtomexApp _app;
+        private INavigationService _navigationService;
 
         [Reactive] public bool HasWallets { get; set; }
         private Language _language;

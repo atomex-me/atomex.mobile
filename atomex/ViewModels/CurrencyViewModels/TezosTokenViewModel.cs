@@ -34,9 +34,9 @@ namespace atomex.ViewModels.CurrencyViewModels
 {
     public class TezosTokenViewModel : BaseViewModel
     {
-        protected IAtomexApp _app;
-        protected IAccount _account;
-        protected INavigationService _navigationService;
+        private IAtomexApp _app;
+        private IAccount _account;
+        private INavigationService _navigationService;
 
         public TezosConfig TezosConfig { get; set; }
         public TokenBalance TokenBalance { get; set; }
@@ -54,8 +54,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         [Reactive] public ObservableCollection<TransactionViewModel> Transactions { get; set; }
 
-        [Reactive]
-        public ObservableCollection<Grouping<TransactionViewModel>> GroupedTransactions { get; set; }
+        [Reactive] public ObservableCollection<Grouping<TransactionViewModel>> GroupedTransactions { get; set; }
 
         [Reactive] public TransactionViewModel SelectedTransaction { get; set; }
 
@@ -92,7 +91,8 @@ namespace atomex.ViewModels.CurrencyViewModels
                     Items.Add(item);
             }
 
-            public string DateString => Date.ToString(AppResources.Culture.DateTimeFormat.MonthDayPattern, AppResources.Culture);
+            public string DateString =>
+                Date.ToString(AppResources.Culture.DateTimeFormat.MonthDayPattern, AppResources.Culture);
         }
 
         [Reactive] public bool IsRefreshing { get; set; }
@@ -360,10 +360,12 @@ namespace atomex.ViewModels.CurrencyViewModels
             {
                 var tokenQuote = quotesProvider.GetQuote(TokenBalance.Symbol, BaseCurrencyCode);
                 var xtzQuote = quotesProvider.GetQuote(TezosConfig.Xtz, BaseCurrencyCode);
-                if (tokenQuote == null || xtzQuote == null) return;
 
-                CurrentQuote = tokenQuote.Bid.SafeMultiply(xtzQuote.Bid);
-                TotalAmountInBase = TotalAmount.SafeMultiply(CurrentQuote);
+                Device.InvokeOnMainThreadAsync(() =>
+                {
+                    CurrentQuote = tokenQuote.Bid.SafeMultiply(xtzQuote.Bid);
+                    TotalAmountInBase = TotalAmount.SafeMultiply(CurrentQuote);
+                });
             }
             catch (Exception e)
             {
@@ -444,12 +446,13 @@ namespace atomex.ViewModels.CurrencyViewModels
 
                 await tezosTokensScanner.UpdateBalanceAsync(
                     tokenContract: Contract.Address,
-                    tokenId: (int)TokenBalance.TokenId,
+                    tokenId: (int) TokenBalance.TokenId,
                     cancellationToken: _cancellationTokenSource.Token);
 
                 await Device.InvokeOnMainThreadAsync(() =>
                 {
-                    _navigationService?.DisplaySnackBar(MessageType.Regular,
+                    _navigationService?.DisplaySnackBar(
+                        MessageType.Regular,
                         CurrencyCode + " " + AppResources.HasBeenUpdated);
                 });
             }
@@ -476,7 +479,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 currency: TezosConfig,
                 tokenContract: Contract.Address,
                 tokenType: Contract.GetContractType(),
-                tokenId: (int)TokenBalance.TokenId);
+                tokenId: (int) TokenBalance.TokenId);
             _navigationService?.ShowPopup(new ReceiveBottomSheet(receiveViewModel));
         }
 
@@ -491,14 +494,14 @@ namespace atomex.ViewModels.CurrencyViewModels
                     app: _app,
                     navigationService: _navigationService,
                     tokenContract: Contract.Address,
-                    tokenId: (int)TokenBalance.TokenId,
+                    tokenId: (int) TokenBalance.TokenId,
                     tokenType: Contract.GetContractType(),
                     tokenPreview: TokenPreview)
                 : new TezosTokensSendViewModel(
                     app: _app,
                     navigationService: _navigationService,
                     tokenContract: Contract.Address,
-                    tokenId: (int)TokenBalance.TokenId,
+                    tokenId: (int) TokenBalance.TokenId,
                     tokenType: Contract.GetContractType(),
                     tokenPreview: TokenPreview);
 
@@ -556,11 +559,15 @@ namespace atomex.ViewModels.CurrencyViewModels
                 if (value != null)
                 {
                     _ = Clipboard.SetTextAsync(value);
-                    _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.TransactionIdCopied);
+                    _navigationService?.DisplaySnackBar(
+                        MessageType.Regular,
+                        AppResources.TransactionIdCopied);
                 }
                 else
                 {
-                    _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError,
+                    _navigationService?.ShowAlert(
+                        AppResources.Error,
+                        AppResources.CopyError,
                         AppResources.AcceptButton);
                 }
             });

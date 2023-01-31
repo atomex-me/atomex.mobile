@@ -323,7 +323,8 @@ namespace atomex.ViewModels.CurrencyViewModels
 
                 await Device.InvokeOnMainThreadAsync(() =>
                 {
-                    _navigationService?.DisplaySnackBar(MessageType.Regular,
+                    _navigationService?.DisplaySnackBar(
+                        MessageType.Regular,
                         AppResources.TezosTokens + " " + AppResources.HasBeenUpdated);
                 });
             }

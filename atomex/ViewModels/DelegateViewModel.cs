@@ -31,15 +31,15 @@ namespace atomex.ViewModels
 {
     public class DelegateViewModel : BaseViewModel
     {
-        private IAtomexApp _app { get; }
-        private INavigationService _navigationService { get; }
+        private IAtomexApp _app;
+        private INavigationService _navigationService;
         private readonly TezosConfig _tezosConfig;
 
         [Reactive] public string DelegateAddress { get; set; }
         [Reactive] public decimal DelegateAddressBalance { get; set; }
         [Reactive] public decimal DelegateAddressBalanceInBase { get; set; }
         [Reactive] public List<BakerViewModel> BakersList { get; set; }
-        private List<BakerViewModel> _initialBakersList { get; set; }
+        private List<BakerViewModel> _initialBakersList;
         [Reactive] public BakerViewModel SelectedBaker { get; set; }
         [Reactive] public decimal Fee { get; set; }
         [Reactive] public string BaseCurrencyFormat { get; set; }
@@ -107,12 +107,15 @@ namespace atomex.ViewModels
                 if (value != null)
                 {
                     _ = Clipboard.SetTextAsync(value);
-                    _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular,
+                    _navigationService?.DisplaySnackBar(
+                        SnackbarMessage.MessageType.Regular,
                         AppResources.AddressCopied);
                 }
                 else
                 {
-                    _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError,
+                    _navigationService?.ShowAlert(
+                        AppResources.Error, 
+                        AppResources.CopyError,
                         AppResources.AcceptButton);
                 }
             });
@@ -290,7 +293,7 @@ namespace atomex.ViewModels
                 }
 
                 _navigationService?.ClosePopup();
-                await _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
+                await _navigationService!.ReturnToInitiatedPage(TabNavigation.Portfolio);
 
                 var operationType = SelectedBaker?.Address != null
                     ? "delegated"
@@ -345,7 +348,7 @@ namespace atomex.ViewModels
                 {
                     if (searchPattern == string.Empty)
                     {
-                        BakersList = new List<BakerViewModel>(_initialBakersList);
+                        BakersList = new List<BakerViewModel>(_initialBakersList ?? new List<BakerViewModel>());
                         CurrentSortField = DelegationSortField.ByRating;
                         return;
                     }
@@ -487,7 +490,7 @@ namespace atomex.ViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e.Message, "Error while fetching bakers list");
+                Log.Error(e, "Error while fetching bakers list");
             }
         }
 
@@ -659,11 +662,8 @@ namespace atomex.ViewModels
 
             var quote = quotesProvider.GetQuote(FeeCurrencyCode, BaseCurrencyCode);
 
-            if (quote != null)
-            {
-                FeeInBase = Fee.SafeMultiply(quote.Bid);
-                DelegateAddressBalanceInBase = DelegateAddressBalance.SafeMultiply(quote.Bid);
-            }
+            FeeInBase = Fee.SafeMultiply(quote?.Bid ?? 0);
+            DelegateAddressBalanceInBase = DelegateAddressBalance.SafeMultiply(quote?.Bid ?? 0);
         }
 
         private void OnQuotesProviderAvailabilityChangedEventHandler(object sender, EventArgs args)

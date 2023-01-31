@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -28,14 +27,14 @@ namespace atomex.ViewModels
 {
     public class SelectAddressViewModel : BaseViewModel
     {
-        protected INavigationService _navigationService { get; set; }
-        protected CurrencyConfig _currency { get; set; }
+        private INavigationService _navigationService;
+        private CurrencyConfig _currency;
 
         public Action<SelectAddressViewModel, WalletAddressViewModel> ConfirmAction { get; set; }
         public SelectAddressMode SelectAddressMode { get; set; }
         public SelectAddressFrom SelectAddressFrom { get; set; }
         public TabNavigation TabNavigation { get; set; }
-        private ObservableCollection<WalletAddressViewModel> _initialMyAddresses { get; set; }
+        private ObservableCollection<WalletAddressViewModel> _initialMyAddresses;
         [Reactive] public ObservableCollection<WalletAddressViewModel> MyAddresses { get; set; }
         [Reactive] public string SearchPattern { get; set; }
         [Reactive] public string ToAddress { get; set; }
@@ -110,7 +109,8 @@ namespace atomex.ViewModels
 
                     var myAddresses = new ObservableCollection<WalletAddressViewModel>(
                         _initialMyAddresses
-                            .Where(addressViewModel => addressViewModel.WalletAddress.Address.ToLower()
+                            .Where(addressViewModel => addressViewModel.WalletAddress.Address
+                                .ToLower()
                                 .Contains(item3?.ToLower() ?? string.Empty)));
 
                     if (!item1)

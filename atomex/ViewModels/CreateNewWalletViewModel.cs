@@ -428,7 +428,9 @@ namespace atomex.ViewModels
 
                 this.RaisePropertyChanged(nameof(DerivedPswdVerified));
 
-                _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular, AppResources.Verified);
+                _navigationService?.DisplaySnackBar(
+                    SnackbarMessage.MessageType.Regular,
+                    AppResources.Verified);
 
                 Warning = string.Empty;
             });
@@ -501,7 +503,7 @@ namespace atomex.ViewModels
                                 account: account);
 
                             if (CurrentAction == WalletAction.Restore)
-                                mainViewModel.InitCurrenciesScan();
+                                mainViewModel.RestoreWallet();
                         });
 
                         Application.Current.MainPage = new MainPage(mainViewModel);
@@ -648,7 +650,9 @@ namespace atomex.ViewModels
                 Device.InvokeOnMainThreadAsync(() =>
                 {
                     if (DerivedPswdVerified)
-                        _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular, AppResources.Verified);
+                        _navigationService?.DisplaySnackBar(
+                            SnackbarMessage.MessageType.Regular,
+                            AppResources.Verified);
                 });
             });
 

@@ -17,8 +17,8 @@ namespace atomex.ViewModels
 {
     public class ReceiveViewModel : BaseViewModel
     {
-        private IAtomexApp _app { get; }
-        private INavigationService _navigationService { get; }
+        private IAtomexApp _app;
+        private INavigationService _navigationService;
 
         [Reactive] public CurrencyConfig Currency { get; set; }
         [Reactive] public WalletAddressViewModel SelectedAddress { get; set; }
