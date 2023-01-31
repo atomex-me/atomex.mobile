@@ -45,9 +45,9 @@ namespace atomex.ViewModels.CurrencyViewModels
                 .WhereNotNull()
                 .SubscribeInMainThread(d =>
                 {
-                    _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
+                    NavigationService?.SetInitiatedPage(TabNavigation.Portfolio);
                     if (d.Baker != null)
-                        _navigationService?.ShowPage(new DelegationInfoPage(d), TabNavigation.Portfolio);
+                        NavigationService?.ShowPage(new DelegationInfoPage(d), TabNavigation.Portfolio);
                     else
                         ChangeBaker(SelectedDelegation);
 
@@ -63,19 +63,19 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             _ = LoadDelegationInfoAsync();
 
-            _delegateViewModel = new DelegateViewModel(_app, _navigationService);
-            TezosTokensViewModel = new TezosTokensViewModel(_app, _navigationService);
-            CollectiblesViewModel = new CollectiblesViewModel(_app, _navigationService);
+            _delegateViewModel = new DelegateViewModel(App, NavigationService);
+            TezosTokensViewModel = new TezosTokensViewModel(App, NavigationService);
+            CollectiblesViewModel = new CollectiblesViewModel(App, NavigationService);
             
             HasDapps = true;
-            DappsViewModel = new DappsViewModel(_app, _navigationService);
+            DappsViewModel = new DappsViewModel(App, NavigationService);
         }
 
         private async Task LoadDelegationInfoAsync()
         {
             try
             {
-                var addresses = await _app.Account
+                var addresses = await App.Account
                     .GetUnspentAddressesAsync(Tezos.Name)
                     .ConfigureAwait(false);
 
@@ -87,7 +87,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 var head = await tzktApi.GetHeadLevelAsync();
                 var headLevel = head.Value;
 
-                var currentCycle = _app.Account.Network == Network.MainNet
+                var currentCycle = App.Account.Network == Network.MainNet
                     ? Math.Floor((headLevel - 1) / 4096)
                     : Math.Floor((headLevel - 1) / 2048);
 
@@ -120,12 +120,12 @@ namespace atomex.ViewModels.CurrencyViewModels
                     }
 
                     var baker = await BbApi
-                        .GetBaker(@delegate, _app.Account.Network)
+                        .GetBaker(@delegate, App.Account.Network)
                         .ConfigureAwait(false) ?? new BakerData {Address = @delegate};
 
                     var account = await tzktApi.GetAccountByAddressAsync(wa.Address);
 
-                    var txCycle = _app.Account.Network == Network.MainNet
+                    var txCycle = App.Account.Network == Network.MainNet
                         ? Math.Floor((account.Value.DelegationLevel - 1) / 4096)
                         : Math.Floor((account.Value.DelegationLevel - 1) / 2048);
 
@@ -166,24 +166,24 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             CloseActionBottomSheet();
             _delegateViewModel?.InitializeWith(delegation);
-            _navigationService?.ShowPage(new DelegatePage(_delegateViewModel), TabNavigation.Portfolio);
+            NavigationService?.ShowPage(new DelegatePage(_delegateViewModel), TabNavigation.Portfolio);
         }
 
         private void Undelegate(DelegationViewModel delegation)
         {
             CloseActionBottomSheet();
-            _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
+            NavigationService?.SetInitiatedPage(TabNavigation.Portfolio);
             _delegateViewModel?.Undelegate(delegation.Address);
         }
 
         private void ShowActionBottomSheet(DelegationViewModel delegation)
         {
-            _navigationService?.ShowPopup(new DelegationActionBottomSheet(delegation));
+            NavigationService?.ShowPopup(new DelegationActionBottomSheet(delegation));
         }
 
         private void CloseActionBottomSheet()
         {
-            _navigationService?.ClosePopup();
+            NavigationService?.ClosePopup();
         }
 
         protected override async void OnBalanceUpdatedEventHandler(object sender, CurrencyEventArgs args)

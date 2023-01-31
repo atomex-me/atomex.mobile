@@ -22,8 +22,8 @@ namespace atomex.ViewModels
 {
     public class BuyViewModel : BaseViewModel
     {
-        private IAtomexApp _app { get; }
-        private INavigationService _navigationService { get; set; }
+        private IAtomexApp _app;
+        private INavigationService NavigationService { get; set; }
 
         [Reactive] public bool IsLoading { get; set; }
         [Reactive] public Network Network { get; set; }
@@ -52,7 +52,7 @@ namespace atomex.ViewModels
 
         public void SetNavigationService(INavigationService navigationService)
         {
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            NavigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
         }
 
         private ReactiveCommand<string, Unit> _selectCurrencyCommand;
@@ -64,8 +64,8 @@ namespace atomex.ViewModels
         {
             try
             {
-                string appTheme = Application.Current.RequestedTheme.ToString().ToLower();
-                string address = GetDefaultAddress(currency);
+                var appTheme = Application.Current.RequestedTheme.ToString().ToLower();
+                var address = GetDefaultAddress(currency);
                 var baseUri = Network == Network.MainNet
                     ? "https://widget.wert.io/atomex"
                     : "https://sandbox.wert.io/01F298K3HP4DY326AH1NS3MM3M";
@@ -76,7 +76,7 @@ namespace atomex.ViewModels
                       $"&click_id=user:{_userId}/network:{Network}" +
                       $"&theme={appTheme}";
 
-                _navigationService?.ShowPage(new BuyPage(this), TabNavigation.Buy);
+                NavigationService?.ShowPage(new BuyPage(this), TabNavigation.Buy);
             }
             catch (Exception e)
             {

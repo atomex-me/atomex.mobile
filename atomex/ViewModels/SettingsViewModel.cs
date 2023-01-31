@@ -30,9 +30,9 @@ namespace atomex.ViewModels
 {
     public class SettingsViewModel : BaseViewModel
     {
-        private IAtomexApp _app { get; }
-        private INavigationService _navigationService { get; set; }
-        private MainViewModel _mainViewModel { get; }
+        private readonly IAtomexApp _app;
+        private INavigationService NavigationService { get; set; }
+        private MainViewModel _mainViewModel;
 
         [Reactive] public bool IsLoading { get; set; }
         [Reactive] public string Warning { get; set; }
@@ -95,14 +95,14 @@ namespace atomex.ViewModels
 
         public void SetNavigationService(INavigationService service)
         {
-            _navigationService = service ?? throw new ArgumentNullException(nameof(service));
+            NavigationService = service ?? throw new ArgumentNullException(nameof(service));
         }
 
         private void InitUserLanguage()
         {
             try
             {
-                string language = Preferences.Get(LanguageKey, "en");
+                var language = Preferences.Get(LanguageKey, "en");
                 Language = Languages.Single(l =>
                     l.Code == language);
             }
@@ -134,7 +134,7 @@ namespace atomex.ViewModels
         {
             try
             {
-                if (_navigationService == null) return;
+                if (NavigationService == null) return;
 
                 UseBiometric = value;
 
@@ -146,14 +146,14 @@ namespace atomex.ViewModels
 
                         if (availability == FingerprintAvailability.Available)
                         {
-                            _navigationService?.ShowPage(new AuthPage(this), TabNavigation.Settings);
+                            NavigationService?.ShowPage(new AuthPage(this), TabNavigation.Settings);
                         }
                         else if (availability == FingerprintAvailability.NoPermission ||
                                  availability == FingerprintAvailability.NoFingerprint ||
                                  availability == FingerprintAvailability.Denied)
                         {
                             UseBiometric = false;
-                            _navigationService?.ShowAlert(
+                            NavigationService?.ShowAlert(
                                 title: string.Empty,
                                 text: AppResources.NeedPermissionsForBiometricLogin,
                                 cancel: AppResources.AcceptButton);
@@ -161,7 +161,7 @@ namespace atomex.ViewModels
                         else
                         {
                             UseBiometric = false;
-                            _navigationService?.ShowAlert(
+                            NavigationService?.ShowAlert(
                                 title: AppResources.SorryLabel,
                                 text: AppResources.ImpossibleEnableBiometric,
                                 cancel: AppResources.AcceptButton);
@@ -202,14 +202,13 @@ namespace atomex.ViewModels
         {
             try
             {
-                string directoryPath = Path.GetDirectoryName(path);
-                if (Directory.Exists(directoryPath))
-                {
-                    Directory.Delete(directoryPath, true);
-                    Wallets = WalletInfo
-                        .AvailableWallets()
-                        .ToList();
-                }
+                var directoryPath = Path.GetDirectoryName(path);
+                if (!Directory.Exists(directoryPath)) return;
+                
+                Directory.Delete(directoryPath, true);
+                Wallets = WalletInfo
+                    .AvailableWallets()
+                    .ToList();
             }
             catch (Exception e)
             {
@@ -231,11 +230,11 @@ namespace atomex.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    _navigationService?.ShowAlert(
+                    NavigationService?.ShowAlert(
                         title: AppResources.Error,
                         text: AppResources.NotSupportSecureStorage,
                         cancel: AppResources.AcceptButton);
-                    Log.Error(ex, AppResources.NotSupportSecureStorage);
+                    Log.Error(ex, "Device not support secure storage");
                 }
 
                 await Device.InvokeOnMainThreadAsync(() =>
@@ -243,8 +242,8 @@ namespace atomex.ViewModels
                     Warning = string.Empty;
                     StoragePassword?.Clear();
                     _ = ResetUseBiometricSetting();
-                    _navigationService?.ClosePage(TabNavigation.Settings);
-                    _navigationService?.DisplaySnackBar(
+                    NavigationService?.ClosePage(TabNavigation.Settings);
+                    NavigationService?.DisplaySnackBar(
                         messageType: SnackbarMessage.MessageType.Regular,
                         text: AppResources.BiometricAuthEnabled);
                 });
@@ -258,28 +257,27 @@ namespace atomex.ViewModels
 
                 var tabs = ((CustomTabbedPage)Application.Current.MainPage).Children;
 
-                foreach (NavigationPage tab in tabs)
+                foreach (var page in tabs)
                 {
-                    if (tab.RootPage is SettingsPage)
+                    var tab = (NavigationPage) page;
+                    if (tab.RootPage is not SettingsPage) continue;
+                    try
                     {
-                        try
-                        {
-                            Vibration.Vibrate();
-                        }
-                        catch (FeatureNotSupportedException ex)
-                        {
-                            Log.Error(ex, "Vibration not supported on device");
-                        }
-
-                        await tab.TranslateTo(-15, 0, 50);
-                        await tab.TranslateTo(15, 0, 50);
-                        await tab.TranslateTo(-10, 0, 50);
-                        await tab.TranslateTo(10, 0, 50);
-                        await tab.TranslateTo(-5, 0, 50);
-                        await tab.TranslateTo(5, 0, 50);
-                        tab.TranslationX = 0;
-                        break;
+                        Vibration.Vibrate();
                     }
+                    catch (FeatureNotSupportedException ex)
+                    {
+                        Log.Error(ex, "Vibration not supported on device");
+                    }
+
+                    await tab.TranslateTo(-15, 0, 50);
+                    await tab.TranslateTo(15, 0, 50);
+                    await tab.TranslateTo(-10, 0, 50);
+                    await tab.TranslateTo(10, 0, 50);
+                    await tab.TranslateTo(-5, 0, 50);
+                    await tab.TranslateTo(5, 0, 50);
+                    tab.TranslationX = 0;
+                    break;
                 }
             }
         }
@@ -294,7 +292,7 @@ namespace atomex.ViewModels
 
         public ReactiveCommand<Unit, Unit> ShowLanguagesCommand => _showLanguagesCommand ??= ReactiveCommand.Create(
             () =>
-                _navigationService?.ShowPage(new LanguagesPage(this), TabNavigation.Settings));
+                NavigationService?.ShowPage(new LanguagesPage(this), TabNavigation.Settings));
 
         private ReactiveCommand<Language, Unit> _changeLanguageCommand;
 
@@ -302,7 +300,7 @@ namespace atomex.ViewModels
             ReactiveCommand.Create<Language>((value) =>
             {
                 Language = value;
-                _navigationService?.ClosePage(TabNavigation.Settings);
+                NavigationService?.ClosePage(TabNavigation.Settings);
             });
 
         private void SetCulture(Language language)
@@ -353,7 +351,7 @@ namespace atomex.ViewModels
         private ReactiveCommand<Unit, Unit> _cancelCommand;
 
         public ReactiveCommand<Unit, Unit> CancelCommand => _cancelCommand ??=
-            ReactiveCommand.Create(() => _navigationService?.ClosePage(TabNavigation.Settings));
+            ReactiveCommand.Create(() => NavigationService?.ClosePage(TabNavigation.Settings));
 
         private String SecureStringToString(SecureString value)
         {
@@ -405,7 +403,7 @@ namespace atomex.ViewModels
             {
                 try
                 {
-                    var res = await _navigationService.ShowAlert(
+                    var res = await NavigationService.ShowAlert(
                         title: AppResources.SignOut,
                         text: AppResources.AreYouSure,
                         accept: AppResources.AcceptButton,
@@ -429,21 +427,21 @@ namespace atomex.ViewModels
                     WalletInfo selectedWallet = Wallets
                         .Single(w => w.Name == name);
 
-                    var confirm = await _navigationService.ShowAlert(
+                    var confirm = await NavigationService.ShowAlert(
                         title: AppResources.DeletingWallet,
                         text: AppResources.DeletingWalletText,
                         accept: AppResources.UnderstandButton,
                         cancel: AppResources.CancelButton);
                     if (confirm)
                     {
-                        var confirm2 = await _navigationService.ShowAlert(
+                        var acceptAlert = await NavigationService.ShowAlert(
                             title: AppResources.DeletingWallet,
                             text: string.Format(CultureInfo.InvariantCulture,
                                 AppResources.DeletingWalletConfirmationText,
                                 selectedWallet?.Name),
                             accept: AppResources.DeleteButton,
                             cancel: AppResources.CancelButton);
-                        if (confirm2)
+                        if (acceptAlert)
                         {
                             DeleteWallet(selectedWallet?.Path);
                             if (_app.Account.Wallet.PathToWallet.Equals(selectedWallet.Path))

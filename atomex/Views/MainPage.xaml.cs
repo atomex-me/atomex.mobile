@@ -22,7 +22,6 @@ using static atomex.Models.SnackbarMessage;
 using Rg.Plugins.Popup.Services;
 using Rg.Plugins.Popup.Pages;
 using Serilog;
-using Xamarin.Essentials;
 
 namespace atomex.Views
 {
@@ -92,8 +91,6 @@ namespace atomex.Views
             {
                 Device.BeginInvokeOnMainThread(LocalizeNavTabs);
             };
-
-            _ = CheckStartupData();
         }
 
         private void LocalizeNavTabs()
@@ -119,23 +116,6 @@ namespace atomex.Views
                 Log.Error(e, "Sign out error");
             }
         }
-        
-        public async Task CheckStartupData()
-        {
-            try
-            {
-                string deepLink = await SecureStorage.GetAsync("DappDeepLink");
-                
-                if (string.IsNullOrEmpty(deepLink)) return;
-                
-                await SecureStorage.SetAsync("DappDeepLink", string.Empty);
-                ConnectDappByDeepLink(deepLink);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Device doesn't support secure storage on device");
-            }
-        }
 
         public void GoToBuy(CurrencyConfig currency)
         {
@@ -158,15 +138,15 @@ namespace atomex.Views
         {
             try
             {
-                if (_navigationConversionPage.RootPage.BindingContext is ConversionViewModel conversionViewModel)
-                {
-                    _ = _navigationConversionPage.Navigation.PopToRootAsync(false);
-                    CurrentPage = _navigationConversionPage;
-                    if (currency == null)
-                        conversionViewModel.FromViewModel?.SelectCurrencyCommand.Execute(null);
-                    else
-                        conversionViewModel.SetFromCurrency(currency);
-                }
+                if (_navigationConversionPage.RootPage.BindingContext is not ConversionViewModel conversionViewModel)
+                    return;
+                
+                _ = _navigationConversionPage.Navigation.PopToRootAsync(false);
+                CurrentPage = _navigationConversionPage;
+                if (currency == null)
+                    conversionViewModel.FromViewModel?.SelectCurrencyCommand.Execute(null);
+                else
+                    conversionViewModel.SetFromCurrency(currency);
             }
             catch (Exception e)
             {
@@ -587,11 +567,11 @@ namespace atomex.Views
             }
         }
 
-        public void ConnectDappByDeepLink(string qrCode)
+        public async Task ConnectDappByDeepLink(string qrCode)
         {
             try
             { 
-                MainViewModel?.PortfolioViewModel.ConnectDappByDeepLink(qrCode);
+                await MainViewModel.ConnectDappByDeepLink(qrCode);
             }
             catch (Exception e)
             {
@@ -603,7 +583,7 @@ namespace atomex.Views
         {
             try
             { 
-                MainViewModel?.PortfolioViewModel.AllowCamera();
+                MainViewModel.AllowCamera();
             }
             catch (Exception e)
             {

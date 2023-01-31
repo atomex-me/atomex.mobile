@@ -27,8 +27,9 @@ namespace atomex.ViewModels
 {
     public class UnlockViewModel : BaseViewModel
     {
-        private IAtomexApp _app { get; }
-        private INavigationService _navigationService { get; set; }
+        private readonly IAtomexApp _app;
+        private readonly INavigationService _navigationService;
+        private MainViewModel _mainViewModel;
 
         [Reactive] public string WalletName { get; set; }
         [Reactive] public SecureString StoragePassword { get; set; }
@@ -40,13 +41,11 @@ namespace atomex.ViewModels
         [Reactive] public bool IsLocked { get; set; }
         [Reactive] public string Warning { get; set; }
 
-        private MainViewModel _mainViewModel { get; set; }
+        private CancellationTokenSource _cancellation;
 
-        private CancellationTokenSource _cancellation { get; set; }
-
-        private static TimeSpan CheckLockInterval = TimeSpan.FromSeconds(5);
-        private static TimeSpan LockTime = TimeSpan.FromMinutes(2);
-        private const int _defaultAttemptsCount = 5;
+        private static readonly TimeSpan CheckLockInterval = TimeSpan.FromSeconds(5);
+        private static readonly TimeSpan LockTime = TimeSpan.FromMinutes(2);
+        private const int DefaultAttemptsCount = 5;
 
         private Action _onMigrateAction;
 
@@ -56,7 +55,10 @@ namespace atomex.ViewModels
         {
         }
 
-        public UnlockViewModel(IAtomexApp app, WalletInfo wallet, INavigationService navigationService)
+        public UnlockViewModel(
+            IAtomexApp app, 
+            WalletInfo wallet, 
+            INavigationService navigationService)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
@@ -71,65 +73,49 @@ namespace atomex.ViewModels
         {
             if (IsPinExist)
             {
-                if (StoragePassword?.Length < 4)
-                {
-                    foreach (char c in str)
-                    {
-                        StoragePassword.AppendChar(c);
-                    }
+                if (!(StoragePassword?.Length < 4)) return;
+                
+                foreach (var c in str)
+                    StoragePassword.AppendChar(c);
+                this.RaisePropertyChanged(nameof(StoragePassword));
 
-                    this.RaisePropertyChanged(nameof(StoragePassword));
-
-                    if (StoragePassword.Length == 4)
-                        _ = UnlockAsync();
-                }
+                if (StoragePassword.Length == 4)
+                    _ = UnlockAsync();
             }
             else
             {
                 if (!IsEnteredStoragePassword)
                 {
-                    if (StoragePassword?.Length < 4)
-                    {
-                        foreach (char c in str)
-                        {
-                            StoragePassword.AppendChar(c);
-                        }
+                    if (!(StoragePassword?.Length < 4)) return;
+                    foreach (var c in str)
+                        StoragePassword.AppendChar(c);
+                    this.RaisePropertyChanged(nameof(StoragePassword));
 
-                        this.RaisePropertyChanged(nameof(StoragePassword));
-
-                        if (StoragePassword?.Length == 4)
-                        {
-                            IsEnteredStoragePassword = true;
-
-                            Header = AppResources.ReEnterPin;
-                            this.RaisePropertyChanged(nameof(Header));
-                        }
-                    }
+                    if (StoragePassword?.Length != 4) return;
+                    
+                    IsEnteredStoragePassword = true;
+                    Header = AppResources.ReEnterPin;
+                    this.RaisePropertyChanged(nameof(Header));
                 }
                 else
                 {
-                    if (StoragePasswordConfirmation?.Length < 4)
+                    if (!(StoragePasswordConfirmation?.Length < 4)) return;
+                    
+                    foreach (var c in str)
+                        StoragePasswordConfirmation.AppendChar(c);
+                    this.RaisePropertyChanged(nameof(StoragePasswordConfirmation));
+
+                    if (StoragePasswordConfirmation?.Length != 4) return;
+                    
+                    if (IsValidStoragePassword())
                     {
-                        foreach (char c in str)
-                        {
-                            StoragePasswordConfirmation.AppendChar(c);
-                        }
-
-                        this.RaisePropertyChanged(nameof(StoragePasswordConfirmation));
-
-                        if (StoragePasswordConfirmation?.Length == 4)
-                        {
-                            if (IsValidStoragePassword())
-                            {
-                                _ = EnablePin();
-                                _ = UnlockAsync();
-                            }
-                            else
-                            {
-                                _ = ShakePage();
-                                ClearStoragePswd();
-                            }
-                        }
+                        _ = EnablePin();
+                        _ = UnlockAsync();
+                    }
+                    else
+                    {
+                        _ = ShakePage();
+                        ClearStoragePswd();
                     }
                 }
             }
@@ -139,19 +125,17 @@ namespace atomex.ViewModels
         {
             if (!IsEnteredStoragePassword)
             {
-                if (StoragePassword != null && StoragePassword.Length != 0)
-                {
-                    StoragePassword.RemoveAt(StoragePassword.Length - 1);
-                    this.RaisePropertyChanged(nameof(StoragePassword));
-                }
+                if (StoragePassword == null || StoragePassword.Length == 0) return;
+                
+                StoragePassword.RemoveAt(StoragePassword.Length - 1);
+                this.RaisePropertyChanged(nameof(StoragePassword));
             }
             else
             {
-                if (StoragePasswordConfirmation != null && StoragePasswordConfirmation.Length != 0)
-                {
-                    StoragePasswordConfirmation.RemoveAt(StoragePasswordConfirmation.Length - 1);
-                    this.RaisePropertyChanged(nameof(StoragePasswordConfirmation));
-                }
+                if (StoragePasswordConfirmation == null || StoragePasswordConfirmation.Length == 0) return;
+                
+                StoragePasswordConfirmation.RemoveAt(StoragePasswordConfirmation.Length - 1);
+                this.RaisePropertyChanged(nameof(StoragePasswordConfirmation));
             }
         }
 
@@ -162,7 +146,7 @@ namespace atomex.ViewModels
             try
             {
                 await SecureStorage.SetAsync(WalletName + "-" + "AuthType", "Pin");
-                await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", _defaultAttemptsCount.ToString());
+                await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", DefaultAttemptsCount.ToString());
             }
             catch (Exception ex)
             {
@@ -173,10 +157,8 @@ namespace atomex.ViewModels
         private SecureString GenerateSecureString(string str)
         {
             var secureString = new SecureString();
-            foreach (char c in str)
-            {
+            foreach (var c in str)
                 secureString.AppendChar(c);
-            }
 
             return secureString;
         }
@@ -203,14 +185,9 @@ namespace atomex.ViewModels
 
         private bool IsValidStoragePassword()
         {
-            if (StoragePassword != null &&
-                StoragePasswordConfirmation != null &&
-                !StoragePassword.SecureEqual(StoragePasswordConfirmation) || StoragePasswordConfirmation == null)
-            {
-                return false;
-            }
-
-            return true;
+            return (StoragePassword == null ||
+                    StoragePasswordConfirmation == null ||
+                    StoragePassword.SecureEqual(StoragePasswordConfirmation)) && StoragePasswordConfirmation != null;
         }
 
         private ICommand _unlockCommand;
@@ -247,21 +224,19 @@ namespace atomex.ViewModels
         private async Task UnlockAsync()
         {
             IsLoading = true;
-
-            Account account = null;
+            Account account;
 
             try
             {
                 if (_userAccount == null)
                 {
                     var fileSystem = FileSystem.Current;
-
                     var walletPath = Path.Combine(
                         fileSystem.PathToDocuments,
                         WalletInfo.DefaultWalletsDirectory,
                         WalletName,
                         WalletInfo.DefaultWalletFileName);
-
+                    
                     account = await Task.Run(() =>
                     {
                         return Account.LoadFromFile(
@@ -272,7 +247,7 @@ namespace atomex.ViewModels
                             {
                                 if (actionType == MigrationActionType.XtzTransactionsDeleted)
                                     _onMigrateAction = ScanXtzCurrencies;
-
+                                
                                 if (actionType == MigrationActionType.XtzTokensDataDeleted)
                                     _onMigrateAction = ScanXtz;
                             });
@@ -281,7 +256,7 @@ namespace atomex.ViewModels
                 else
                 {
                     account = _userAccount;
-
+                    
                     try
                     {
                         if (!account.ChangePassword(StoragePassword))
@@ -312,7 +287,7 @@ namespace atomex.ViewModels
                             try
                             {
                                 await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts",
-                                    _defaultAttemptsCount.ToString());
+                                    DefaultAttemptsCount.ToString());
                             }
                             catch (Exception ex)
                             {
@@ -417,15 +392,13 @@ namespace atomex.ViewModels
                 if (string.IsNullOrEmpty(lockTime))
                 {
                     IsLocked = false;
+                    int.TryParse(await SecureStorage.GetAsync(WalletName + "-" + "PinAttempts"), out var attemptsCount);
 
-                    int.TryParse(await SecureStorage.GetAsync(WalletName + "-" + "PinAttempts"), out int attemptsCount);
-
-                    if (attemptsCount < _defaultAttemptsCount)
-                    {
-                        string message = string.Format(CultureInfo.InvariantCulture, AppResources.AttemptsLeft,
-                            attemptsCount);
-                        Warning = AppResources.InvalidPin + $"\r\n" + message;
-                    }
+                    if (attemptsCount >= DefaultAttemptsCount) return;
+                    
+                    string message = string.Format(CultureInfo.InvariantCulture, AppResources.AttemptsLeft,
+                        attemptsCount);
+                    Warning = AppResources.InvalidPin + $"\r\n" + message;
                 }
                 else
                 {
@@ -443,17 +416,13 @@ namespace atomex.ViewModels
             try
             {
                 string time = await SecureStorage.GetAsync(WalletName + "-" + "LockTime");
-
                 DateTime unlockTime = Convert.ToDateTime(time);
 
                 if (DateTime.Compare(DateTime.Now.ToLocalTime(), unlockTime) < 0)
                 {
                     _cancellation = new CancellationTokenSource();
-
                     IsLocked = true;
-
                     var lockMinutes = Math.Ceiling(unlockTime.Subtract(DateTime.UtcNow.ToLocalTime()).TotalMinutes);
-
                     Warning = string.Format(CultureInfo.InvariantCulture, AppResources.TryAgainInMinutes, lockMinutes);
 
                     while (IsLocked)
@@ -482,7 +451,7 @@ namespace atomex.ViewModels
                                 await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts",
                                     attemptsCount.ToString());
 
-                                if (attemptsCount < _defaultAttemptsCount)
+                                if (attemptsCount < DefaultAttemptsCount)
                                 {
                                     string message = string.Format(CultureInfo.InvariantCulture,
                                         AppResources.AttemptsLeft, attemptsCount);
@@ -500,12 +469,11 @@ namespace atomex.ViewModels
                 {
                     IsLocked = false;
                     await SecureStorage.SetAsync(WalletName + "-" + "LockTime", string.Empty);
-
-                    int.TryParse(await SecureStorage.GetAsync(WalletName + "-" + "PinAttempts"), out int attemptsCount);
+                    int.TryParse(await SecureStorage.GetAsync(WalletName + "-" + "PinAttempts"), out var attemptsCount);
                     attemptsCount++;
                     await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", attemptsCount.ToString());
 
-                    if (attemptsCount < _defaultAttemptsCount)
+                    if (attemptsCount < DefaultAttemptsCount)
                     {
                         string message = string.Format(CultureInfo.InvariantCulture, AppResources.AttemptsLeft,
                             attemptsCount);
@@ -523,28 +491,23 @@ namespace atomex.ViewModels
         {
             try
             {
-                if (IsLocked)
-                    return;
+                if (IsLocked) return;
 
-                int.TryParse(await SecureStorage.GetAsync(WalletName + "-" + "PinAttempts"), out int attemptsCount);
+                int.TryParse(await SecureStorage.GetAsync(WalletName + "-" + "PinAttempts"), out var attemptsCount);
 
-                if (attemptsCount == 0)
-                    return;
+                if (attemptsCount == 0) return;
 
                 attemptsCount--;
                 await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", attemptsCount.ToString());
-
-                string message = string.Format(CultureInfo.InvariantCulture, AppResources.AttemptsLeft, attemptsCount);
+                var message = string.Format(CultureInfo.InvariantCulture, AppResources.AttemptsLeft, attemptsCount);
                 Warning = AppResources.InvalidPin + $"\r\n" + message;
 
-                if (attemptsCount == 0)
-                {
-                    IsLocked = true;
-
-                    var lockTime = DateTime.UtcNow.ToLocalTime().AddMinutes(LockTime.Minutes);
-                    await SecureStorage.SetAsync(WalletName + "-" + "LockTime", lockTime.ToString(CultureInfo.InvariantCulture));
-                    _ = StartLockTimer();
-                }
+                if (attemptsCount != 0) return;
+                
+                IsLocked = true;
+                var lockTime = DateTime.UtcNow.ToLocalTime().AddMinutes(LockTime.Minutes);
+                await SecureStorage.SetAsync(WalletName + "-" + "LockTime", lockTime.ToString(CultureInfo.InvariantCulture));
+                _ = StartLockTimer();
             }
             catch (Exception e)
             {
@@ -556,17 +519,15 @@ namespace atomex.ViewModels
         {
             try
             {
-                string pswd = await SecureStorage.GetAsync(WalletName);
+                var pswd = await SecureStorage.GetAsync(WalletName);
                 if (string.IsNullOrEmpty(pswd))
                     return;
-
                 bool isFingerprintAvailable = await CrossFingerprint.Current.IsAvailableAsync();
                 if (isFingerprintAvailable)
                 {
                     AuthenticationRequestConfiguration conf = new AuthenticationRequestConfiguration(
                         AppResources.Authentication,
                         AppResources.UseBiometric + $"'{WalletName}'");
-
                     var authResult = await CrossFingerprint.Current.AuthenticateAsync(conf);
                     if (authResult.Authenticated)
                     {
@@ -577,7 +538,9 @@ namespace atomex.ViewModels
                     {
                         if (_navigationService == null) return;
 
-                        await _navigationService.ShowAlert(AppResources.SorryLabel, AppResources.NotAuthenticated,
+                        await _navigationService.ShowAlert(
+                            AppResources.SorryLabel,
+                            AppResources.NotAuthenticated,
                             AppResources.AcceptButton);
                     }
                 }
@@ -591,13 +554,13 @@ namespace atomex.ViewModels
         private void ScanXtzCurrencies()
         {
             var xtzCurrencies = new[] {"XTZ", "TZBTC", "KUSD"};
-            _mainViewModel?.InitCurrenciesScan(xtzCurrencies);
+            _mainViewModel?.ScanCurrencies(xtzCurrencies);
         }
 
         private void ScanXtz()
         {
             var xtzCurrencies = new[] {"XTZ"};
-            _mainViewModel?.InitCurrenciesScan(xtzCurrencies);
+            _mainViewModel?.ScanCurrencies(xtzCurrencies);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace atomex.ViewModels.ConversionViewModels
         [Reactive] public decimal Amount { get; set; }
         public string AmountString
         {
-            get => Amount.ToString();
+            get => Amount.ToString(CultureInfo.CurrentCulture);
             set
             {
                 string temp = value.Replace(",", ".");

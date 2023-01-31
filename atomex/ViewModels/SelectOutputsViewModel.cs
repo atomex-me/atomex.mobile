@@ -25,17 +25,17 @@ namespace atomex.ViewModels
 {
     public class SelectOutputsViewModel : BaseViewModel
     {
-        protected INavigationService _navigationService { get; set; }
+        private INavigationService _navigationService;
 
         public SelectAddressFrom SelectAddressFrom { get; set; }
         public TabNavigation TabNavigation { get; set; }
-        private ObservableCollection<OutputViewModel> _initialOutputs { get; set; }
+        private ObservableCollection<OutputViewModel> _initialOutputs;
         [Reactive] public ObservableCollection<OutputViewModel> Outputs { get; set; }
         [Reactive] public string SearchPattern { get; set; }
         [Reactive] public string TotalSelectedString { get; set; }
         [Reactive] public decimal SelectedFromBalance { get; set; }
         public BitcoinBasedConfig Currency { get; }
-        private BitcoinBasedAccount _account { get; }
+        private BitcoinBasedAccount _account;
         public Action<SelectOutputsViewModel, IEnumerable<BitcoinBasedTxOutput>> ConfirmAction { get; set; }
 
         public SelectOutputsViewModel()
@@ -264,7 +264,8 @@ namespace atomex.ViewModels
         private void UpdateSelectedStats()
         {
             var selectedCount = Outputs
-                .Where(o => o.IsSelected).Count();
+                .Where(o => o.IsSelected)
+                .Count();
 
             TotalSelectedString = string.Format(
                 CultureInfo.InvariantCulture,

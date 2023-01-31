@@ -13,7 +13,7 @@ namespace atomex.ViewModels
 {
     public class SelectCurrencyViewModel : BaseViewModel
     {
-        private INavigationService _navigationService { get; set; }
+        private INavigationService _navigationService;
 
         public CurrencyActionType Type { get; set; }
         public ObservableCollection<CurrencyViewModel> Currencies { get; set; }

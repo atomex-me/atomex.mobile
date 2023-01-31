@@ -34,16 +34,16 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             try
             {
-                if (_app.Account == null)
+                if (App.Account == null)
                     return;
 
                 var fa2Currency = Currency as Fa2Config;
 
-                var tezosConfig = _app.Account
+                var tezosConfig = App.Account
                     .Currencies
                     .Get<TezosConfig>(TezosConfig.Xtz);
 
-                var transactions = (await _app.Account
+                var transactions = (await App.Account
                         .GetCurrencyAccount<Fa2Account>(Currency.Name)
                         .DataRepository
                         .GetTezosTokenTransfersAsync(fa2Currency?.TokenContractAddress, offset: 0, limit: int.MaxValue)
@@ -91,36 +91,35 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         protected override void OnReceiveClick()
         {
-            var tezosConfig = _app.Account.Currencies.GetByName(TezosConfig.Xtz);
+            var tezosConfig = App.Account.Currencies.GetByName(TezosConfig.Xtz);
             string tokenContractAddress = (Currency as Fa2Config)?.TokenContractAddress;
 
             var receiveViewModel = new ReceiveViewModel(
-                app: _app,
+                app: App,
                 currency: tezosConfig,
-                navigationService: _navigationService,
+                navigationService: NavigationService,
                 tokenContract: tokenContractAddress,
                 tokenType: "FA2");
-            _navigationService?.ShowPopup(new ReceiveBottomSheet(receiveViewModel));
+            NavigationService?.ShowPopup(new ReceiveBottomSheet(receiveViewModel));
         }
 
         public override async Task ScanCurrency()
         {
-            _cancellationTokenSource = new CancellationTokenSource();
+            CancellationTokenSource = new CancellationTokenSource();
             IsRefreshing = true;
 
             try
             {
-                await _app.Account
+                await App.Account
                     .GetCurrencyAccount<Fa2Account>(Currency.Name)
-                    .UpdateBalanceAsync(_cancellationTokenSource.Token);
+                    .UpdateBalanceAsync(CancellationTokenSource.Token);
 
                 await LoadTransactionsAsync();
 
                 await Device.InvokeOnMainThreadAsync(() =>
-                {
-                    _navigationService?.DisplaySnackBar(MessageType.Regular,
-                        Currency.Description + " " + AppResources.HasBeenUpdated);
-                });
+                    NavigationService?.DisplaySnackBar(
+                        MessageType.Regular,
+                        Currency.Description + " " + AppResources.HasBeenUpdated));
             }
             catch (OperationCanceledException)
             {
@@ -142,9 +141,9 @@ namespace atomex.ViewModels.CurrencyViewModels
             var fa2Currency = Currency as Fa2Config;
 
             AddressesViewModel = new AddressesViewModel(
-                app: _app,
+                app: App,
                 currency: fa2Currency,
-                navigationService: _navigationService,
+                navigationService: NavigationService,
                 tokenContract: fa2Currency?.TokenContractAddress);
         }
 

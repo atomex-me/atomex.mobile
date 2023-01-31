@@ -47,6 +47,7 @@ namespace atomex.ViewModels.SendViewModels
 
         [Reactive] public decimal Amount { get; set; }
         [ObservableAsProperty] public string TotalAmountString { get; }
+
         public virtual string AmountString
         {
             get => Amount.ToString(CultureInfo.InvariantCulture);
@@ -54,10 +55,10 @@ namespace atomex.ViewModels.SendViewModels
             {
                 string temp = value.Replace(",", ".");
                 if (!decimal.TryParse(
-                    s: temp,
-                    style: NumberStyles.AllowDecimalPoint,
-                    provider: CultureInfo.InvariantCulture,
-                    result: out var amount))
+                        s: temp,
+                        style: NumberStyles.AllowDecimalPoint,
+                        provider: CultureInfo.InvariantCulture,
+                        result: out var amount))
                 {
                     Amount = 0;
                 }
@@ -69,10 +70,7 @@ namespace atomex.ViewModels.SendViewModels
                         Amount = long.MaxValue;
                 }
 
-                Device.InvokeOnMainThreadAsync(() =>
-                {
-                    this.RaisePropertyChanged(nameof(Amount));
-                });
+                Device.InvokeOnMainThreadAsync(() => { this.RaisePropertyChanged(nameof(Amount)); });
             }
         }
 
@@ -86,10 +84,10 @@ namespace atomex.ViewModels.SendViewModels
 
             string temp = value.Replace(",", ".");
             if (!decimal.TryParse(
-                s: temp,
-                style: NumberStyles.AllowDecimalPoint,
-                provider: CultureInfo.InvariantCulture,
-                result: out var amount))
+                    s: temp,
+                    style: NumberStyles.AllowDecimalPoint,
+                    provider: CultureInfo.InvariantCulture,
+                    result: out var amount))
             {
                 AmountString = "0";
             }
@@ -113,10 +111,10 @@ namespace atomex.ViewModels.SendViewModels
             {
                 string temp = value.Replace(",", ".");
                 if (!decimal.TryParse(
-                    s: temp,
-                    style: NumberStyles.AllowDecimalPoint,
-                    provider: CultureInfo.InvariantCulture,
-                    result: out var fee))
+                        s: temp,
+                        style: NumberStyles.AllowDecimalPoint,
+                        provider: CultureInfo.InvariantCulture,
+                        result: out var fee))
                 {
                     Fee = 0;
                 }
@@ -125,10 +123,7 @@ namespace atomex.ViewModels.SendViewModels
                     Fee = fee;
                 }
 
-                Device.InvokeOnMainThreadAsync(() =>
-                {
-                    this.RaisePropertyChanged(nameof(Fee));
-                });
+                Device.InvokeOnMainThreadAsync(() => { this.RaisePropertyChanged(nameof(Fee)); });
             }
         }
 
@@ -142,10 +137,10 @@ namespace atomex.ViewModels.SendViewModels
 
             string temp = value.Replace(",", ".");
             if (!decimal.TryParse(
-                s: temp,
-                style: NumberStyles.AllowDecimalPoint,
-                provider: CultureInfo.InvariantCulture,
-                result: out var amount))
+                    s: temp,
+                    style: NumberStyles.AllowDecimalPoint,
+                    provider: CultureInfo.InvariantCulture,
+                    result: out var amount))
             {
                 FeeString = "0";
             }
@@ -250,7 +245,8 @@ namespace atomex.ViewModels.SendViewModels
                     {
                         CanSend = To != null &&
                                   Amount > 0 &&
-                                  (string.IsNullOrEmpty(Message.Text) || (Message != null && Message.Type != MessageType.Error)) &&
+                                  (string.IsNullOrEmpty(Message.Text) ||
+                                   (Message != null && Message.Type != MessageType.Error)) &&
                                   !IsLoading;
                     }
                     else
@@ -314,10 +310,12 @@ namespace atomex.ViewModels.SendViewModels
         public ReactiveCommand<Unit, Unit> MaxCommand => _maxCommand ??= ReactiveCommand.Create(OnMaxClick);
 
         private ReactiveCommand<Unit, Unit> _selectFromCommand;
+
         public ReactiveCommand<Unit, Unit> SelectFromCommand => _selectFromCommand ??=
             (_selectFromCommand = ReactiveCommand.Create(FromClick));
 
         private ReactiveCommand<Unit, Unit> _selectToCommand;
+
         public ReactiveCommand<Unit, Unit> SelectToCommand => _selectToCommand ??=
             (_selectToCommand = ReactiveCommand.Create(ToClick));
 
@@ -325,7 +323,9 @@ namespace atomex.ViewModels.SendViewModels
         public ICommand UndoConfirmStageCommand => _undoConfirmStageCommand ??= new Command(() => ConfirmStage = false);
 
         private ICommand _closeConfirmationCommand;
-        public ICommand CloseConfirmationCommand => _closeConfirmationCommand ??= new Command(() => _navigationService?.ClosePopup());
+
+        public ICommand CloseConfirmationCommand =>
+            _closeConfirmationCommand ??= new Command(() => _navigationService?.ClosePopup());
 
         private void FromClick()
         {
@@ -393,9 +393,9 @@ namespace atomex.ViewModels.SendViewModels
             if (!tezosConfig.IsValidAddress(TokenContract))
             {
                 ShowMessage(
-                   messageType: MessageType.Error,
-                   element: RelatedTo.All,
-                   text: "Invalid token contract address");
+                    messageType: MessageType.Error,
+                    element: RelatedTo.All,
+                    text: "Invalid token contract address");
                 return;
             }
 
@@ -409,19 +409,19 @@ namespace atomex.ViewModels.SendViewModels
             if (fromTokenAddress == null)
             {
                 ShowMessage(
-                   messageType: MessageType.Error,
-                   element: RelatedTo.All,
-                   text: $"Insufficient token funds on address {From}. Please update your balance");
+                    messageType: MessageType.Error,
+                    element: RelatedTo.All,
+                    text: $"Insufficient token funds on address {From}. Please update your balance");
                 return;
             }
 
             if (Amount > fromTokenAddress.Balance)
             {
                 ShowMessage(
-                   messageType: MessageType.Error,
-                   element: RelatedTo.All,
-                   text: $"Insufficient token funds on address {fromTokenAddress.Address}. " +
-                        $"Please use Max button to find out how many tokens you can send");
+                    messageType: MessageType.Error,
+                    element: RelatedTo.All,
+                    text: $"Insufficient token funds on address {fromTokenAddress.Address}. " +
+                          $"Please use Max button to find out how many tokens you can send");
                 return;
             }
 
@@ -431,9 +431,9 @@ namespace atomex.ViewModels.SendViewModels
             if (xtzAddress == null)
             {
                 ShowMessage(
-                   messageType: MessageType.Error,
-                   element: RelatedTo.All,
-                   text: $"Insufficient funds for fee. Please update your balance for address {From}");
+                    messageType: MessageType.Error,
+                    element: RelatedTo.All,
+                    text: $"Insufficient funds for fee. Please update your balance for address {From}");
                 return;
             }
 
@@ -462,22 +462,26 @@ namespace atomex.ViewModels.SendViewModels
                     {
                         if (error != null)
                         {
-                            _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Error, error.Description);
+                            _navigationService?.DisplaySnackBar(
+                                SnackbarMessage.MessageType.Error,
+                                error.Description);
                             return;
                         }
 
                         _navigationService?.ClosePopup();
-                        await _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
+                        await _navigationService!.ReturnToInitiatedPage(TabNavigation.Portfolio);
 
-                        _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Success, string.Format(CultureInfo.InvariantCulture, AppResources.SuccessSending));
+                        _navigationService?.DisplaySnackBar(
+                            SnackbarMessage.MessageType.Success,
+                            string.Format(CultureInfo.InvariantCulture, AppResources.SuccessSending));
                     });
                 }
                 catch (Exception e)
                 {
                     await Device.InvokeOnMainThreadAsync(() =>
-                    {
-                        _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Error, AppResources.SendingTransactionError);
-                    });
+                        _navigationService?.DisplaySnackBar(
+                            SnackbarMessage.MessageType.Error,
+                            AppResources.SendingTransactionError));
                     Log.Error(e, "Tezos tokens transaction send error");
                 }
                 finally
@@ -539,10 +543,10 @@ namespace atomex.ViewModels.SendViewModels
                 if (Amount > fromTokenAddress.Balance)
                 {
                     ShowMessage(
-                         messageType: MessageType.Error,
-                         element: RelatedTo.Amount,
-                         text: AppResources.InsufficientFunds,
-                         tooltipText: AppResources.BigAmount);
+                        messageType: MessageType.Error,
+                        element: RelatedTo.Amount,
+                        text: AppResources.InsufficientFunds,
+                        tooltipText: AppResources.BigAmount);
                 }
             }
             catch (Exception e)
@@ -718,7 +722,8 @@ namespace atomex.ViewModels.SendViewModels
             }
         }
 
-        protected void ConfirmFromAddress(SelectAddressViewModel selectAddressViewModel, WalletAddressViewModel walletAddressViewModel)
+        protected void ConfirmFromAddress(SelectAddressViewModel selectAddressViewModel,
+            WalletAddressViewModel walletAddressViewModel)
         {
             From = walletAddressViewModel?.Address;
             TokenId = walletAddressViewModel?.TokenId ?? 0;
@@ -746,7 +751,8 @@ namespace atomex.ViewModels.SendViewModels
             }
         }
 
-        protected void ConfirmToAddress(SelectAddressViewModel selectAddressViewModel, WalletAddressViewModel walletAddressViewModel)
+        protected void ConfirmToAddress(SelectAddressViewModel selectAddressViewModel,
+            WalletAddressViewModel walletAddressViewModel)
         {
             To = walletAddressViewModel?.Address;
 
@@ -839,10 +845,10 @@ namespace atomex.ViewModels.SendViewModels
                 tokenType: _tokenType);
 
             var currencyName = _app.Account.Currencies
-                            .FirstOrDefault(c => c is TezosTokenConfig tokenConfig &&
-                                                 tokenConfig.TokenContractAddress == TokenContract &&
-                                                 tokenConfig.TokenId == TokenId)
-                            ?.Name ?? _tokenType;
+                .FirstOrDefault(c => c is TezosTokenConfig tokenConfig &&
+                                     tokenConfig.TokenContractAddress == TokenContract &&
+                                     tokenConfig.TokenId == TokenId)
+                ?.Name ?? _tokenType;
 
             var tokenAccount = _app.Account.GetTezosTokenAccount<TezosTokenAccount>(
                 currency: currencyName,

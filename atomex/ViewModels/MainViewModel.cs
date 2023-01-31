@@ -10,9 +10,16 @@ using Atomex.Wallet.Abstract;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
+using atomex.Common;
 using atomex.ViewModels.ConversionViewModels;
 using atomex.ViewModels.CurrencyViewModels;
+using atomex.ViewModels.DappsViewModels;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+using Xamarin.Essentials;
 using Xamarin.Forms;
+using Log = Serilog.Log;
 
 namespace atomex.ViewModels
 {
@@ -23,9 +30,10 @@ namespace atomex.ViewModels
         public ConversionViewModel ConversionViewModel { get; }
         public PortfolioViewModel PortfolioViewModel { get; }
         public BuyViewModel BuyViewModel { get; }
+        [Reactive] public ConnectDappViewModel ConnectDappViewModel { get; set; }
 
         public EventHandler Locked;
-
+        
         public MainViewModel(
             IAtomexApp app,
             IAccount account)
@@ -61,13 +69,61 @@ namespace atomex.ViewModels
             ConversionViewModel = new ConversionViewModel(AtomexApp);
             BuyViewModel = new BuyViewModel(AtomexApp);
             SettingsViewModel = new SettingsViewModel(AtomexApp, this);
+            PortfolioViewModel.CurrenciesLoaded += OnCurrenciesLoadedEventHandler;
 
             _ = TokenDeviceService.SendTokenToServerAsync(App.DeviceToken, App.FileSystem, AtomexApp);
+
+            this.WhenAnyValue(vm => vm.ConnectDappViewModel)
+                .WhereNotNull()
+                .SubscribeInMainThread(async _ =>
+                {
+                    string deepLink = await SecureStorage.GetAsync("DappDeepLink");
+                    if (string.IsNullOrEmpty(deepLink)) 
+                        return;
+                    await ConnectDappViewModel.OnDeepLinkResult(deepLink);
+                    await SecureStorage.SetAsync("DappDeepLink", string.Empty);
+                });
+        }
+        
+        private void OnCurrenciesLoadedEventHandler(object sender, EventArgs args)
+        {
+            try
+            {
+                var tezosViewModel = PortfolioViewModel.AllCurrencies!
+                    .First(c => c.CurrencyViewModel.CurrencyCode == TezosConfig.Xtz)
+                    .CurrencyViewModel as TezosCurrencyViewModel;
+                
+                if (tezosViewModel == null) return;
+                ConnectDappViewModel = tezosViewModel.DappsViewModel.ConnectDappViewModel;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Portfolio amount error");
+            }
         }
 
-        public void InitCurrenciesScan(string[] currenciesArr = null)
+        public void ScanCurrencies(string[] currencies = null)
         {
-            PortfolioViewModel?.InitCurrenciesScan(currenciesArr);
+            try
+            {
+                PortfolioViewModel.CurrenciesForScan = currencies;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Set currencies for scan error");
+            }
+        }
+        
+        public void RestoreWallet()
+        {
+            try
+            {
+                PortfolioViewModel.Restore = true;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Set restore wallet error");
+            }
         }
 
         public void SignOut()
@@ -81,6 +137,17 @@ namespace atomex.ViewModels
             if (AtomexApp == null) return;
             AtomexApp.AtomexClientChanged -= OnAtomexClientChangedEventHandler;
         }
+        
+        public void AllowCamera()
+        {
+            ConnectDappViewModel?.AllowCamera();
+        }
+        
+        public async Task ConnectDappByDeepLink(string qrCodeString)
+        {
+            if (ConnectDappViewModel != null)
+                await ConnectDappViewModel.OnDeepLinkResult(qrCodeString);
+        }
 
         private void SubscribeToServices()
         {
@@ -91,7 +158,7 @@ namespace atomex.ViewModels
         {
             if (AtomexApp?.Account == null)
             {
-                if (args.OldAtomexClient != null)
+                if (args?.OldAtomexClient != null)
                     args.OldAtomexClient.ServiceStatusChanged -= OnAtomexClientServiceStatusChangedEventHandler;
 
                 return;

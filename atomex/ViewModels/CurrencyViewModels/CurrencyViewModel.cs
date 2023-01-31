@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Reactive;
 using System.Threading;
@@ -30,17 +29,15 @@ using static atomex.Models.SnackbarMessage;
 
 namespace atomex.ViewModels.CurrencyViewModels
 {
-
-
     public class CurrencyViewModel : BaseViewModel, IDisposable
     {
-        protected IAtomexApp _app { get; set; }
-        protected IAccount _account { get; set; }
-        protected INavigationService _navigationService { get; set; }
+        protected readonly IAtomexApp App;
+        protected readonly INavigationService NavigationService;
+        private IAccount _account;
 
         public virtual CurrencyConfig Currency { get; set; }
         public event EventHandler AmountUpdated;
-        private IQuotesProvider _quotesProvider { get; set; }
+        private IQuotesProvider QuotesProvider { get; set; }
 
         public string CurrencyCode => Currency?.Name;
         public string CurrencyName => Currency?.DisplayedName;
@@ -53,7 +50,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         public bool HasDapps { get; set; }
         public bool CanBuy { get; set; }
 
-        protected CancellationTokenSource _cancellationTokenSource;
+        protected CancellationTokenSource CancellationTokenSource;
 
         [Reactive] public decimal TotalAmount { get; set; }
         [Reactive] public decimal TotalAmountInBase { get; set; }
@@ -113,16 +110,16 @@ namespace atomex.ViewModels.CurrencyViewModels
             CurrencyConfig currency,
             INavigationService navigationService)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(app));
+            App = app ?? throw new ArgumentNullException(nameof(app));
             _account = app.Account ?? throw new ArgumentNullException(nameof(app.Account));
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            NavigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             Currency = currency ?? throw new ArgumentNullException(nameof(currency));
 
             this.WhenAnyValue(vm => vm.SelectedTransaction)
                 .WhereNotNull()
                 .SubscribeInMainThread(t =>
                 {
-                    _navigationService?.ShowPage(new TransactionInfoPage(t), TabNavigation.Portfolio);
+                    NavigationService?.ShowPage(new TransactionInfoPage(t), TabNavigation.Portfolio);
                     SelectedTransaction = null;
                 });
 
@@ -174,21 +171,21 @@ namespace atomex.ViewModels.CurrencyViewModels
             AddressesViewModel?.Dispose();
 
             AddressesViewModel = new AddressesViewModel(
-                app: _app,
+                app: App,
                 currency: Currency,
-                navigationService: _navigationService);
+                navigationService: NavigationService);
         }
 
         public virtual void SubscribeToServices()
         {
-            _app.Account.BalanceUpdated += OnBalanceUpdatedEventHandler;
-            _app.Account.UnconfirmedTransactionAdded += OnUnconfirmedTransactionAdded;
+            App.Account.BalanceUpdated += OnBalanceUpdatedEventHandler;
+            App.Account.UnconfirmedTransactionAdded += OnUnconfirmedTransactionAdded;
         }
 
         public void SubscribeToRatesProvider(IQuotesProvider quotesProvider)
         {
-            _quotesProvider = quotesProvider;
-            _quotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
+            QuotesProvider = quotesProvider;
+            QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
 
         protected virtual void OnAddresesChangedEventHandler()
@@ -200,7 +197,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                     Addresses = new ObservableCollection<AddressViewModel>(
                         AddressesViewModel?.Addresses
                             .OrderByDescending(a => a.Balance)
-                            .Take(AddressesNumberPerPage));
+                            .Take(AddressesNumberPerPage) ?? new List<AddressViewModel>());
                 });
             }
             catch (Exception e)
@@ -229,7 +226,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             try
             {
-                var balance = await _app.Account
+                var balance = await App.Account
                     .GetBalanceAsync(Currency.Name)
                     .ConfigureAwait(false);
 
@@ -241,7 +238,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                     AvailableAmount = balance.Available;
                     UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome;
 
-                    UpdateQuotesInBaseCurrency(_quotesProvider);
+                    UpdateQuotesInBaseCurrency(QuotesProvider);
                 });
             }
             catch (Exception e)
@@ -297,10 +294,10 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             try
             {
-                if (_app.Account == null)
+                if (App.Account == null)
                     return;
 
-                var transactions = (await _app.Account
+                var transactions = (await App.Account
                     .GetTransactionsAsync(Currency?.Name))
                     .ToList();
 
@@ -308,7 +305,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 {
                     Transactions = new ObservableCollection<TransactionViewModel>(
                         transactions.Select(t => TransactionViewModelCreator
-                                .CreateViewModel(t, Currency, _navigationService))
+                                .CreateViewModel(t, Currency, NavigationService))
                             .ToList()
                             .SortList((t1, t2) => t2.LocalTime.CompareTo(t1.LocalTime))
                             .ForEachDo(t =>
@@ -342,14 +339,14 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         protected async void RemoveTransactonEventHandler(object sender, TransactionEventArgs args)
         {
-            if (_app.Account == null)
+            if (App.Account == null)
                 return;
 
             try
             {
                 var txId = $"{args.Transaction.Id}:{Currency.Name}";
 
-                var isRemoved = await _app.Account
+                var isRemoved = await App.Account
                     .RemoveTransactionAsync(txId);
 
                 if (isRemoved)
@@ -360,7 +357,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 Log.Error(e, "Transaction remove error");
             }
 
-            _navigationService?.ClosePage(TabNavigation.Portfolio);
+            NavigationService?.ClosePage(TabNavigation.Portfolio);
         }
 
         private ReactiveCommand<Unit, Unit> _receiveCommand;
@@ -373,17 +370,17 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         public ReactiveCommand<Unit, Unit> ConvertCurrencyCommand => _convertCurrencyCommand ??= ReactiveCommand.Create(() =>
         {
-            _navigationService?.ClosePopup();
-            _navigationService?.SetInitiatedPage(TabNavigation.Exchange);
-            _navigationService?.GoToExchange(Currency);
+            NavigationService?.ClosePopup();
+            NavigationService?.SetInitiatedPage(TabNavigation.Exchange);
+            NavigationService?.GoToExchange(Currency);
         });
 
         private ReactiveCommand<Unit, Unit> _buyCurrencyCommand;
 
         public ReactiveCommand<Unit, Unit> BuyCurrencyCommand => _buyCurrencyCommand ??= ReactiveCommand.Create(() =>
         {
-            _navigationService?.ClosePopup();
-            _navigationService?.GoToBuy(Currency);
+            NavigationService?.ClosePopup();
+            NavigationService?.GoToBuy(Currency);
         });
 
         private ICommand _refreshCommand;
@@ -392,27 +389,28 @@ namespace atomex.ViewModels.CurrencyViewModels
         private ICommand _closeBottomSheetCommand;
 
         public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= new Command(() =>
-            _navigationService?.ClosePopup());
+            NavigationService?.ClosePopup());
 
         public virtual async Task ScanCurrency()
         {
-            _cancellationTokenSource = new CancellationTokenSource();
+            CancellationTokenSource = new CancellationTokenSource();
             IsRefreshing = true;
 
             try
             {
-                var scanner = new HdWalletScanner(_app.Account);
+                var scanner = new HdWalletScanner(App.Account);
                 await scanner.ScanAsync(
                     currency: Currency.Name,
                     skipUsed: true,
-                    cancellationToken: _cancellationTokenSource.Token);
+                    cancellationToken: CancellationTokenSource.Token);
 
                 await LoadTransactionsAsync();
                 
-                if (_cancellationTokenSource is {IsCancellationRequested: false})
+                if (CancellationTokenSource is {IsCancellationRequested: false})
                     await Device.InvokeOnMainThreadAsync(() =>
                     {
-                        _navigationService?.DisplaySnackBar(MessageType.Regular,
+                        NavigationService?.DisplaySnackBar(
+                            MessageType.Regular,
                             Currency.Description + " " + AppResources.HasBeenUpdated);
                     });
             }
@@ -436,9 +434,9 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             try
             {
-                _cancellationTokenSource?.Cancel();
-                _cancellationTokenSource?.Dispose();
-                _cancellationTokenSource = null;
+                CancellationTokenSource?.Cancel();
+                CancellationTokenSource?.Dispose();
+                CancellationTokenSource = null;
             }
             catch (Exception )
             {
@@ -450,7 +448,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         public ReactiveCommand<Unit, Unit> ShowAvailableAmountCommand => _showAvailableAmountCommand ??=
             ReactiveCommand.Create(() =>
-                _navigationService?.ShowPopup(new AvailableAmountPopup(this)));
+                NavigationService?.ShowPopup(new AvailableAmountPopup(this)));
 
         protected void CopyAddress(string value)
         {
@@ -459,11 +457,11 @@ namespace atomex.ViewModels.CurrencyViewModels
                 if (value != null)
                 {
                     _ = Clipboard.SetTextAsync(value);
-                    _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.AddressCopied);
+                    NavigationService?.DisplaySnackBar(MessageType.Regular, AppResources.AddressCopied);
                 }
                 else
                 {
-                    _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError,
+                    NavigationService?.ShowAlert(AppResources.Error, AppResources.CopyError,
                         AppResources.AcceptButton);
                 }
             });
@@ -476,11 +474,11 @@ namespace atomex.ViewModels.CurrencyViewModels
                 if (value != null)
                 {
                     _ = Clipboard.SetTextAsync(value);
-                    _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.TransactionIdCopied);
+                    NavigationService?.DisplaySnackBar(MessageType.Regular, AppResources.TransactionIdCopied);
                 }
                 else
                 {
-                    _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError,
+                    NavigationService?.ShowAlert(AppResources.Error, AppResources.CopyError,
                         AppResources.AcceptButton);
                 }
             });
@@ -499,34 +497,34 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         public ReactiveCommand<Unit, Unit> ShowCurrencyActionBottomSheet => _showCurrencyActionBottomSheet ??=
             ReactiveCommand.Create(() =>
-                _navigationService?.ShowPopup(new CurrencyActionBottomSheet(this)));
+                NavigationService?.ShowPopup(new CurrencyActionBottomSheet(this)));
 
         protected virtual void OnReceiveClick()
         {
-            _navigationService?.ClosePopup();
+            NavigationService?.ClosePopup();
             var receiveViewModel = new ReceiveViewModel(
-                app: _app,
+                app: App,
                 currency: Currency,
-                navigationService: _navigationService);
-            _navigationService?.ShowPopup(new ReceiveBottomSheet(receiveViewModel));
+                navigationService: NavigationService);
+            NavigationService?.ShowPopup(new ReceiveBottomSheet(receiveViewModel));
         }
 
         protected virtual void OnSendClick()
         {
             if (TotalAmount <= 0) return;
-            _navigationService?.ClosePopup();
+            NavigationService?.ClosePopup();
 
-            _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
-            var sendViewModel = SendViewModelCreator.CreateViewModel(_app, this, _navigationService);
+            NavigationService?.SetInitiatedPage(TabNavigation.Portfolio);
+            var sendViewModel = SendViewModelCreator.CreateViewModel(App, this, NavigationService);
             if (Currency is BitcoinBasedConfig)
             {
                 var selectOutputsViewModel = sendViewModel.SelectFromViewModel as SelectOutputsViewModel;
-                _navigationService?.ShowPage(new SelectOutputsPage(selectOutputsViewModel), TabNavigation.Portfolio);
+                NavigationService?.ShowPage(new SelectOutputsPage(selectOutputsViewModel), TabNavigation.Portfolio);
             }
             else
             {
                 var selectAddressViewModel = sendViewModel.SelectFromViewModel as SelectAddressViewModel;
-                _navigationService?.ShowPage(new SelectAddressPage(selectAddressViewModel), TabNavigation.Portfolio);
+                NavigationService?.ShowPage(new SelectAddressPage(selectAddressViewModel), TabNavigation.Portfolio);
             }
         }
 
@@ -563,8 +561,8 @@ namespace atomex.ViewModels.CurrencyViewModels
                         _account.UnconfirmedTransactionAdded -= OnUnconfirmedTransactionAdded;
                     }
 
-                    if (_quotesProvider != null)
-                        _quotesProvider.QuotesUpdated -= OnQuotesUpdatedEventHandler;
+                    if (QuotesProvider != null)
+                        QuotesProvider.QuotesUpdated -= OnQuotesUpdatedEventHandler;
                 }
 
                 _account = null;

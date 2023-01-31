@@ -20,7 +20,6 @@ using Xamarin.Forms;
 
 namespace atomex.ViewModels
 {
-
     public class PortfolioCurrencyViewModel : BaseViewModel
     {
         public CurrencyViewModel CurrencyViewModel { get; set; }
@@ -50,7 +49,7 @@ namespace atomex.ViewModels
     public class PortfolioViewModel : BaseViewModel
     {
         private readonly IAtomexApp _app;
-        [Reactive] private INavigationService _navigationService { get; set; }
+        [Reactive] private INavigationService NavigationService { get; set; }
 
         [Reactive] public IList<PortfolioCurrencyViewModel> AllCurrencies { get; set; }
         [Reactive] public IList<CurrencyViewModel> UserCurrencies { get; set; }
@@ -60,13 +59,12 @@ namespace atomex.ViewModels
 
         public CurrencyActionType SelectCurrencyUseCase { get; set; }
         [Reactive] public CurrencyViewModel SelectedCurrency { get; set; }
-
-        private bool _startCurrenciesScan;
-        private bool _connectByDeepLink;
-        private string[] _currenciesForScan { get; set; }
-        private string _dappConnectionString { get; set; }
-
+        
+        [Reactive] public string[] CurrenciesForScan { get; set; }
+        [Reactive] public bool Restore { get; set; }
         [Reactive] public bool IsRestoring { get; set; }
+        
+        public event EventHandler CurrenciesLoaded;
 
         public PortfolioViewModel(IAtomexApp app)
         {
@@ -77,16 +75,13 @@ namespace atomex.ViewModels
                 .SubscribeInMainThread(async _ =>
                 {
                     SubscribeToUpdates();
-
-                    if (_startCurrenciesScan)
-                        await StartCurrenciesScan();
-
-                    if (!_connectByDeepLink) return;
-
-                    await ConnectDappByDeepLink(_dappConnectionString);
+                    CurrenciesLoaded?.Invoke(this, EventArgs.Empty);
+                    if (!Restore && CurrenciesForScan == null) 
+                        return;
+                    await ScanCurrencies(Restore ? null : CurrenciesForScan);
                 });
 
-            this.WhenAnyValue(vm => vm._navigationService)
+            this.WhenAnyValue(vm => vm.NavigationService)
                 .WhereNotNull()
                 .SubscribeInMainThread(service => GetCurrencies());
 
@@ -97,25 +92,25 @@ namespace atomex.ViewModels
                     switch (SelectCurrencyUseCase)
                     {
                         case CurrencyActionType.Show:
-                            _navigationService?.ShowPage(new CurrencyPage(c), TabNavigation.Portfolio);
-                            _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
+                            NavigationService?.ShowPage(new CurrencyPage(c), TabNavigation.Portfolio);
+                            NavigationService?.SetInitiatedPage(TabNavigation.Portfolio);
                             SelectedCurrency = null;
                             break;
                         case CurrencyActionType.Send:
-                            _navigationService?.ClosePopup();
-                            var sendViewModel = SendViewModelCreator.CreateViewModel(_app, c, _navigationService);
+                            NavigationService?.ClosePopup();
+                            var sendViewModel = SendViewModelCreator.CreateViewModel(_app, c, NavigationService);
                             if (c.Currency is BitcoinBasedConfig)
                             {
                                 var selectOutputsViewModel =
                                     sendViewModel.SelectFromViewModel as SelectOutputsViewModel;
-                                _navigationService?.ShowPage(new SelectOutputsPage(selectOutputsViewModel),
+                                NavigationService?.ShowPage(new SelectOutputsPage(selectOutputsViewModel),
                                     TabNavigation.Portfolio);
                             }
                             else
                             {
                                 var selectAddressViewModel =
                                     sendViewModel.SelectFromViewModel as SelectAddressViewModel;
-                                _navigationService?.ShowPage(new SelectAddressPage(selectAddressViewModel),
+                                NavigationService?.ShowPage(new SelectAddressPage(selectAddressViewModel),
                                     TabNavigation.Portfolio);
                             }
 
@@ -123,14 +118,14 @@ namespace atomex.ViewModels
                             SelectedCurrency = null;
                             break;
                         case CurrencyActionType.Receive:
-                            var receiveViewModel = new ReceiveViewModel(_app, c?.Currency, _navigationService);
-                            _navigationService?.ShowPopup(new ReceiveBottomSheet(receiveViewModel));
+                            var receiveViewModel = new ReceiveViewModel(_app, c?.Currency, NavigationService);
+                            NavigationService?.ShowPopup(new ReceiveBottomSheet(receiveViewModel));
                             SelectCurrencyUseCase = CurrencyActionType.Show;
                             SelectedCurrency = null;
                             break;
                         default:
-                            _navigationService?.ShowPage(new CurrencyPage(c), TabNavigation.Portfolio);
-                            _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
+                            NavigationService?.ShowPage(new CurrencyPage(c), TabNavigation.Portfolio);
+                            NavigationService?.SetInitiatedPage(TabNavigation.Portfolio);
                             SelectedCurrency = null;
                             break;
                     }
@@ -145,49 +140,15 @@ namespace atomex.ViewModels
             OnAmountUpdatedEventHandler(this, EventArgs.Empty);
         }
 
-        public void InitCurrenciesScan(string[] currenciesArr = null)
-        {
-            _startCurrenciesScan = true;
-            _currenciesForScan = currenciesArr;
-        }
-
-        public async Task ConnectDappByDeepLink(string qrCodeString)
-        {
-            _connectByDeepLink = true;
-            _dappConnectionString = qrCodeString;
-            
-            if (AllCurrencies == null) return;
-                
-            var tezosViewModel = AllCurrencies!
-                .First(c => c.CurrencyViewModel.CurrencyCode == TezosConfig.Xtz)
-                .CurrencyViewModel as TezosCurrencyViewModel;
-
-            if (tezosViewModel == null) return;
-            
-            await tezosViewModel.DappsViewModel.ConnectDappViewModel.OnDeepLinkResult(_dappConnectionString);
-            _dappConnectionString = string.Empty;
-        }
-        
-        public void AllowCamera()
-        {
-            if (AllCurrencies == null) return;
-                
-            var tezosViewModel = AllCurrencies!
-                .First(c => c.CurrencyViewModel.CurrencyCode == TezosConfig.Xtz)
-                .CurrencyViewModel as TezosCurrencyViewModel;
-
-            tezosViewModel?.DappsViewModel.ConnectDappViewModel.AllowCamera();
-        }
-
-        private async Task StartCurrenciesScan()
+        private async Task ScanCurrencies(string[] currenciesForScan = null)
         {
             IsRestoring = true;
 
-            var currencies = _currenciesForScan == null
+            var currencies = currenciesForScan == null
                 ? AllCurrencies
                     .Select(c => c.CurrencyViewModel)
                 : AllCurrencies
-                    .Where(curr => _currenciesForScan.Contains(curr.CurrencyViewModel.CurrencyCode))
+                    .Where(curr => currenciesForScan.Contains(curr.CurrencyViewModel.CurrencyCode))
                     .Select(c => c.CurrencyViewModel)
                     .ToList();
             try
@@ -205,8 +166,8 @@ namespace atomex.ViewModels
                 var tezosTokens = primaryCurrencies
                     .Where(c => c.HasTokens && c.CurrencyCode == TezosConfig.Xtz)
                     .Cast<TezosCurrencyViewModel>()
-                    .FirstOrDefault()
-                    ?.TezosTokensViewModel;
+                    .FirstOrDefault()?
+                    .TezosTokensViewModel;
 
                 if (tezosTokens != null)
                     await tezosTokens.UpdateTokens();
@@ -252,7 +213,7 @@ namespace atomex.ViewModels
                         {
                             var currency = CurrencyViewModelCreator.CreateOrGet(
                                 currencyConfig: c,
-                                navigationService: _navigationService,
+                                navigationService: NavigationService,
                                 subscribeToUpdates: true);
 
                             var vm = new PortfolioCurrencyViewModel(
@@ -279,7 +240,7 @@ namespace atomex.ViewModels
 
         public void SetNavigationService(INavigationService service)
         {
-            _navigationService = service ?? throw new ArgumentNullException(nameof(service));
+            NavigationService = service ?? throw new ArgumentNullException(nameof(service));
         }
 
         private void ChangeUserCurrencies(string currency, bool isSelected)
@@ -313,31 +274,31 @@ namespace atomex.ViewModels
         private ReactiveCommand<Unit, Unit> _manageAssetsCommand;
 
         public ReactiveCommand<Unit, Unit> ManageAssetsCommand => _manageAssetsCommand ??=
-            ReactiveCommand.Create(() => _navigationService?.ShowPopup(new ManageAssetsBottomSheet(this)));
+            ReactiveCommand.Create(() => NavigationService?.ShowPopup(new ManageAssetsBottomSheet(this)));
 
         private ReactiveCommand<Unit, Unit> _showAvailableAmountCommand;
 
         public ReactiveCommand<Unit, Unit> ShowAvailableAmountCommand => _showAvailableAmountCommand ??=
             ReactiveCommand.Create(() =>
-                _navigationService?.ShowPopup(new AvailableAmountPopup(this)));
+                NavigationService?.ShowPopup(new AvailableAmountPopup(this)));
 
         private ICommand _closeBottomSheetCommand;
 
         public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??=
-            ReactiveCommand.Create(() => _navigationService?.ClosePopup());
+            ReactiveCommand.Create(() => NavigationService?.ClosePopup());
 
         private ReactiveCommand<Unit, Unit> _sendCommand;
 
         public ReactiveCommand<Unit, Unit> SendCommand => _sendCommand ??= ReactiveCommand.Create(() =>
         {
-            _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
+            NavigationService?.SetInitiatedPage(TabNavigation.Portfolio);
             SelectCurrencyUseCase = CurrencyActionType.Send;
             var currencies = AllCurrencies.Select(c => c.CurrencyViewModel);
             var selectCurrencyViewModel =
                 new SelectCurrencyViewModel(
                     CurrencyActionType.Send,
                     currencies,
-                    _navigationService)
+                    NavigationService)
                 {
                     OnSelected = currencyViewModel =>
                     {
@@ -347,7 +308,7 @@ namespace atomex.ViewModels
                 };
 
             SelectCurrencyUseCase = CurrencyActionType.Show;
-            _navigationService?.ShowPopup(new SelectCurrencyBottomSheet(selectCurrencyViewModel));
+            NavigationService?.ShowPopup(new SelectCurrencyBottomSheet(selectCurrencyViewModel));
         });
 
         private ReactiveCommand<Unit, Unit> _receiveCommand;
@@ -360,7 +321,7 @@ namespace atomex.ViewModels
                 new SelectCurrencyViewModel(
                     CurrencyActionType.Receive,
                     currencies,
-                    _navigationService)
+                    NavigationService)
                 {
                     OnSelected = currencyViewModel =>
                     {
@@ -370,13 +331,13 @@ namespace atomex.ViewModels
                 };
 
             SelectCurrencyUseCase = CurrencyActionType.Show;
-            _navigationService?.ShowPopup(new SelectCurrencyBottomSheet(selectCurrencyViewModel));
+            NavigationService?.ShowPopup(new SelectCurrencyBottomSheet(selectCurrencyViewModel));
         });
 
         private ReactiveCommand<Unit, Unit> _exchangeCommand;
 
         public ReactiveCommand<Unit, Unit> ExchangeCommand => _exchangeCommand ??=
-            ReactiveCommand.Create(() => _navigationService?.GoToExchange(null));
+            ReactiveCommand.Create(() => NavigationService?.GoToExchange(null));
 
         private ReactiveCommand<Unit, Unit> _hideRestoringCommand;
 
