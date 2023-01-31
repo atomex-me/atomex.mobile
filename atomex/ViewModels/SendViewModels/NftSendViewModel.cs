@@ -12,7 +12,7 @@ namespace atomex.ViewModels.SendViewModels
             get => Amount.ToString(CultureInfo.InvariantCulture);
             set
             {
-                string temp = value.Replace(",", ".");
+                var temp = value.Replace(",", ".");
                 if (!decimal.TryParse(
                         s: temp,
                         style: NumberStyles.AllowDecimalPoint,

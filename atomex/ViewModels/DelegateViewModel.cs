@@ -660,10 +660,21 @@ namespace atomex.ViewModels
             if (sender is not IQuotesProvider quotesProvider)
                 return;
 
-            var quote = quotesProvider.GetQuote(FeeCurrencyCode, BaseCurrencyCode);
+            try
+            {
+                var quote = quotesProvider.GetQuote(FeeCurrencyCode, BaseCurrencyCode);
+                if (quote == null) return;
 
-            FeeInBase = Fee.SafeMultiply(quote?.Bid ?? 0);
-            DelegateAddressBalanceInBase = DelegateAddressBalance.SafeMultiply(quote?.Bid ?? 0);
+                Device.InvokeOnMainThreadAsync(() =>
+                {
+                    FeeInBase = Fee.SafeMultiply(quote?.Bid ?? 0);
+                    DelegateAddressBalanceInBase = DelegateAddressBalance.SafeMultiply(quote?.Bid ?? 0);
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Update quote error for delegation");
+            }
         }
 
         private void OnQuotesProviderAvailabilityChangedEventHandler(object sender, EventArgs args)

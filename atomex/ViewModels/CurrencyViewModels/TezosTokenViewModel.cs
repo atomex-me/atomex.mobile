@@ -360,7 +360,8 @@ namespace atomex.ViewModels.CurrencyViewModels
             {
                 var tokenQuote = quotesProvider.GetQuote(TokenBalance.Symbol, BaseCurrencyCode);
                 var xtzQuote = quotesProvider.GetQuote(TezosConfig.Xtz, BaseCurrencyCode);
-
+                if (tokenQuote == null || xtzQuote == null) return;
+                
                 Device.InvokeOnMainThreadAsync(() =>
                 {
                     CurrentQuote = tokenQuote.Bid.SafeMultiply(xtzQuote.Bid);

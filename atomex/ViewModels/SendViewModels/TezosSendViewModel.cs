@@ -43,20 +43,20 @@ namespace atomex.ViewModels.SendViewModels
                 .SubscribeInMainThread(estimation => CheckAmount(estimation));
 
             SelectFromViewModel = new SelectAddressViewModel(
-                account: _app.Account,
-                currency: _currency,
-                navigationService: _navigationService,
+                account: App.Account,
+                currency: Currency,
+                navigationService: NavigationService,
                 mode: SelectAddressMode.SendFrom)
             {
                 ConfirmAction = ConfirmFromAddress
             };
 
-            SelectToViewModel = new SelectAddressViewModel(_app.Account, _currency, _navigationService)
+            SelectToViewModel = new SelectAddressViewModel(App.Account, Currency, NavigationService)
             {
                 ConfirmAction = ConfirmToAddress
             };
 
-            if (_currency.Name == "XTZ")
+            if (Currency.Name == "XTZ")
             {
                 CheckTokensAsync();
                 CheckActiveSwapsAsync();
@@ -65,8 +65,8 @@ namespace atomex.ViewModels.SendViewModels
 
         private async void CheckTokensAsync()
         {
-            var account = _app.Account
-                .GetCurrencyAccount<TezosAccount>(_currency.Name);
+            var account = App.Account
+                .GetCurrencyAccount<TezosAccount>(Currency.Name);
 
             var unpsentTokens = await account
                 .GetUnspentTokenAddressesAsync()
@@ -80,10 +80,10 @@ namespace atomex.ViewModels.SendViewModels
 
         private async void CheckActiveSwapsAsync()
         {
-            var activeSwaps = (await _app.Account
+            var activeSwaps = (await App.Account
                     .GetSwapsAsync()
                     .ConfigureAwait(false))
-                .Where(s => s.IsActive && (s.SoldCurrency == _currency.Name || s.PurchasedCurrency == _currency.Name));
+                .Where(s => s.IsActive && (s.SoldCurrency == Currency.Name || s.PurchasedCurrency == Currency.Name));
 
             await Device.InvokeOnMainThreadAsync(() =>
             {
@@ -99,22 +99,22 @@ namespace atomex.ViewModels.SendViewModels
             if (selectFromViewModel == null) return;
             selectFromViewModel.SelectAddressFrom = SelectAddressFrom.Change;
 
-            _navigationService?.ShowPage(new SelectAddressPage(selectFromViewModel), TabNavigation.Portfolio);
+            NavigationService?.ShowPage(new SelectAddressPage(selectFromViewModel), TabNavigation.Portfolio);
         }
 
         protected override void ToClick()
         {
             SelectToViewModel.SelectAddressFrom = SelectAddressFrom.Change;
 
-            _navigationService?.ShowPage(new SelectAddressPage(SelectToViewModel), TabNavigation.Portfolio);
+            NavigationService?.ShowPage(new SelectAddressPage(SelectToViewModel), TabNavigation.Portfolio);
         }
 
         protected override async Task UpdateAmount()
         {
             try
             {
-                var account = _app.Account
-                    .GetCurrencyAccount<TezosAccount>(_currency.Name);
+                var account = App.Account
+                    .GetCurrencyAccount<TezosAccount>(Currency.Name);
 
                 var maxAmountEstimation = await account
                     .EstimateMaxAmountToSendAsync(
@@ -130,7 +130,7 @@ namespace atomex.ViewModels.SendViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "{@Currency}: update amount error", _currency?.Description);
+                Log.Error(e, "{@Currency}: update amount error", Currency?.Description);
             }
         }
 
@@ -140,8 +140,8 @@ namespace atomex.ViewModels.SendViewModels
             {
                 if (!UseDefaultFee)
                 {
-                    var account = _app.Account
-                        .GetCurrencyAccount<TezosAccount>(_currency.Name);
+                    var account = App.Account
+                        .GetCurrencyAccount<TezosAccount>(Currency.Name);
 
                     var maxAmountEstimation = await account
                         .EstimateMaxAmountToSendAsync(
@@ -155,7 +155,7 @@ namespace atomex.ViewModels.SendViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "{@Currency}: update fee error", _currency?.Description);
+                Log.Error(e, "{@Currency}: update fee error", Currency?.Description);
             }
         }
 
@@ -163,8 +163,8 @@ namespace atomex.ViewModels.SendViewModels
         {
             try
             {
-                var account = _app.Account
-                    .GetCurrencyAccount<TezosAccount>(_currency.Name);
+                var account = App.Account
+                    .GetCurrencyAccount<TezosAccount>(Currency.Name);
 
                 var maxAmountEstimation = await account
                     .EstimateMaxAmountToSendAsync(
@@ -187,7 +187,7 @@ namespace atomex.ViewModels.SendViewModels
                     return;
                 }
 
-                var (fa12TransferFee, _) = await _app.Account
+                var (fa12TransferFee, _) = await App.Account
                     .GetCurrencyAccount<Fa12Account>("TZBTC")
                     .EstimateTransferFeeAsync(From);
 
@@ -213,7 +213,7 @@ namespace atomex.ViewModels.SendViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "{@Currency}: max click error", _currency?.Description);
+                Log.Error(e, "{@Currency}: max click error", Currency?.Description);
             }
         }
 
@@ -250,7 +250,7 @@ namespace atomex.ViewModels.SendViewModels
                 return;
             }
 
-            var (fa12TransferFee, _) = await _app.Account
+            var (fa12TransferFee, _) = await App.Account
                 .GetCurrencyAccount<Fa12Account>("TZBTC")
                 .EstimateTransferFeeAsync(From);
 
@@ -272,11 +272,11 @@ namespace atomex.ViewModels.SendViewModels
                     string.Format(
                         AppResources.MaxAmountToSendWithActiveSwaps,
                         RecommendedMaxAmount,
-                        _currency.Name),
+                        Currency.Name),
                     string.Format(
                         AppResources.MaxAmountToSendWithActiveSwapsDetails,
                         RecommendedMaxAmount,
-                        _currency.Name));
+                        Currency.Name));
                 ShowAdditionalConfirmation = false;
 
                 return;
@@ -290,11 +290,11 @@ namespace atomex.ViewModels.SendViewModels
                     string.Format(
                         AppResources.MaxAmountToSendWithActiveSwaps,
                         RecommendedMaxAmount,
-                        _currency.Name),
+                        Currency.Name),
                     string.Format(
                         AppResources.MaxAmountToSendWithActiveSwapsDetails,
                         RecommendedMaxAmount,
-                        _currency.Name));
+                        Currency.Name));
                 ShowAdditionalConfirmation = false;
 
                 return;
@@ -308,11 +308,11 @@ namespace atomex.ViewModels.SendViewModels
                     string.Format(
                         AppResources.MaxAmountToSendRecommendation,
                         RecommendedMaxAmount,
-                        _currency.Name),
+                        Currency.Name),
                     string.Format(
                         AppResources.MaxAmountToSendRecommendationDetails,
                         RecommendedMaxAmount,
-                        _currency.Name));
+                        Currency.Name));
                 ShowAdditionalConfirmation = true;
 
                 return;
@@ -331,8 +331,8 @@ namespace atomex.ViewModels.SendViewModels
 
         protected override async Task<Error> Send(CancellationToken cancellationToken = default)
         {
-            var account = _app.Account
-                .GetCurrencyAccount<TezosAccount>(_currency.Name);
+            var account = App.Account
+                .GetCurrencyAccount<TezosAccount>(Currency.Name);
 
             var (_, error) = await account
                 .SendAsync(

@@ -202,7 +202,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "Error for currency {@Currency}", Currency?.Name);
+                Log.Error(e, "Error for currency {@Currency}", CurrencyCode);
             }
         }
 
@@ -243,7 +243,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "UpdateBalanceAsync error for {@Currency}", Currency?.Name);
+                Log.Error(e, "UpdateBalanceAsync error for {@Currency}", CurrencyCode);
             }
         }
 
@@ -259,18 +259,27 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             if (quotesProvider == null) return;
 
-            var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
-
-            Device.InvokeOnMainThreadAsync(() =>
+            try
             {
-                Price = quote?.Bid ?? 0;
-                DailyChangePercent = quote?.DailyChangePercent ?? 0;
-                TotalAmountInBase = TotalAmount * (quote?.Bid ?? 0m);
-                AvailableAmountInBase = AvailableAmount * (quote?.Bid ?? 0m);
-                UnconfirmedAmountInBase = UnconfirmedAmount * (quote?.Bid ?? 0m);
+                var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
+                
+                if (quote == null) return;
 
-                AmountUpdated?.Invoke(this, EventArgs.Empty);
-            });
+                Device.InvokeOnMainThreadAsync(() =>
+                {
+                    Price = quote?.Bid ?? 0;
+                    TotalAmountInBase = TotalAmount.SafeMultiply(quote?.Bid ?? 0);
+                    AvailableAmountInBase = AvailableAmount.SafeMultiply(quote?.Bid ?? 0);
+                    UnconfirmedAmountInBase = UnconfirmedAmount.SafeMultiply(quote?.Bid ?? 0);
+                    DailyChangePercent = quote?.DailyChangePercent ?? 0;
+
+                    AmountUpdated?.Invoke(this, EventArgs.Empty);
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Update quotes error on {@Currency}", CurrencyCode);
+            }
         }
 
         private async void OnUnconfirmedTransactionAdded(object sender, TransactionEventArgs e)
@@ -284,13 +293,13 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "UnconfirmedTxAddedEventHandler error for {@Currency}", Currency?.Name);
+                Log.Error(ex, "UnconfirmedTxAddedEventHandler error for {@Currency}", CurrencyCode);
             }
         }
 
         public virtual async Task LoadTransactionsAsync()
         {
-            Log.Debug("LoadTransactionsAsync for {@Currency}", Currency?.Name);
+            Log.Debug("LoadTransactionsAsync for {@Currency}", CurrencyCode);
 
             try
             {
@@ -333,7 +342,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "LoadTransactionAsync error for {@Currency}", Currency?.Name);
+                Log.Error(e, "LoadTransactionAsync error for {@Currency}", CurrencyCode);
             }
         }
 

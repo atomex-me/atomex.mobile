@@ -120,10 +120,23 @@ namespace atomex.ViewModels.DappsViewModels
             if (sender is not IQuotesProvider quotesProvider)
                 return;
 
-            var xtzQuote = quotesProvider.GetQuote(TezosConfig.Xtz, BaseCurrencyCode);
-            AmountInBase = AmountInTez.SafeMultiply(xtzQuote?.Bid ?? 0);
-            FeeInBase = FeeInTez.SafeMultiply(xtzQuote?.Bid ?? 0);
-            Log.Debug("Quotes updated for beacon TransactionContent operation {Id}", Id);
+            try
+            {
+                var xtzQuote = quotesProvider.GetQuote(TezosConfig.Xtz, BaseCurrencyCode);
+                
+                if (xtzQuote == null) return;
+
+                Device.InvokeOnMainThreadAsync(() =>
+                {
+                    AmountInBase = AmountInTez.SafeMultiply(xtzQuote?.Bid ?? 0);
+                    FeeInBase = FeeInTez.SafeMultiply(xtzQuote?.Bid ?? 0);
+                });
+                Log.Debug("Quotes updated for beacon TransactionContent operation {Id}", Id);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Update quotes error for beacon TransactionContent operation {Id}", Id);
+            }
         }
 
         private ReactiveCommand<Unit, Unit> _openDestinationInExplorer;
@@ -149,9 +162,20 @@ namespace atomex.ViewModels.DappsViewModels
             if (sender is not IQuotesProvider quotesProvider)
                 return;
 
-            var xtzQuote = quotesProvider.GetQuote(TezosConfig.Xtz, BaseCurrencyCode);
-            FeeInBase = FeeInTez.SafeMultiply(xtzQuote?.Bid ?? 0);
-            Log.Debug("Quotes updated for beacon RevealContent operation {Id}", Id);
+            try
+            {
+                var xtzQuote = quotesProvider.GetQuote(TezosConfig.Xtz, BaseCurrencyCode);
+                if (xtzQuote == null) return;
+                
+                Device.InvokeOnMainThreadAsync(() =>
+                    FeeInBase = FeeInTez.SafeMultiply(xtzQuote?.Bid ?? 0));
+                Log.Debug("Quotes updated for beacon RevealContent operation {Id}", Id);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e,"Update quotes error for beacon RevealContent operation {Id}", Id);
+            }
+            
         }
     }
 
@@ -211,10 +235,20 @@ namespace atomex.ViewModels.DappsViewModels
         {
             if (sender is not IQuotesProvider quotesProvider)
                 return;
+            try
+            {
+                var xtzQuote = quotesProvider.GetQuote(TezosConfig.Xtz, BaseCurrencyCode);
+                if (xtzQuote == null) return;
 
-            var xtzQuote = quotesProvider.GetQuote(TezosConfig.Xtz, BaseCurrencyCode);
-            FeeInBase = FeeInTez.SafeMultiply(xtzQuote?.Bid ?? 0);
-            Log.Debug("Quotes updated for beacon DelegationContent operation {Id}", Id);
+                Device.InvokeOnMainThreadAsync(() =>
+                    FeeInBase = FeeInTez.SafeMultiply(xtzQuote?.Bid ?? 0));
+                Log.Debug("Quotes updated for beacon DelegationContent operation {Id}", Id);
+
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Update quotes error for beacon DelegationContent operation {Id}", Id);
+            }
         }
     }
 
@@ -264,7 +298,7 @@ namespace atomex.ViewModels.DappsViewModels
                         TotalGasFee = long.MaxValue;
                 }
 
-                Device.InvokeOnMainThreadAsync(() => { this.RaisePropertyChanged(nameof(TotalGasFee)); });
+                Device.InvokeOnMainThreadAsync(() => this.RaisePropertyChanged(nameof(TotalGasFee)));
             }
         }
 
@@ -276,7 +310,7 @@ namespace atomex.ViewModels.DappsViewModels
             get => TotalStorageFee.ToString(CultureInfo.InvariantCulture);
             set
             {
-                string temp = value.Replace(",", ".");
+                var temp = value.Replace(",", ".");
                 if (!decimal.TryParse(
                         s: temp,
                         style: NumberStyles.AllowDecimalPoint,
@@ -293,7 +327,7 @@ namespace atomex.ViewModels.DappsViewModels
                         TotalStorageFee = long.MaxValue;
                 }
 
-                Device.InvokeOnMainThreadAsync(() => { this.RaisePropertyChanged(nameof(TotalStorageFee)); });
+                Device.InvokeOnMainThreadAsync(() => this.RaisePropertyChanged(nameof(TotalStorageFee)));
             }
         }
 
@@ -301,11 +335,11 @@ namespace atomex.ViewModels.DappsViewModels
         [Reactive] public bool UseDefaultFee { get; set; }
         [Reactive] public bool AutofillError { get; set; }
         [Reactive] public IQuotesProvider QuotesProvider { get; set; }
-        private TezosConfig _tezos { get; }
-        private static string _baseCurrencyCode => "USD";
-        private static string _baseCurrencyFormat => "$0.##";
-        private int? _byteCost { get; set; }
-        private int _defaultOperationGasLimit { get; }
+        private TezosConfig Tezos { get; }
+        private static string BaseCurrencyCode => "USD";
+        private static string BaseCurrencyFormat => "$0.##";
+        private int? _byteCost;
+        private int _defaultOperationGasLimit;
         [ObservableAsProperty] public bool IsSending { get; }
         [ObservableAsProperty] public bool IsRejecting { get; }
 
@@ -318,7 +352,7 @@ namespace atomex.ViewModels.DappsViewModels
             int operationGasLimit,
             TezosConfig tezosConfig)
         {
-            _tezos = tezosConfig;
+            Tezos = tezosConfig;
             ConnectedWalletAddress = connectedAddress;
             _initialOperations = operations;
             _defaultOperationGasLimit = operationGasLimit;
@@ -339,9 +373,7 @@ namespace atomex.ViewModels.DappsViewModels
                 .WhereNotNull()
                 .Take(1)
                 .SubscribeInMainThread(quotesProvider =>
-                {
-                    quotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
-                });
+                    quotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler);
 
             this.WhenAnyValue(vm => vm.Operations, vm => vm.QuotesProvider)
                 .WhereAllNotNull()
@@ -371,7 +403,7 @@ namespace atomex.ViewModels.DappsViewModels
                         DelegationContentViewModel delegationOp => res + delegationOp.FeeInTez,
                         _ => res
                     });
-                    TotalGasFeeString = TotalGasFee.ToString();
+                    TotalGasFeeString = TotalGasFee.ToString(CultureInfo.CurrentCulture);
                     this.RaisePropertyChanged(nameof(TotalGasFeeString));
 
                     const string url = "v1/protocols/current";
@@ -393,7 +425,7 @@ namespace atomex.ViewModels.DappsViewModels
 
                         _byteCost = byteCost;
                         TotalStorageFee = TezosConfig.MtzToTz(Convert.ToDecimal(byteCost)) * TotalStorageLimit;
-                        TotalStorageFeeString = TotalStorageFee.ToString();
+                        TotalStorageFeeString = TotalStorageFee.ToString(CultureInfo.CurrentCulture);
                         this.RaisePropertyChanged(nameof(TotalStorageFeeString));
                     }
                     catch (Exception ex)
@@ -420,7 +452,7 @@ namespace atomex.ViewModels.DappsViewModels
                     if (_byteCost != null)
                     {
                         TotalStorageFee = TezosConfig.MtzToTz(Convert.ToDecimal(_byteCost)) * totalStorageLimit;
-                        TotalStorageFeeString = TotalStorageFee.ToString();
+                        TotalStorageFeeString = TotalStorageFee.ToString(CultureInfo.CurrentCulture);
                         this.RaisePropertyChanged(nameof(TotalStorageFeeString));
                     }
                 });
@@ -450,7 +482,7 @@ namespace atomex.ViewModels.DappsViewModels
         {
             AutofillError = false;
             
-            var rpc = new Rpc(_tezos.RpcNodeUri);
+            var rpc = new Rpc(Tezos.RpcNodeUri);
             JObject head;
             try
             {
@@ -521,7 +553,7 @@ namespace atomex.ViewModels.DappsViewModels
                         operations,
                         head["hash"]!.ToString(),
                         head["chain_id"]!.ToString(),
-                        _tezos)
+                        Tezos)
                     .ConfigureAwait(false);
 
                 if (!UseDefaultFee)
@@ -565,7 +597,7 @@ namespace atomex.ViewModels.DappsViewModels
                                 Id = index + 1,
                                 Operation = transactionOperation,
                                 QuotesProvider = QuotesProvider,
-                                ExplorerUri = _tezos.AddressExplorerUri
+                                ExplorerUri = Tezos.AddressExplorerUri
                             });
                             break;
                         case RevealContent revealOperation:
@@ -582,7 +614,7 @@ namespace atomex.ViewModels.DappsViewModels
                                 Id = index + 1,
                                 Operation = delegationOperation,
                                 QuotesProvider = QuotesProvider,
-                                ExplorerUri = _tezos.AddressExplorerUri
+                                ExplorerUri = Tezos.AddressExplorerUri
                             });
                             break;
                     }
@@ -610,13 +642,23 @@ namespace atomex.ViewModels.DappsViewModels
         {
             if (sender is not IQuotesProvider quotesProvider)
                 return;
+            
+            try
+            {
+                var xtzQuote = quotesProvider.GetQuote(TezosConfig.Xtz, BaseCurrencyCode);
+                if (xtzQuote == null) return;
 
-            var xtzQuote = quotesProvider.GetQuote(TezosConfig.Xtz, _baseCurrencyCode);
-            TotalGasFeeInBase = TotalGasFee.SafeMultiply(xtzQuote?.Bid ?? 0);
-            TotalStorageFeeInBase = TotalStorageFee.SafeMultiply(xtzQuote?.Bid ?? 0);
-            TotalFeesInBase = TotalFees.SafeMultiply(xtzQuote?.Bid ?? 0);
-
-            Log.Debug("Quotes updated for Operation Request View");
+                Device.InvokeOnMainThreadAsync(() =>
+                {
+                    TotalGasFeeInBase = TotalGasFee.SafeMultiply(xtzQuote?.Bid ?? 0);
+                    TotalStorageFeeInBase = TotalStorageFee.SafeMultiply(xtzQuote?.Bid ?? 0);
+                    TotalFeesInBase = TotalFees.SafeMultiply(xtzQuote?.Bid ?? 0);
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Update quotes error for operation request");
+            }
         }
 
         public Func<byte[], Task> OnConfirm { get; set; }

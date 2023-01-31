@@ -27,10 +27,9 @@ namespace atomex.ViewModels.SendViewModels
 {
     public abstract class SendViewModel : BaseViewModel, IDisposable
     {
-        protected IAtomexApp _app { get; }
-        protected INavigationService _navigationService { get; }
-
-        protected CurrencyConfig _currency { get; set; }
+        protected IAtomexApp App { get; }
+        protected INavigationService NavigationService { get; }
+        protected CurrencyConfig Currency { get; set; }
         public BaseViewModel SelectFromViewModel { get; set; }
         public SelectAddressViewModel SelectToViewModel { get; set; }
         [Reactive] public CurrencyViewModel CurrencyViewModel { get; set; }
@@ -45,7 +44,7 @@ namespace atomex.ViewModels.SendViewModels
             get => Amount.ToString(CultureInfo.InvariantCulture);
             set
             {
-                string temp = value.Replace(",", ".");
+                var temp = value.Replace(",", ".");
                 if (!decimal.TryParse(
                         s: temp,
                         style: NumberStyles.AllowDecimalPoint,
@@ -62,7 +61,7 @@ namespace atomex.ViewModels.SendViewModels
                         Amount = long.MaxValue;
                 }
 
-                Device.InvokeOnMainThreadAsync(() => { this.RaisePropertyChanged(nameof(Amount)); });
+                Device.InvokeOnMainThreadAsync(() => this.RaisePropertyChanged(nameof(Amount)));
             }
         }
 
@@ -73,21 +72,14 @@ namespace atomex.ViewModels.SendViewModels
             get => Fee.ToString(CultureInfo.InvariantCulture);
             set
             {
-                string temp = value.Replace(",", ".");
-                if (!decimal.TryParse(
-                        s: temp,
-                        style: NumberStyles.AllowDecimalPoint,
-                        provider: CultureInfo.InvariantCulture,
-                        result: out var fee))
-                {
-                    Fee = 0;
-                }
-                else
-                {
-                    Fee = fee;
-                }
+                var temp = value.Replace(",", ".");
+                Fee = !decimal.TryParse(
+                    s: temp,
+                    style: NumberStyles.AllowDecimalPoint,
+                    provider: CultureInfo.InvariantCulture,
+                    result: out var fee) ? 0 : fee;
 
-                Device.InvokeOnMainThreadAsync(() => { this.RaisePropertyChanged(nameof(Fee)); });
+                Device.InvokeOnMainThreadAsync(() => this.RaisePropertyChanged(nameof(Fee)));
             }
         }
 
@@ -137,10 +129,10 @@ namespace atomex.ViewModels.SendViewModels
 
         public SendViewModel(IAtomexApp app, CurrencyViewModel currencyViewModel, INavigationService navigationService)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(app));
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            App = app ?? throw new ArgumentNullException(nameof(app));
+            NavigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             CurrencyViewModel = currencyViewModel ?? throw new ArgumentNullException(nameof(currencyViewModel));
-            _currency = currencyViewModel?.Currency;
+            Currency = currencyViewModel?.Currency;
 
             Message = new Message();
             RecommendedMaxAmountWarning = new Message();
@@ -164,7 +156,7 @@ namespace atomex.ViewModels.SendViewModels
             this.WhenAnyValue(
                     vm => vm.Amount,
                     vm => vm.Fee,
-                    (amount, fee) => _currency.IsToken ? amount : amount + fee)
+                    (amount, fee) => Currency.IsToken ? amount : amount + fee)
                 .Select(totalAmount => totalAmount.ToString(CultureInfo.CurrentCulture))
                 .ToPropertyExInMainThread(this, vm => vm.TotalAmountString);
 
@@ -182,7 +174,7 @@ namespace atomex.ViewModels.SendViewModels
                     vm => vm.Amount,
                     vm => vm.Fee
                 )
-                .Subscribe(_ => OnQuotesUpdatedEventHandler(_app.QuotesProvider, EventArgs.Empty));
+                .Subscribe(_ => OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty));
 
             this.WhenAnyValue(vm => vm.Fee)
                 .Select(_ => Unit.Default)
@@ -241,7 +233,7 @@ namespace atomex.ViewModels.SendViewModels
                     SendRecommendedAmountMenu = string.Format(
                         AppResources.SendRecommendedAmountMenu,
                         RecommendedMaxAmount,
-                        _currency.Name);
+                        Currency.Name);
                 });
 
             this.WhenAnyValue(vm => vm.Amount)
@@ -250,7 +242,7 @@ namespace atomex.ViewModels.SendViewModels
                     SendEnteredAmountMenu = string.Format(
                         AppResources.SendEnteredAmountMenu,
                         Amount,
-                        _currency.Name);
+                        Currency.Name);
                 });
 
             SubscribeToServices();
@@ -264,7 +256,7 @@ namespace atomex.ViewModels.SendViewModels
                 return;
             }
 
-            string temp = value.Replace(",", ".");
+            var temp = value.Replace(",", ".");
             if (!decimal.TryParse(
                     s: temp,
                     style: NumberStyles.AllowDecimalPoint,
@@ -275,10 +267,9 @@ namespace atomex.ViewModels.SendViewModels
             }
             else
             {
-                if (amount > long.MaxValue)
-                    AmountString = long.MaxValue.ToString();
-                else
-                    AmountString = value;
+                AmountString = amount > long.MaxValue 
+                    ? long.MaxValue.ToString() 
+                    : value;
             }
 
             this.RaisePropertyChanged(nameof(AmountString));
@@ -292,7 +283,7 @@ namespace atomex.ViewModels.SendViewModels
                 return;
             }
 
-            string temp = value.Replace(",", ".");
+            var temp = value.Replace(",", ".");
             if (!decimal.TryParse(
                     s: temp,
                     style: NumberStyles.AllowDecimalPoint,
@@ -303,10 +294,9 @@ namespace atomex.ViewModels.SendViewModels
             }
             else
             {
-                if (amount > long.MaxValue)
-                    FeeString = long.MaxValue.ToString();
-                else
-                    FeeString = value;
+                FeeString = amount > long.MaxValue 
+                    ? long.MaxValue.ToString() 
+                    : value;
             }
 
             this.RaisePropertyChanged(nameof(FeeString));
@@ -314,19 +304,21 @@ namespace atomex.ViewModels.SendViewModels
 
         private void SubscribeToServices()
         {
-            if (_app.HasQuotesProvider)
-                _app.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
+            if (App.HasQuotesProvider)
+                App.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
 
         private ICommand _undoConfirmStageCommand;
 
         public ICommand UndoConfirmStageCommand => _undoConfirmStageCommand ??= new Command(() =>
-            Stage = _navigationService.HasMultipleBottomSheets() ? Stage : SendStage.Edit);
+            Stage = NavigationService.HasMultipleBottomSheets() 
+                ? Stage 
+                : SendStage.Edit);
 
         private ICommand _closeConfirmationCommand;
 
         public ICommand CloseConfirmationCommand =>
-            _closeConfirmationCommand ??= new Command(() => _navigationService?.ClosePopup());
+            _closeConfirmationCommand ??= new Command(() => NavigationService?.ClosePopup());
 
         private ReactiveCommand<Unit, Unit> _maxCommand;
 
@@ -342,8 +334,10 @@ namespace atomex.ViewModels.SendViewModels
 
         public ReactiveCommand<Unit, Unit> ShowRecommendedMaxAmountTooltip =>
             _showRecommendedMaxAmountTooltip ??= (_showRecommendedMaxAmountTooltip =
-                ReactiveCommand.CreateFromTask(() => _navigationService?.ShowAlert(AppResources.Warning,
-                    RecommendedMaxAmountWarning?.TooltipText, AppResources.AcceptButton)));
+                ReactiveCommand.CreateFromTask(() => NavigationService?.ShowAlert(
+                    AppResources.Warning, 
+                    RecommendedMaxAmountWarning?.TooltipText,
+                    AppResources.AcceptButton)));
 
         private ReactiveCommand<Unit, Unit> _selectFromCommand;
 
@@ -368,7 +362,7 @@ namespace atomex.ViewModels.SendViewModels
                     element: RelatedTo.Address,
                     text: AppResources.EmptyAddressError);
 
-            else if (!_currency.IsValidAddress(To))
+            else if (!Currency.IsValidAddress(To))
                 ShowMessage(
                     messageType: MessageType.Error,
                     element: RelatedTo.Address,
@@ -386,7 +380,7 @@ namespace atomex.ViewModels.SendViewModels
                     element: RelatedTo.Fee,
                     text: AppResources.CommissionLessThanZeroError);
 
-            var feeAmount = !_currency.IsToken ? Fee : 0;
+            var feeAmount = !Currency.IsToken ? Fee : 0;
 
             if (Amount + feeAmount > CurrencyViewModel.AvailableAmount)
                 ShowMessage(
@@ -413,16 +407,16 @@ namespace atomex.ViewModels.SendViewModels
                     {
                         if (error != null)
                         {
-                            _navigationService?.DisplaySnackBar(
+                            NavigationService?.DisplaySnackBar(
                                 SnackbarMessage.MessageType.Error,
                                 error.Description);
                             return;
                         }
 
-                        _navigationService?.ClosePopup();
-                        await _navigationService!.ReturnToInitiatedPage(TabNavigation.Portfolio);
+                        NavigationService?.ClosePopup();
+                        await NavigationService!.ReturnToInitiatedPage(TabNavigation.Portfolio);
 
-                        _navigationService?.DisplaySnackBar(
+                        NavigationService?.DisplaySnackBar(
                             SnackbarMessage.MessageType.Success,
                             string.Format(CultureInfo.InvariantCulture, AppResources.SuccessSending));
                     });
@@ -431,7 +425,7 @@ namespace atomex.ViewModels.SendViewModels
                 {
                     Log.Error(e, "Transaction send error");
                     await Device.InvokeOnMainThreadAsync(() =>
-                        _navigationService?.DisplaySnackBar(
+                        NavigationService?.DisplaySnackBar(
                             SnackbarMessage.MessageType.Error,
                             AppResources.SendingTransactionError));
                 }
@@ -445,12 +439,12 @@ namespace atomex.ViewModels.SendViewModels
             else if (Stage == SendStage.Confirmation && ShowAdditionalConfirmation)
             {
                 Stage = SendStage.AdditionalConfirmation;
-                _navigationService?.ShowPopup(new WarningConfirmationBottomSheet(this));
+                NavigationService?.ShowPopup(new WarningConfirmationBottomSheet(this));
             }
             else
             {
                 Stage = SendStage.Confirmation;
-                _navigationService?.ShowPopup(new SendingConfirmationBottomSheet(this));
+                NavigationService?.ShowPopup(new SendingConfirmationBottomSheet(this));
             }
         }
 
@@ -463,21 +457,21 @@ namespace atomex.ViewModels.SendViewModels
             switch (selectAddressViewModel.SelectAddressFrom)
             {
                 case SelectAddressFrom.Init:
-                    _navigationService?.ShowPage(new SelectAddressPage(SelectToViewModel), TabNavigation.Portfolio);
+                    NavigationService?.ShowPage(new SelectAddressPage(SelectToViewModel), TabNavigation.Portfolio);
                     break;
 
                 case SelectAddressFrom.Change:
-                    _navigationService?.ClosePage(TabNavigation.Portfolio);
+                    NavigationService?.ClosePage(TabNavigation.Portfolio);
                     break;
 
                 case SelectAddressFrom.InitSearch:
-                    _navigationService?.ShowPage(new SelectAddressPage(SelectToViewModel), TabNavigation.Portfolio);
-                    _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
+                    NavigationService?.ShowPage(new SelectAddressPage(SelectToViewModel), TabNavigation.Portfolio);
+                    NavigationService?.RemovePreviousPage(TabNavigation.Portfolio);
                     break;
 
                 case SelectAddressFrom.ChangeSearch:
-                    _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
-                    _navigationService?.ClosePage(TabNavigation.Portfolio);
+                    NavigationService?.RemovePreviousPage(TabNavigation.Portfolio);
+                    NavigationService?.ClosePage(TabNavigation.Portfolio);
                     break;
             }
         }
@@ -490,21 +484,21 @@ namespace atomex.ViewModels.SendViewModels
             switch (selectAddressViewModel.SelectAddressFrom)
             {
                 case SelectAddressFrom.Init:
-                    _navigationService?.ShowPage(new SendPage(this), TabNavigation.Portfolio);
+                    NavigationService?.ShowPage(new SendPage(this), TabNavigation.Portfolio);
                     break;
 
                 case SelectAddressFrom.Change:
-                    _navigationService?.ClosePage(TabNavigation.Portfolio);
+                    NavigationService?.ClosePage(TabNavigation.Portfolio);
                     break;
 
                 case SelectAddressFrom.InitSearch:
-                    _navigationService?.ShowPage(new SendPage(this), TabNavigation.Portfolio);
-                    _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
+                    NavigationService?.ShowPage(new SendPage(this), TabNavigation.Portfolio);
+                    NavigationService?.RemovePreviousPage(TabNavigation.Portfolio);
                     break;
 
                 case SelectAddressFrom.ChangeSearch:
-                    _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
-                    _navigationService?.ClosePage(TabNavigation.Portfolio);
+                    NavigationService?.RemovePreviousPage(TabNavigation.Portfolio);
+                    NavigationService?.ClosePage(TabNavigation.Portfolio);
                     break;
             }
         }
@@ -514,21 +508,22 @@ namespace atomex.ViewModels.SendViewModels
             if (sender is not IQuotesProvider quotesProvider)
                 return;
 
-            var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
-
-            Device.InvokeOnMainThreadAsync(() =>
+            try
             {
-                try
+                var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
+                if (quote == null) return;
+
+                Device.InvokeOnMainThreadAsync(() =>
                 {
-                    AmountInBase = Amount * (quote?.Bid ?? 0m);
-                    FeeInBase = Fee * (quote?.Bid ?? 0m);
+                    AmountInBase = Amount.SafeMultiply(quote?.Bid ?? 0m);
+                    FeeInBase = Fee.SafeMultiply(quote?.Bid ?? 0m);
                     TotalAmountInBase = AmountInBase + FeeInBase;
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e, "OnQuotesUpdatedEventHandler error");
-                }
-            });
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Update quotes error for {@Currency} sending", CurrencyCode);
+            }
         }
 
         protected void ShowMessage(MessageType messageType, RelatedTo element, string text, string tooltipText = null)
@@ -554,8 +549,8 @@ namespace atomex.ViewModels.SendViewModels
         
         public void Dispose()
         {
-            if (_app.HasQuotesProvider)
-                _app.QuotesProvider.QuotesUpdated -= OnQuotesUpdatedEventHandler;
+            if (App.HasQuotesProvider)
+                App.QuotesProvider.QuotesUpdated -= OnQuotesUpdatedEventHandler;
         }
     }
 }
