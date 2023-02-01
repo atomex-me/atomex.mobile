@@ -22,7 +22,7 @@ namespace atomex.ViewModels.ConversionViewModels
             get => Amount.ToString(CultureInfo.CurrentCulture);
             set
             {
-                string temp = value.Replace(",", ".");
+                var temp = value.Replace(",", ".");
                 if (!decimal.TryParse(
                     s: temp,
                     style: NumberStyles.AllowDecimalPoint,
@@ -51,7 +51,7 @@ namespace atomex.ViewModels.ConversionViewModels
                 return;
             }
 
-            string temp = value.Replace(",", ".");
+            var temp = value.Replace(",", ".");
             if (!decimal.TryParse(
                 s: temp,
                 style: NumberStyles.AllowDecimalPoint,
@@ -62,10 +62,9 @@ namespace atomex.ViewModels.ConversionViewModels
             }
             else
             {
-                if (amount > long.MaxValue)
-                    AmountString = long.MaxValue.ToString();
-                else
-                    AmountString = value;
+                AmountString = amount > long.MaxValue 
+                    ? long.MaxValue.ToString() 
+                    : value;
             }
 
             this.RaisePropertyChanged(nameof(AmountString));

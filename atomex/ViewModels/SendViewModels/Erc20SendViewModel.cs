@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using atomex.Resources;
 using Atomex;
 using Atomex.Blockchain.Abstract;
+using atomex.Common;
 using Atomex.Common;
 using Atomex.MarketData.Abstract;
 using atomex.ViewModels.CurrencyViewModels;
@@ -30,8 +31,8 @@ namespace atomex.ViewModels.SendViewModels
         {
             try
             {
-                var account = _app.Account
-                    .GetCurrencyAccount<Erc20Account>(_currency.Name);
+                var account = App.Account
+                    .GetCurrencyAccount<Erc20Account>(Currency.Name);
 
                 var maxAmountEstimation = await account.EstimateMaxAmountToSendAsync(
                     from: From,
@@ -44,11 +45,11 @@ namespace atomex.ViewModels.SendViewModels
                 {
                     if (maxAmountEstimation.Fee > 0)
                     {
-                        GasPrice = decimal.ToInt32(_currency.GetFeePriceFromFeeAmount(maxAmountEstimation.Fee, GasLimit));
+                        GasPrice = decimal.ToInt32(Currency.GetFeePriceFromFeeAmount(maxAmountEstimation.Fee, GasLimit));
                     }
                     else
                     {
-                        GasPrice = decimal.ToInt32(await _currency.GetDefaultFeePriceAsync());
+                        GasPrice = decimal.ToInt32(await Currency.GetDefaultFeePriceAsync());
                     }
                 }
 
@@ -70,7 +71,7 @@ namespace atomex.ViewModels.SendViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "{@Currency}: update amount error", _currency?.Description);
+                Log.Error(e, "{@Currency}: update amount error", Currency?.Description);
             }
         }
 
@@ -80,8 +81,8 @@ namespace atomex.ViewModels.SendViewModels
             {
                 if (!UseDefaultFee)
                 {
-                    var account = _app.Account
-                        .GetCurrencyAccount<Erc20Account>(_currency.Name);
+                    var account = App.Account
+                        .GetCurrencyAccount<Erc20Account>(Currency.Name);
 
                     // estimate max amount with new GasPrice
                     var maxAmountEstimation = await account.EstimateMaxAmountToSendAsync(
@@ -110,7 +111,7 @@ namespace atomex.ViewModels.SendViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "{@Currency}: update gas price error", _currency?.Description);
+                Log.Error(e, "{@Currency}: update gas price error", Currency?.Description);
             }
         }
 
@@ -118,8 +119,8 @@ namespace atomex.ViewModels.SendViewModels
         {
             try
             {
-                var account = _app.Account
-                    .GetCurrencyAccount<Erc20Account>(_currency.Name);
+                var account = App.Account
+                    .GetCurrencyAccount<Erc20Account>(Currency.Name);
 
                 var maxAmountEstimation = await account
                     .EstimateMaxAmountToSendAsync(
@@ -130,7 +131,7 @@ namespace atomex.ViewModels.SendViewModels
                         reserve: false);
 
                 if (UseDefaultFee && maxAmountEstimation.Fee > 0)
-                    GasPrice = decimal.ToInt32(_currency.GetFeePriceFromFeeAmount(maxAmountEstimation.Fee, GasLimit));
+                    GasPrice = decimal.ToInt32(Currency.GetFeePriceFromFeeAmount(maxAmountEstimation.Fee, GasLimit));
 
                 if (maxAmountEstimation.Error != null)
                 {
@@ -151,29 +152,38 @@ namespace atomex.ViewModels.SendViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "{@Currency}: max click error", _currency?.Description);
+                Log.Error(e, "{@Currency}: max click error", Currency?.Description);
             }
         }
 
         protected override void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
-            if (sender is not IQuotesProvider quotesProvider)
-                return;
-
-            var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
-            var ethQuote = quotesProvider.GetQuote(_currency.FeeCurrencyName, BaseCurrencyCode);
-
-            Device.InvokeOnMainThreadAsync(() =>
+            try
             {
-                AmountInBase = Amount * (quote?.Bid ?? 0m);
-                FeeInBase = Fee * (ethQuote?.Bid ?? 0m);
-                TotalAmountInBase = AmountInBase + FeeInBase;
-            });
+                if (sender is not IQuotesProvider quotesProvider)
+                    return;
+
+                var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
+                var ethQuote = quotesProvider.GetQuote(Currency.FeeCurrencyName, BaseCurrencyCode);
+            
+                if (quote == null || ethQuote == null) return;
+
+                Device.InvokeOnMainThreadAsync(() =>
+                {
+                    AmountInBase = Amount * (quote?.Bid ?? 0m);
+                    FeeInBase = Fee * (ethQuote?.Bid ?? 0m);
+                    TotalAmountInBase = AmountInBase + FeeInBase;
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Update quotes error on {@Currency}", CurrencyCode);
+            }
         }
 
         protected override Task<Error> Send(CancellationToken cancellationToken = default)
         {
-            var account = _app.Account.GetCurrencyAccount<Erc20Account>(_currency.Name);
+            var account = App.Account.GetCurrencyAccount<Erc20Account>(Currency.Name);
 
             return account.SendAsync(
                 from: From,

@@ -171,7 +171,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             this.WhenAnyValue(vm => vm.TotalAmount)
                 .WhereNotNull()
                 .Where(_ => _app != null)
-                .SubscribeInMainThread(_ => UpdateQuotesInBaseCurrency(_app.QuotesProvider));
+                .Subscribe(_ => UpdateQuotesInBaseCurrency(_app.QuotesProvider));
 
             this.WhenAnyValue(vm => vm.SelectedTransaction)
                 .WhereNotNull()
@@ -360,11 +360,12 @@ namespace atomex.ViewModels.CurrencyViewModels
             {
                 var tokenQuote = quotesProvider.GetQuote(TokenBalance.Symbol, BaseCurrencyCode);
                 var xtzQuote = quotesProvider.GetQuote(TezosConfig.Xtz, BaseCurrencyCode);
-
+                if (tokenQuote == null || xtzQuote == null) return;
+                
                 Device.InvokeOnMainThreadAsync(() =>
                 {
-                    CurrentQuote = tokenQuote.Bid.SafeMultiply(xtzQuote.Bid);
-                    TotalAmountInBase = TotalAmount.SafeMultiply(CurrentQuote);
+                    CurrentQuote = (tokenQuote?.Bid ?? 0m) * (xtzQuote?.Bid ?? 0m);
+                    TotalAmountInBase = TotalAmount * CurrentQuote;
                 });
             }
             catch (Exception e)

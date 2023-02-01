@@ -28,7 +28,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public CollectiblesViewModel CollectiblesViewModel { get; set; }
         [Reactive] public DappsViewModel DappsViewModel { get; set; }
 
-        private DelegateViewModel _delegateViewModel { get; set; }
+        private DelegateViewModel _delegateViewModel;
 
         public const double DefaultDelegationRowHeight = 76;
         [Reactive] public double DelegationListViewHeight { get; set; }
@@ -57,9 +57,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             this.WhenAnyValue(vm => vm.Delegations)
                 .WhereNotNull()
                 .SubscribeInMainThread(d =>
-                {
-                    DelegationListViewHeight = Delegations.Count * DefaultDelegationRowHeight;
-                });
+                    DelegationListViewHeight = Delegations.Count * DefaultDelegationRowHeight);
 
             _ = LoadDelegationInfoAsync();
 

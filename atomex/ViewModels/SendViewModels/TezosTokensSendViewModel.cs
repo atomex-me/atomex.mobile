@@ -30,8 +30,8 @@ namespace atomex.ViewModels.SendViewModels
 {
     public class TezosTokensSendViewModel : BaseViewModel, IDisposable
     {
-        private IAtomexApp _app { get; }
-        private INavigationService _navigationService { get; }
+        private IAtomexApp _app;
+        private INavigationService _navigationService;
 
         public const string DefaultBaseCurrencyCode = "USD";
         public const string DefaultBaseCurrencyFormat = "$0.00";
@@ -53,7 +53,7 @@ namespace atomex.ViewModels.SendViewModels
             get => Amount.ToString(CultureInfo.InvariantCulture);
             set
             {
-                string temp = value.Replace(",", ".");
+                var temp = value.Replace(",", ".");
                 if (!decimal.TryParse(
                         s: temp,
                         style: NumberStyles.AllowDecimalPoint,
@@ -70,7 +70,7 @@ namespace atomex.ViewModels.SendViewModels
                         Amount = long.MaxValue;
                 }
 
-                Device.InvokeOnMainThreadAsync(() => { this.RaisePropertyChanged(nameof(Amount)); });
+                Device.InvokeOnMainThreadAsync(() => this.RaisePropertyChanged(nameof(Amount)));
             }
         }
 
@@ -82,7 +82,7 @@ namespace atomex.ViewModels.SendViewModels
                 return;
             }
 
-            string temp = value.Replace(",", ".");
+            var temp = value.Replace(",", ".");
             if (!decimal.TryParse(
                     s: temp,
                     style: NumberStyles.AllowDecimalPoint,
@@ -93,10 +93,9 @@ namespace atomex.ViewModels.SendViewModels
             }
             else
             {
-                if (amount > long.MaxValue)
-                    AmountString = long.MaxValue.ToString();
-                else
-                    AmountString = value;
+                AmountString = amount > long.MaxValue 
+                    ? long.MaxValue.ToString() 
+                    : value;
             }
 
             this.RaisePropertyChanged(nameof(AmountString));
@@ -109,21 +108,14 @@ namespace atomex.ViewModels.SendViewModels
             get => Fee.ToString(CultureInfo.InvariantCulture);
             set
             {
-                string temp = value.Replace(",", ".");
-                if (!decimal.TryParse(
-                        s: temp,
-                        style: NumberStyles.AllowDecimalPoint,
-                        provider: CultureInfo.InvariantCulture,
-                        result: out var fee))
-                {
-                    Fee = 0;
-                }
-                else
-                {
-                    Fee = fee;
-                }
+                var temp = value.Replace(",", ".");
+                Fee = !decimal.TryParse(
+                    s: temp,
+                    style: NumberStyles.AllowDecimalPoint,
+                    provider: CultureInfo.InvariantCulture,
+                    result: out var fee) ? 0 : fee;
 
-                Device.InvokeOnMainThreadAsync(() => { this.RaisePropertyChanged(nameof(Fee)); });
+                Device.InvokeOnMainThreadAsync(() => this.RaisePropertyChanged(nameof(Fee)));
             }
         }
 
@@ -135,7 +127,7 @@ namespace atomex.ViewModels.SendViewModels
                 return;
             }
 
-            string temp = value.Replace(",", ".");
+            var temp = value.Replace(",", ".");
             if (!decimal.TryParse(
                     s: temp,
                     style: NumberStyles.AllowDecimalPoint,
@@ -146,10 +138,9 @@ namespace atomex.ViewModels.SendViewModels
             }
             else
             {
-                if (amount > long.MaxValue)
-                    FeeString = long.MaxValue.ToString();
-                else
-                    FeeString = value;
+                FeeString = amount > long.MaxValue 
+                    ? long.MaxValue.ToString()
+                    : value;
             }
 
             this.RaisePropertyChanged(nameof(FeeString));
@@ -780,17 +771,25 @@ namespace atomex.ViewModels.SendViewModels
 
         protected void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
-            if (sender is not IQuotesProvider quotesProvider)
-                return;
-
-            var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
-            var feeQuote = quotesProvider.GetQuote(FeeCurrencyCode, BaseCurrencyCode);
-
-            Device.InvokeOnMainThreadAsync(() =>
+            try
             {
-                AmountInBase = Amount * (quote?.Bid ?? 0m);
-                FeeInBase = Fee * (feeQuote?.Bid ?? 0m);
-            });
+                if (sender is not IQuotesProvider quotesProvider)
+                    return;
+
+                var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
+                var feeQuote = quotesProvider.GetQuote(FeeCurrencyCode, BaseCurrencyCode);
+                if (quote == null || feeQuote == null) return;
+
+                Device.InvokeOnMainThreadAsync(() =>
+                {
+                    AmountInBase = Amount * (quote?.Bid ?? 0m);
+                    FeeInBase = Fee * (feeQuote?.Bid ?? 0m);
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error("Update quote error for {@Token} sending", CurrencyCode);
+            }
         }
 
         public static async Task<WalletAddress> GetTokenAddressAsync(
