@@ -59,26 +59,28 @@ namespace atomex.ViewModels
 
         public CurrencyActionType SelectCurrencyUseCase { get; set; }
         [Reactive] public CurrencyViewModel SelectedCurrency { get; set; }
-        
+
         [Reactive] public string[] CurrenciesForScan { get; set; }
         [Reactive] public bool Restore { get; set; }
         [Reactive] public bool IsRestoring { get; set; }
-        
+
         public event EventHandler CurrenciesLoaded;
 
         public PortfolioViewModel(IAtomexApp app)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));
-            
+
             this.WhenAnyValue(vm => vm.AllCurrencies)
                 .WhereNotNull()
                 .SubscribeInMainThread(async _ =>
                 {
                     SubscribeToUpdates();
                     CurrenciesLoaded?.Invoke(this, EventArgs.Empty);
-                    if (!Restore && CurrenciesForScan == null) 
+                    if (!Restore && CurrenciesForScan == null)
                         return;
                     await ScanCurrencies(Restore ? null : CurrenciesForScan);
+                    
+                    OnAmountUpdatedEventHandler(this, EventArgs.Empty);
                 });
 
             this.WhenAnyValue(vm => vm.NavigationService)
@@ -87,7 +89,7 @@ namespace atomex.ViewModels
 
             this.WhenAnyValue(vm => vm.SelectedCurrency)
                 .WhereNotNull()
-                .SubscribeInMainThread( c =>
+                .SubscribeInMainThread(c =>
                 {
                     switch (SelectCurrencyUseCase)
                     {
@@ -191,8 +193,11 @@ namespace atomex.ViewModels
         {
             try
             {
-                AvailableAmountInBase = AllCurrencies.Sum(c => c.CurrencyViewModel.TotalAmountInBase);
-                UnconfirmedAmountInBase = AllCurrencies.Sum(c => c.CurrencyViewModel.UnconfirmedAmountInBase);
+                Device.InvokeOnMainThreadAsync(() =>
+                {
+                    AvailableAmountInBase = AllCurrencies.Sum(c => c.CurrencyViewModel.TotalAmountInBase);
+                    UnconfirmedAmountInBase = AllCurrencies.Sum(c => c.CurrencyViewModel.UnconfirmedAmountInBase);
+                });
             }
             catch (Exception e)
             {
