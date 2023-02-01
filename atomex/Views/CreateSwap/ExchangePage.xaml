@@ -73,7 +73,7 @@
                         HeightRequest="35"
                         CornerRadius="20"
                         VerticalOptions="End"
-                        IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
+                        IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding FromViewModel.SelectCurrencyCommand}" />
                         </Frame.GestureRecognizers>
@@ -92,7 +92,7 @@
                     <Label Grid.Row="1"
                            Margin="18,10,0,0"
                            Style="{DynamicResource AdditionalTextH6}"
-                           IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}}"
+                           IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}"
                            MaxLines="1"
                            LineBreakMode="MiddleTruncation"
                            Text="{Binding FromViewModel.Address}" />
@@ -111,7 +111,7 @@
                             CornerRadius="15"
                             VerticalOptions="Start"
                             Command="{Binding FromViewModel.MaxCommand}"
-                            IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}}" />
+                            IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}" />
                     <Label Grid.Row="1"
                            Grid.Column="2"
                            Style="{DynamicResource AdditionalTextH6}"
@@ -119,14 +119,14 @@
                            Text="{Binding FromViewModel.AmountInBase, StringFormat='${0:f2}'}"
                            HorizontalTextAlignment="End"
                            VerticalTextAlignment="Start"
-                           IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}}" />
+                           IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}" />
                     <Label Grid.RowSpan="2"
                            Grid.ColumnSpan="2"
                            Style="{DynamicResource AdditionalTextH3}"
                            Text="{helpers:Translate ChooseFromCurrency}"
                            VerticalTextAlignment="Center"
                            Padding="16,0"
-                           IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}">
+                           IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}, FallbackValue='True', TargetNullValue='True'}">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding FromViewModel.SelectCurrencyCommand}" />
                         </Label.GestureRecognizers>
@@ -140,7 +140,7 @@
                                         HorizontalTextAlignment="End"
                                         VerticalTextAlignment="End"
                                         Margin="5,0,16,5"
-                                        IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
+                                        IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}">
                         <custom:CustomEntry.Behaviors>
                             <behaviors:EventToCommandBehavior EventName="Focused"
                                                               Command="{Binding FromViewModel.RaiseGotInputFocusCommand}" />
@@ -168,7 +168,7 @@
                            Margin="16,0"
                            HorizontalTextAlignment="End"
                            VerticalTextAlignment="Center"
-                           IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}">
+                           IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}, FallbackValue='True', TargetNullValue='True'}">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding FromViewModel.SelectCurrencyCommand}" />
                         </Label.GestureRecognizers>
@@ -183,10 +183,14 @@
                             <MultiBinding Converter="{StaticResource AllTrueConverter}">
                                 <Binding Path="FromViewModel.CurrencyViewModel"
                                          Mode="OneWay"
-                                         Converter="{StaticResource NullToBoolean}" />
+                                         Converter="{StaticResource NullToBoolean}"
+                                         TargetNullValue="False"
+                                         FallbackValue="False" />
                                 <Binding Path="ToViewModel.CurrencyViewModel"
                                          Mode="OneWay"
-                                         Converter="{StaticResource NullToBoolean}" />
+                                         Converter="{StaticResource NullToBoolean}"
+                                         TargetNullValue="False"
+                                         FallbackValue="False" />
                             </MultiBinding>
                         </Image.IsVisible>
                         <Image.GestureRecognizers>
@@ -207,10 +211,14 @@
                             <MultiBinding Converter="{StaticResource AllTrueConverter}">
                                 <Binding Path="FromViewModel.CurrencyViewModel"
                                          Mode="OneWay"
-                                         Converter="{StaticResource NullToBoolean}" />
+                                         Converter="{StaticResource NullToBoolean}"
+                                         TargetNullValue="False"
+                                         FallbackValue="False" />
                                 <Binding Path="ToViewModel.CurrencyViewModel"
                                          Mode="OneWay"
-                                         Converter="{StaticResource NullToBoolean}" />
+                                         Converter="{StaticResource NullToBoolean}"
+                                         TargetNullValue="False"
+                                         FallbackValue="False" />
                             </MultiBinding>
                         </StackLayout.IsVisible>
                         <Label HorizontalTextAlignment="End"
@@ -220,7 +228,7 @@
                                 <FormattedString>
                                     <Span Text="{helpers:Translate Available}" />
                                     <Span Text=" " />
-                                    <Span Text="{Binding EstimatedMaxFromAmount, StringFormat='{0:0.#########}'}" />
+                                    <Span Text="{Binding EstimatedMaxFromAmount, StringFormat='{0:0.########}'}" />
                                     <Span Text=" " />
                                     <Span Text="{Binding FromViewModel.CurrencyViewModel.CurrencyName}" />
                                 </FormattedString>
@@ -252,7 +260,7 @@
                            VerticalOptions="End"
                            BackgroundColor="{AppThemeBinding Dark={StaticResource ActionElementBackgroundColorDark}, Light={StaticResource ActionElementBackgroundColor}}"
                            BorderColor="Transparent"
-                           IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
+                           IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ToViewModel.SelectCurrencyCommand}" />
                         </Frame.GestureRecognizers>
@@ -280,7 +288,7 @@
                                         HorizontalTextAlignment="End"
                                         VerticalTextAlignment="End"
                                         Margin="5,0,16,5"
-                                        IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
+                                        IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}">
                         <custom:CustomEntry.Triggers>
                             <DataTrigger TargetType="custom:CustomEntry"
                                          Binding="{Binding ToViewModel.IsAmountValid}"
@@ -307,7 +315,7 @@
                            Text="{helpers:Translate ChooseToCurrency}"
                            VerticalTextAlignment="Center"
                            Padding="16,0"
-                           IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}">
+                           IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}, FallbackValue='True', TargetNullValue='True'}">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ToViewModel.SelectCurrencyCommand}" />
                         </Label.GestureRecognizers>
@@ -321,7 +329,7 @@
                            Margin="16,0"
                            HorizontalTextAlignment="End"
                            VerticalTextAlignment="Center"
-                           IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}">
+                           IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}, FallbackValue='True', TargetNullValue='True'}">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ToViewModel.SelectCurrencyCommand}" />
                         </Label.GestureRecognizers>
@@ -332,7 +340,7 @@
                            Margin="18,10,0,0"
                            MaxLines="1"
                            LineBreakMode="MiddleTruncation"
-                           IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}}" />
+                           IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}" />
                     <Label Grid.Row="4"
                            Grid.Column="2"
                            Margin="16,0"
@@ -340,7 +348,7 @@
                            HorizontalTextAlignment="End"
                            VerticalTextAlignment="Start"
                            Style="{DynamicResource AdditionalTextH6}"
-                           IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
+                           IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ToViewModel.SelectCurrencyCommand}" />
                         </Label.GestureRecognizers>
@@ -355,10 +363,14 @@
                         <MultiBinding Converter="{StaticResource AllTrueConverter}">
                             <Binding Path="FromViewModel.CurrencyViewModel"
                                      Mode="OneWay"
-                                     Converter="{StaticResource NullToBoolean}" />
+                                     Converter="{StaticResource NullToBoolean}"
+                                     TargetNullValue="False"
+                                     FallbackValue="False" />
                             <Binding Path="ToViewModel.CurrencyViewModel"
                                      Mode="OneWay"
-                                     Converter="{StaticResource NullToBoolean}" />
+                                     Converter="{StaticResource NullToBoolean}"
+                                     TargetNullValue="False"
+                                     FallbackValue="False" />
                             <Binding Path="UseRedeemAddress"
                                      Mode="OneWay" />
                         </MultiBinding>
@@ -382,10 +394,14 @@
                         <MultiBinding Converter="{StaticResource AllTrueConverter}">
                             <Binding Path="FromViewModel.CurrencyViewModel"
                                      Mode="OneWay"
-                                     Converter="{StaticResource NullToBoolean}" />
+                                     Converter="{StaticResource NullToBoolean}" 
+                                     TargetNullValue="False"
+                                     FallbackValue="False" />
                             <Binding Path="ToViewModel.CurrencyViewModel"
                                      Mode="OneWay"
-                                     Converter="{StaticResource NullToBoolean}" />
+                                     Converter="{StaticResource NullToBoolean}"
+                                     TargetNullValue="False"
+                                     FallbackValue="False" />
                         </MultiBinding>
                     </StackLayout.IsVisible>
                     <Label HorizontalTextAlignment="Start"
@@ -396,7 +412,7 @@
                                 <Span Text=" 1 " />
                                 <Span Text="{Binding BaseCurrencyCode}" />
                                 <Span Text=" = " />
-                                <Span Text="{Binding EstimatedPrice, StringFormat='{0:0.#########}'}" />
+                                <Span Text="{Binding EstimatedPrice, StringFormat='{0:0.########}'}" />
                                 <Span Text=" " />
                                 <Span Text="{Binding QuoteCurrencyCode}" />
                             </FormattedString>
@@ -683,10 +699,14 @@
                         <MultiBinding Converter="{StaticResource AllTrueConverter}">
                             <Binding Path="FromViewModel.CurrencyViewModel"
                                      Mode="OneWay"
-                                     Converter="{StaticResource NullToBoolean}" />
+                                     Converter="{StaticResource NullToBoolean}"
+                                     TargetNullValue="False"
+                                     FallbackValue="False" />
                             <Binding Path="ToViewModel.CurrencyViewModel"
                                      Mode="OneWay"
-                                     Converter="{StaticResource NullToBoolean}" />
+                                     Converter="{StaticResource NullToBoolean}"
+                                     TargetNullValue="False"
+                                     FallbackValue="False" />
                         </MultiBinding>
                     </StackLayout.IsVisible>
                     <Button Text="{helpers:Translate ExchangeButton}"
@@ -812,7 +832,7 @@
                                HorizontalTextAlignment="Start" />
                         <Label Grid.Row="1"
                                Grid.Column="1"
-                               Text="{Binding FromAmount, StringFormat='{0:0.000000000}'}"
+                               Text="{Binding FromAmount, StringFormat='{0:0.00000000}'}"
                                Style="{DynamicResource AdditionalTextH6}"
                                VerticalTextAlignment="Start"
                                HorizontalTextAlignment="Start" />
@@ -865,7 +885,7 @@
                                HorizontalTextAlignment="Start" />
                         <Label Grid.Row="1"
                                Grid.Column="4"
-                               Text="{Binding ToAmount, StringFormat='{0:0.000000000}'}"
+                               Text="{Binding ToAmount, StringFormat='{0:0.00000000}'}"
                                Style="{DynamicResource AdditionalTextH6}"
                                VerticalTextAlignment="Start"
                                HorizontalTextAlignment="Start" />

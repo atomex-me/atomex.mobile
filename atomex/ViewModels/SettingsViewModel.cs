@@ -64,15 +64,14 @@ namespace atomex.ViewModels
 
         public ObservableCollection<Language> Languages { get; } = new ObservableCollection<Language>()
         {
-            new Language { Name = "English", Code = "en", ShortName = "Eng", IsActive = false },
-            new Language { Name = "Français", Code = "fr", ShortName = "Fra", IsActive = false },
-            new Language { Name = "Русский", Code = "ru", ShortName = "Rus", IsActive = false },
-            new Language { Name = "Türk", Code = "tr", ShortName = "Tur", IsActive = false }
+            new Language {Name = "English", Code = "en", ShortName = "Eng", IsActive = false},
+            new Language {Name = "Français", Code = "fr", ShortName = "Fra", IsActive = false},
+            new Language {Name = "Русский", Code = "ru", ShortName = "Rus", IsActive = false},
+            new Language {Name = "Türk", Code = "tr", ShortName = "Tur", IsActive = false}
         };
 
         public string Header => AppResources.EnterPin;
         private const string LanguageKey = nameof(LanguageKey);
-
 
 
         public SettingsViewModel(
@@ -113,15 +112,12 @@ namespace atomex.ViewModels
             }
         }
 
-        public async Task ResetUseBiometricSetting()
+        private async Task ResetUseBiometricSetting()
         {
             try
             {
-                string value = await SecureStorage.GetAsync(_walletName);
-                if (string.IsNullOrEmpty(value))
-                    UseBiometric = false;
-                else
-                    UseBiometric = true;
+                var value = await SecureStorage.GetAsync(_walletName);
+                UseBiometric = !string.IsNullOrEmpty(value);
             }
             catch (Exception ex)
             {
@@ -130,7 +126,7 @@ namespace atomex.ViewModels
             }
         }
 
-        public async void UpdateUseBiometric(bool value)
+        private async void UpdateUseBiometric(bool value)
         {
             try
             {
@@ -204,7 +200,7 @@ namespace atomex.ViewModels
             {
                 var directoryPath = Path.GetDirectoryName(path);
                 if (!Directory.Exists(directoryPath)) return;
-                
+
                 Directory.Delete(directoryPath, true);
                 Wallets = WalletInfo
                     .AvailableWallets()
@@ -218,74 +214,88 @@ namespace atomex.ViewModels
 
         private async Task EnableBiometric(string pswd)
         {
-            IsLoading = true;
-            bool accountExist = CheckAccountExist();
-
-            IsLoading = false;
-            if (accountExist)
+            try
             {
-                try
-                {
-                    await SecureStorage.SetAsync(_walletName, pswd);
-                }
-                catch (Exception ex)
-                {
-                    NavigationService?.ShowAlert(
-                        title: AppResources.Error,
-                        text: AppResources.NotSupportSecureStorage,
-                        cancel: AppResources.AcceptButton);
-                    Log.Error(ex, "Device not support secure storage");
-                }
+                IsLoading = true;
+                var accountExist = CheckAccountExist();
 
-                await Device.InvokeOnMainThreadAsync(() =>
+                IsLoading = false;
+                if (accountExist)
                 {
-                    Warning = string.Empty;
-                    StoragePassword?.Clear();
-                    _ = ResetUseBiometricSetting();
-                    NavigationService?.ClosePage(TabNavigation.Settings);
-                    NavigationService?.DisplaySnackBar(
-                        messageType: SnackbarMessage.MessageType.Regular,
-                        text: AppResources.BiometricAuthEnabled);
-                });
-            }
-            else
-            {
-                Warning = AppResources.InvalidPin;
-
-                StoragePassword.Clear();
-                this.RaisePropertyChanged(nameof(StoragePassword));
-
-                var tabs = ((CustomTabbedPage)Application.Current.MainPage).Children;
-
-                foreach (var page in tabs)
-                {
-                    var tab = (NavigationPage) page;
-                    if (tab.RootPage is not SettingsPage) continue;
                     try
                     {
-                        Vibration.Vibrate();
+                        await SecureStorage.SetAsync(_walletName, pswd);
                     }
-                    catch (FeatureNotSupportedException ex)
+                    catch (Exception ex)
                     {
-                        Log.Error(ex, "Vibration not supported on device");
+                        NavigationService?.ShowAlert(
+                            title: AppResources.Error,
+                            text: AppResources.NotSupportSecureStorage,
+                            cancel: AppResources.AcceptButton);
+                        Log.Error(ex, "Device not support secure storage");
                     }
 
-                    await tab.TranslateTo(-15, 0, 50);
-                    await tab.TranslateTo(15, 0, 50);
-                    await tab.TranslateTo(-10, 0, 50);
-                    await tab.TranslateTo(10, 0, 50);
-                    await tab.TranslateTo(-5, 0, 50);
-                    await tab.TranslateTo(5, 0, 50);
-                    tab.TranslationX = 0;
-                    break;
+                    await Device.InvokeOnMainThreadAsync(() =>
+                    {
+                        Warning = string.Empty;
+                        StoragePassword?.Clear();
+                        _ = ResetUseBiometricSetting();
+                        NavigationService?.ClosePage(TabNavigation.Settings);
+                        NavigationService?.DisplaySnackBar(
+                            messageType: SnackbarMessage.MessageType.Regular,
+                            text: AppResources.BiometricAuthEnabled);
+                    });
                 }
+                else
+                {
+                    Warning = AppResources.InvalidPin;
+
+                    StoragePassword.Clear();
+                    this.RaisePropertyChanged(nameof(StoragePassword));
+
+                    var tabs = ((CustomTabbedPage) Application.Current.MainPage).Children;
+
+                    foreach (var page in tabs)
+                    {
+                        var tab = (NavigationPage) page;
+                        if (tab.RootPage is not SettingsPage) continue;
+                        try
+                        {
+                            Vibration.Vibrate();
+                        }
+                        catch (FeatureNotSupportedException ex)
+                        {
+                            Log.Error(ex, "Vibration not supported on device");
+                        }
+
+                        await tab.TranslateTo(-15, 0, 50);
+                        await tab.TranslateTo(15, 0, 50);
+                        await tab.TranslateTo(-10, 0, 50);
+                        await tab.TranslateTo(10, 0, 50);
+                        await tab.TranslateTo(-5, 0, 50);
+                        await tab.TranslateTo(5, 0, 50);
+                        tab.TranslationX = 0;
+                        break;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Enable biometric error");
             }
         }
 
         private async Task CheckBiometricSensor()
         {
-            var availability = await CrossFingerprint.Current.GetAvailabilityAsync();
-            BiometricSensorAvailibility = availability != FingerprintAvailability.NoSensor;
+            try
+            {
+                var availability = await CrossFingerprint.Current.GetAvailabilityAsync();
+                BiometricSensorAvailibility = availability != FingerprintAvailability.NoSensor;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Check biometric sensor error");
+            }
         }
 
         private ReactiveCommand<Unit, Unit> _showLanguagesCommand;
@@ -320,20 +330,21 @@ namespace atomex.ViewModels
         public ReactiveCommand<string, Unit> AddCharCommand => _addCharCommand ??= ReactiveCommand.Create<string>(
             (value) =>
             {
-                if (StoragePassword?.Length < 4)
+                try
                 {
+                    if (!(StoragePassword?.Length < 4)) return;
                     Warning = string.Empty;
 
-                    foreach (char c in value)
-                    {
+                    foreach (var c in value)
                         StoragePassword.AppendChar(c);
-                    }
-
                     this.RaisePropertyChanged(nameof(StoragePassword));
+                
                     if (StoragePassword?.Length == 4)
-                    {
                         _ = EnableBiometric(SecureStringToString(StoragePassword));
-                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "Append password char error");
                 }
             });
 
@@ -341,10 +352,16 @@ namespace atomex.ViewModels
 
         public ReactiveCommand<Unit, Unit> DeleteCharCommand => _deleteCharCommand ??= ReactiveCommand.Create(() =>
         {
-            if (StoragePassword?.Length != 0)
+            try
             {
+                if (StoragePassword?.Length == 0) return;
+            
                 StoragePassword!.RemoveAt(StoragePassword.Length - 1);
                 this.RaisePropertyChanged(nameof(StoragePassword));
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Remove password char error");
             }
         });
 
@@ -355,7 +372,7 @@ namespace atomex.ViewModels
 
         private String SecureStringToString(SecureString value)
         {
-            IntPtr valuePtr = IntPtr.Zero;
+            var valuePtr = IntPtr.Zero;
             try
             {
                 valuePtr = Marshal.SecureStringToGlobalAllocUnicode(value);
@@ -424,7 +441,7 @@ namespace atomex.ViewModels
             {
                 try
                 {
-                    WalletInfo selectedWallet = Wallets
+                    var selectedWallet = Wallets
                         .Single(w => w.Name == name);
 
                     var confirm = await NavigationService.ShowAlert(

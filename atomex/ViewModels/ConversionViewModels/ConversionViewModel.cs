@@ -34,7 +34,7 @@ namespace atomex.ViewModels.ConversionViewModels
     public class ConversionViewModel : BaseViewModel
     {
         private IAtomexApp _app;
-        private INavigationService NavigationService { get; set; }
+        [Reactive] private INavigationService NavigationService { get; set; }
 
         private ISymbols Symbols
         {
