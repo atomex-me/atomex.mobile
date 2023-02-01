@@ -175,7 +175,7 @@
                                        VerticalTextAlignment="End" />
                                 <Label Grid.Column="1"
                                        Grid.Row="1"
-                                       Text="{Binding Price, StringFormat='${0:f2}'}"
+                                       Text="{Binding CurrentQuote, StringFormat='${0:f2}'}"
                                        Style="{DynamicResource AdditionalTextH6}"
                                        Padding="12,0,8,0"
                                        HorizontalTextAlignment="Start"

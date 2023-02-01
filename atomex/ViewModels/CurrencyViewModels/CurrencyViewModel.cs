@@ -60,7 +60,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public decimal UnconfirmedAmount { get; set; }
         [Reactive] public decimal UnconfirmedAmountInBase { get; set; }
         public bool HasUnconfirmedAmount => UnconfirmedAmount != 0;
-        [Reactive] public decimal Price { get; set; }
+        [Reactive] public decimal CurrentQuote { get; set; }
 
         [Reactive] public ObservableCollection<TransactionViewModel> Transactions { get; set; }
 
@@ -237,9 +237,8 @@ namespace atomex.ViewModels.CurrencyViewModels
                     TotalAmount = balance.Confirmed;
                     AvailableAmount = balance.Available;
                     UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome;
-
-                    UpdateQuotesInBaseCurrency(QuotesProvider);
                 });
+                UpdateQuotesInBaseCurrency(QuotesProvider);
             }
             catch (Exception e)
             {
@@ -251,7 +250,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             if (sender is not IQuotesProvider quotesProvider)
                 return;
-
+            
             UpdateQuotesInBaseCurrency(quotesProvider);
         }
 
@@ -267,14 +266,14 @@ namespace atomex.ViewModels.CurrencyViewModels
 
                 Device.InvokeOnMainThreadAsync(() =>
                 {
-                    Price = quote?.Bid ?? 0;
-                    TotalAmountInBase = TotalAmount.SafeMultiply(quote?.Bid ?? 0);
-                    AvailableAmountInBase = AvailableAmount.SafeMultiply(quote?.Bid ?? 0);
-                    UnconfirmedAmountInBase = UnconfirmedAmount.SafeMultiply(quote?.Bid ?? 0);
-                    DailyChangePercent = quote?.DailyChangePercent ?? 0;
-
-                    AmountUpdated?.Invoke(this, EventArgs.Empty);
+                    CurrentQuote = quote?.Bid ?? 0m;
+                    DailyChangePercent = quote?.DailyChangePercent ?? 0m;
+                    TotalAmountInBase = TotalAmount * (quote?.Bid ?? 0m);
+                    AvailableAmountInBase = AvailableAmount * (quote?.Bid ?? 0m);
+                    UnconfirmedAmountInBase = UnconfirmedAmount * (quote?.Bid ?? 0m);
                 });
+                
+                AmountUpdated?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception e)
             {

@@ -98,7 +98,7 @@ namespace atomex.ViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "Portfolio amount error");
+                Log.Error(e, "On currencies loaded event handler error");
             }
         }
 

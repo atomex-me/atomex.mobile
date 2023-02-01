@@ -128,8 +128,8 @@ namespace atomex.ViewModels.DappsViewModels
 
                 Device.InvokeOnMainThreadAsync(() =>
                 {
-                    AmountInBase = AmountInTez.SafeMultiply(xtzQuote?.Bid ?? 0);
-                    FeeInBase = FeeInTez.SafeMultiply(xtzQuote?.Bid ?? 0);
+                    AmountInBase = AmountInTez * (xtzQuote?.Bid ?? 0m);
+                    FeeInBase = FeeInTez * (xtzQuote?.Bid ?? 0m);
                 });
                 Log.Debug("Quotes updated for beacon TransactionContent operation {Id}", Id);
             }
@@ -168,7 +168,7 @@ namespace atomex.ViewModels.DappsViewModels
                 if (xtzQuote == null) return;
                 
                 Device.InvokeOnMainThreadAsync(() =>
-                    FeeInBase = FeeInTez.SafeMultiply(xtzQuote?.Bid ?? 0));
+                    FeeInBase = FeeInTez * (xtzQuote?.Bid ?? 0m));
                 Log.Debug("Quotes updated for beacon RevealContent operation {Id}", Id);
             }
             catch (Exception e)
@@ -241,7 +241,7 @@ namespace atomex.ViewModels.DappsViewModels
                 if (xtzQuote == null) return;
 
                 Device.InvokeOnMainThreadAsync(() =>
-                    FeeInBase = FeeInTez.SafeMultiply(xtzQuote?.Bid ?? 0));
+                    FeeInBase = FeeInTez * (xtzQuote?.Bid ?? 0m));
                 Log.Debug("Quotes updated for beacon DelegationContent operation {Id}", Id);
 
             }
@@ -650,9 +650,9 @@ namespace atomex.ViewModels.DappsViewModels
 
                 Device.InvokeOnMainThreadAsync(() =>
                 {
-                    TotalGasFeeInBase = TotalGasFee.SafeMultiply(xtzQuote?.Bid ?? 0);
-                    TotalStorageFeeInBase = TotalStorageFee.SafeMultiply(xtzQuote?.Bid ?? 0);
-                    TotalFeesInBase = TotalFees.SafeMultiply(xtzQuote?.Bid ?? 0);
+                    TotalGasFeeInBase = TotalGasFee * (xtzQuote?.Bid ?? 0m);
+                    TotalStorageFeeInBase = TotalStorageFee * (xtzQuote?.Bid ?? 0m);
+                    TotalFeesInBase = TotalFees * (xtzQuote?.Bid ?? 0m);
                 });
             }
             catch (Exception e)

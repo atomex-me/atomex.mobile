@@ -85,7 +85,7 @@
                                 <FormattedString>
                                     <Span Text="{Binding CurrencyName, StringFormat='1 {0} ='}" />
                                     <Span Text=" " />
-                                    <Span Text="{Binding Price, StringFormat='${0:f2}'}" />
+                                    <Span Text="{Binding CurrentQuote, StringFormat='${0:f2}'}" />
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>

@@ -667,8 +667,8 @@ namespace atomex.ViewModels
 
                 Device.InvokeOnMainThreadAsync(() =>
                 {
-                    FeeInBase = Fee.SafeMultiply(quote?.Bid ?? 0);
-                    DelegateAddressBalanceInBase = DelegateAddressBalance.SafeMultiply(quote?.Bid ?? 0);
+                    FeeInBase = Fee * (quote?.Bid ?? 0m);
+                    DelegateAddressBalanceInBase = DelegateAddressBalance * (quote?.Bid ?? 0m);
                 });
             }
             catch (Exception e)
