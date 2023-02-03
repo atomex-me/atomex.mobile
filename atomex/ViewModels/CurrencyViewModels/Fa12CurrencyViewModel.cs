@@ -51,7 +51,6 @@ namespace atomex.ViewModels.CurrencyViewModels
                     .ToList();
 
                 await Device.InvokeOnMainThreadAsync(() =>
-                {
                     Transactions = new ObservableCollection<TransactionViewModel>(
                         transactions.Select(t => new TezosTokenTransferViewModel(t, tezosConfig))
                             .ToList()
@@ -61,23 +60,17 @@ namespace atomex.ViewModels.CurrencyViewModels
                                 t.RemoveClicked += RemoveTransactonEventHandler;
                                 t.CopyAddress = CopyAddress;
                                 t.CopyTxId = CopyTxId;
-                            }));
-
-                    var groups = !IsAllTxsShowed
-                        ? Transactions
-                            .OrderByDescending(p => p.LocalTime.Date)
-                            .Take(TxsNumberPerPage)
-                            .GroupBy(p => p.LocalTime.Date)
-                            .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                                new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))))
-                        : Transactions
-                            .GroupBy(p => p.LocalTime.Date)
-                            .OrderByDescending(g => g.Key)
-                            .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                                new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))));
-
-                    GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
-                });
+                            })));
+                
+                var groups = Transactions
+                    .OrderByDescending(p => p.LocalTime.Date)
+                    .Take(QtyDisplayedTxs)
+                    .GroupBy(p => p.LocalTime.Date)
+                    .Select(g => new Grouping<TransactionViewModel>(g.Key,
+                        new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))));
+                
+                await Device.InvokeOnMainThreadAsync(() => 
+                    GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups));
             }
             catch (OperationCanceledException)
             {
@@ -92,7 +85,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         protected override void OnReceiveClick()
         {
             var tezosConfig = App.Account.Currencies.GetByName(TezosConfig.Xtz);
-            string tokenContractAddress = (Currency as Fa12Config)?.TokenContractAddress;
+            var tokenContractAddress = (Currency as Fa12Config)?.TokenContractAddress;
 
             var receiveViewModel = new ReceiveViewModel(
                 app: App,

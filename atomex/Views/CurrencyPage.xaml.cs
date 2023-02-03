@@ -7,17 +7,16 @@ namespace atomex.Views
 {
     public partial class CurrencyPage : ContentPage
     {
-        private readonly CurrencyViewModel _currencyViewModel;
         public CurrencyPage(CurrencyViewModel currencyViewModel)
         {
             InitializeComponent();
             BindingContext = currencyViewModel;
-            _currencyViewModel = currencyViewModel;
         }
         
         protected override void OnAppearing()
         {
-            var tab = _currencyViewModel
+            var context = (CurrencyViewModel) BindingContext;
+            var tab = context
                 .SelectedTab
                 .ToString(); 
             var button = this.FindByName<Button>(tab);
