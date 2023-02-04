@@ -9,6 +9,7 @@ namespace atomex.CustomElements
     public class CustomCollectionView : CollectionView
     {
         private ScrollView _scrollView;
+        private double _previousScrollViewPosition = 0;
         private int _columns;
         private int RowCount => Convert.ToInt32(ItemsSource.Cast<object>().ToList().Count);
 
@@ -65,10 +66,18 @@ namespace atomex.CustomElements
         {
             try
             {
-                var scrollingSpace = _scrollView.ContentSize.Height - _scrollView.Height;
-                if (scrollingSpace <= e.ScrollY)
-                    RemainingItemsThresholdReachedCommand?.Execute(
-                        RemainingItemsThresholdReachedCommandParameter); // Touched bottom view
+                if (!IsVisible) return;
+                
+                if (_previousScrollViewPosition < e.ScrollY)
+                {
+                    //scrolled down
+                    var scrollingSpace = _scrollView.ContentSize.Height - _scrollView.Height;
+                    if (scrollingSpace <= e.ScrollY)
+                        RemainingItemsThresholdReachedCommand?.Execute(
+                            RemainingItemsThresholdReachedCommandParameter); // Touched bottom view
+                }
+                
+                _previousScrollViewPosition = e.ScrollY;
             }
             catch (Exception exception)
             {
@@ -80,6 +89,8 @@ namespace atomex.CustomElements
         {
             try
             {
+                if (!IsVisible) return;
+                
                 if (_columns == 0)
                 {
                     if (ItemsLayout is GridItemsLayout layout)
@@ -114,22 +125,26 @@ namespace atomex.CustomElements
 
         protected override async void OnChildAdded(Element child)
         {
+            if (!IsVisible) return;
+            //base.OnChildAdded(child);
             if (_rowCountUpdated) return;
             
             _rowCountUpdated = true;
-            base.OnChildAdded(child);
-            UpdateHeight();
             
+            UpdateHeight();
+
             await Task.Delay(UpdateDelayMs);
             _rowCountUpdated = false;
         }
 
         protected override async void OnChildRemoved(Element child, int oldLogicalIndex)
         {
+            if (!IsVisible) return;
+            //base.OnChildRemoved(child, oldLogicalIndex);
             if (_rowCountUpdated) return;
             
             _rowCountUpdated = true;
-            base.OnChildRemoved(child, oldLogicalIndex);
+            
             UpdateHeight();
             
             await Task.Delay(UpdateDelayMs);

@@ -412,13 +412,13 @@
                         SelectionMode="Single"
                         SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
                         IsGrouped="True"
-                        GroupedRowCount="{Binding QtyDisplayedTxs}"
+                        GroupedRowCount="{Binding QtyDisplayedTxs, Mode=OneWay}"
                         GroupHeaderHeight="36"
                         RowHeight="73"
                         ScrollView="Page"
                         BackgroundColor="Transparent"
                         VerticalScrollBarVisibility="Never"
-                        RemainingItemsThreshold="{Binding LoadingStepTxs}"
+                        RemainingItemsThreshold="{Binding LoadingStepTxs, Mode=OneWay}"
                         RemainingItemsThresholdReachedCommand="{Binding LoadMoreTxsCommand}"
                         IsVisible="False">
                         <CollectionView.Triggers>
@@ -611,12 +611,15 @@
                                     <StackLayout HorizontalOptions="Center">
                                         <ActivityIndicator IsVisible="{Binding IsLoading}"
                                                            IsRunning="{Binding IsLoading}"
+                                                           HeightRequest="24"
+                                                           WidthRequest="24"
                                                            Color="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                                            BackgroundColor="Transparent"
                                                            HorizontalOptions="Center"
                                                            VerticalOptions="Center" />
                                         <Label Text="{helpers:Translate LoadingLabel}"
                                                Style="{DynamicResource AdditionalTextH5}"
+                                               Padding="4"
                                                HorizontalTextAlignment="Center"
                                                VerticalTextAlignment="Center"
                                                HorizontalOptions="Center"
@@ -1293,7 +1296,6 @@
                                                    RowHeight="72"
                                                    ScrollView="Page"
                                                    VerticalScrollBarVisibility="Never"
-                                                   HeightRequest="{Binding DappsViewModel.DappListViewHeight}"
                                                    IsVisible="False">
                         <controls:CustomCollectionView.Triggers>
                             <DataTrigger TargetType="controls:CustomCollectionView"
