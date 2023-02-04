@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Serilog;
 using Xamarin.Forms;
 
@@ -10,6 +11,9 @@ namespace atomex.CustomElements
         private ScrollView _scrollView;
         private int _columns;
         private int RowCount => Convert.ToInt32(ItemsSource.Cast<object>().ToList().Count);
+
+        private const int UpdateDelayMs = 3000;
+        private bool _rowCountUpdated;
 
         public static readonly BindableProperty RowHeightProperty =
             BindableProperty.CreateAttached("RowHeight",
@@ -84,17 +88,23 @@ namespace atomex.CustomElements
                         _columns = 1;
                 }
 
+                var header = Header as VisualElement;
                 var footer = Footer as VisualElement;
 
+                var headerHeight = header?.IsVisible ?? false
+                    ? header.HeightRequest
+                    : 0;
+                
                 var footerHeight = footer?.IsVisible ?? false
                     ? footer.HeightRequest
                     : 0;
 
                 if (footerHeight < 0) footerHeight = 0;
+                if (headerHeight < 0) headerHeight = 0;
 
                 HeightRequest = IsGrouped
-                    ? GroupedRowCount * RowHeight + RowCount * GroupHeaderHeight + footerHeight
-                    : RowHeight * RowCount / _columns + footerHeight;
+                    ? GroupedRowCount * RowHeight + RowCount * GroupHeaderHeight + footerHeight + headerHeight
+                    : RowHeight * RowCount / _columns + footerHeight + headerHeight;
             }
             catch (Exception e)
             {
@@ -102,16 +112,28 @@ namespace atomex.CustomElements
             }
         }
 
-        protected override void OnChildAdded(Element child)
+        protected override async void OnChildAdded(Element child)
         {
+            if (_rowCountUpdated) return;
+            
+            _rowCountUpdated = true;
             base.OnChildAdded(child);
             UpdateHeight();
+            
+            await Task.Delay(UpdateDelayMs);
+            _rowCountUpdated = false;
         }
 
-        protected override void OnChildRemoved(Element child, int oldLogicalIndex)
+        protected override async void OnChildRemoved(Element child, int oldLogicalIndex)
         {
+            if (_rowCountUpdated) return;
+            
+            _rowCountUpdated = true;
             base.OnChildRemoved(child, oldLogicalIndex);
             UpdateHeight();
+            
+            await Task.Delay(UpdateDelayMs);
+            _rowCountUpdated = false;
         }
     }
 }

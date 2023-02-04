@@ -30,9 +30,6 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         private DelegateViewModel _delegateViewModel;
 
-        public const double DefaultDelegationRowHeight = 76;
-        [Reactive] public double DelegationListViewHeight { get; set; }
-
         public TezosCurrencyViewModel(
             IAtomexApp app,
             CurrencyConfig currency,
@@ -53,11 +50,6 @@ namespace atomex.ViewModels.CurrencyViewModels
 
                     SelectedDelegation = null;
                 });
-
-            this.WhenAnyValue(vm => vm.Delegations)
-                .WhereNotNull()
-                .SubscribeInMainThread(d =>
-                    DelegationListViewHeight = Delegations.Count * DefaultDelegationRowHeight);
 
             _ = LoadDelegationInfoAsync();
 
@@ -146,9 +138,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 }
 
                 await Device.InvokeOnMainThreadAsync(() =>
-                {
-                    Delegations = new ObservableCollection<DelegationViewModel>(delegations);
-                });
+                    Delegations = new ObservableCollection<DelegationViewModel>(delegations));
             }
             catch (OperationCanceledException)
             {

@@ -77,10 +77,6 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public bool CanShowMoreAddresses { get; set; }
         public int QtyDisplayedAddresses = 3;
 
-        public const double DefaultAddressRowHeight = 64;
-        public const double ListViewFooterHeight = 72;
-        public double AddressListViewHeight { get; set; }
-
         public class Grouping<T> : ObservableCollection<T>
         {
             public DateTime Date { get; private set; }
@@ -121,12 +117,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             this.WhenAnyValue(vm => vm.Addresses)
                 .WhereNotNull()
                 .SubscribeInMainThread(_ =>
-                {
-                    CanShowMoreAddresses = AddressesViewModel?.Addresses?.Count > QtyDisplayedAddresses;
-
-                    AddressListViewHeight = QtyDisplayedAddresses * DefaultAddressRowHeight +
-                                            ListViewFooterHeight;
-                });
+                    CanShowMoreAddresses = AddressesViewModel?.Addresses?.Count > QtyDisplayedAddresses);
 
             this.WhenAnyValue(vm => vm.AddressesViewModel)
                 .WhereNotNull()
@@ -212,12 +203,10 @@ namespace atomex.ViewModels.CurrencyViewModels
             try
             {
                 Device.InvokeOnMainThreadAsync(() =>
-                {
                     Addresses = new ObservableCollection<AddressViewModel>(
                         AddressesViewModel?.Addresses
                             .OrderByDescending(a => a.Balance)
-                            .Take(QtyDisplayedAddresses) ?? new List<AddressViewModel>());
-                });
+                            .Take(QtyDisplayedAddresses) ?? new List<AddressViewModel>()));
             }
             catch (Exception e)
             {
@@ -547,7 +536,6 @@ namespace atomex.ViewModels.CurrencyViewModels
                 NavigationService?.ShowPage(new SelectAddressPage(selectAddressViewModel), TabNavigation.Portfolio);
             }
         }
-
 
         public ICommand LoadMoreTxsCommand => new Command(IncreaseQtyDisplayedTxs);
 
