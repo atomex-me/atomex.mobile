@@ -18,6 +18,7 @@ using System;
 using System.Threading;
 using atomex.ViewModels;
 using atomex.ViewModels.ConversionViewModels;
+using atomex.ViewModels.CurrencyViewModels;
 using static atomex.Models.SnackbarMessage;
 using Rg.Plugins.Popup.Services;
 using Rg.Plugins.Popup.Pages;
@@ -86,11 +87,17 @@ namespace atomex.Views
             Children.Add(_navigationSettingsPage);
 
             mainViewModel.Locked += (s, a) => { SignOut(); };
+            
+            _navigationPortfolioPage.Popped += (s, e) =>
+            {
+                if (e.Page is not CurrencyPage page) return;
+
+                var vm = page.BindingContext as CurrencyViewModel;
+                vm?.Reset();
+            };
 
             LocalizationResourceManager.Instance.LanguageChanged += (s, a) =>
-            {
                 Device.BeginInvokeOnMainThread(LocalizeNavTabs);
-            };
         }
 
         private void LocalizeNavTabs()
@@ -106,7 +113,7 @@ namespace atomex.Views
             try
             {
                 MainViewModel?.SignOut();
-                StartViewModel startViewModel = new StartViewModel(MainViewModel?.AtomexApp);
+                var startViewModel = new StartViewModel(MainViewModel?.AtomexApp);
                 var mainPage = new StartPage(startViewModel);
                 Application.Current.MainPage = new NavigationPage(mainPage);
                 startViewModel.SetNavigationService(mainPage);

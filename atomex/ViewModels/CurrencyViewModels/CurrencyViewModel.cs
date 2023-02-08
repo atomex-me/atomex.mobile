@@ -593,6 +593,40 @@ namespace atomex.ViewModels.CurrencyViewModels
             return result;
         }
 
+        public async void Reset()
+        {
+            try
+            {
+                if (Transactions == null)
+                    return;
+
+                var txs = Transactions
+                    .OrderByDescending(p => p.LocalTime.Date)
+                    .Take(_defaultQtyDisplayedTxs)
+                    .ToList();
+
+                if (!txs.Any())
+                    return;
+
+                var groups = txs
+                    .GroupBy(p => p.LocalTime.Date)
+                    .Select(g => new Grouping<TransactionViewModel>(g.Key,
+                        new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))));
+
+                await Device.InvokeOnMainThreadAsync(() => 
+                    {
+                        QtyDisplayedTxs = _defaultQtyDisplayedTxs;
+                        GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(
+                            groups ?? new ObservableCollection<Grouping<TransactionViewModel>>());
+                    }
+                );
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Reset QtyDisplayedTxs error");
+            }
+        }
+
         #region IDisposable Support
 
         private bool _disposedValue;
