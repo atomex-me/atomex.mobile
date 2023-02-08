@@ -12,6 +12,7 @@ using Atomex.TezosTokens;
 using atomex.ViewModels.TransactionViewModels;
 using Atomex.Wallet;
 using Atomex.Wallet.Tezos;
+using ReactiveUI;
 using Serilog;
 using Xamarin.Forms;
 using static atomex.Models.SnackbarMessage;
@@ -50,17 +51,16 @@ namespace atomex.ViewModels.CurrencyViewModels
                         .ConfigureAwait(false))
                     .ToList();
 
-                await Device.InvokeOnMainThreadAsync(() =>
-                    Transactions = new ObservableCollection<TransactionViewModel>(
-                        transactions.Select(t => new TezosTokenTransferViewModel(t, tezosConfig))
-                            .ToList()
-                            .SortList((t1, t2) => t2.LocalTime.CompareTo(t1.LocalTime))
-                            .ForEachDo(t =>
-                            {
-                                t.RemoveClicked += RemoveTransactonEventHandler;
-                                t.CopyAddress = CopyAddress;
-                                t.CopyTxId = CopyTxId;
-                            })));
+                Transactions = new ObservableCollection<TransactionViewModel>(
+                    transactions.Select(t => new TezosTokenTransferViewModel(t, tezosConfig))
+                        .ToList()
+                        .SortList((t1, t2) => t2.LocalTime.CompareTo(t1.LocalTime))
+                        .ForEachDo(t =>
+                        {
+                            t.RemoveClicked += RemoveTransactonEventHandler;
+                            t.CopyAddress = CopyAddress;
+                            t.CopyTxId = CopyTxId;
+                        }));
 
                 var groups = Transactions
                     .OrderByDescending(p => p.LocalTime.Date)

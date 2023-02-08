@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
-using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -63,7 +62,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public decimal CurrentQuote { get; set; }
         public event EventHandler AmountUpdated;
 
-        [Reactive] public ObservableCollection<TransactionViewModel> Transactions { get; set; }
+        protected ObservableCollection<TransactionViewModel> Transactions { get; set; }
         [Reactive] public ObservableCollection<Grouping<TransactionViewModel>> GroupedTransactions { get; set; }
         [Reactive] public TransactionViewModel SelectedTransaction { get; set; }
 
@@ -75,7 +74,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public AddressesViewModel AddressesViewModel { get; set; }
         [Reactive] public ObservableCollection<AddressViewModel> Addresses { get; set; }
         [Reactive] public bool CanShowMoreAddresses { get; set; }
-        public int QtyDisplayedAddresses = 3;
+        private int QtyDisplayedAddresses => 3;
 
         public class Grouping<T> : ObservableCollection<T>
         {
@@ -125,44 +124,6 @@ namespace atomex.ViewModels.CurrencyViewModels
                 {
                     AddressesViewModel!.AddressesChanged += OnAddresesChangedEventHandler;
                     OnAddresesChangedEventHandler();
-                });
-
-            this.WhenAnyValue(vm => vm.QtyDisplayedTxs)
-                .WhereNotNull()
-                .Throttle(TimeSpan.FromMilliseconds(1))
-                .SubscribeInMainThread(async _ =>
-                {
-                    if (IsLoading) return;
-
-                    IsLoading = true;
-                    this.RaisePropertyChanged(nameof(IsLoading));
-
-                    try
-                    {
-                        await Task.Delay(500);
-
-                        // todo: add new items to collection
-                        var groups = Transactions?
-                            .OrderByDescending(p => p.LocalTime.Date)
-                            .Take(QtyDisplayedTxs)
-                            .GroupBy(p => p.LocalTime.Date)
-                            .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                                new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))));
-
-                        await Device.InvokeOnMainThreadAsync(() =>
-                            GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(
-                                groups ?? new ObservableCollection<Grouping<TransactionViewModel>>())
-                        );
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Error(e, "Error loading more txs for {@Currency} error", CurrencyCode);
-                    }
-                    finally
-                    {
-                        IsLoading = false;
-                        this.RaisePropertyChanged(nameof(IsLoading));
-                    }
                 });
 
             LoadAddresses();
@@ -316,7 +277,8 @@ namespace atomex.ViewModels.CurrencyViewModels
                 var transactions = (await App.Account.GetTransactionsAsync(Currency?.Name))
                     .ToList();
 
-                await Device.InvokeOnMainThreadAsync(() =>
+                var txs = await Task.Run(() =>
+                {
                     Transactions = new ObservableCollection<TransactionViewModel>(
                         transactions.Select(t =>
                                 TransactionViewModelCreator.CreateViewModel(t, Currency, NavigationService))
@@ -327,17 +289,18 @@ namespace atomex.ViewModels.CurrencyViewModels
                                 t.RemoveClicked += RemoveTransactonEventHandler;
                                 t.CopyAddress = CopyAddress;
                                 t.CopyTxId = CopyTxId;
-                            })));
+                            }));
 
-                var groups = Transactions
-                    .OrderByDescending(p => p.LocalTime.Date)
-                    .Take(QtyDisplayedTxs)
-                    .GroupBy(p => p.LocalTime.Date)
-                    .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                        new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))));
-                
+                    return Transactions
+                        .OrderByDescending(p => p.LocalTime.Date)
+                        .Take(QtyDisplayedTxs)
+                        .GroupBy(p => p.LocalTime.Date)
+                        .Select(g => new Grouping<TransactionViewModel>(g.Key,
+                            new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))));
+                });
+
                 await Device.InvokeOnMainThreadAsync(() =>
-                    GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups));
+                    GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(txs));
             }
             catch (Exception e)
             {
@@ -417,11 +380,9 @@ namespace atomex.ViewModels.CurrencyViewModels
 
                 if (CancellationTokenSource is {IsCancellationRequested: false})
                     await Device.InvokeOnMainThreadAsync(() =>
-                    {
                         NavigationService?.DisplaySnackBar(
                             MessageType.Regular,
-                            Currency.Description + " " + AppResources.HasBeenUpdated);
-                    });
+                            Currency.Description + " " + AppResources.HasBeenUpdated));
             }
             catch (OperationCanceledException)
             {
@@ -537,14 +498,99 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
         }
 
-        public ICommand LoadMoreTxsCommand => new Command(IncreaseQtyDisplayedTxs);
+        public ICommand LoadMoreTxsCommand => new Command(async () => await LoadMoreTxs());
 
-        private void IncreaseQtyDisplayedTxs()
+        private async Task LoadMoreTxs()
         {
             if (IsLoading ||
                 QtyDisplayedTxs >= Transactions.Count) return;
 
-            QtyDisplayedTxs += LoadingStepTxs;
+            IsLoading = true;
+            this.RaisePropertyChanged(nameof(IsLoading));
+
+            try
+            {
+                await Task.Delay(300);
+
+                if (Transactions == null)
+                    return;
+
+                var txs = Transactions
+                    .OrderByDescending(p => p.LocalTime.Date)
+                    .Skip(QtyDisplayedTxs)
+                    .Take(LoadingStepTxs)
+                    .ToList();
+
+                if (!txs.Any())
+                    return;
+
+                var groups = txs
+                    .GroupBy(p => p.LocalTime.Date)
+                    .Select(g => new Grouping<TransactionViewModel>(g.Key,
+                        new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))));
+
+                var resultGroups = MergeGroups(GroupedTransactions.ToList(), groups.ToList());
+
+                await Device.InvokeOnMainThreadAsync(() => 
+                    {
+                        QtyDisplayedTxs += LoadingStepTxs;
+                        GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(
+                            resultGroups ?? new ObservableCollection<Grouping<TransactionViewModel>>());
+                    }
+                );
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error loading more txs for {@Currency} error", CurrencyCode);
+            }
+            finally
+            {
+                IsLoading = false;
+                this.RaisePropertyChanged(nameof(IsLoading));
+            }
+        }
+
+        protected IEnumerable<Grouping<TransactionViewModel>> MergeGroups(
+            List<Grouping<TransactionViewModel>> group1,
+            List<Grouping<TransactionViewModel>> group2)
+        {
+            var result = new List<Grouping<TransactionViewModel>>();
+
+            var i = 0;
+            var j = 0;
+            while (i < group1.Count && j < group2.Count)
+            {
+                if (group1[i].Date > group2[j].Date)
+                {
+                    result.Add(group1[i++]);
+                }
+                else if (group1[i].Date < group2[j].Date)
+                {
+                    result.Add(group2[j++]);
+                }
+                else
+                {
+                    var txs = group1[i]
+                        .Concat(group2[j])
+                        .OrderByDescending(t => t.LocalTime);
+
+                    result.Add(new Grouping<TransactionViewModel>(group1[i].Date, txs));
+                    i++;
+                    j++;
+                }
+            }
+
+            while (i < group1.Count)
+            {
+                result.Add(group1[i++]);
+            }
+
+            while (j < group2.Count)
+            {
+                result.Add(group2[j++]);
+            }
+
+            return result;
         }
 
         #region IDisposable Support

@@ -11,10 +11,7 @@ namespace atomex.CustomElements
         private ScrollView _scrollView;
         private double _previousScrollViewPosition = 0;
         private int _columns;
-        private int RowCount => Convert.ToInt32(ItemsSource.Cast<object>().ToList().Count);
-
-        private const int UpdateDelayMs = 3000;
-        private bool _rowCountUpdated;
+        private int BindingItemsCount => Convert.ToInt32(ItemsSource.Cast<object>().ToList().Count);
 
         public static readonly BindableProperty RowHeightProperty =
             BindableProperty.CreateAttached("RowHeight",
@@ -40,16 +37,27 @@ namespace atomex.CustomElements
             set => SetValue(GroupHeaderHeightProperty, value);
         }
 
-        public static readonly BindableProperty GroupedRowCountProperty =
-            BindableProperty.CreateAttached("GroupedRowCount",
+        public static readonly BindableProperty RowCountProperty =
+            BindableProperty.CreateAttached("RowCount",
                 typeof(int),
                 typeof(CustomCollectionView),
-                0);
+                0,
+                propertyChanged: async (bo, o1, o2) =>
+                {
+                    await Task.Delay(10);
+                    var collectionView = bo as CustomCollectionView;
+                    collectionView?.UpdateHeight();
+                });
 
-        public int GroupedRowCount
+        public int RowCount
         {
-            get => (int) GetValue(GroupedRowCountProperty);
-            set => SetValue(GroupedRowCountProperty, value);
+            get => IsGrouped 
+                ? (int) GetValue(RowCountProperty)
+                : Convert.ToInt32(ItemsSource.Cast<object>().ToList().Count) ;
+            set => SetValue(RowCountProperty, 
+                IsGrouped 
+                    ? value 
+                    : Convert.ToInt32(ItemsSource.Cast<object>().ToList().Count));
         }
 
         [TypeConverter(typeof(ReferenceTypeConverter))]
@@ -84,13 +92,17 @@ namespace atomex.CustomElements
                 Log.Error(exception, "CustomCollectionView scrolled error");
             }
         }
+        
+        // protected override void OnChildAdded(Element child)
+        // {
+        //     base.OnChildAdded(child);
+        //     UpdateHeight();
+        // }
 
         private void UpdateHeight()
         {
             try
             {
-                if (!IsVisible) return;
-                
                 if (_columns == 0)
                 {
                     if (ItemsLayout is GridItemsLayout layout)
@@ -114,41 +126,13 @@ namespace atomex.CustomElements
                 if (headerHeight < 0) headerHeight = 0;
 
                 HeightRequest = IsGrouped
-                    ? GroupedRowCount * RowHeight + RowCount * GroupHeaderHeight + footerHeight + headerHeight
-                    : RowHeight * RowCount / _columns + footerHeight + headerHeight;
+                    ? RowCount * RowHeight + BindingItemsCount * GroupHeaderHeight + footerHeight + headerHeight
+                    : RowCount * RowHeight / _columns + footerHeight + headerHeight;
             }
             catch (Exception e)
             {
                 Log.Error(e, "Update height of CustomCollectionView error");
             }
-        }
-
-        protected override async void OnChildAdded(Element child)
-        {
-            if (!IsVisible) return;
-            //base.OnChildAdded(child);
-            if (_rowCountUpdated) return;
-            
-            _rowCountUpdated = true;
-            
-            UpdateHeight();
-
-            await Task.Delay(UpdateDelayMs);
-            _rowCountUpdated = false;
-        }
-
-        protected override async void OnChildRemoved(Element child, int oldLogicalIndex)
-        {
-            if (!IsVisible) return;
-            //base.OnChildRemoved(child, oldLogicalIndex);
-            if (_rowCountUpdated) return;
-            
-            _rowCountUpdated = true;
-            
-            UpdateHeight();
-            
-            await Task.Delay(UpdateDelayMs);
-            _rowCountUpdated = false;
         }
     }
 }
