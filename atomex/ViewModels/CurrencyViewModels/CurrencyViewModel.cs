@@ -531,9 +531,9 @@ namespace atomex.ViewModels.CurrencyViewModels
 
                 await Device.InvokeOnMainThreadAsync(() => 
                     {
-                        QtyDisplayedTxs += LoadingStepTxs;
                         GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(
                             resultGroups ?? new ObservableCollection<Grouping<TransactionViewModel>>());
+                        QtyDisplayedTxs += LoadingStepTxs;
                     }
                 );
             }

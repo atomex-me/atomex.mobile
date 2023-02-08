@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Serilog;
 using Xamarin.Forms;
 
@@ -42,9 +41,8 @@ namespace atomex.CustomElements
                 typeof(int),
                 typeof(CustomCollectionView),
                 0,
-                propertyChanged: async (bo, o1, o2) =>
+                propertyChanged: (bo, o1, o2) =>
                 {
-                    await Task.Delay(10);
                     var collectionView = bo as CustomCollectionView;
                     collectionView?.UpdateHeight();
                 });
@@ -93,12 +91,6 @@ namespace atomex.CustomElements
             }
         }
         
-        // protected override void OnChildAdded(Element child)
-        // {
-        //     base.OnChildAdded(child);
-        //     UpdateHeight();
-        // }
-
         private void UpdateHeight()
         {
             try
@@ -124,7 +116,7 @@ namespace atomex.CustomElements
 
                 if (footerHeight < 0) footerHeight = 0;
                 if (headerHeight < 0) headerHeight = 0;
-
+                
                 HeightRequest = IsGrouped
                     ? RowCount * RowHeight + BindingItemsCount * GroupHeaderHeight + footerHeight + headerHeight
                     : RowCount * RowHeight / _columns + footerHeight + headerHeight;
