@@ -292,11 +292,10 @@ namespace atomex.ViewModels.CurrencyViewModels
                             }));
 
                     return Transactions
-                        .OrderByDescending(p => p.LocalTime.Date)
                         .Take(QtyDisplayedTxs)
                         .GroupBy(p => p.LocalTime.Date)
                         .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                            new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))));
+                            new ObservableCollection<TransactionViewModel>(g)));
                 });
 
                 await Device.InvokeOnMainThreadAsync(() =>
@@ -516,7 +515,6 @@ namespace atomex.ViewModels.CurrencyViewModels
                     return;
 
                 var txs = Transactions
-                    .OrderByDescending(p => p.LocalTime.Date)
                     .Skip(QtyDisplayedTxs)
                     .Take(LoadingStepTxs)
                     .ToList();
@@ -527,7 +525,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 var groups = txs
                     .GroupBy(p => p.LocalTime.Date)
                     .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                        new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))));
+                        new ObservableCollection<TransactionViewModel>(g)));
 
                 var resultGroups = MergeGroups(GroupedTransactions.ToList(), groups.ToList());
 
@@ -601,7 +599,6 @@ namespace atomex.ViewModels.CurrencyViewModels
                     return;
 
                 var txs = Transactions
-                    .OrderByDescending(p => p.LocalTime.Date)
                     .Take(_defaultQtyDisplayedTxs)
                     .ToList();
 
@@ -611,7 +608,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 var groups = txs
                     .GroupBy(p => p.LocalTime.Date)
                     .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                        new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))));
+                        new ObservableCollection<TransactionViewModel>(g)));
 
                 await Device.InvokeOnMainThreadAsync(() => 
                     {

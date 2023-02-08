@@ -63,11 +63,10 @@ namespace atomex.ViewModels.CurrencyViewModels
                             })));
                 
                 var groups = Transactions
-                    .OrderByDescending(p => p.LocalTime.Date)
                     .Take(QtyDisplayedTxs)
                     .GroupBy(p => p.LocalTime.Date)
                     .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                        new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))));
+                        new ObservableCollection<TransactionViewModel>(g)));
                 
                 await Device.InvokeOnMainThreadAsync(() => 
                     GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups));
