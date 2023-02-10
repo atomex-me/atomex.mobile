@@ -97,10 +97,9 @@ namespace atomex.CustomElements
             {
                 if (_columns == 0)
                 {
-                    if (ItemsLayout is GridItemsLayout layout)
-                        _columns = layout.Span;
-                    else
-                        _columns = 1;
+                    _columns = ItemsLayout is GridItemsLayout layout
+                        ? layout.Span
+                        : 1;
                 }
 
                 var header = Header as VisualElement;

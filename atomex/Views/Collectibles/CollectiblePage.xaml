@@ -23,7 +23,7 @@
                         SelectedItem="{Binding SelectedToken}"
                         BackgroundColor="Transparent"
                         SelectionMode="Single"
-                        Margin="8,16">
+                        Margin="8">
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Orientation="Vertical"
                                  Span="2"
@@ -32,7 +32,8 @@
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Spacing="0">
+                    <StackLayout Spacing="6"
+                                 Padding="8">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup Name="CommonStates">
                                 <VisualState Name="Normal">
@@ -59,7 +60,6 @@
                         </StackLayout.Triggers>
                         <Frame HasShadow="False"
                                Padding="0"
-                               Margin="8,0"
                                CornerRadius="4"
                                HorizontalOptions="FillAndExpand"
                                VerticalOptions="FillAndExpand"
@@ -91,8 +91,7 @@
                         </Frame>
                         <Grid RowSpacing="0"
                               ColumnSpacing="0"
-                              HorizontalOptions="FillAndExpand"
-                              Margin="8,6,8,16">
+                              HorizontalOptions="FillAndExpand">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="24" />
                             </Grid.RowDefinitions>

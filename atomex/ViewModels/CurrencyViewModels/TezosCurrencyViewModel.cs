@@ -189,5 +189,11 @@ namespace atomex.ViewModels.CurrencyViewModels
                 Log.Error(e, "Account balance updated event handler error");
             }
         }
+
+        public override void Reset()
+        {
+            CollectiblesViewModel?.Reset();
+            base.Reset();
+        }
     }
 }

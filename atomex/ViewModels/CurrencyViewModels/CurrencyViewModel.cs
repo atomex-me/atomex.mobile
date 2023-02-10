@@ -591,7 +591,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             return result;
         }
 
-        public async void Reset()
+        public virtual async void Reset()
         {
             try
             {
@@ -612,9 +612,9 @@ namespace atomex.ViewModels.CurrencyViewModels
 
                 await Device.InvokeOnMainThreadAsync(() => 
                     {
-                        QtyDisplayedTxs = _defaultQtyDisplayedTxs;
                         GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(
                             groups ?? new ObservableCollection<Grouping<TransactionViewModel>>());
+                        QtyDisplayedTxs = _defaultQtyDisplayedTxs;
                     }
                 );
             }

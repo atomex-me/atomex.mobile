@@ -416,10 +416,8 @@
                         RowCount="{Binding QtyDisplayedTxs, Mode=OneWay}"
                         RowHeight="73"
                         ScrollView="Page"
-                        
                         BackgroundColor="Transparent"
                         VerticalScrollBarVisibility="Never"
-                        
                         RemainingItemsThresholdReachedCommand="{Binding LoadMoreTxsCommand}"
                         IsVisible="False">
                         <CollectionView.Triggers>
@@ -927,210 +925,226 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    <StackLayout Spacing="0"
-                                 IsVisible="False">
-                        <StackLayout.Triggers>
-                            <DataTrigger TargetType="StackLayout"
+                    <controls:CustomCollectionView
+                        ItemsSource="{Binding CollectiblesViewModel.DisplayedUserCollectibles, Mode=OneWay}"
+                        SelectedItem="{Binding CollectiblesViewModel.SelectedCollectible}"
+                        SelectionMode="Single"
+                        HorizontalScrollBarVisibility="Never"
+                        VerticalScrollBarVisibility="Never"
+                        BackgroundColor="Transparent"
+                        RowHeight="228"
+                        RowCount="{Binding CollectiblesViewModel.QtyDisplayedCollectibles, Mode=OneWay}"
+                        ScrollView="Page"
+                        RemainingItemsThresholdReachedCommand="{Binding CollectiblesViewModel.LoadMoreCollectiblesCommand}"
+                        Margin="8"
+                        IsVisible="False">
+                        <controls:CustomCollectionView.Triggers>
+                            <DataTrigger TargetType="controls:CustomCollectionView"
                                          Binding="{Binding SelectedTab}"
                                          Value="Collectibles">
                                 <Setter Property="IsVisible"
                                         Value="True" />
                             </DataTrigger>
-                        </StackLayout.Triggers>
-                        <StackLayout Orientation="Horizontal"
-                                     HorizontalOptions="Fill"
-                                     Padding="16,8,16,0"
-                                     HeightRequest="52"
-                                     Spacing="4">
-                            <controls:CustomEntry Placeholder="{helpers:Translate Search}"
-                                                  Style="{DynamicResource EntryStyle}"
-                                                  FontSize="14"
-                                                  Text="{Binding CollectiblesViewModel.SearchPattern, Mode=TwoWay}"
-                                                  Focused="ScrollToSearch"
-                                                  HorizontalTextAlignment="Start"
-                                                  VerticalTextAlignment="Center"
-                                                  VerticalOptions="FillAndExpand"
-                                                  HorizontalOptions="FillAndExpand" />
-                            <ImageButton Source="ic_close"
-                                         BackgroundColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
-                                         Padding="7"
-                                         Margin="10,0"
-                                         WidthRequest="24"
-                                         HeightRequest="24"
-                                         CornerRadius="12"
-                                         VerticalOptions="Center"
-                                         Command="{Binding CollectiblesViewModel.ClearSearchPatternCommand}"
-                                         IsVisible="{Binding CollectiblesViewModel.SearchPattern, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}" />
-                            <Frame HasShadow="False"
-                                   WidthRequest="32"
-                                   Padding="0"
-                                   VerticalOptions="FillAndExpand"
-                                   HorizontalOptions="End"
-                                   BackgroundColor="Transparent">
-                                <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer
-                                        Command="{Binding CollectiblesViewModel.UpdateCollectiblesCommand}" />
-                                </Frame.GestureRecognizers>
-                                <Image Source="ic_update"
-                                       WidthRequest="16"
-                                       HeightRequest="21"
-                                       Margin="8,16">
-                                    <Image.Triggers>
-                                        <DataTrigger TargetType="Image"
-                                                     Binding="{Binding CollectiblesViewModel.IsCollectiblesLoading}"
-                                                     Value="True">
-                                            <DataTrigger.EnterActions>
-                                                <behavior:RotateAnimationTrigger Action="Start" />
-                                            </DataTrigger.EnterActions>
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Image"
-                                                     Binding="{Binding CollectiblesViewModel.IsCollectiblesLoading}"
-                                                     Value="False">
-                                            <DataTrigger.EnterActions>
-                                                <behavior:RotateAnimationTrigger Action="Stop" />
-                                            </DataTrigger.EnterActions>
-                                        </DataTrigger>
-                                    </Image.Triggers>
-                                </Image>
-                            </Frame>
-                            <Frame HasShadow="False"
-                                   WidthRequest="32"
-                                   Padding="0"
-                                   VerticalOptions="FillAndExpand"
-                                   HorizontalOptions="End"
-                                   BackgroundColor="Transparent">
-                                <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer
-                                        Command="{Binding CollectiblesViewModel.ManageCollectiblesCommand}" />
-                                </Frame.GestureRecognizers>
-                                <Image Source="ic_filters"
-                                       Margin="8,0,4,0"
-                                       HorizontalOptions="EndAndExpand"
-                                       VerticalOptions="FillAndExpand"
-                                       HeightRequest="16"
-                                       WidthRequest="16" />
-                            </Frame>
-                        </StackLayout>
-                        <StackLayout Style="{DynamicResource SeparatorStyle}"
-                                     Margin="16,0,0,8" />
-                        <StackLayout IsVisible="{Binding CollectiblesViewModel.IsCollectiblesLoading}"
-                                     BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
-                                     VerticalOptions="FillAndExpand"
-                                     Margin="0,30,0,60">
-                            <RelativeLayout VerticalOptions="End"
-                                            HorizontalOptions="Center">
-                                <ActivityIndicator
-                                    RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
-                                    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0}"
-                                    RelativeLayout.WidthConstraint="20"
-                                    RelativeLayout.HeightConstraint="20"
-                                    BackgroundColor="Transparent"
-                                    IsRunning="{Binding CollectiblesViewModel.IsCollectiblesLoading}"
-                                    Color="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
-                            </RelativeLayout>
-                            <Label Text="{helpers:Translate LoadingLabel}"
-                                   Style="{DynamicResource AdditionalTextH5}"
-                                   Margin="0,4"
-                                   HorizontalTextAlignment="Center"
-                                   VerticalTextAlignment="Start" />
-                        </StackLayout>
-                        <CollectionView ItemsSource="{Binding CollectiblesViewModel.UserCollectibles, Mode=OneWay}"
-                                        SelectedItem="{Binding CollectiblesViewModel.SelectedCollectible}"
-                                        HeightRequest="{Binding CollectiblesViewModel.CollectibleListViewHeight}"
-                                        HorizontalScrollBarVisibility="Never"
-                                        VerticalScrollBarVisibility="Never"
-                                        BackgroundColor="Transparent"
-                                        SelectionMode="Single"
-                                        Margin="8, 16">
-                            <CollectionView.ItemsLayout>
-                                <GridItemsLayout Orientation="Vertical"
-                                                 Span="2"
-                                                 VerticalItemSpacing="0"
-                                                 HorizontalItemSpacing="0" />
-                            </CollectionView.ItemsLayout>
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <StackLayout Spacing="0">
-                                        <VisualStateManager.VisualStateGroups>
-                                            <VisualStateGroup Name="CommonStates">
-                                                <VisualState Name="Normal">
-                                                    <VisualState.Setters>
-                                                        <Setter Property="BackgroundColor"
-                                                                Value="Transparent" />
-                                                    </VisualState.Setters>
-                                                </VisualState>
-                                                <VisualState Name="Selected">
-                                                    <VisualState.Setters>
-                                                        <Setter Property="BackgroundColor"
-                                                                Value="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}" />
-                                                    </VisualState.Setters>
-                                                </VisualState>
-                                            </VisualStateGroup>
-                                        </VisualStateManager.VisualStateGroups>
-                                        <StackLayout.Triggers>
-                                            <DataTrigger TargetType="StackLayout"
-                                                         Binding="{Binding Amount, Converter={StaticResource GreaterThanZeroConverter}}"
-                                                         Value="False">
-                                                <Setter Property="Opacity"
-                                                        Value="0.5" />
-                                            </DataTrigger>
-                                        </StackLayout.Triggers>
-                                        <Frame HasShadow="False"
-                                               Padding="0"
-                                               Margin="8,0"
-                                               CornerRadius="4"
-                                               HorizontalOptions="FillAndExpand"
+                        </controls:CustomCollectionView.Triggers>
+                        <controls:CustomCollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical"
+                                             Span="2"
+                                             VerticalItemSpacing="0"
+                                             HorizontalItemSpacing="0" />
+                        </controls:CustomCollectionView.ItemsLayout>
+                        <controls:CustomCollectionView.Header>
+                            <StackLayout Spacing="0"
+                                         HeightRequest="60">
+                                <StackLayout Orientation="Horizontal"
+                                             HorizontalOptions="Fill"
+                                             Padding="16,0"
+                                             Spacing="4">
+                                    <controls:CustomEntry Placeholder="{helpers:Translate Search}"
+                                                          Style="{DynamicResource EntryStyle}"
+                                                          FontSize="14"
+                                                          Text="{Binding CollectiblesViewModel.SearchPattern, Mode=TwoWay}"
+                                                          Focused="ScrollToSearch"
+                                                          HorizontalTextAlignment="Start"
+                                                          VerticalTextAlignment="Center"
+                                                          VerticalOptions="FillAndExpand"
+                                                          HorizontalOptions="FillAndExpand" />
+                                    <ImageButton Source="ic_close"
+                                                 BackgroundColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
+                                                 Padding="7"
+                                                 Margin="10,0"
+                                                 WidthRequest="24"
+                                                 HeightRequest="24"
+                                                 CornerRadius="12"
+                                                 VerticalOptions="Center"
+                                                 Command="{Binding CollectiblesViewModel.ClearSearchPatternCommand}"
+                                                 IsVisible="{Binding CollectiblesViewModel.SearchPattern, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}" />
+                                    <Frame HasShadow="False"
+                                           WidthRequest="32"
+                                           Padding="0"
+                                           VerticalOptions="FillAndExpand"
+                                           HorizontalOptions="End"
+                                           BackgroundColor="Transparent">
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                Command="{Binding CollectiblesViewModel.UpdateCollectiblesCommand}" />
+                                        </Frame.GestureRecognizers>
+                                        <Image Source="ic_update"
+                                               WidthRequest="16"
+                                               HeightRequest="21"
+                                               Margin="8,16">
+                                            <Image.Triggers>
+                                                <DataTrigger TargetType="Image"
+                                                             Binding="{Binding CollectiblesViewModel.IsCollectiblesLoading}"
+                                                             Value="True">
+                                                    <DataTrigger.EnterActions>
+                                                        <behavior:RotateAnimationTrigger Action="Start" />
+                                                    </DataTrigger.EnterActions>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Image"
+                                                             Binding="{Binding CollectiblesViewModel.IsCollectiblesLoading}"
+                                                             Value="False">
+                                                    <DataTrigger.EnterActions>
+                                                        <behavior:RotateAnimationTrigger Action="Stop" />
+                                                    </DataTrigger.EnterActions>
+                                                </DataTrigger>
+                                            </Image.Triggers>
+                                        </Image>
+                                    </Frame>
+                                    <Frame HasShadow="False"
+                                           WidthRequest="32"
+                                           Padding="0"
+                                           VerticalOptions="FillAndExpand"
+                                           HorizontalOptions="End"
+                                           BackgroundColor="Transparent">
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                Command="{Binding CollectiblesViewModel.ManageCollectiblesCommand}" />
+                                        </Frame.GestureRecognizers>
+                                        <Image Source="ic_filters"
+                                               Margin="8,0,4,0"
+                                               HorizontalOptions="EndAndExpand"
                                                VerticalOptions="FillAndExpand"
-                                               HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
-                                               IsClippedToBounds="True">
-                                            <Image Source="{Binding TokenPreview}"
-                                                   HorizontalOptions="FillAndExpand"
-                                                   Aspect="AspectFill"
-                                                   BackgroundColor="{AppThemeBinding Dark={StaticResource DownloadPreviewBackgroundColorDark}, Light={StaticResource DownloadPreviewBackgroundColor}}">
-                                                <Image.Triggers>
-                                                    <DataTrigger TargetType="Image"
-                                                                 Binding="{Binding TokenPreview, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}"
-                                                                 Value="False">
-                                                        <DataTrigger.EnterActions>
-                                                            <behavior:FadeAnimationTrigger Action="Start" />
-                                                        </DataTrigger.EnterActions>
-                                                    </DataTrigger>
-                                                    <DataTrigger TargetType="Image"
-                                                                 Binding="{Binding TokenPreview, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}"
-                                                                 Value="True">
-                                                        <DataTrigger.EnterActions>
-                                                            <behavior:FadeAnimationTrigger Action="Stop" />
-                                                        </DataTrigger.EnterActions>
-                                                    </DataTrigger>
-                                                </Image.Triggers>
-                                            </Image>
-                                        </Frame>
-                                        <Grid RowSpacing="0"
-                                              ColumnSpacing="0"
-                                              Margin="8,6,8,16"
-                                              HorizontalOptions="FillAndExpand">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="24" />
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="Auto" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Text="{Binding Name}"
-                                                   Style="{DynamicResource MainTextH5}"
-                                                   VerticalTextAlignment="Center"
-                                                   LineBreakMode="TailTruncation" />
-                                            <Label Grid.Column="1"
-                                                   Text="{Binding Amount}"
-                                                   Style="{DynamicResource AdditionalTextH6}"
-                                                   VerticalTextAlignment="Center"
-                                                   Padding="8,0" />
-                                        </Grid>
+                                               HeightRequest="16"
+                                               WidthRequest="16" />
+                                    </Frame>
+                                </StackLayout>
+                                <StackLayout Style="{DynamicResource SeparatorStyle}"
+                                             Margin="8,0,0,8" />
+                            </StackLayout>
+                        </controls:CustomCollectionView.Header>
+                        <controls:CustomCollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout Spacing="6"
+                                             Padding="8">
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup Name="CommonStates">
+                                            <VisualState Name="Normal">
+                                                <VisualState.Setters>
+                                                    <Setter Property="BackgroundColor"
+                                                            Value="Transparent" />
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                            <VisualState Name="Selected">
+                                                <VisualState.Setters>
+                                                    <Setter Property="BackgroundColor"
+                                                            Value="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}" />
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                    <StackLayout.Triggers>
+                                        <DataTrigger TargetType="StackLayout"
+                                                     Binding="{Binding Amount, Converter={StaticResource GreaterThanZeroConverter}}"
+                                                     Value="False">
+                                            <Setter Property="Opacity"
+                                                    Value="0.5" />
+                                        </DataTrigger>
+                                    </StackLayout.Triggers>
+                                    <Frame HasShadow="False"
+                                           Padding="0"
+                                           CornerRadius="4"
+                                           HorizontalOptions="FillAndExpand"
+                                           VerticalOptions="FillAndExpand"
+                                           HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
+                                           IsClippedToBounds="True">
+                                        <Image Source="{Binding TokenPreview}"
+                                               HorizontalOptions="FillAndExpand"
+                                               Aspect="AspectFill"
+                                               BackgroundColor="{AppThemeBinding Dark={StaticResource DownloadPreviewBackgroundColorDark}, Light={StaticResource DownloadPreviewBackgroundColor}}">
+                                            <Image.Triggers>
+                                                <DataTrigger TargetType="Image"
+                                                             Binding="{Binding TokenPreview, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}"
+                                                             Value="False">
+                                                    <DataTrigger.EnterActions>
+                                                        <behavior:FadeAnimationTrigger Action="Start" />
+                                                    </DataTrigger.EnterActions>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Image"
+                                                             Binding="{Binding TokenPreview, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}"
+                                                             Value="True">
+                                                    <DataTrigger.EnterActions>
+                                                        <behavior:FadeAnimationTrigger Action="Stop" />
+                                                    </DataTrigger.EnterActions>
+                                                </DataTrigger>
+                                            </Image.Triggers>
+                                        </Image>
+                                    </Frame>
+                                    <Grid RowSpacing="0"
+                                          ColumnSpacing="0"
+                                          HorizontalOptions="FillAndExpand">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="24" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Text="{Binding Name}"
+                                               Style="{DynamicResource MainTextH5}"
+                                               VerticalTextAlignment="Center"
+                                               LineBreakMode="TailTruncation" />
+                                        <Label Grid.Column="1"
+                                               Text="{Binding Amount}"
+                                               Style="{DynamicResource AdditionalTextH6}"
+                                               VerticalTextAlignment="Center"
+                                               Padding="8,0" />
+                                    </Grid>
+                                </StackLayout>
+                            </DataTemplate>
+                        </controls:CustomCollectionView.ItemTemplate>
+                        <controls:CustomCollectionView.Footer>
+                            <StackLayout HorizontalOptions="FillAndExpand"
+                                         VerticalOptions="Center"
+                                         HeightRequest="86">
+                                <Frame IsVisible="{Binding CollectiblesViewModel.IsCollectiblesLoading}"
+                                       HorizontalOptions="FillAndExpand"
+                                       BackgroundColor="Transparent"
+                                       BorderColor="Transparent"
+                                       HasShadow="False">
+                                    <StackLayout HorizontalOptions="Center">
+                                        <ActivityIndicator
+                                            IsVisible="{Binding CollectiblesViewModel.IsCollectiblesLoading}"
+                                            IsRunning="{Binding CollectiblesViewModel.IsCollectiblesLoading}"
+                                            HeightRequest="24"
+                                            WidthRequest="24"
+                                            Color="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                            BackgroundColor="Transparent"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
+                                        <Label Text="{helpers:Translate LoadingLabel}"
+                                               Style="{DynamicResource AdditionalTextH5}"
+                                               Padding="4"
+                                               HorizontalTextAlignment="Center"
+                                               VerticalTextAlignment="Center"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center"
+                                               IsVisible="{Binding CollectiblesViewModel.IsCollectiblesLoading}" />
                                     </StackLayout>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                    </StackLayout>
+                                </Frame>
+                            </StackLayout>
+                        </controls:CustomCollectionView.Footer>
+                    </controls:CustomCollectionView>
+
                     <controls:CustomCollectionView ItemsSource="{Binding Delegations}"
                                                    SelectionMode="Single"
                                                    SelectedItem="{Binding SelectedDelegation, Mode=TwoWay}"
@@ -1315,8 +1329,8 @@
                                        HorizontalTextAlignment="Start"
                                        VerticalTextAlignment="End"
                                        VerticalOptions="FillAndExpand"
-                                       Padding="0,14" 
-                                       Margin="16,0"/>
+                                       Padding="0,14"
+                                       Margin="16,0" />
                                 <StackLayout Style="{DynamicResource SeparatorStyle}"
                                              Margin="16,0,0,0" />
                             </StackLayout>
