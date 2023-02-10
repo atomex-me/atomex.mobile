@@ -207,6 +207,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         public override void Reset()
         {
             CollectiblesViewModel?.Reset();
+            TezosTokensViewModel?.Reset();
             base.Reset();
         }
         

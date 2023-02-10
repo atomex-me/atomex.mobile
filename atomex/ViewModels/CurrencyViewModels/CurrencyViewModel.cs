@@ -68,7 +68,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         [Reactive] public int QtyDisplayedTxs { get; set; }
         private int _defaultQtyDisplayedTxs = 5;
-        public bool IsLoading { get; set; }
+        [Reactive] public bool IsTxsLoading { get; set; }
         public int LoadingStepTxs => 20;
 
         [Reactive] public AddressesViewModel AddressesViewModel { get; set; }
@@ -501,11 +501,10 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         private async Task LoadMoreTxs()
         {
-            if (IsLoading ||
+            if (IsTxsLoading ||
                 QtyDisplayedTxs >= Transactions.Count) return;
 
-            IsLoading = true;
-            this.RaisePropertyChanged(nameof(IsLoading));
+            IsTxsLoading = true;
 
             try
             {
@@ -543,12 +542,11 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
             finally
             {
-                IsLoading = false;
-                this.RaisePropertyChanged(nameof(IsLoading));
+                IsTxsLoading = false;
             }
         }
 
-        protected IEnumerable<Grouping<TransactionViewModel>> MergeGroups(
+        private IEnumerable<Grouping<TransactionViewModel>> MergeGroups(
             List<Grouping<TransactionViewModel>> group1,
             List<Grouping<TransactionViewModel>> group2)
         {

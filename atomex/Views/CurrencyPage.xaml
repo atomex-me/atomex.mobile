@@ -602,14 +602,14 @@
                             <StackLayout HorizontalOptions="FillAndExpand"
                                          VerticalOptions="Center"
                                          HeightRequest="86">
-                                <Frame IsVisible="{Binding IsLoading}"
+                                <Frame IsVisible="{Binding IsTxsLoading}"
                                        HorizontalOptions="FillAndExpand"
                                        BackgroundColor="Transparent"
                                        BorderColor="Transparent"
                                        HasShadow="False">
                                     <StackLayout HorizontalOptions="Center">
-                                        <ActivityIndicator IsVisible="{Binding IsLoading}"
-                                                           IsRunning="{Binding IsLoading}"
+                                        <ActivityIndicator IsVisible="{Binding IsTxsLoading}"
+                                                           IsRunning="{Binding IsTxsLoading}"
                                                            HeightRequest="24"
                                                            WidthRequest="24"
                                                            Color="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
@@ -623,7 +623,7 @@
                                                VerticalTextAlignment="Center"
                                                HorizontalOptions="Center"
                                                VerticalOptions="Center"
-                                               IsVisible="{Binding IsLoading}" />
+                                               IsVisible="{Binding IsTxsLoading}" />
                                     </StackLayout>
                                 </Frame>
                             </StackLayout>
@@ -710,27 +710,27 @@
                                     Command="{Binding AddressesViewModel.ShowAllAddressesCommand}" />
                         </controls:CustomCollectionView.Footer>
                     </controls:CustomCollectionView>
-                    <ListView ItemsSource="{Binding TezosTokensViewModel.UserTokens}"
-                              HasUnevenRows="True"
-                              SeparatorVisibility="Default"
-                              SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
-                              BackgroundColor="Transparent"
-                              SelectionMode="Single"
-                              SelectedItem="{Binding TezosTokensViewModel.SelectedToken, Mode=TwoWay}"
-                              HeightRequest="{Binding TezosTokensViewModel.TokenListViewHeight}"
-                              VerticalScrollBarVisibility="Never"
-                              IsVisible="False"
-                              Footer="">
-                        <ListView.Triggers>
-                            <DataTrigger TargetType="ListView"
+                    <controls:CustomCollectionView ItemsSource="{Binding TezosTokensViewModel.DisplayedTokens}"
+                                                   SelectionMode="Single"
+                                                   SelectedItem="{Binding TezosTokensViewModel.SelectedToken, Mode=TwoWay}"
+                                                   RowCount="{Binding TezosTokensViewModel.QtyDisplayedTokens, Mode=OneWay}"
+                                                   RowHeight="76"
+                                                   ScrollView="Page"
+                                                   RemainingItemsThresholdReachedCommand="{Binding TezosTokensViewModel.LoadMoreTokensCommand}"
+                                                   VerticalScrollBarVisibility="Never"
+                                                   BackgroundColor="Transparent"
+                                                   IsVisible="False">
+                        <controls:CustomCollectionView.Triggers>
+                            <DataTrigger TargetType="controls:CustomCollectionView"
                                          Binding="{Binding SelectedTab}"
                                          Value="Tokens">
                                 <Setter Property="IsVisible"
                                         Value="True" />
                             </DataTrigger>
-                        </ListView.Triggers>
-                        <ListView.Header>
-                            <StackLayout Spacing="0">
+                        </controls:CustomCollectionView.Triggers>
+                        <controls:CustomCollectionView.Header>
+                            <StackLayout Spacing="0"
+                                         HeightRequest="60">
                                 <StackLayout Orientation="Horizontal"
                                              HorizontalOptions="Fill"
                                              Padding="16,8,16,0"
@@ -807,126 +807,133 @@
                                 </StackLayout>
                                 <StackLayout Style="{DynamicResource SeparatorStyle}"
                                              Margin="16,0,0,0" />
-                                <StackLayout IsVisible="{Binding TezosTokensViewModel.IsTokensLoading}"
-                                             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
-                                             VerticalOptions="FillAndExpand"
-                                             Margin="0,30,0,60">
-                                    <RelativeLayout VerticalOptions="End"
-                                                    HorizontalOptions="Center">
-                                        <ActivityIndicator
-                                            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
-                                            RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0}"
-                                            RelativeLayout.WidthConstraint="20"
-                                            RelativeLayout.HeightConstraint="20"
-                                            BackgroundColor="Transparent"
-                                            IsRunning="{Binding TezosTokensViewModel.IsTokensLoading}"
-                                            Color="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
-                                    </RelativeLayout>
-                                    <Label Text="{helpers:Translate LoadingLabel}"
-                                           Style="{DynamicResource AdditionalTextH5}"
-                                           Margin="0,4"
-                                           HorizontalTextAlignment="Center"
-                                           VerticalTextAlignment="Start" />
-                                </StackLayout>
                             </StackLayout>
-                        </ListView.Header>
-                        <ListView.ItemTemplate>
+                        </controls:CustomCollectionView.Header>
+                        <controls:CustomCollectionView.ItemTemplate>
                             <DataTemplate>
-                                <controls:CustomViewCell
-                                    SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
-                                    <Grid RowSpacing="4"
-                                          ColumnSpacing="0"
-                                          Padding="16,0">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="36" />
-                                            <RowDefinition Height="36" />
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="24" />
-                                            <ColumnDefinition Width="4*" />
-                                            <ColumnDefinition Width="6*" />
-                                            <ColumnDefinition Width="32" />
-                                        </Grid.ColumnDefinitions>
-                                        <Image Grid.RowSpan="2"
-                                               Source="{Binding TokenPreview}"
-                                               HeightRequest="24"
-                                               WidthRequest="24"
-                                               VerticalOptions="Center"
-                                               HorizontalOptions="End"
-                                               BackgroundColor="{AppThemeBinding Dark={StaticResource DownloadPreviewBackgroundColorDark}, Light={StaticResource DownloadPreviewBackgroundColor}}">
-                                            <Image.Triggers>
-                                                <DataTrigger TargetType="Image"
-                                                             Binding="{Binding TokenPreview, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}"
-                                                             Value="False">
-                                                    <DataTrigger.EnterActions>
-                                                        <behavior:FadeAnimationTrigger Action="Start" />
-                                                    </DataTrigger.EnterActions>
-                                                </DataTrigger>
-                                                <DataTrigger TargetType="Image"
-                                                             Binding="{Binding TokenPreview, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}"
-                                                             Value="True">
-                                                    <DataTrigger.EnterActions>
-                                                        <behavior:FadeAnimationTrigger Action="Stop" />
-                                                    </DataTrigger.EnterActions>
-                                                    <Setter Property="BackgroundColor"
-                                                            Value="Transparent" />
-                                                </DataTrigger>
-                                            </Image.Triggers>
-                                        </Image>
-                                        <Label Grid.Column="1"
-                                               Text="{Binding Description}"
-                                               Style="{DynamicResource MainTextH4}"
-                                               Padding="12,0,0,0"
-                                               LineBreakMode="TailTruncation"
-                                               HorizontalTextAlignment="Start"
-                                               VerticalTextAlignment="End" />
-                                        <Label Grid.Column="1"
-                                               Grid.Row="1"
-                                               Text="{Binding CurrentQuote, StringFormat='${0:f2}'}"
-                                               Style="{DynamicResource AdditionalTextH6}"
-                                               Padding="12,0"
-                                               HorizontalTextAlignment="Start"
-                                               VerticalTextAlignment="Start" />
-                                        <Label Grid.Column="2"
-                                               Style="{DynamicResource MainTextH4}"
-                                               LineBreakMode="TailTruncation"
-                                               HorizontalTextAlignment="End"
-                                               VerticalTextAlignment="End">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <Span Text="{Binding TotalAmount, StringFormat='{0:0.########}'}" />
-                                                    <Span Text=" " />
-                                                    <Span Text="{Binding CurrencyCode}" />
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>
-                                        <Label Grid.Row="1"
-                                               Grid.Column="2"
-                                               Text="{Binding TotalAmountInBase, StringFormat='${0:f2}'}"
-                                               Style="{DynamicResource MainTextH6}"
-                                               LineBreakMode="TailTruncation"
-                                               HorizontalTextAlignment="End"
-                                               VerticalTextAlignment="Start" />
-                                        <Frame Grid.RowSpan="2"
-                                               Grid.Column="3"
-                                               HasShadow="False"
-                                               Padding="0"
-                                               BackgroundColor="Transparent">
-                                            <Frame.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding TokenActionSheetCommand}" />
-                                            </Frame.GestureRecognizers>
-                                            <Image Source="ic_menu"
-                                                   WidthRequest="4"
-                                                   HeightRequest="16"
-                                                   Margin="18,0,10,0" />
-                                        </Frame>
-                                    </Grid>
-                                </controls:CustomViewCell>
+                                <Grid RowSpacing="4"
+                                      ColumnSpacing="0"
+                                      Padding="16,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="36" />
+                                        <RowDefinition Height="36" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="24" />
+                                        <ColumnDefinition Width="4*" />
+                                        <ColumnDefinition Width="6*" />
+                                        <ColumnDefinition Width="32" />
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.RowSpan="2"
+                                           Source="{Binding TokenPreview}"
+                                           HeightRequest="24"
+                                           WidthRequest="24"
+                                           VerticalOptions="Center"
+                                           HorizontalOptions="End"
+                                           BackgroundColor="{AppThemeBinding Dark={StaticResource DownloadPreviewBackgroundColorDark}, Light={StaticResource DownloadPreviewBackgroundColor}}">
+                                        <Image.Triggers>
+                                            <DataTrigger TargetType="Image"
+                                                         Binding="{Binding TokenPreview, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}"
+                                                         Value="False">
+                                                <DataTrigger.EnterActions>
+                                                    <behavior:FadeAnimationTrigger Action="Start" />
+                                                </DataTrigger.EnterActions>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Image"
+                                                         Binding="{Binding TokenPreview, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}"
+                                                         Value="True">
+                                                <DataTrigger.EnterActions>
+                                                    <behavior:FadeAnimationTrigger Action="Stop" />
+                                                </DataTrigger.EnterActions>
+                                                <Setter Property="BackgroundColor"
+                                                        Value="Transparent" />
+                                            </DataTrigger>
+                                        </Image.Triggers>
+                                    </Image>
+                                    <Label Grid.Column="1"
+                                           Text="{Binding Description}"
+                                           Style="{DynamicResource MainTextH4}"
+                                           Padding="12,0,0,0"
+                                           LineBreakMode="TailTruncation"
+                                           HorizontalTextAlignment="Start"
+                                           VerticalTextAlignment="End" />
+                                    <Label Grid.Column="1"
+                                           Grid.Row="1"
+                                           Text="{Binding CurrentQuote, StringFormat='${0:f2}'}"
+                                           Style="{DynamicResource AdditionalTextH6}"
+                                           Padding="12,0"
+                                           HorizontalTextAlignment="Start"
+                                           VerticalTextAlignment="Start" />
+                                    <Label Grid.Column="2"
+                                           Style="{DynamicResource MainTextH4}"
+                                           LineBreakMode="TailTruncation"
+                                           HorizontalTextAlignment="End"
+                                           VerticalTextAlignment="End">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding TotalAmount, StringFormat='{0:0.########}'}" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding CurrencyCode}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label Grid.Row="1"
+                                           Grid.Column="2"
+                                           Text="{Binding TotalAmountInBase, StringFormat='${0:f2}'}"
+                                           Style="{DynamicResource MainTextH6}"
+                                           LineBreakMode="TailTruncation"
+                                           HorizontalTextAlignment="End"
+                                           VerticalTextAlignment="Start" />
+                                    <Frame Grid.RowSpan="2"
+                                           Grid.Column="3"
+                                           HasShadow="False"
+                                           Padding="0"
+                                           BackgroundColor="Transparent">
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding TokenActionSheetCommand}" />
+                                        </Frame.GestureRecognizers>
+                                        <Image Source="ic_menu"
+                                               WidthRequest="4"
+                                               HeightRequest="16"
+                                               Margin="18,0,10,0" />
+                                    </Frame>
+                                </Grid>
                             </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                        </controls:CustomCollectionView.ItemTemplate>
+                        <controls:CustomCollectionView.Footer>
+                            <StackLayout HorizontalOptions="FillAndExpand"
+                                         VerticalOptions="Center"
+                                         HeightRequest="86">
+                                <Frame IsVisible="{Binding TezosTokensViewModel.IsTokensLoading}"
+                                       HorizontalOptions="FillAndExpand"
+                                       BackgroundColor="Transparent"
+                                       BorderColor="Transparent"
+                                       HasShadow="False">
+                                    <StackLayout HorizontalOptions="Center">
+                                        <ActivityIndicator
+                                            IsVisible="{Binding TezosTokensViewModel.IsTokensLoading}"
+                                            IsRunning="{Binding TezosTokensViewModel.IsTokensLoading}"
+                                            HeightRequest="24"
+                                            WidthRequest="24"
+                                            Color="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                            BackgroundColor="Transparent"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
+                                        <Label Text="{helpers:Translate LoadingLabel}"
+                                               Style="{DynamicResource AdditionalTextH5}"
+                                               Padding="4"
+                                               HorizontalTextAlignment="Center"
+                                               VerticalTextAlignment="Center"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center"
+                                               IsVisible="{Binding TezosTokensViewModel.IsTokensLoading}" />
+                                    </StackLayout>
+                                </Frame>
+                            </StackLayout>
+                        </controls:CustomCollectionView.Footer>
+                    </controls:CustomCollectionView>
                     <controls:CustomCollectionView
-                        ItemsSource="{Binding CollectiblesViewModel.DisplayedUserCollectibles, Mode=OneWay}"
+                        ItemsSource="{Binding CollectiblesViewModel.DisplayedCollectibles, Mode=OneWay}"
                         SelectedItem="{Binding CollectiblesViewModel.SelectedCollectible}"
                         SelectionMode="Single"
                         HorizontalScrollBarVisibility="Never"
@@ -957,7 +964,7 @@
                                          HeightRequest="60">
                                 <StackLayout Orientation="Horizontal"
                                              HorizontalOptions="Fill"
-                                             Padding="16,0"
+                                             Padding="8,0"
                                              Spacing="4">
                                     <controls:CustomEntry Placeholder="{helpers:Translate Search}"
                                                           Style="{DynamicResource EntryStyle}"
@@ -1303,7 +1310,7 @@
                                 </Grid>
                             </DataTemplate>
                         </controls:CustomCollectionView.ItemTemplate>
-                         <controls:CustomCollectionView.Footer>
+                        <controls:CustomCollectionView.Footer>
                             <StackLayout HorizontalOptions="FillAndExpand"
                                          VerticalOptions="Center"
                                          HeightRequest="86">

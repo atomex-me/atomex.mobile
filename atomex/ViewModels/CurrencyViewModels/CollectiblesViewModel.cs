@@ -55,7 +55,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] private ObservableCollection<TokenContract> Contracts { get; set; }
         [Reactive] public IList<Collectible> AllCollectibles { get; set; }
         [Reactive] public IList<CollectibleViewModel> UserCollectibles { get; set; }
-        [Reactive] public IList<CollectibleViewModel> DisplayedUserCollectibles { get; set; }
+        [Reactive] public IList<CollectibleViewModel> DisplayedCollectibles { get; set; }
         private IList<CollectibleViewModel> _initialCollectibles;
         [Reactive] public bool IsCollectiblesLoading { get; set; }
         [Reactive] public CollectibleViewModel SelectedCollectible { get; set; }
@@ -100,7 +100,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                                 c.Name?.ToLower().Contains(searchPattern.ToLower()) ?? false) 
                         ?? new List<CollectibleViewModel>());
 
-                    DisplayedUserCollectibles = new ObservableCollection<CollectibleViewModel>(collectibles)
+                    DisplayedCollectibles = new ObservableCollection<CollectibleViewModel>(collectibles)
                         .OrderByDescending(collectible => collectible.Amount != 0)
                         .ThenBy(c => c.Name)
                         .ToList();
@@ -195,7 +195,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                         .Select(vm => vm.CollectibleViewModel)
                         .ToList());
 
-                    DisplayedUserCollectibles = new ObservableCollection<CollectibleViewModel>(
+                    DisplayedCollectibles = new ObservableCollection<CollectibleViewModel>(
                         UserCollectibles.Take(QtyDisplayedCollectibles));
                 });
                 
@@ -219,7 +219,6 @@ namespace atomex.ViewModels.CurrencyViewModels
                 QtyDisplayedCollectibles >= UserCollectibles.Count) return;
 
             IsCollectiblesLoading = true;
-            this.RaisePropertyChanged(nameof(IsCollectiblesLoading));
 
             try
             {
@@ -236,11 +235,11 @@ namespace atomex.ViewModels.CurrencyViewModels
                 if (!collectibles.Any())
                     return;
 
-                var resultCollectibles = DisplayedUserCollectibles.Concat(collectibles);
+                var resultCollectibles = DisplayedCollectibles.Concat(collectibles);
 
                 await Device.InvokeOnMainThreadAsync(() => 
                     {
-                        DisplayedUserCollectibles = new ObservableCollection<CollectibleViewModel>(resultCollectibles);
+                        DisplayedCollectibles = new ObservableCollection<CollectibleViewModel>(resultCollectibles);
                         QtyDisplayedCollectibles += collectibles.Count;
                     }
                 );
@@ -252,7 +251,6 @@ namespace atomex.ViewModels.CurrencyViewModels
             finally
             {
                 IsCollectiblesLoading = false;
-                this.RaisePropertyChanged(nameof(IsCollectiblesLoading));
             }
         }
 
@@ -276,7 +274,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                         .Select(vm => vm.CollectibleViewModel)
                         .ToList();
                     
-                    DisplayedUserCollectibles = new ObservableCollection<CollectibleViewModel>(
+                    DisplayedCollectibles = new ObservableCollection<CollectibleViewModel>(
                         UserCollectibles?.Take(QtyDisplayedCollectibles) ?? new List<CollectibleViewModel>());
                 });
 
@@ -365,7 +363,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 
                 await Device.InvokeOnMainThreadAsync(() => 
                     {
-                        DisplayedUserCollectibles = new ObservableCollection<CollectibleViewModel>(collectibles);
+                        DisplayedCollectibles = new ObservableCollection<CollectibleViewModel>(collectibles);
                         QtyDisplayedCollectibles = _defaultQtyDisplayedCollectibles;
                     }
                 );
