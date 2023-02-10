@@ -1144,16 +1144,16 @@
                             </StackLayout>
                         </controls:CustomCollectionView.Footer>
                     </controls:CustomCollectionView>
-
-                    <controls:CustomCollectionView ItemsSource="{Binding Delegations}"
+                    <controls:CustomCollectionView ItemsSource="{Binding DisplayedDelegations}"
                                                    SelectionMode="Single"
                                                    SelectedItem="{Binding SelectedDelegation, Mode=TwoWay}"
                                                    BackgroundColor="Transparent"
                                                    VerticalScrollBarVisibility="Never"
+                                                   RowCount="{Binding QtyDisplayedDelegations, Mode=OneWay}"
                                                    RowHeight="76"
                                                    ScrollView="Page"
-                                                   IsVisible="False"
-                                                   Footer="">
+                                                   RemainingItemsThresholdReachedCommand="{Binding LoadMoreDelegationsCommand}"
+                                                   IsVisible="False">
                         <controls:CustomCollectionView.Triggers>
                             <DataTrigger TargetType="controls:CustomCollectionView"
                                          Binding="{Binding SelectedTab}"
@@ -1303,6 +1303,37 @@
                                 </Grid>
                             </DataTemplate>
                         </controls:CustomCollectionView.ItemTemplate>
+                         <controls:CustomCollectionView.Footer>
+                            <StackLayout HorizontalOptions="FillAndExpand"
+                                         VerticalOptions="Center"
+                                         HeightRequest="86">
+                                <Frame IsVisible="{Binding IsDelegationsLoading}"
+                                       HorizontalOptions="FillAndExpand"
+                                       BackgroundColor="Transparent"
+                                       BorderColor="Transparent"
+                                       HasShadow="False">
+                                    <StackLayout HorizontalOptions="Center">
+                                        <ActivityIndicator
+                                            IsVisible="{Binding IsDelegationsLoading}"
+                                            IsRunning="{Binding IsDelegationsLoading}"
+                                            HeightRequest="24"
+                                            WidthRequest="24"
+                                            Color="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                            BackgroundColor="Transparent"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
+                                        <Label Text="{helpers:Translate LoadingLabel}"
+                                               Style="{DynamicResource AdditionalTextH5}"
+                                               Padding="4"
+                                               HorizontalTextAlignment="Center"
+                                               VerticalTextAlignment="Center"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center"
+                                               IsVisible="{Binding IsDelegationsLoading}" />
+                                    </StackLayout>
+                                </Frame>
+                            </StackLayout>
+                        </controls:CustomCollectionView.Footer>
                     </controls:CustomCollectionView>
                     <controls:CustomCollectionView ItemsSource="{Binding DappsViewModel.Dapps}"
                                                    SelectionMode="Single"

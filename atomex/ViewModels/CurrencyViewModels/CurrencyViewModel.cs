@@ -62,7 +62,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public decimal CurrentQuote { get; set; }
         public event EventHandler AmountUpdated;
 
-        protected ObservableCollection<TransactionViewModel> Transactions { get; set; }
+        protected IList<TransactionViewModel> Transactions { get; set; }
         [Reactive] public ObservableCollection<Grouping<TransactionViewModel>> GroupedTransactions { get; set; }
         [Reactive] public TransactionViewModel SelectedTransaction { get; set; }
 
@@ -533,7 +533,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                     {
                         GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(
                             resultGroups ?? new ObservableCollection<Grouping<TransactionViewModel>>());
-                        QtyDisplayedTxs += LoadingStepTxs;
+                        QtyDisplayedTxs += txs.Count;
                     }
                 );
             }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using atomex.Common;
 using atomex.Views;
 using atomex.Views.Delegate;
@@ -22,13 +24,20 @@ namespace atomex.ViewModels.CurrencyViewModels
     public class TezosCurrencyViewModel : CurrencyViewModel
     {
         public TezosConfig Tezos => Currency as TezosConfig;
-        [Reactive] public ObservableCollection<DelegationViewModel> Delegations { get; set; }
+        [Reactive] public ObservableCollection<DelegationViewModel> DisplayedDelegations { get; set; }
+        private IList<DelegationViewModel> Delegations { get; set; }
         [Reactive] public DelegationViewModel SelectedDelegation { get; set; }
         [Reactive] public TezosTokensViewModel TezosTokensViewModel { get; set; }
         [Reactive] public CollectiblesViewModel CollectiblesViewModel { get; set; }
         [Reactive] public DappsViewModel DappsViewModel { get; set; }
 
         private DelegateViewModel _delegateViewModel;
+        
+        [Reactive] public int QtyDisplayedDelegations { get; set; }
+        private int _defaultQtyDisplayedDelegations = 5;
+        public int LoadingStepDelegations => 10;
+        
+        public bool IsDelegationsLoading { get; set; }
 
         public TezosCurrencyViewModel(
             IAtomexApp app,
@@ -37,6 +46,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             : base(app, currency, navigationService)
         {
             Delegations = new ObservableCollection<DelegationViewModel>();
+            DisplayedDelegations = new ObservableCollection<DelegationViewModel>();
 
             this.WhenAnyValue(vm => vm.SelectedDelegation)
                 .WhereNotNull()
@@ -59,6 +69,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             
             HasDapps = true;
             DappsViewModel = new DappsViewModel(App, NavigationService);
+            QtyDisplayedDelegations = _defaultQtyDisplayedDelegations;
         }
 
         private async Task LoadDelegationInfoAsync()
@@ -137,8 +148,11 @@ namespace atomex.ViewModels.CurrencyViewModels
                     });
                 }
 
+                Delegations = new ObservableCollection<DelegationViewModel>(delegations);
+
                 await Device.InvokeOnMainThreadAsync(() =>
-                    Delegations = new ObservableCollection<DelegationViewModel>(delegations));
+                    DisplayedDelegations = new ObservableCollection<DelegationViewModel>(
+                        Delegations.Take(QtyDisplayedDelegations)));
             }
             catch (OperationCanceledException)
             {
@@ -194,6 +208,51 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             CollectiblesViewModel?.Reset();
             base.Reset();
+        }
+        
+        public ICommand LoadMoreDelegationsCommand => new Command(async () => await LoadMoreDelegations());
+        
+        private async Task LoadMoreDelegations()
+        {
+            if (IsDelegationsLoading ||
+                QtyDisplayedDelegations >= Delegations.Count) return;
+
+            IsDelegationsLoading = true;
+            this.RaisePropertyChanged(nameof(IsDelegationsLoading));
+
+            try
+            {
+                await Task.Delay(300);
+
+                if (Delegations == null)
+                    return;
+
+                var delegations = Delegations
+                    .Skip(QtyDisplayedDelegations)
+                    .Take(LoadingStepDelegations)
+                    .ToList();
+
+                if (!delegations.Any())
+                    return;
+
+                var resultDelegations = DisplayedDelegations.Concat(delegations);
+
+                await Device.InvokeOnMainThreadAsync(() =>
+                    {
+                        DisplayedDelegations = new ObservableCollection<DelegationViewModel>(resultDelegations);
+                        QtyDisplayedDelegations += delegations.Count;
+                    }
+                );
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error loading more delegations error");
+            }
+            finally
+            {
+                IsDelegationsLoading = false;
+                this.RaisePropertyChanged(nameof(IsDelegationsLoading));
+            }
         }
     }
 }

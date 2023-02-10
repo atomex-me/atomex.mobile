@@ -241,7 +241,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 await Device.InvokeOnMainThreadAsync(() => 
                     {
                         DisplayedUserCollectibles = new ObservableCollection<CollectibleViewModel>(resultCollectibles);
-                        QtyDisplayedCollectibles += LoadingStepCollectibles;
+                        QtyDisplayedCollectibles += collectibles.Count;
                     }
                 );
             }
