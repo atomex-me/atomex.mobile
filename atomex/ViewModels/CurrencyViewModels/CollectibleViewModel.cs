@@ -88,7 +88,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
                     await Task.Run(async () =>
                     {
-                        await SelectedToken!.LoadTransfers();
+                        await SelectedToken!.LoadTransfersAsync();
                         SelectedToken.LoadAddresses();
                     });
 

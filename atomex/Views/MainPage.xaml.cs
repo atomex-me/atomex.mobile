@@ -19,6 +19,7 @@ using System.Threading;
 using atomex.ViewModels;
 using atomex.ViewModels.ConversionViewModels;
 using atomex.ViewModels.CurrencyViewModels;
+using atomex.Views.TezosTokens;
 using static atomex.Models.SnackbarMessage;
 using Rg.Plugins.Popup.Services;
 using Rg.Plugins.Popup.Pages;
@@ -86,14 +87,25 @@ namespace atomex.Views
             Children.Add(_navigationBuyPage);
             Children.Add(_navigationSettingsPage);
 
-            mainViewModel.Locked += (s, a) => { SignOut(); };
+            mainViewModel.Locked += (s, a) => SignOut();
             
             _navigationPortfolioPage.Popped += (s, e) =>
             {
-                if (e.Page is not CurrencyPage page) return;
-
-                var vm = page.BindingContext as CurrencyViewModel;
-                vm?.Reset();
+                switch (e.Page)
+                {
+                    case CurrencyPage page:
+                    {
+                        var vm = page.BindingContext as CurrencyViewModel;
+                        vm?.Reset();
+                        break;
+                    }
+                    case TokenPage tokenPage:
+                    {
+                        var vm = tokenPage.BindingContext as TezosTokenViewModel;
+                        vm?.Reset();
+                        break;
+                    }
+                }
             };
 
             LocalizationResourceManager.Instance.LanguageChanged += (s, a) =>

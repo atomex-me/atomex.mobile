@@ -90,6 +90,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 });
 
             this.WhenAnyValue(vm => vm.SearchPattern)
+                .WhereNotNull()
                 .SubscribeInMainThread(searchPattern =>
                 {
                     if (UserCollectibles == null) return;
@@ -351,9 +352,11 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             try
             {
+                SearchPattern = null;
+                
                 if (UserCollectibles == null)
                     return;
-                
+
                 var collectibles = UserCollectibles
                     .Take(_defaultQtyDisplayedCollectibles)
                     .ToList();

@@ -89,21 +89,22 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             this.WhenAnyValue(vm => vm.SelectedToken)
                 .WhereNotNull()
-                .SubscribeInMainThread(async (token) =>
+                .SubscribeInMainThread(async token =>
                 {
                     _navigationService?.ShowPage(new TokenPage(token), TabNavigation.Portfolio);
                     _openToken = token;
-
+                
                     await Task.Run(async () =>
                     {
-                        await SelectedToken.LoadTransfers();
+                        await SelectedToken.LoadTransfersAsync();
                         SelectedToken.LoadAddresses();
                     });
-
+                
                     SelectedToken = null;
                 });
 
             this.WhenAnyValue(vm => vm.SearchPattern)
+                .WhereNotNull()
                 .SubscribeInMainThread(searchPattern =>
                 {
                     if (UserTokens == null) return;
@@ -278,7 +279,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                                                    args.TokenId != _openToken.TokenBalance.TokenId)) return;
 
                 if (_openToken != null)
-                    _ = _openToken.LoadTransfers();
+                    _ = _openToken.LoadTransfersAsync();
 
                 await Device.InvokeOnMainThreadAsync(async () => await ReloadTokenContractsAsync());
             }
@@ -395,6 +396,8 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             try
             {
+                SearchPattern = null;
+                
                 if (UserTokens == null)
                     return;
 

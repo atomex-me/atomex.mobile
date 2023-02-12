@@ -37,7 +37,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         private int _defaultQtyDisplayedDelegations = 5;
         public int LoadingStepDelegations => 10;
         
-        public bool IsDelegationsLoading { get; set; }
+        [Reactive] public bool IsDelegationsLoading { get; set; }
 
         public TezosCurrencyViewModel(
             IAtomexApp app,
@@ -67,7 +67,6 @@ namespace atomex.ViewModels.CurrencyViewModels
             TezosTokensViewModel = new TezosTokensViewModel(App, NavigationService);
             CollectiblesViewModel = new CollectiblesViewModel(App, NavigationService);
             
-            HasDapps = true;
             DappsViewModel = new DappsViewModel(App, NavigationService);
             QtyDisplayedDelegations = _defaultQtyDisplayedDelegations;
         }
@@ -219,7 +218,6 @@ namespace atomex.ViewModels.CurrencyViewModels
                 QtyDisplayedDelegations >= Delegations.Count) return;
 
             IsDelegationsLoading = true;
-            this.RaisePropertyChanged(nameof(IsDelegationsLoading));
 
             try
             {
@@ -252,7 +250,6 @@ namespace atomex.ViewModels.CurrencyViewModels
             finally
             {
                 IsDelegationsLoading = false;
-                this.RaisePropertyChanged(nameof(IsDelegationsLoading));
             }
         }
     }
