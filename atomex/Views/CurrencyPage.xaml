@@ -414,7 +414,7 @@
                         IsGrouped="True"
                         GroupHeaderHeight="36"
                         RowCount="{Binding QtyDisplayedTxs, Mode=OneWay}"
-                        RowHeight="73"
+                        RowHeight="76"
                         ScrollView="Page"
                         BackgroundColor="Transparent"
                         VerticalScrollBarVisibility="Never"

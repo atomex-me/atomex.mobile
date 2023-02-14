@@ -10,8 +10,6 @@ namespace atomex.CustomElements
         private ScrollView _scrollView;
         private double _previousScrollViewPosition = 0;
         private int _columns;
-        
-        private int BindingItemsCount => Convert.ToInt32(ItemsSource.Cast<object>().ToList().Count);
 
         public static readonly BindableProperty RowHeightProperty =
             BindableProperty.CreateAttached("RowHeight",
@@ -88,7 +86,7 @@ namespace atomex.CustomElements
             }
             catch (Exception exception)
             {
-                Log.Error(exception, "CustomCollectionView scrolled error");
+                Log.Error(exception, "Custom collection view scrolled error");
             }
         }
 
@@ -117,13 +115,17 @@ namespace atomex.CustomElements
                 if (footerHeight < 0) footerHeight = 0;
                 if (headerHeight < 0) headerHeight = 0;
 
+                var bindingItemCount = Convert.ToInt32(ItemsSource?.Cast<object>().ToList().Count);
+                
+                if (bindingItemCount == 0) return;
+
                 HeightRequest = IsGrouped
-                    ? RowCount * RowHeight + BindingItemsCount * GroupHeaderHeight + footerHeight + headerHeight
+                    ? RowCount * RowHeight + bindingItemCount * GroupHeaderHeight + footerHeight + headerHeight
                     : RowCount * RowHeight / _columns + footerHeight + headerHeight;
             }
             catch (Exception e)
             {
-                Log.Error(e, "Update height of CustomCollectionView error");
+                Log.Error(e, "Update height of custom collection view error");
             }
         }
     }
