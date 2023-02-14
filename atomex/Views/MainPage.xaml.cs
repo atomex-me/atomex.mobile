@@ -279,9 +279,10 @@ namespace atomex.Views
             {
                 if (removePrevious)
                 {
-                    for ( ; PopupNavigation.Instance.PopupStack.Count > 0 ; )
+                    if (PopupNavigation.Instance.PopupStack.Count > 0)
                         _ = PopupNavigation.Instance.PopAsync();
                 }
+                
                 _ = PopupNavigation.Instance.PushAsync(popup);
             }
             catch (Exception e)

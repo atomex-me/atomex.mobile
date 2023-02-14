@@ -132,6 +132,7 @@ namespace atomex.ViewModels
                             SelectCurrencyUseCase = CurrencyActionType.Show;
                             SelectedCurrency = null;
                             break;
+                        
                         default:
                             NavigationService?.ShowPage(new CurrencyPage(c), TabNavigation.Portfolio);
                             NavigationService?.SetInitiatedPage(TabNavigation.Portfolio);
