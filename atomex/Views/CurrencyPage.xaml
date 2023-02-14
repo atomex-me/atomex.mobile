@@ -1151,15 +1151,13 @@
                             </StackLayout>
                         </controls:CustomCollectionView.Footer>
                     </controls:CustomCollectionView>
-                    <controls:CustomCollectionView ItemsSource="{Binding DisplayedDelegations}"
+                    <controls:CustomCollectionView ItemsSource="{Binding Delegations}"
                                                    SelectionMode="Single"
                                                    SelectedItem="{Binding SelectedDelegation, Mode=TwoWay}"
                                                    BackgroundColor="Transparent"
                                                    VerticalScrollBarVisibility="Never"
-                                                   RowCount="{Binding QtyDisplayedDelegations, Mode=OneWay}"
                                                    RowHeight="76"
                                                    ScrollView="Page"
-                                                   RemainingItemsThresholdReachedCommand="{Binding LoadMoreDelegationsCommand}"
                                                    IsVisible="False">
                         <controls:CustomCollectionView.Triggers>
                             <DataTrigger TargetType="controls:CustomCollectionView"

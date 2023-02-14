@@ -70,6 +70,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         private int _defaultQtyDisplayedTxs = 5;
         [Reactive] public bool IsTxsLoading { get; set; }
         public int LoadingStepTxs => 20;
+        private int LoadingDelayMs => 300;
 
         [Reactive] public AddressesViewModel AddressesViewModel { get; set; }
         [Reactive] public ObservableCollection<AddressViewModel> Addresses { get; set; }
@@ -78,7 +79,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         public class Grouping<T> : ObservableCollection<T>
         {
-            public DateTime Date { get; private set; }
+            public DateTime Date { get; set; }
 
             public Grouping(DateTime date, IEnumerable<T> items)
             {
@@ -302,7 +303,8 @@ namespace atomex.ViewModels.CurrencyViewModels
                         .Take(QtyDisplayedTxs)
                         .GroupBy(p => p.LocalTime.Date)
                         .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                            new ObservableCollection<TransactionViewModel>(g)));
+                            new ObservableCollection<TransactionViewModel>(g)))
+                        .ToList();
                 });
 
                 await Device.InvokeOnMainThreadAsync(() =>
@@ -519,7 +521,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             try
             {
-                await Task.Delay(300);
+                await Task.Run(async () => await Task.Delay(LoadingDelayMs));
 
                 if (Transactions == null)
                     return;

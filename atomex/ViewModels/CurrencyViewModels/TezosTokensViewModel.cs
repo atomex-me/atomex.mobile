@@ -66,7 +66,8 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public int QtyDisplayedTokens { get; set; }
         private int _defaultQtyDisplayedTokens = 5;
         [Reactive] public bool IsTokensLoading { get; set; }
-        public int LoadingStepTokens => 10;
+        public int LoadingStepTokens => 20;
+        private int LoadingDelayMs => 300;
         
         private TezosTokenViewModel _openToken;
 
@@ -219,7 +220,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             try
             {
-                await Task.Delay(300);
+                await Task.Run(async () => await Task.Delay(LoadingDelayMs));
 
                 if (UserTokens == null)
                     return;
@@ -297,23 +298,24 @@ namespace atomex.ViewModels.CurrencyViewModels
 
                 var disabledTokens = _app.Account.UserData?.DisabledTokens ?? Array.Empty<string>();
                 var tokens = await Task.Run(LoadTokens);
+                var tokensViewModels = tokens
+                    .Select(token =>
+                    {
+                        var vm = new TezosToken(
+                            tezosTokenViewModel: token,
+                            isSelected: !disabledTokens.Contains(token.CurrencyCode))
+                        {
+                            OnChanged = ChangeUserTokens
+                        };
+
+                        return vm;
+                    })
+                    .OrderByDescending(token => token.TezosTokenViewModel.IsConvertable)
+                    .ThenByDescending(token => token.TezosTokenViewModel.TotalAmountInBase);
 
                 await Device.InvokeOnMainThreadAsync(() =>
                 {
-                    AllTokens = new ObservableCollection<TezosToken>(tokens
-                        .Select(token =>
-                        {
-                            var vm = new TezosToken(
-                                tezosTokenViewModel: token,
-                                isSelected: !disabledTokens.Contains(token.CurrencyCode))
-                            {
-                                OnChanged = ChangeUserTokens
-                            };
-
-                            return vm;
-                        })
-                        .OrderByDescending(token => token.TezosTokenViewModel.IsConvertable)
-                        .ThenByDescending(token => token.TezosTokenViewModel.TotalAmountInBase));
+                    AllTokens = new ObservableCollection<TezosToken>(tokensViewModels);
 
                     UserTokens = new ObservableCollection<TezosTokenViewModel>(AllTokens
                         .Where(c => c.IsSelected)

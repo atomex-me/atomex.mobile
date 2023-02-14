@@ -59,11 +59,13 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public int QtyDisplayedTxs { get; set; }
         private int _defaultQtyDisplayedTxs = 5;
         public int LoadingStepTxs => 20;
+        private int LoadingDelayMs => 300;
         [Reactive] public bool IsTransfersLoading { get; set; }
 
         [Reactive] public AddressesViewModel AddressesViewModel { get; set; }
         [Reactive] public ObservableCollection<AddressViewModel> Addresses { get; set; }
 
+        [Reactive] public bool CanShowMoreTxs { get; set; }
         [Reactive] public bool CanShowMoreAddresses { get; set; }
         private int QtyDisplayedAddresses => 3;
 
@@ -170,6 +172,11 @@ namespace atomex.ViewModels.CurrencyViewModels
                     _navigationService?.ShowPage(new TransactionInfoPage(t), TabNavigation.Portfolio);
                     SelectedTransaction = null;
                 });
+            
+            this.WhenAnyValue(vm => vm.GroupedTransactions)
+                .WhereNotNull()
+                .SubscribeInMainThread(_ =>
+                    CanShowMoreTxs = Transactions.Count > QtyDisplayedTxs);
 
             this.WhenAnyValue(vm => vm.Addresses)
                 .WhereNotNull()
@@ -267,7 +274,8 @@ namespace atomex.ViewModels.CurrencyViewModels
                         .Take(QtyDisplayedTxs)
                         .GroupBy(p => p.LocalTime.Date)
                         .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                            new ObservableCollection<TransactionViewModel>(g)));
+                            new ObservableCollection<TransactionViewModel>(g)))
+                        .ToList();
                 });
 
                 await Device.InvokeOnMainThreadAsync(() =>
@@ -299,8 +307,8 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             try
             {
-                await Task.Delay(300);
-
+                await Task.Run(async () => await Task.Delay(LoadingDelayMs));
+                
                 if (Transactions == null)
                     return;
 
@@ -336,6 +344,21 @@ namespace atomex.ViewModels.CurrencyViewModels
                 IsTransfersLoading = false;
             }
         }
+        
+        private ReactiveCommand<Unit, Unit> _showAllTxsCommand;
+
+        public ReactiveCommand<Unit, Unit> ShowAllTxsCommand => _showAllTxsCommand ??= ReactiveCommand.Create(() =>
+        {
+            CanShowMoreTxs = false;
+            QtyDisplayedTxs = Transactions.Count;
+
+            var groups = Transactions
+                .GroupBy(p => p.LocalTime.Date)
+                .Select(g => new Grouping<TransactionViewModel>(g.Key,
+                    new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))));
+
+            GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
+        });
 
         private IEnumerable<Grouping<TransactionViewModel>> MergeGroups(
             List<Grouping<TransactionViewModel>> group1,

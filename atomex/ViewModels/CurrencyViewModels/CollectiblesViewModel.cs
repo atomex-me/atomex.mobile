@@ -63,6 +63,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public int QtyDisplayedCollectibles { get; set; }
         private int _defaultQtyDisplayedCollectibles = 4;
         public int LoadingStepCollectibles => 8;
+        private int LoadingDelayMs => 300;
 
         [Reactive] public string SearchPattern { get; set; }
 
@@ -223,7 +224,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             try
             {
-                await Task.Delay(300);
+                await Task.Run(async () => await Task.Delay(LoadingDelayMs));
 
                 if (UserCollectibles == null)
                     return;

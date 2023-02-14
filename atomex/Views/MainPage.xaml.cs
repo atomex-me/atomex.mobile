@@ -19,6 +19,7 @@ using System.Threading;
 using atomex.ViewModels;
 using atomex.ViewModels.ConversionViewModels;
 using atomex.ViewModels.CurrencyViewModels;
+using atomex.Views.Collectibles;
 using atomex.Views.TezosTokens;
 using static atomex.Models.SnackbarMessage;
 using Rg.Plugins.Popup.Services;
@@ -102,6 +103,12 @@ namespace atomex.Views
                     case TokenPage tokenPage:
                     {
                         var vm = tokenPage.BindingContext as TezosTokenViewModel;
+                        vm?.Reset();
+                        break;
+                    }
+                    case NftPage nftPage:
+                    {
+                        var vm = nftPage.BindingContext as TezosTokenViewModel;
                         vm?.Reset();
                         break;
                     }

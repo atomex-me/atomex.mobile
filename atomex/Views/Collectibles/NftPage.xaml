@@ -354,7 +354,6 @@
                           IsGroupingEnabled="True"
                           VerticalScrollBarVisibility="Never"
                           HasUnevenRows="True"
-                          HeightRequest="{Binding TxListViewHeight}"
                           IsVisible="False">
                     <ListView.Triggers>
                         <DataTrigger TargetType="ListView"
@@ -366,9 +365,10 @@
                     </ListView.Triggers>
                     <ListView.GroupHeaderTemplate>
                         <DataTemplate>
-                            <controls:CustomViewCell BindableHeight="{Binding GroupHeight}">
+                            <ViewCell>
                                 <StackLayout VerticalOptions="FillAndExpand"
                                              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                                             HeightRequest="36"
                                              Spacing="0">
                                     <Label Text="{Binding DateString}"
                                            Style="{DynamicResource AdditionalTextH5}"
@@ -377,7 +377,7 @@
                                            VerticalTextAlignment="End"
                                            HorizontalTextAlignment="Start" />
                                 </StackLayout>
-                            </controls:CustomViewCell>
+                            </ViewCell>
                         </DataTemplate>
                     </ListView.GroupHeaderTemplate>
                     <ListView.ItemTemplate>
@@ -520,7 +520,6 @@
                           SeparatorVisibility="None"
                           VerticalScrollBarVisibility="Never"
                           HasUnevenRows="True"
-                          HeightRequest="{Binding AddressListViewHeight}"
                           Margin="0,20"
                           IsVisible="False">
                     <ListView.Triggers>
