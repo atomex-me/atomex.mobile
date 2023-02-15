@@ -10,6 +10,7 @@ namespace atomex.CustomElements
         private ScrollView _scrollView;
         private double _previousScrollViewPosition = 0;
         private int _columns;
+        private int BindingItemCount => Convert.ToInt32(ItemsSource?.Cast<object>().ToList().Count);
 
         public static readonly BindableProperty RowHeightProperty =
             BindableProperty.CreateAttached("RowHeight",
@@ -115,12 +116,8 @@ namespace atomex.CustomElements
                 if (footerHeight < 0) footerHeight = 0;
                 if (headerHeight < 0) headerHeight = 0;
 
-                var bindingItemCount = Convert.ToInt32(ItemsSource?.Cast<object>().ToList().Count);
-                
-                if (bindingItemCount == 0) return;
-
                 HeightRequest = IsGrouped
-                    ? RowCount * RowHeight + bindingItemCount * GroupHeaderHeight + footerHeight + headerHeight
+                    ? RowCount * RowHeight + (BindingItemCount == 0 ? RowCount : BindingItemCount) * GroupHeaderHeight + footerHeight + headerHeight
                     : RowCount * RowHeight / _columns + footerHeight + headerHeight;
             }
             catch (Exception e)

@@ -67,8 +67,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         private int _defaultQtyDisplayedTokens = 5;
         [Reactive] public bool IsTokensLoading { get; set; }
         public int LoadingStepTokens => 20;
-        private int LoadingDelayMs => 300;
-        
+
         private TezosTokenViewModel _openToken;
 
         [Reactive] public string SearchPattern { get; set; }
@@ -220,8 +219,6 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             try
             {
-                await Task.Run(async () => await Task.Delay(LoadingDelayMs));
-
                 if (UserTokens == null)
                     return;
                 
@@ -282,7 +279,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 if (_openToken != null)
                     _ = _openToken.LoadTransfersAsync();
 
-                await Device.InvokeOnMainThreadAsync(async () => await ReloadTokenContractsAsync());
+                _ = ReloadTokenContractsAsync();
             }
             catch (Exception e)
             {
@@ -394,7 +391,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         public ICommand CloseActionSheetCommand => _closeActionSheetCommand ??=
             new Command(() => _navigationService?.ClosePopup());
 
-        public async void Reset()
+        public void Reset()
         {
             try
             {
@@ -410,7 +407,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 if (!tokens.Any())
                     return;
 
-                await Device.InvokeOnMainThreadAsync(() =>
+                Device.InvokeOnMainThreadAsync(() =>
                     {
                         DisplayedTokens = new ObservableCollection<TezosTokenViewModel>(tokens);
                         QtyDisplayedTokens = _defaultQtyDisplayedTokens;

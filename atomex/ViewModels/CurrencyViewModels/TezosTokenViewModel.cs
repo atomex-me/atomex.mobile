@@ -59,7 +59,6 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public int QtyDisplayedTxs { get; set; }
         private int _defaultQtyDisplayedTxs = 5;
         public int LoadingStepTxs => 20;
-        private int LoadingDelayMs => 300;
         [Reactive] public bool IsTransfersLoading { get; set; }
 
         [Reactive] public AddressesViewModel AddressesViewModel { get; set; }
@@ -307,8 +306,6 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             try
             {
-                await Task.Run(async () => await Task.Delay(LoadingDelayMs));
-                
                 if (Transactions == null)
                     return;
 
@@ -403,7 +400,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             return result;
         }
 
-        public virtual async void Reset()
+        public virtual void Reset()
         {
             try
             {
@@ -422,7 +419,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                     .Select(g => new Grouping<TransactionViewModel>(g.Key,
                         new ObservableCollection<TransactionViewModel>(g)));
 
-                await Device.InvokeOnMainThreadAsync(() => 
+                Device.InvokeOnMainThreadAsync(() => 
                     {
                         GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(
                             groups ?? new ObservableCollection<Grouping<TransactionViewModel>>());
@@ -436,7 +433,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
         }
 
-        private async void OnBalanceUpdatedEventHandler(object sender, CurrencyEventArgs args)
+        private void OnBalanceUpdatedEventHandler(object sender, CurrencyEventArgs args)
         {
             try
             {
@@ -444,7 +441,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                     args.TokenContract != null && (args.TokenContract != TokenBalance.Contract ||
                                                    args.TokenId != TokenBalance.TokenId)) return;
 
-                await Device.InvokeOnMainThreadAsync(async () => await UpdateBalanceAsync());
+                _ = UpdateBalanceAsync();
             }
             catch (Exception e)
             {
@@ -529,20 +526,27 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         private async Task UpdateBalanceAsync()
         {
-            var tezosAccount = _app.Account.GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
+            try
+            {
+                var tezosAccount = _app.Account.GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
 
-            var tokenWalletAddresses = await tezosAccount
-                .DataRepository
-                .GetTezosTokenAddressesByContractAsync(Contract.Address);
+                var tokenWalletAddresses = await tezosAccount
+                    .DataRepository
+                    .GetTezosTokenAddressesByContractAsync(Contract.Address);
 
-            var addresses = tokenWalletAddresses
-                .Where(walletAddress => walletAddress.TokenBalance.TokenId == TokenBalance.TokenId)
-                .ToList();
+                var addresses = tokenWalletAddresses
+                    .Where(walletAddress => walletAddress.TokenBalance.TokenId == TokenBalance.TokenId)
+                    .ToList();
 
-            var tokenBalance = 0m;
-            addresses.ForEach(a => tokenBalance += a.TokenBalance.GetTokenBalance());
+                var tokenBalance = 0m;
+                addresses.ForEach(a => tokenBalance += a.TokenBalance.GetTokenBalance());
 
-            await Device.InvokeOnMainThreadAsync(() => TotalAmount = tokenBalance);
+                await Device.InvokeOnMainThreadAsync(() => TotalAmount = tokenBalance);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Update balance error for {@Token}", CurrencyCode);
+            }
         }
 
         private async Task ScanCurrency()

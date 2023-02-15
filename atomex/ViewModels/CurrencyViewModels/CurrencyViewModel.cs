@@ -70,7 +70,6 @@ namespace atomex.ViewModels.CurrencyViewModels
         private int _defaultQtyDisplayedTxs = 5;
         [Reactive] public bool IsTxsLoading { get; set; }
         public int LoadingStepTxs => 20;
-        private int LoadingDelayMs => 300;
 
         [Reactive] public AddressesViewModel AddressesViewModel { get; set; }
         [Reactive] public ObservableCollection<AddressViewModel> Addresses { get; set; }
@@ -521,8 +520,6 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             try
             {
-                await Task.Run(async () => await Task.Delay(LoadingDelayMs));
-
                 if (Transactions == null)
                     return;
 
@@ -602,7 +599,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             return result;
         }
 
-        public virtual async void Reset()
+        public virtual void Reset()
         {
             try
             {
@@ -621,7 +618,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                     .Select(g => new Grouping<TransactionViewModel>(g.Key,
                         new ObservableCollection<TransactionViewModel>(g)));
 
-                await Device.InvokeOnMainThreadAsync(() =>
+                Device.InvokeOnMainThreadAsync(() =>
                     {
                         GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(
                             groups ?? new ObservableCollection<Grouping<TransactionViewModel>>());
