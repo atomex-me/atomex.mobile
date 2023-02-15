@@ -61,8 +61,8 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public CollectibleViewModel SelectedCollectible { get; set; }
 
         [Reactive] public int QtyDisplayedCollectibles { get; set; }
-        private int _defaultQtyDisplayedCollectibles = 4;
-        public int LoadingStepCollectibles => 8;
+        private int _defaultQtyDisplayedCollectibles = 10;
+        public int LoadingStepCollectibles => 10;
 
         [Reactive] public string SearchPattern { get; set; }
 

@@ -436,7 +436,7 @@
                                          Binding="{Binding IsBitcoinBased, TargetNullValue='False', FallbackValue='False'}"
                                          Value="False">
                                 <Setter Property="RowHeight"
-                                        Value="76" />
+                                        Value="73" />
                             </DataTrigger>
                         </CollectionView.Triggers>
                         <CollectionView.GroupHeaderTemplate>
@@ -1365,7 +1365,7 @@
                                                    SelectionMode="Single"
                                                    SelectedItem="{Binding DappsViewModel.SelectedDapp, Mode=TwoWay}"
                                                    BackgroundColor="Transparent"
-                                                   RowHeight="72"
+                                                   RowHeight="76"
                                                    ScrollView="Page"
                                                    VerticalScrollBarVisibility="Never"
                                                    IsVisible="False">

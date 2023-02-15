@@ -64,7 +64,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public TezosTokenViewModel SelectedToken { get; set; }
         
         [Reactive] public int QtyDisplayedTokens { get; set; }
-        private int _defaultQtyDisplayedTokens = 5;
+        private int _defaultQtyDisplayedTokens = 10;
         [Reactive] public bool IsTokensLoading { get; set; }
         public int LoadingStepTokens => 20;
 

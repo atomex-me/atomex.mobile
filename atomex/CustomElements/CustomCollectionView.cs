@@ -10,6 +10,7 @@ namespace atomex.CustomElements
         private ScrollView _scrollView;
         private double _previousScrollViewPosition = 0;
         private int _columns;
+        private double ThresholdSpace => RowHeight * 2;
         private int BindingItemCount => Convert.ToInt32(ItemsSource?.Cast<object>().ToList().Count);
 
         public static readonly BindableProperty RowHeightProperty =
@@ -77,7 +78,7 @@ namespace atomex.CustomElements
                 if (_previousScrollViewPosition < e.ScrollY)
                 {
                     //scrolled down
-                    var scrollingSpace = _scrollView.ContentSize.Height - _scrollView.Height;
+                    var scrollingSpace = _scrollView.ContentSize.Height - _scrollView.Height - ThresholdSpace;
                     if (scrollingSpace <= e.ScrollY)
                         RemainingItemsThresholdReachedCommand?.Execute(
                             RemainingItemsThresholdReachedCommandParameter); // Touched bottom view
