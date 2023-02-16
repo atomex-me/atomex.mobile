@@ -64,14 +64,23 @@ namespace atomex.ViewModels.CurrencyViewModels
                             }));
                     
                     return Transactions
-                        .Take(QtyDisplayedTxs)
-                        .GroupBy(p => p.LocalTime.Date)
-                        .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                            new ObservableCollection<TransactionViewModel>(g)));
+                        .Take(QtyDisplayedTxs <= DefaultQtyDisplayedTxs
+                            ? DefaultQtyDisplayedTxs
+                            : QtyDisplayedTxs)
+                        .ToList();;
                 });
                 
+                var groups = txs
+                    .GroupBy(p => p.LocalTime.Date)
+                    .Select(g => new Grouping<TransactionViewModel>(g.Key,
+                        new ObservableCollection<TransactionViewModel>(g)))
+                    .ToList();
+
                 await Device.InvokeOnMainThreadAsync(() =>
-                    GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(txs));
+                {
+                    GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
+                    QtyDisplayedTxs = txs.Count;
+                });
             }
             catch (OperationCanceledException)
             {

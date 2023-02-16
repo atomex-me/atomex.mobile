@@ -453,6 +453,7 @@
                                                    SelectedItem="{Binding AddressesViewModel.SelectedAddress, Mode=TwoWay}"
                                                    BackgroundColor="Transparent"
                                                    VerticalScrollBarVisibility="Never"
+                                                   RowCount="{Binding QtyDisplayedAddresses, Mode=OneWay}"
                                                    RowHeight="64"
                                                    ScrollView="Page"
                                                    Margin="0,20"

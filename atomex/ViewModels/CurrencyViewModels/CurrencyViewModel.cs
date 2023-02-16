@@ -67,14 +67,15 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public TransactionViewModel SelectedTransaction { get; set; }
 
         [Reactive] public int QtyDisplayedTxs { get; set; }
-        private int _defaultQtyDisplayedTxs = 5;
+        protected int DefaultQtyDisplayedTxs = 8;
+        private int _defaultQtyDisplayedAddresses = 3;
         [Reactive] public bool IsTxsLoading { get; set; }
         public int LoadingStepTxs => 20;
 
         [Reactive] public AddressesViewModel AddressesViewModel { get; set; }
         [Reactive] public ObservableCollection<AddressViewModel> Addresses { get; set; }
         [Reactive] public bool CanShowMoreAddresses { get; set; }
-        private int QtyDisplayedAddresses => 3;
+        [Reactive] public int QtyDisplayedAddresses { get; set; }
 
         public class Grouping<T> : ObservableCollection<T>
         {
@@ -129,7 +130,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             _ = UpdateBalanceAsync();
 
             SelectedTab = CurrencyTab.Activity;
-            QtyDisplayedTxs = _defaultQtyDisplayedTxs;
+            QtyDisplayedAddresses = _defaultQtyDisplayedAddresses;
         }
 
         public virtual void LoadAddresses()
@@ -299,15 +300,23 @@ namespace atomex.ViewModels.CurrencyViewModels
                             }));
 
                     return Transactions
-                        .Take(QtyDisplayedTxs)
-                        .GroupBy(p => p.LocalTime.Date)
-                        .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                            new ObservableCollection<TransactionViewModel>(g)))
+                        .Take(QtyDisplayedTxs <= DefaultQtyDisplayedTxs 
+                            ? DefaultQtyDisplayedTxs 
+                            : QtyDisplayedTxs)
                         .ToList();
                 });
 
+                var groups = txs
+                    .GroupBy(p => p.LocalTime.Date)
+                    .Select(g => new Grouping<TransactionViewModel>(g.Key,
+                        new ObservableCollection<TransactionViewModel>(g)))
+                    .ToList();
+
                 await Device.InvokeOnMainThreadAsync(() =>
-                    GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(txs));
+                {
+                    GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
+                    QtyDisplayedTxs = txs.Count;
+                });
             }
             catch (Exception e)
             {
@@ -607,7 +616,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                     return;
 
                 var txs = Transactions
-                    .Take(_defaultQtyDisplayedTxs)
+                    .Take(DefaultQtyDisplayedTxs)
                     .ToList();
 
                 if (!txs.Any())
@@ -620,9 +629,8 @@ namespace atomex.ViewModels.CurrencyViewModels
 
                 Device.InvokeOnMainThreadAsync(() =>
                     {
-                        GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(
-                            groups ?? new ObservableCollection<Grouping<TransactionViewModel>>());
-                        QtyDisplayedTxs = _defaultQtyDisplayedTxs;
+                        GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
+                        QtyDisplayedTxs = txs.Count;
                     }
                 );
             }

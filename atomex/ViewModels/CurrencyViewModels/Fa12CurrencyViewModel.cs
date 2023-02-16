@@ -51,7 +51,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                             .GetTezosTokenTransfersAsync(fa12Currency?.TokenContractAddress)
                             .ConfigureAwait(false))
                         .ToList();
-                    
+
                     Transactions = new ObservableCollection<TransactionViewModel>(
                         transactions.Select(t => new TezosTokenTransferViewModel(t, tezosConfig))
                             .ToList()
@@ -64,14 +64,23 @@ namespace atomex.ViewModels.CurrencyViewModels
                             }));
 
                     return Transactions
-                        .Take(QtyDisplayedTxs)
-                        .GroupBy(p => p.LocalTime.Date)
-                        .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                            new ObservableCollection<TransactionViewModel>(g)));
+                        .Take(QtyDisplayedTxs <= DefaultQtyDisplayedTxs
+                            ? DefaultQtyDisplayedTxs
+                            : QtyDisplayedTxs)
+                        .ToList();
                 });
+                
+                var groups = txs
+                    .GroupBy(p => p.LocalTime.Date)
+                    .Select(g => new Grouping<TransactionViewModel>(g.Key,
+                        new ObservableCollection<TransactionViewModel>(g)))
+                    .ToList();
 
-                await Device.InvokeOnMainThreadAsync(() => 
-                    GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(txs));
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
+                    QtyDisplayedTxs = txs.Count;
+                });
             }
             catch (OperationCanceledException)
             {
@@ -94,7 +103,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 navigationService: NavigationService,
                 tokenContract: tokenContractAddress,
                 tokenType: "FA12");
-            
+
             NavigationService?.ShowPopup(new ReceiveBottomSheet(receiveViewModel));
         }
 
@@ -151,6 +160,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 if (!args.IsTokenUpdate ||
                     args.TokenContract != null && (args.TokenContract != tezosTokenConfig.TokenContractAddress ||
                                                    args.TokenId != tezosTokenConfig.TokenId)) return;
+                
                 await Task.Run(async () =>
                 {
                     await UpdateBalanceAsync();

@@ -29,8 +29,8 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public DappsViewModel DappsViewModel { get; set; }
 
         private DelegateViewModel _delegateViewModel;
-
         [Reactive] public bool IsDelegationsLoading { get; set; }
+        [Reactive] public int QtyDisplayedDelegations { get; set; }
 
         public TezosCurrencyViewModel(
             IAtomexApp app,
@@ -141,7 +141,10 @@ namespace atomex.ViewModels.CurrencyViewModels
                 }
 
                 await Device.InvokeOnMainThreadAsync(() =>
-                    Delegations = new ObservableCollection<DelegationViewModel>(delegations));
+                {
+                    Delegations = new ObservableCollection<DelegationViewModel>(delegations);
+                    QtyDisplayedDelegations = Delegations.Count;
+                });
             }
             catch (OperationCanceledException)
             {

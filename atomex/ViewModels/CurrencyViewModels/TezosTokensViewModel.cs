@@ -60,7 +60,6 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public IList<TezosToken> AllTokens { get; set; }
         [Reactive] public IList<TezosTokenViewModel> UserTokens { get; set; }
         [Reactive] public IList<TezosTokenViewModel> DisplayedTokens { get; set; }
-        private IList<TezosTokenViewModel> _initialTokens;
         [Reactive] public TezosTokenViewModel SelectedToken { get; set; }
         
         [Reactive] public int QtyDisplayedTokens { get; set; }
@@ -105,32 +104,38 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             this.WhenAnyValue(vm => vm.SearchPattern)
                 .WhereNotNull()
-                .SubscribeInMainThread(searchPattern =>
+                .Subscribe(async searchPattern =>
                 {
                     if (UserTokens == null) return;
 
-                    var tokens = new ObservableCollection<TezosTokenViewModel>(
-                        _initialTokens
-                            .Where(token =>
-                            {
-                                if (token.TokenBalance.Name != null && token.TokenBalance.Symbol != null)
+                    var tokens = await Task.Run(() =>
+                    {
+                        return new ObservableCollection<TezosTokenViewModel>(
+                                UserTokens
+                                    .Where(token =>
                                 {
-                                    return token.TokenBalance.Name.ToLower().Contains(searchPattern.ToLower()) ||
-                                           token.TokenBalance.Symbol.ToLower().Contains(searchPattern.ToLower()) ||
-                                           token.TokenBalance.Contract.Contains(searchPattern.ToLower());
-                                }
+                                    if (token.TokenBalance.Name != null && token.TokenBalance.Symbol != null)
+                                    {
+                                        return token.TokenBalance.Name.ToLower().Contains(searchPattern.ToLower()) ||
+                                               token.TokenBalance.Symbol.ToLower().Contains(searchPattern.ToLower()) ||
+                                               token.TokenBalance.Contract.Contains(searchPattern.ToLower());
+                                    }
 
-                                return token.TokenBalance.Contract.Contains(searchPattern.ToLower());
-                            }));
+                                    return token.TokenBalance.Contract.Contains(searchPattern.ToLower());
+                                }))
+                            .OrderByDescending(token => token.IsConvertable)
+                            .ThenByDescending(token => token.TotalAmountInBase)
+                            .ToList();
+                    });
 
-                    DisplayedTokens = new ObservableCollection<TezosTokenViewModel>(tokens)
-                        .OrderByDescending(token => token.IsConvertable)
-                        .ThenByDescending(token => token.TotalAmountInBase)
-                        .ToList();
+                    await Device.InvokeOnMainThreadAsync(() =>
+                    {
+                        DisplayedTokens = new ObservableCollection<TezosTokenViewModel>(tokens);
+                        QtyDisplayedTokens = DisplayedTokens.Count; 
+                    });
                 });
 
             _ = ReloadTokenContractsAsync();
-            QtyDisplayedTokens = _defaultQtyDisplayedTokens;
         }
 
         private void SubscribeToServices(IAtomexApp app)
@@ -180,8 +185,8 @@ namespace atomex.ViewModels.CurrencyViewModels
                 if (string.IsNullOrEmpty(token)) return;
 
                 var disabledTokens = AllTokens
-                    .Where(t => !t.IsSelected)
-                    .Select(token => token.TezosTokenViewModel.CurrencyCode)
+                    .Where(t1 => !t1.IsSelected)
+                    .Select(t2 => t2.TezosTokenViewModel.CurrencyCode)
                     .ToArray();
 
                 Device.InvokeOnMainThreadAsync(() =>
@@ -193,12 +198,10 @@ namespace atomex.ViewModels.CurrencyViewModels
                     
                     DisplayedTokens = new ObservableCollection<TezosTokenViewModel>(
                         UserTokens?.Take(QtyDisplayedTokens) ?? new List<TezosTokenViewModel>());
+
+                    QtyDisplayedTokens = DisplayedTokens.Count;
                 });
 
-                _initialTokens = UserTokens != null
-                    ? new List<TezosTokenViewModel>(UserTokens)
-                    : new List<TezosTokenViewModel>();
-                
                 _app.Account.UserData.DisabledTokens = disabledTokens;
                 _app.Account.UserData.SaveToFile(_app.Account.SettingsFilePath);
             }
@@ -213,7 +216,8 @@ namespace atomex.ViewModels.CurrencyViewModels
         private async Task LoadMoreTokens()
         {
             if (IsTokensLoading ||
-                QtyDisplayedTokens >= UserTokens.Count) return;
+                QtyDisplayedTokens >= UserTokens.Count || 
+                !string.IsNullOrEmpty(SearchPattern)) return;
 
             IsTokensLoading = true;
 
@@ -277,9 +281,9 @@ namespace atomex.ViewModels.CurrencyViewModels
                                                    args.TokenId != _openToken.TokenBalance.TokenId)) return;
 
                 if (_openToken != null)
-                    _ = _openToken.LoadTransfersAsync();
+                    await Task.Run(async () => await _openToken.LoadTransfersAsync());
 
-                _ = ReloadTokenContractsAsync();
+                await Task.Run(async () => await ReloadTokenContractsAsync());
             }
             catch (Exception e)
             {
@@ -320,10 +324,12 @@ namespace atomex.ViewModels.CurrencyViewModels
                         .ToList());
                     
                     DisplayedTokens = new ObservableCollection<TezosTokenViewModel>(
-                        UserTokens.Take(QtyDisplayedTokens));
+                        UserTokens.Take(QtyDisplayedTokens <= _defaultQtyDisplayedTokens 
+                            ? _defaultQtyDisplayedTokens 
+                            : QtyDisplayedTokens));
+
+                    QtyDisplayedTokens = DisplayedTokens.Count;
                 });
-                
-                _initialTokens = new List<TezosTokenViewModel>(UserTokens);
             }
             catch (Exception e)
             {
@@ -396,6 +402,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             try
             {
                 SearchPattern = null;
+                _openToken = null;
                 
                 if (UserTokens == null)
                     return;
@@ -410,7 +417,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 Device.InvokeOnMainThreadAsync(() =>
                     {
                         DisplayedTokens = new ObservableCollection<TezosTokenViewModel>(tokens);
-                        QtyDisplayedTokens = _defaultQtyDisplayedTokens;
+                        QtyDisplayedTokens = tokens.Count;
                     }
                 );
             }

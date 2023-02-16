@@ -41,7 +41,7 @@ namespace atomex.CustomElements
             BindableProperty.CreateAttached("RowCount",
                 typeof(int),
                 typeof(CustomCollectionView),
-                0,
+                -1,
                 propertyChanged: (bo, o1, o2) =>
                 {
                     var collectionView = bo as CustomCollectionView;
@@ -50,13 +50,8 @@ namespace atomex.CustomElements
 
         public int RowCount
         {
-            get => IsGrouped 
-                ? (int) GetValue(RowCountProperty)
-                : Convert.ToInt32(ItemsSource.Cast<object>().ToList().Count) ;
-            set => SetValue(RowCountProperty, 
-                IsGrouped 
-                    ? value 
-                    : Convert.ToInt32(ItemsSource.Cast<object>().ToList().Count));
+            get => (int) GetValue(RowCountProperty);
+            set => SetValue(RowCountProperty, value);
         }
 
         [TypeConverter(typeof(ReferenceTypeConverter))]
@@ -116,6 +111,7 @@ namespace atomex.CustomElements
 
                 if (footerHeight < 0) footerHeight = 0;
                 if (headerHeight < 0) headerHeight = 0;
+                if (RowCount < 0) RowCount = 0;
 
                 HeightRequest = IsGrouped
                     ? RowCount * RowHeight + (BindingItemCount == 0 ? RowCount : BindingItemCount) * GroupHeaderHeight + footerHeight + headerHeight

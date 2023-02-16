@@ -101,6 +101,7 @@ namespace atomex.ViewModels.DappsViewModels
         private TezosConfig Tezos { get; }
         public ConnectDappViewModel ConnectDappViewModel { get; set; }
         [Reactive] public bool IsConnecting { get; set; }
+        [Reactive] public int QtyDisplayedDapps { get; set; }
 
         public DappsViewModel(
             IAtomexApp app,
@@ -826,6 +827,8 @@ namespace atomex.ViewModels.DappsViewModels
                                 }
                             }
                         }));
+
+                    QtyDisplayedDapps = Dapps.Count;
                 });
             }
             catch (Exception e)

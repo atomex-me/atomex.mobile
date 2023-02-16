@@ -640,6 +640,7 @@
                                                    BackgroundColor="Transparent"
                                                    VerticalScrollBarVisibility="Never"
                                                    RowHeight="64"
+                                                   RowCount="{Binding QtyDisplayedAddresses, Mode=OneWay}"
                                                    ScrollView="Page"
                                                    Margin="0,20"
                                                    IsVisible="False">
@@ -1177,6 +1178,7 @@
                                                    SelectedItem="{Binding SelectedDelegation, Mode=TwoWay}"
                                                    BackgroundColor="Transparent"
                                                    VerticalScrollBarVisibility="Never"
+                                                   RowCount="{Binding QtyDisplayedDelegations, Mode=OneWay}"
                                                    RowHeight="76"
                                                    ScrollView="Page"
                                                    IsVisible="False">
@@ -1366,6 +1368,7 @@
                                                    SelectedItem="{Binding DappsViewModel.SelectedDapp, Mode=TwoWay}"
                                                    BackgroundColor="Transparent"
                                                    RowHeight="76"
+                                                   RowCount="{Binding DappsViewModel.QtyDisplayedDapps, Mode=OneWay}"
                                                    ScrollView="Page"
                                                    VerticalScrollBarVisibility="Never"
                                                    IsVisible="False">

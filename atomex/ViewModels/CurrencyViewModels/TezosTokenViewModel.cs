@@ -57,16 +57,16 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public TransactionViewModel SelectedTransaction { get; set; }
 
         [Reactive] public int QtyDisplayedTxs { get; set; }
-        private int _defaultQtyDisplayedTxs = 5;
+        private int _defaultQtyDisplayedTxs = 10;
+        private int _defaultQtyDisplayedAddresses = 3;
         public int LoadingStepTxs => 20;
         [Reactive] public bool IsTransfersLoading { get; set; }
 
         [Reactive] public AddressesViewModel AddressesViewModel { get; set; }
         [Reactive] public ObservableCollection<AddressViewModel> Addresses { get; set; }
-
         [Reactive] public bool CanShowMoreTxs { get; set; }
         [Reactive] public bool CanShowMoreAddresses { get; set; }
-        private int QtyDisplayedAddresses => 3;
+        [Reactive] public int QtyDisplayedAddresses { get; set; }
 
         private CancellationTokenSource _cancellationTokenSource;
 
@@ -195,9 +195,9 @@ namespace atomex.ViewModels.CurrencyViewModels
             SelectedTab = tokenBalance is {IsNft: true}
                 ? CurrencyTab.Details
                 : CurrencyTab.Activity;
-            QtyDisplayedTxs = _defaultQtyDisplayedTxs;
             
             InitTokenPreview();
+            QtyDisplayedAddresses = _defaultQtyDisplayedAddresses;
         }
 
         private void OnAddresesChangedEventHandler()
@@ -270,15 +270,23 @@ namespace atomex.ViewModels.CurrencyViewModels
                         }));
 
                     return Transactions
-                        .Take(QtyDisplayedTxs)
-                        .GroupBy(p => p.LocalTime.Date)
-                        .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                            new ObservableCollection<TransactionViewModel>(g)))
+                        .Take(QtyDisplayedTxs <= _defaultQtyDisplayedTxs
+                            ? _defaultQtyDisplayedTxs
+                            : QtyDisplayedTxs)
                         .ToList();
                 });
 
+                var groups = txs
+                    .GroupBy(p => p.LocalTime.Date)
+                        .Select(g => new Grouping<TransactionViewModel>(g.Key,
+                            new ObservableCollection<TransactionViewModel>(g)))
+                        .ToList();
+
                 await Device.InvokeOnMainThreadAsync(() =>
-                    GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(txs));
+                {
+                    GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
+                    QtyDisplayedTxs = txs.Count;
+                });
             }
             catch (OperationCanceledException)
             {
@@ -421,9 +429,8 @@ namespace atomex.ViewModels.CurrencyViewModels
 
                 Device.InvokeOnMainThreadAsync(() => 
                     {
-                        GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(
-                            groups ?? new ObservableCollection<Grouping<TransactionViewModel>>());
-                        QtyDisplayedTxs = _defaultQtyDisplayedTxs;
+                        GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
+                        QtyDisplayedTxs = txs.Count;
                     }
                 );
             }
@@ -433,15 +440,15 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
         }
 
-        private void OnBalanceUpdatedEventHandler(object sender, CurrencyEventArgs args)
+        private async void OnBalanceUpdatedEventHandler(object sender, CurrencyEventArgs args)
         {
             try
             {
                 if (!args.IsTokenUpdate ||
                     args.TokenContract != null && (args.TokenContract != TokenBalance.Contract ||
                                                    args.TokenId != TokenBalance.TokenId)) return;
-
-                _ = UpdateBalanceAsync();
+                
+                await Task.Run(async () => await UpdateBalanceAsync());
             }
             catch (Exception e)
             {
