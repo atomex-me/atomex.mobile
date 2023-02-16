@@ -127,7 +127,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                     OnAddresesChangedEventHandler();
                 });
             
-            _ = UpdateBalanceAsync();
+            _ = Task.Run(UpdateBalanceAsync);
 
             SelectedTab = CurrencyTab.Activity;
             QtyDisplayedAddresses = _defaultQtyDisplayedAddresses;

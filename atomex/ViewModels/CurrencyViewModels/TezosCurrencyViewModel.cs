@@ -53,13 +53,12 @@ namespace atomex.ViewModels.CurrencyViewModels
                     SelectedDelegation = null;
                 });
 
-            _ = LoadDelegationInfoAsync();
-
             _delegateViewModel = new DelegateViewModel(App, NavigationService);
             TezosTokensViewModel = new TezosTokensViewModel(App, NavigationService);
             CollectiblesViewModel = new CollectiblesViewModel(App, NavigationService);
-            
             DappsViewModel = new DappsViewModel(App, NavigationService);
+            
+            _ = Task.Run(LoadDelegationInfoAsync);
         }
 
         private async Task LoadDelegationInfoAsync()

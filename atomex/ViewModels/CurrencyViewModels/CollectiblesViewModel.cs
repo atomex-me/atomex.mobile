@@ -77,7 +77,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             this.WhenAnyValue(vm => vm.Contracts)
                 .WhereNotNull()
-                .SubscribeInMainThread(collectibles =>
+                .Subscribe(collectibles =>
                     _ = LoadCollectibles());
 
             this.WhenAnyValue(vm => vm.SelectedCollectible)
@@ -96,10 +96,9 @@ namespace atomex.ViewModels.CurrencyViewModels
 
                     var collectibles = await Task.Run(() =>
                     {
-                        return new ObservableCollection<CollectibleViewModel>(
-                                UserCollectibles
-                                    .Where(c =>
-                                        c.Name?.ToLower().Contains(searchPattern.ToLower()) ?? false))
+                        return UserCollectibles
+                            .Where(c => 
+                                c.Name?.ToLower().Contains(searchPattern.ToLower()) ?? false)
                             .OrderByDescending(collectible => collectible.Amount != 0)
                             .ThenBy(c => c.Name)
                             .ToList();

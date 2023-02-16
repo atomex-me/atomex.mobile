@@ -137,7 +137,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             if (TokenBalance == null) return;
 
             var url = ThumbsApi.GetTokenPreviewUrl(Contract.Address, TokenBalance.TokenId);
-            TokenPreview = GetTokenPreview(url);
+            Device.InvokeOnMainThreadAsync(() => TokenPreview = GetTokenPreview(url));
         }
 
         public TezosTokenViewModel(
@@ -190,7 +190,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                     OnAddresesChangedEventHandler();
                 });
 
-            _ = UpdateBalanceAsync();
+            _ = Task.Run(UpdateBalanceAsync);
 
             SelectedTab = tokenBalance is {IsNft: true}
                 ? CurrencyTab.Details
