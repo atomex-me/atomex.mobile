@@ -955,8 +955,8 @@
                         </controls:CustomCollectionView.Footer>
                     </controls:CustomCollectionView>
                     <controls:CustomCollectionView
-                        ItemsSource="{Binding CollectiblesViewModel.DisplayedCollectibles, Mode=OneWay}"
-                        SelectedItem="{Binding CollectiblesViewModel.SelectedCollectible}"
+                        ItemsSource="{Binding CollectiblesViewModel.DisplayedCollectibles}"
+                        SelectedItem="{Binding CollectiblesViewModel.SelectedCollectible, Mode=TwoWay}"
                         SelectionMode="Single"
                         HorizontalScrollBarVisibility="Never"
                         VerticalScrollBarVisibility="Never"

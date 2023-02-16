@@ -96,10 +96,10 @@ namespace atomex.ViewModels.CurrencyViewModels
 
                     var collectibles = await Task.Run(() =>
                     {
-                         return new ObservableCollection<CollectibleViewModel>(
-                            UserCollectibles
-                                .Where(c =>
-                                    c.Name?.ToLower().Contains(searchPattern.ToLower()) ?? false))
+                        return new ObservableCollection<CollectibleViewModel>(
+                                UserCollectibles
+                                    .Where(c =>
+                                        c.Name?.ToLower().Contains(searchPattern.ToLower()) ?? false))
                             .OrderByDescending(collectible => collectible.Amount != 0)
                             .ThenBy(c => c.Name)
                             .ToList();
@@ -108,7 +108,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                     await Device.InvokeOnMainThreadAsync(() =>
                     {
                         DisplayedCollectibles = new ObservableCollection<CollectibleViewModel>(collectibles);
-                        QtyDisplayedCollectibles = DisplayedCollectibles.Count;
+                        QtyDisplayedCollectibles = collectibles.Count;
                     });
                 });
 
@@ -193,20 +193,24 @@ namespace atomex.ViewModels.CurrencyViewModels
                     .ThenBy(collectible => collectible.CollectibleViewModel.Name);
 
                 await Device.InvokeOnMainThreadAsync(() =>
-                {
-                    AllCollectibles = new ObservableCollection<Collectible>(groupedNftTokens);
+                    AllCollectibles = new ObservableCollection<Collectible>(groupedNftTokens));
 
-                    UserCollectibles = new ObservableCollection<CollectibleViewModel>(AllCollectibles
-                        .Where(c => c.IsSelected)
-                        .Select(vm => vm.CollectibleViewModel)
-                        .ToList());
+                UserCollectibles = new ObservableCollection<CollectibleViewModel>(AllCollectibles
+                    .Where(c => c.IsSelected)
+                    .Select(vm => vm.CollectibleViewModel)
+                    .ToList());
 
-                    DisplayedCollectibles = new ObservableCollection<CollectibleViewModel>(
-                        UserCollectibles.Take(QtyDisplayedCollectibles <= _defaultQtyDisplayedCollectibles 
+                var collectibles = new ObservableCollection<CollectibleViewModel>(
+                    UserCollectibles
+                        .Take(QtyDisplayedCollectibles <= _defaultQtyDisplayedCollectibles 
                             ? _defaultQtyDisplayedCollectibles 
-                            : QtyDisplayedCollectibles));
+                            : QtyDisplayedCollectibles))
+                    .ToList();
 
-                    QtyDisplayedCollectibles = DisplayedCollectibles.Count;
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    DisplayedCollectibles = new ObservableCollection<CollectibleViewModel>(collectibles);
+                    QtyDisplayedCollectibles = collectibles.Count;
                 });
             }
             catch (Exception e)
@@ -274,13 +278,13 @@ namespace atomex.ViewModels.CurrencyViewModels
                     .Select(collectible => collectible.CollectibleViewModel.ContractAddress)
                     .ToArray();
 
+                UserCollectibles = AllCollectibles?
+                    .Where(c => c.IsSelected)
+                    .Select(vm => vm.CollectibleViewModel)
+                    .ToList();
+                
                 Device.InvokeOnMainThreadAsync(() =>
                 {
-                    UserCollectibles = AllCollectibles?
-                        .Where(c => c.IsSelected)
-                        .Select(vm => vm.CollectibleViewModel)
-                        .ToList();
-
                     DisplayedCollectibles = new ObservableCollection<CollectibleViewModel>(
                         UserCollectibles?.Take(QtyDisplayedCollectibles) ?? new List<CollectibleViewModel>());
 
@@ -368,7 +372,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 if (!collectibles.Any())
                     return;
 
-                Device.InvokeOnMainThreadAsync(() => 
+                Device.InvokeOnMainThreadAsync(() =>
                     {
                         DisplayedCollectibles = new ObservableCollection<CollectibleViewModel>(collectibles);
                         QtyDisplayedCollectibles = collectibles.Count;
