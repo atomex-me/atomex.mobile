@@ -43,15 +43,15 @@ namespace atomex.ViewModels.CurrencyViewModels
                     .Currencies
                     .Get<TezosConfig>(TezosConfig.Xtz);
 
-                var transactions = (await App.Account
-                        .GetCurrencyAccount<Fa2Account>(Currency.Name)
-                        .DataRepository
-                        .GetTezosTokenTransfersAsync(fa2Currency?.TokenContractAddress, offset: 0, limit: int.MaxValue)
-                        .ConfigureAwait(false))
-                    .ToList();
-
-                await Device.InvokeOnMainThreadAsync(() =>
+                var txs = await Task.Run(async () =>
                 {
+                    var transactions = (await App.Account
+                            .GetCurrencyAccount<Fa2Account>(Currency.Name)
+                            .DataRepository
+                            .GetTezosTokenTransfersAsync(fa2Currency?.TokenContractAddress, offset: 0, limit: int.MaxValue)
+                            .ConfigureAwait(false))
+                        .ToList();
+                    
                     Transactions = new ObservableCollection<TransactionViewModel>(
                         transactions.Select(t => new TezosTokenTransferViewModel(t, tezosConfig))
                             .ToList()
@@ -62,21 +62,24 @@ namespace atomex.ViewModels.CurrencyViewModels
                                 t.CopyAddress = CopyAddress;
                                 t.CopyTxId = CopyTxId;
                             }));
+                    
+                    return Transactions
+                        .Take(QtyDisplayedTxs <= DefaultQtyDisplayedTxs
+                            ? DefaultQtyDisplayedTxs
+                            : QtyDisplayedTxs)
+                        .ToList();;
+                });
+                
+                var groups = txs
+                    .GroupBy(p => p.LocalTime.Date)
+                    .Select(g => new Grouping<TransactionViewModel>(g.Key,
+                        new ObservableCollection<TransactionViewModel>(g)))
+                    .ToList();
 
-                    var groups = !IsAllTxsShowed
-                        ? Transactions
-                            .OrderByDescending(p => p.LocalTime.Date)
-                            .Take(TxsNumberPerPage)
-                            .GroupBy(p => p.LocalTime.Date)
-                            .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                                new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))))
-                        : Transactions
-                            .GroupBy(p => p.LocalTime.Date)
-                            .OrderByDescending(g => g.Key)
-                            .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                                new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))));
-
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
                     GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
+                    QtyDisplayedTxs = txs.Count;
                 });
             }
             catch (OperationCanceledException)
@@ -92,7 +95,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         protected override void OnReceiveClick()
         {
             var tezosConfig = App.Account.Currencies.GetByName(TezosConfig.Xtz);
-            string tokenContractAddress = (Currency as Fa2Config)?.TokenContractAddress;
+            var tokenContractAddress = (Currency as Fa2Config)?.TokenContractAddress;
 
             var receiveViewModel = new ReceiveViewModel(
                 app: App,
@@ -100,6 +103,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 navigationService: NavigationService,
                 tokenContract: tokenContractAddress,
                 tokenType: "FA2");
+            
             NavigationService?.ShowPopup(new ReceiveBottomSheet(receiveViewModel));
         }
 
@@ -114,7 +118,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                     .GetCurrencyAccount<Fa2Account>(Currency.Name)
                     .UpdateBalanceAsync(CancellationTokenSource.Token);
 
-                await LoadTransactionsAsync();
+                await Task.Run(async () => await LoadTransactionsAsync());
 
                 await Device.InvokeOnMainThreadAsync(() =>
                     NavigationService?.DisplaySnackBar(
@@ -136,7 +140,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
         }
 
-        protected override void LoadAddresses()
+        public override void LoadAddresses()
         {
             var fa2Currency = Currency as Fa2Config;
 
@@ -155,13 +159,13 @@ namespace atomex.ViewModels.CurrencyViewModels
 
                 if (!args.IsTokenUpdate ||
                     args.TokenContract != null && (args.TokenContract != tezosTokenConfig.TokenContractAddress ||
-                                                   args.TokenId != tezosTokenConfig.TokenId))
-                {
-                    return;
-                }
+                                                   args.TokenId != tezosTokenConfig.TokenId)) return;
 
-                await UpdateBalanceAsync();
-                await LoadTransactionsAsync();
+                await Task.Run(async () =>
+                {
+                    await UpdateBalanceAsync();
+                    await LoadTransactionsAsync();
+                });
             }
             catch (Exception e)
             {

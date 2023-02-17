@@ -57,12 +57,12 @@ namespace atomex.ViewModels.CurrencyViewModels
             return null;
         }
 
-        protected void InitCollectiblePreview()
+        private void InitCollectiblePreview()
         {
             var url = ThumbsApi.GetTokenPreviewUrl(Tokens.First().Contract.Address,
                 Tokens.First().TokenBalance.TokenId);
-            
-            TokenPreview = GetCollectiblePreview(url);
+
+            Device.InvokeOnMainThreadAsync(() => TokenPreview = GetCollectiblePreview(url));
         }
 
         public int Amount => Tokens
@@ -77,8 +77,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             this.WhenAnyValue(vm => vm.Tokens)
                 .WhereNotNull()
-                .SubscribeInMainThread(async token =>
-                    InitCollectiblePreview());
+                .Subscribe(_ => InitCollectiblePreview());
 
             this.WhenAnyValue(vm => vm.SelectedToken)
                 .WhereNotNull()
@@ -88,7 +87,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
                     await Task.Run(async () =>
                     {
-                        await SelectedToken!.LoadTransfers();
+                        await SelectedToken!.LoadTransfersAsync();
                         SelectedToken.LoadAddresses();
                     });
 

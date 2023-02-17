@@ -35,8 +35,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         protected readonly INavigationService NavigationService;
         private IAccount _account;
 
-        public virtual CurrencyConfig Currency { get; set; }
-        public event EventHandler AmountUpdated;
+        public CurrencyConfig Currency { get; set; }
         private IQuotesProvider QuotesProvider { get; set; }
 
         public string CurrencyCode => Currency?.Name;
@@ -44,11 +43,11 @@ namespace atomex.ViewModels.CurrencyViewModels
         public string FeeCurrencyCode => Currency?.FeeCode;
         public string BaseCurrencyCode => "USD";
         public bool IsBitcoinBased => Currency is BitcoinBasedConfig;
-        public bool IsStakingAvailable => Currency?.Name == "XTZ";
-        public bool HasCollectibles => Currency?.Name == "XTZ";
-        public bool HasTokens => Currency?.Name == "XTZ";
-        public bool HasDapps { get; set; }
-        public bool CanBuy { get; set; }
+        public bool IsStakingAvailable => CurrencyCode == TezosConfig.Xtz;
+        public bool HasCollectibles => CurrencyCode == TezosConfig.Xtz;
+        public bool HasTokens => CurrencyCode == TezosConfig.Xtz;
+        public bool HasDapps => CurrencyCode == TezosConfig.Xtz;
+        public bool CanBuy => BuyViewModel.Currencies.Contains(Currency?.Name);
 
         protected CancellationTokenSource CancellationTokenSource;
 
@@ -61,35 +60,26 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public decimal UnconfirmedAmountInBase { get; set; }
         public bool HasUnconfirmedAmount => UnconfirmedAmount != 0;
         [Reactive] public decimal CurrentQuote { get; set; }
+        public event EventHandler AmountUpdated;
 
-        [Reactive] public ObservableCollection<TransactionViewModel> Transactions { get; set; }
-
-        [Reactive]
-        public ObservableCollection<Grouping<TransactionViewModel>> GroupedTransactions { get; set; }
-
+        protected IList<TransactionViewModel> Transactions { get; set; }
+        [Reactive] public ObservableCollection<Grouping<TransactionViewModel>> GroupedTransactions { get; set; }
         [Reactive] public TransactionViewModel SelectedTransaction { get; set; }
+
+        [Reactive] public int QtyDisplayedTxs { get; set; }
+        protected int DefaultQtyDisplayedTxs = 8;
+        private int _defaultQtyDisplayedAddresses = 3;
+        [Reactive] public bool IsTxsLoading { get; set; }
+        public int LoadingStepTxs => 20;
 
         [Reactive] public AddressesViewModel AddressesViewModel { get; set; }
         [Reactive] public ObservableCollection<AddressViewModel> Addresses { get; set; }
-
-        [Reactive] public bool CanShowMoreTxs { get; set; }
-        [Reactive] public bool IsAllTxsShowed { get; set; }
         [Reactive] public bool CanShowMoreAddresses { get; set; }
-
-        public int TxsNumberPerPage = 3;
-        public int AddressesNumberPerPage = 3;
-
-        public const double DefaultTxGroupHeight = 36;
-        public double DefaultTxRowHeight => IsBitcoinBased ? 52 : 76;
-        public const double DefaultAddressRowHeight = 64;
-        public const double ListViewFooterHeight = 72;
-        [Reactive] public double TxListViewHeight { get; set; }
-        [Reactive] public double AddressListViewHeight { get; set; }
+        [Reactive] public int QtyDisplayedAddresses { get; set; }
 
         public class Grouping<T> : ObservableCollection<T>
         {
-            public double GroupHeight { get; set; } = DefaultTxGroupHeight;
-            public DateTime Date { get; private set; }
+            public DateTime Date { get; set; }
 
             public Grouping(DateTime date, IEnumerable<T> items)
             {
@@ -99,7 +89,8 @@ namespace atomex.ViewModels.CurrencyViewModels
                     Items.Add(item);
             }
 
-            public string DateString => Date.ToString(AppResources.Culture.DateTimeFormat.MonthDayPattern, AppResources.Culture);
+            public string DateString =>
+                Date.ToString(AppResources.Culture.DateTimeFormat.MonthDayPattern, AppResources.Culture);
         }
 
         [Reactive] public bool IsRefreshing { get; set; }
@@ -123,29 +114,10 @@ namespace atomex.ViewModels.CurrencyViewModels
                     SelectedTransaction = null;
                 });
 
-            this.WhenAnyValue(vm => vm.GroupedTransactions)
-                .WhereNotNull()
-                .SubscribeInMainThread(_ =>
-                {
-                    CanShowMoreTxs = Transactions!.Count > TxsNumberPerPage;
-
-                    TxListViewHeight = IsAllTxsShowed
-                        ? Transactions.Count * DefaultTxRowHeight +
-                          GroupedTransactions!.Count * DefaultTxGroupHeight +
-                          ListViewFooterHeight
-                        : TxsNumberPerPage * DefaultTxRowHeight +
-                          (GroupedTransactions!.Count + 1) * DefaultTxGroupHeight;
-                });
-
             this.WhenAnyValue(vm => vm.Addresses)
                 .WhereNotNull()
                 .SubscribeInMainThread(_ =>
-                {
-                    CanShowMoreAddresses = AddressesViewModel?.Addresses?.Count > AddressesNumberPerPage;
-
-                    AddressListViewHeight = AddressesNumberPerPage * DefaultAddressRowHeight +
-                                            ListViewFooterHeight;
-                });
+                    CanShowMoreAddresses = AddressesViewModel?.Addresses?.Count > QtyDisplayedAddresses);
 
             this.WhenAnyValue(vm => vm.AddressesViewModel)
                 .WhereNotNull()
@@ -154,29 +126,31 @@ namespace atomex.ViewModels.CurrencyViewModels
                     AddressesViewModel!.AddressesChanged += OnAddresesChangedEventHandler;
                     OnAddresesChangedEventHandler();
                 });
+            
+            _ = Task.Run(UpdateBalanceAsync);
 
-            LoadAddresses();
-            _ = LoadTransactionsAsync();
-            _ = UpdateBalanceAsync();
-
-            IsRefreshing = false;
-            IsAllTxsShowed = false;
             SelectedTab = CurrencyTab.Activity;
-            CanBuy = BuyViewModel.Currencies.Contains(Currency.Name);
-            HasDapps = false;
+            QtyDisplayedAddresses = _defaultQtyDisplayedAddresses;
         }
 
-        protected virtual void LoadAddresses()
+        public virtual void LoadAddresses()
         {
-            AddressesViewModel?.Dispose();
+            try
+            {
+                AddressesViewModel?.Dispose();
 
-            AddressesViewModel = new AddressesViewModel(
-                app: App,
-                currency: Currency,
-                navigationService: NavigationService);
+                AddressesViewModel = new AddressesViewModel(
+                    app: App,
+                    currency: Currency,
+                    navigationService: NavigationService);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Load addresses error for currency {@Currency}", CurrencyCode);
+            }
         }
 
-        public virtual void SubscribeToServices()
+        public void SubscribeToServices()
         {
             App.Account.BalanceUpdated += OnBalanceUpdatedEventHandler;
             App.Account.UnconfirmedTransactionAdded += OnUnconfirmedTransactionAdded;
@@ -188,21 +162,19 @@ namespace atomex.ViewModels.CurrencyViewModels
             QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
 
-        protected virtual void OnAddresesChangedEventHandler()
+        private void OnAddresesChangedEventHandler()
         {
             try
             {
                 Device.InvokeOnMainThreadAsync(() =>
-                {
                     Addresses = new ObservableCollection<AddressViewModel>(
                         AddressesViewModel?.Addresses
                             .OrderByDescending(a => a.Balance)
-                            .Take(AddressesNumberPerPage) ?? new List<AddressViewModel>());
-                });
+                            .Take(QtyDisplayedAddresses) ?? new List<AddressViewModel>()));
             }
             catch (Exception e)
             {
-                Log.Error(e, "Error for currency {@Currency}", CurrencyCode);
+                Log.Error(e, "On addresses changes event handler error for currency {@Currency}", CurrencyCode);
             }
         }
 
@@ -213,8 +185,11 @@ namespace atomex.ViewModels.CurrencyViewModels
                 if (args.Currency != Currency.Name)
                     return;
 
-                await UpdateBalanceAsync();
-                await LoadTransactionsAsync();
+                await Task.Run(async () =>
+                {
+                    await UpdateBalanceAsync();
+                    await LoadTransactionsAsync();
+                });
             }
             catch (Exception e)
             {
@@ -250,7 +225,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             if (sender is not IQuotesProvider quotesProvider)
                 return;
-            
+
             UpdateQuotesInBaseCurrency(quotesProvider);
         }
 
@@ -261,7 +236,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             try
             {
                 var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
-                
+
                 if (quote == null) return;
 
                 Device.InvokeOnMainThreadAsync(() =>
@@ -272,7 +247,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                     AvailableAmountInBase = AvailableAmount * (quote?.Bid ?? 0m);
                     UnconfirmedAmountInBase = UnconfirmedAmount * (quote?.Bid ?? 0m);
                 });
-                
+
                 AmountUpdated?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception e)
@@ -288,7 +263,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 if (e.Transaction.Currency != Currency?.Name)
                     return;
 
-                await LoadTransactionsAsync();
+                await Task.Run(async () => await LoadTransactionsAsync());
             }
             catch (Exception ex)
             {
@@ -302,18 +277,19 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             try
             {
+                IsTxsLoading = true;
+
                 if (App.Account == null)
                     return;
 
-                var transactions = (await App.Account
-                    .GetTransactionsAsync(Currency?.Name))
-                    .ToList();
-
-                await Device.InvokeOnMainThreadAsync(() =>
+                var txs = await Task.Run(async () =>
                 {
+                    var transactions = (await App.Account.GetTransactionsAsync(Currency?.Name))
+                        .ToList();
+
                     Transactions = new ObservableCollection<TransactionViewModel>(
-                        transactions.Select(t => TransactionViewModelCreator
-                                .CreateViewModel(t, Currency, NavigationService))
+                        transactions.Select(t =>
+                                TransactionViewModelCreator.CreateViewModel(t, Currency, NavigationService))
                             .ToList()
                             .SortList((t1, t2) => t2.LocalTime.CompareTo(t1.LocalTime))
                             .ForEachDo(t =>
@@ -323,25 +299,32 @@ namespace atomex.ViewModels.CurrencyViewModels
                                 t.CopyTxId = CopyTxId;
                             }));
 
-                    var groups = !IsAllTxsShowed
-                        ? Transactions
-                            .OrderByDescending(p => p.LocalTime.Date)
-                            .Take(TxsNumberPerPage)
-                            .GroupBy(p => p.LocalTime.Date)
-                            .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                                new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))))
-                        : Transactions
-                            .GroupBy(p => p.LocalTime.Date)
-                            .OrderByDescending(g => g.Key)
-                            .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                                new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))));
+                    return Transactions
+                        .Take(QtyDisplayedTxs <= DefaultQtyDisplayedTxs 
+                            ? DefaultQtyDisplayedTxs 
+                            : QtyDisplayedTxs)
+                        .ToList();
+                });
 
+                var groups = txs
+                    .GroupBy(p => p.LocalTime.Date)
+                    .Select(g => new Grouping<TransactionViewModel>(g.Key,
+                        new ObservableCollection<TransactionViewModel>(g)))
+                    .ToList();
+
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
                     GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
+                    QtyDisplayedTxs = txs.Count;
                 });
             }
             catch (Exception e)
             {
                 Log.Error(e, "LoadTransactionAsync error for {@Currency}", CurrencyCode);
+            }
+            finally
+            {
+                IsTxsLoading = false;
             }
         }
 
@@ -358,7 +341,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                     .RemoveTransactionAsync(txId);
 
                 if (isRemoved)
-                    await LoadTransactionsAsync();
+                    await Task.Run(async () => await LoadTransactionsAsync());
             }
             catch (Exception e)
             {
@@ -376,12 +359,13 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         private ReactiveCommand<Unit, Unit> _convertCurrencyCommand;
 
-        public ReactiveCommand<Unit, Unit> ConvertCurrencyCommand => _convertCurrencyCommand ??= ReactiveCommand.Create(() =>
-        {
-            NavigationService?.ClosePopup();
-            NavigationService?.SetInitiatedPage(TabNavigation.Exchange);
-            NavigationService?.GoToExchange(Currency);
-        });
+        public ReactiveCommand<Unit, Unit> ConvertCurrencyCommand => _convertCurrencyCommand ??= ReactiveCommand.Create(
+            () =>
+            {
+                NavigationService?.ClosePopup();
+                NavigationService?.SetInitiatedPage(TabNavigation.Exchange);
+                NavigationService?.GoToExchange(Currency);
+            });
 
         private ReactiveCommand<Unit, Unit> _buyCurrencyCommand;
 
@@ -412,15 +396,13 @@ namespace atomex.ViewModels.CurrencyViewModels
                     skipUsed: true,
                     cancellationToken: CancellationTokenSource.Token);
 
-                await LoadTransactionsAsync();
-                
+                await Task.Run(async () => await LoadTransactionsAsync());
+
                 if (CancellationTokenSource is {IsCancellationRequested: false})
                     await Device.InvokeOnMainThreadAsync(() =>
-                    {
                         NavigationService?.DisplaySnackBar(
                             MessageType.Regular,
-                            Currency.Description + " " + AppResources.HasBeenUpdated);
-                    });
+                            Currency.Description + " " + AppResources.HasBeenUpdated));
             }
             catch (OperationCanceledException)
             {
@@ -446,7 +428,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 CancellationTokenSource?.Dispose();
                 CancellationTokenSource = null;
             }
-            catch (Exception )
+            catch (Exception)
             {
                 // ignored
             }
@@ -468,10 +450,8 @@ namespace atomex.ViewModels.CurrencyViewModels
                     NavigationService?.DisplaySnackBar(MessageType.Regular, AppResources.AddressCopied);
                 }
                 else
-                {
                     NavigationService?.ShowAlert(AppResources.Error, AppResources.CopyError,
                         AppResources.AcceptButton);
-                }
             });
         }
 
@@ -482,13 +462,14 @@ namespace atomex.ViewModels.CurrencyViewModels
                 if (value != null)
                 {
                     _ = Clipboard.SetTextAsync(value);
-                    NavigationService?.DisplaySnackBar(MessageType.Regular, AppResources.TransactionIdCopied);
+                    NavigationService?.DisplaySnackBar(
+                        MessageType.Regular,
+                        AppResources.TransactionIdCopied);
                 }
                 else
-                {
-                    NavigationService?.ShowAlert(AppResources.Error, AppResources.CopyError,
+                    NavigationService?.ShowAlert(AppResources.Error,
+                        AppResources.CopyError,
                         AppResources.AcceptButton);
-                }
             });
         }
 
@@ -514,6 +495,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 app: App,
                 currency: Currency,
                 navigationService: NavigationService);
+            
             NavigationService?.ShowPopup(new ReceiveBottomSheet(receiveViewModel));
         }
 
@@ -536,22 +518,127 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
         }
 
-        private ReactiveCommand<Unit, Unit> _showAllTxsCommand;
+        public ICommand LoadMoreTxsCommand => new Command(async () => await LoadMoreTxs());
 
-        public ReactiveCommand<Unit, Unit> ShowAllTxsCommand => _showAllTxsCommand ??= ReactiveCommand.Create(() =>
+        private async Task LoadMoreTxs()
         {
-            IsAllTxsShowed = true;
-            CanShowMoreTxs = false;
-            TxsNumberPerPage = Transactions.Count;
+            if (IsTxsLoading ||
+                QtyDisplayedTxs >= Transactions.Count) return;
 
-            var groups = Transactions
-                .GroupBy(p => p.LocalTime.Date)
-                .OrderByDescending(g => g.Key)
-                .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                    new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))));
+            IsTxsLoading = true;
 
-            GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
-        });
+            try
+            {
+                if (Transactions == null)
+                    return;
+
+                var txs = Transactions
+                    .Skip(QtyDisplayedTxs)
+                    .Take(LoadingStepTxs)
+                    .ToList();
+
+                if (!txs.Any())
+                    return;
+
+                var groups = txs
+                    .GroupBy(p => p.LocalTime.Date)
+                    .Select(g => new Grouping<TransactionViewModel>(g.Key,
+                        new ObservableCollection<TransactionViewModel>(g)));
+
+                var resultGroups = MergeGroups(GroupedTransactions.ToList(), groups.ToList());
+
+                await Device.InvokeOnMainThreadAsync(() =>
+                    {
+                        GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(
+                            resultGroups ?? new ObservableCollection<Grouping<TransactionViewModel>>());
+                        QtyDisplayedTxs += txs.Count;
+                    }
+                );
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error loading more txs for {@Currency} error", CurrencyCode);
+            }
+            finally
+            {
+                IsTxsLoading = false;
+            }
+        }
+
+        private IEnumerable<Grouping<TransactionViewModel>> MergeGroups(
+            List<Grouping<TransactionViewModel>> group1,
+            List<Grouping<TransactionViewModel>> group2)
+        {
+            var result = new List<Grouping<TransactionViewModel>>();
+
+            var i = 0;
+            var j = 0;
+            while (i < group1.Count && j < group2.Count)
+            {
+                if (group1[i].Date > group2[j].Date)
+                {
+                    result.Add(group1[i++]);
+                }
+                else if (group1[i].Date < group2[j].Date)
+                {
+                    result.Add(group2[j++]);
+                }
+                else
+                {
+                    var txs = group1[i]
+                        .Concat(group2[j])
+                        .OrderByDescending(t => t.LocalTime);
+
+                    result.Add(new Grouping<TransactionViewModel>(group1[i].Date, txs));
+                    i++;
+                    j++;
+                }
+            }
+
+            while (i < group1.Count)
+            {
+                result.Add(group1[i++]);
+            }
+
+            while (j < group2.Count)
+            {
+                result.Add(group2[j++]);
+            }
+
+            return result;
+        }
+
+        public virtual void Reset()
+        {
+            try
+            {
+                if (Transactions == null)
+                    return;
+
+                var txs = Transactions
+                    .Take(DefaultQtyDisplayedTxs)
+                    .ToList();
+
+                if (!txs.Any())
+                    return;
+
+                var groups = txs
+                    .GroupBy(p => p.LocalTime.Date)
+                    .Select(g => new Grouping<TransactionViewModel>(g.Key,
+                        new ObservableCollection<TransactionViewModel>(g)));
+
+                Device.InvokeOnMainThreadAsync(() =>
+                    {
+                        GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
+                        QtyDisplayedTxs = txs.Count;
+                    }
+                );
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Reset QtyDisplayedTxs error");
+            }
+        }
 
         #region IDisposable Support
 
@@ -571,6 +658,9 @@ namespace atomex.ViewModels.CurrencyViewModels
 
                     if (QuotesProvider != null)
                         QuotesProvider.QuotesUpdated -= OnQuotesUpdatedEventHandler;
+
+                    if (AddressesViewModel != null)
+                        AddressesViewModel.AddressesChanged -= OnAddresesChangedEventHandler;
                 }
 
                 _account = null;

@@ -89,23 +89,19 @@ namespace atomex.ViewModels.DappsViewModels
 
     public class DappsViewModel : BaseViewModel
     {
-        private const int _gasLimitPerBlock = 5_200_000;
+        private const int GasLimitPerBlock = 5_200_000;
         public const int StorageLimitPerOperation = 5000;
-        private const int _connectionTimeoutMs = 180000;
+        private const int ConnectionTimeoutMs = 180000;
         private readonly IAtomexApp _app;
         private INavigationService _navigationService;
         private IWalletBeaconClient _beaconWalletClient;
 
         [Reactive] public ObservableCollection<DappViewModel> Dapps { get; set; }
         [Reactive] public DappViewModel SelectedDapp { get; set; }
-        private TezosConfig _tezos { get; }
+        private TezosConfig Tezos { get; }
         public ConnectDappViewModel ConnectDappViewModel { get; set; }
         [Reactive] public bool IsConnecting { get; set; }
-
-        public const double DefaultDappRowHeight = 72;
-        public const double DappListHeaderHeight = 52;
-        public const double DappListFooterHeight = 82;
-        [Reactive] public double DappListViewHeight { get; set; }
+        [Reactive] public int QtyDisplayedDapps { get; set; }
 
         public DappsViewModel(
             IAtomexApp app,
@@ -114,13 +110,7 @@ namespace atomex.ViewModels.DappsViewModels
             _app = app ?? throw new ArgumentNullException(nameof(app));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             _app.AtomexClientChanged += OnAtomexClientChangedEventHandler;
-            _tezos = (TezosConfig) _app.Account.Currencies.GetByName(TezosConfig.Xtz);
-
-            this.WhenAnyValue(vm => vm.Dapps)
-                .WhereNotNull()
-                .SubscribeInMainThread(vm =>
-                    DappListViewHeight = (Dapps!.Count + 1) * DefaultDappRowHeight +
-                                         DappListFooterHeight + DappListHeaderHeight);
+            Tezos = (TezosConfig) _app.Account.Currencies.GetByName(TezosConfig.Xtz);
 
             this.WhenAnyValue(vm => vm.SelectedDapp)
                 .WhereNotNull()
@@ -203,7 +193,7 @@ namespace atomex.ViewModels.DappsViewModels
                 });
 
                 var completedTask = await Task.WhenAny(addPeerTask,
-                    Task.Delay(TimeSpan.FromMilliseconds(_connectionTimeoutMs)));
+                    Task.Delay(TimeSpan.FromMilliseconds(ConnectionTimeoutMs)));
 
                 // cts.Cancel();
 
@@ -266,7 +256,7 @@ namespace atomex.ViewModels.DappsViewModels
 
                 var connectedWalletAddress = await _app
                     .Account
-                    .GetAddressAsync(_tezos.Name, permissions?.Address ?? string.Empty);
+                    .GetAddressAsync(Tezos.Name, permissions?.Address ?? string.Empty);
 
                 switch (message.Type)
                 {
@@ -306,7 +296,7 @@ namespace atomex.ViewModels.DappsViewModels
                                 {
                                     var walletAddress = await _app
                                         .Account
-                                        .GetAddressAsync(_tezos.Name, walletAddressViewModel?.Address);
+                                        .GetAddressAsync(Tezos.Name, walletAddressViewModel?.Address);
 
                                     var response = new PermissionResponse(
                                         id: permissionRequest.Id,
@@ -365,7 +355,7 @@ namespace atomex.ViewModels.DappsViewModels
                                 return;
                             }
 
-                            var rpc = new Rpc(_tezos.RpcNodeUri);
+                            var rpc = new Rpc(Tezos.RpcNodeUri);
                             JObject account;
                             bool revealed;
 
@@ -402,7 +392,7 @@ namespace atomex.ViewModels.DappsViewModels
                                 ? operationRequest.OperationDetails.Count
                                 : operationRequest.OperationDetails.Count + 1;
 
-                            var operationGasLimit = Math.Min(_gasLimitPerBlock / totalOperations, 500_000);
+                            var operationGasLimit = Math.Min(GasLimitPerBlock / totalOperations, 500_000);
 
                             if (!revealed)
                             {
@@ -476,7 +466,7 @@ namespace atomex.ViewModels.DappsViewModels
 
                             var operationRequestViewModel = new OperationRequestViewModel(operations,
                                 connectedWalletAddress,
-                                operationGasLimit, _tezos)
+                                operationGasLimit, Tezos)
                             {
                                 QuotesProvider = _app.QuotesProvider,
                                 DappName = permissions.AppMetadata.Name,
@@ -506,7 +496,7 @@ namespace atomex.ViewModels.DappsViewModels
                                         var keyStorage = wallet.KeyStorage;
 
                                         using var securePrivateKey = keyStorage.GetPrivateKey(
-                                            currency: _tezos,
+                                            currency: Tezos,
                                             keyIndex: connectedWalletAddress.KeyIndex,
                                             keyType: connectedWalletAddress.KeyType);
 
@@ -604,7 +594,7 @@ namespace atomex.ViewModels.DappsViewModels
                         {
                             Log.Error(exception,
                                 "OnBeaconWalletClientMessageReceived error. Message type is operation request");
-                            throw;
+                            break;
                         }
                     }
                     case BeaconMessageType.sign_payload_request:
@@ -660,7 +650,7 @@ namespace atomex.ViewModels.DappsViewModels
                                         var hdWallet = _app.Account.Wallet as HdWallet;
 
                                         using var privateKey = hdWallet!.KeyStorage.GetPrivateKey(
-                                            currency: _tezos,
+                                            currency: Tezos,
                                             keyIndex: connectedWalletAddress.KeyIndex,
                                             keyType: connectedWalletAddress.KeyType);
 
@@ -837,6 +827,8 @@ namespace atomex.ViewModels.DappsViewModels
                                 }
                             }
                         }));
+
+                    QtyDisplayedDapps = Dapps.Count;
                 });
             }
             catch (Exception e)

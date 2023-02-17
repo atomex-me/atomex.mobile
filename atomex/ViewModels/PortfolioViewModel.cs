@@ -89,15 +89,21 @@ namespace atomex.ViewModels
 
             this.WhenAnyValue(vm => vm.SelectedCurrency)
                 .WhereNotNull()
-                .SubscribeInMainThread(c =>
+                .SubscribeInMainThread(async c =>
                 {
                     switch (SelectCurrencyUseCase)
                     {
                         case CurrencyActionType.Show:
                             NavigationService?.ShowPage(new CurrencyPage(c), TabNavigation.Portfolio);
                             NavigationService?.SetInitiatedPage(TabNavigation.Portfolio);
+                            await Task.Run(async () =>
+                            {
+                                await c.LoadTransactionsAsync();
+                                c.LoadAddresses();
+                            });
                             SelectedCurrency = null;
                             break;
+                        
                         case CurrencyActionType.Send:
                             NavigationService?.ClosePopup();
                             var sendViewModel = SendViewModelCreator.CreateViewModel(_app, c, NavigationService);
@@ -119,12 +125,14 @@ namespace atomex.ViewModels
                             SelectCurrencyUseCase = CurrencyActionType.Show;
                             SelectedCurrency = null;
                             break;
+                        
                         case CurrencyActionType.Receive:
                             var receiveViewModel = new ReceiveViewModel(_app, c?.Currency, NavigationService);
                             NavigationService?.ShowPopup(new ReceiveBottomSheet(receiveViewModel));
                             SelectCurrencyUseCase = CurrencyActionType.Show;
                             SelectedCurrency = null;
                             break;
+                        
                         default:
                             NavigationService?.ShowPage(new CurrencyPage(c), TabNavigation.Portfolio);
                             NavigationService?.SetInitiatedPage(TabNavigation.Portfolio);

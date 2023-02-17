@@ -52,36 +52,27 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public decimal TotalAmountInBase { get; set; }
         [Reactive] public decimal CurrentQuote { get; set; }
 
-        [Reactive] public ObservableCollection<TransactionViewModel> Transactions { get; set; }
-
+        [Reactive] public IList<TransactionViewModel> Transactions { get; set; }
         [Reactive] public ObservableCollection<Grouping<TransactionViewModel>> GroupedTransactions { get; set; }
-
         [Reactive] public TransactionViewModel SelectedTransaction { get; set; }
+
+        [Reactive] public int QtyDisplayedTxs { get; set; }
+        private int _defaultQtyDisplayedTxs = 10;
+        private int _defaultQtyDisplayedAddresses = 3;
+        public int LoadingStepTxs => 20;
+        [Reactive] public bool IsTransfersLoading { get; set; }
 
         [Reactive] public AddressesViewModel AddressesViewModel { get; set; }
         [Reactive] public ObservableCollection<AddressViewModel> Addresses { get; set; }
-
-        [Reactive] public bool IsTransfersLoading { get; set; }
         [Reactive] public bool CanShowMoreTxs { get; set; }
-        [Reactive] public bool IsAllTxsShowed { get; set; }
         [Reactive] public bool CanShowMoreAddresses { get; set; }
-
-        public int TxsNumberPerPage = 3;
-        public int AddressesNumberPerPage = 3;
-
-        public const double DefaultTxGroupHeight = 36;
-        public double DefaultTxRowHeight = 76;
-        public const double DefaultAddressRowHeight = 64;
-        public const double ListViewFooterHeight = 72;
-        [Reactive] public double TxListViewHeight { get; set; }
-        [Reactive] public double AddressListViewHeight { get; set; }
+        [Reactive] public int QtyDisplayedAddresses { get; set; }
 
         private CancellationTokenSource _cancellationTokenSource;
 
         public class Grouping<T> : ObservableCollection<T>
         {
-            public double GroupHeight { get; set; } = DefaultTxGroupHeight;
-            private DateTime Date { get; set; }
+            public DateTime Date { get; set; }
 
             public Grouping(DateTime date, IEnumerable<T> items)
             {
@@ -146,7 +137,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             if (TokenBalance == null) return;
 
             var url = ThumbsApi.GetTokenPreviewUrl(Contract.Address, TokenBalance.TokenId);
-            TokenPreview = GetTokenPreview(url);
+            Device.InvokeOnMainThreadAsync(() => TokenPreview = GetTokenPreview(url));
         }
 
         public TezosTokenViewModel(
@@ -180,49 +171,33 @@ namespace atomex.ViewModels.CurrencyViewModels
                     _navigationService?.ShowPage(new TransactionInfoPage(t), TabNavigation.Portfolio);
                     SelectedTransaction = null;
                 });
-
+            
             this.WhenAnyValue(vm => vm.GroupedTransactions)
                 .WhereNotNull()
                 .SubscribeInMainThread(_ =>
-                {
-                    CanShowMoreTxs = Transactions.Count > TxsNumberPerPage;
-
-                    TxListViewHeight = IsAllTxsShowed
-                        ? Transactions.Count * DefaultTxRowHeight +
-                          GroupedTransactions.Count * DefaultTxGroupHeight +
-                          ListViewFooterHeight
-                        : TxsNumberPerPage * DefaultTxRowHeight +
-                          (GroupedTransactions.Count + 1) * DefaultTxGroupHeight;
-                });
+                    CanShowMoreTxs = Transactions.Count > QtyDisplayedTxs);
 
             this.WhenAnyValue(vm => vm.Addresses)
                 .WhereNotNull()
                 .SubscribeInMainThread(_ =>
-                {
-                    CanShowMoreAddresses = AddressesViewModel?.Addresses?.Count > AddressesNumberPerPage;
-
-                    AddressListViewHeight = AddressesNumberPerPage * DefaultAddressRowHeight +
-                                            ListViewFooterHeight;
-                });
+                    CanShowMoreAddresses = AddressesViewModel?.Addresses?.Count > QtyDisplayedAddresses);
 
             this.WhenAnyValue(vm => vm.AddressesViewModel)
                 .WhereNotNull()
                 .SubscribeInMainThread(_ =>
                 {
-                    AddressesViewModel.AddressesChanged += OnAddresesChangedEventHandler;
+                    AddressesViewModel!.AddressesChanged += OnAddresesChangedEventHandler;
                     OnAddresesChangedEventHandler();
                 });
 
-            _ = UpdateBalanceAsync();
+            _ = Task.Run(UpdateBalanceAsync);
 
-            IsRefreshing = false;
-            IsAllTxsShowed = false;
-
-            SelectedTab = tokenBalance != null && tokenBalance.IsNft
+            SelectedTab = tokenBalance is {IsNft: true}
                 ? CurrencyTab.Details
                 : CurrencyTab.Activity;
-
+            
             InitTokenPreview();
+            QtyDisplayedAddresses = _defaultQtyDisplayedAddresses;
         }
 
         private void OnAddresesChangedEventHandler()
@@ -230,18 +205,16 @@ namespace atomex.ViewModels.CurrencyViewModels
             try
             {
                 Device.InvokeOnMainThreadAsync(() =>
-                {
                     Addresses = AddressesViewModel != null
                         ? new ObservableCollection<AddressViewModel>(
                             AddressesViewModel.Addresses
                                 .OrderByDescending(a => a?.TokenBalance?.ParsedBalance)
-                                .Take(AddressesNumberPerPage))
-                        : new ObservableCollection<AddressViewModel>();
-                });
+                                .Take(QtyDisplayedAddresses))
+                        : new ObservableCollection<AddressViewModel>());
             }
             catch (Exception e)
             {
-                Log.Error(e, "Error for token {@Token}", CurrencyCode);
+                Log.Error(e, "On addresses changes event handler error for token {@Token}", CurrencyCode);
             }
         }
 
@@ -260,64 +233,210 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "LoadAddresses error for contract {@Contract}", Contract?.Name);
+                Log.Error(e, "Load addresses error for contract {@Contract}", Contract?.Name);
             }
         }
 
-        public async Task LoadTransfers()
+        public async Task LoadTransfersAsync()
         {
             try
             {
                 IsTransfersLoading = true;
+                
+                if (_app.Account == null)
+                    return;
 
                 var tezosAccount = _app.Account
                     .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
 
-                await Device.InvokeOnMainThreadAsync(async () =>
+                var txs = await Task.Run(async () =>
                 {
-                    Transactions = new ObservableCollection<TransactionViewModel>((await tezosAccount
-                            .DataRepository
-                            .GetTezosTokenTransfersAsync(
-                                Contract.Address,
-                                offset: 0,
-                                limit: int.MaxValue))
+                    var transfers = await tezosAccount
+                        .DataRepository
+                        .GetTezosTokenTransfersAsync(
+                            Contract.Address,
+                            offset: 0,
+                            limit: int.MaxValue);
+                    
+                    Transactions = new ObservableCollection<TransactionViewModel>(transfers
                         .Where(token => token.Token.TokenId == TokenBalance.TokenId)
                         .Select(t => new TezosTokenTransferViewModel(t, TezosConfig))
                         .ToList()
+                        .SortList((t1, t2) => t2.LocalTime.CompareTo(t1.LocalTime))
                         .ForEachDo(t =>
                         {
                             t.CopyAddress = CopyAddress;
                             t.CopyTxId = CopyTxId;
                         }));
 
-                    var groups = !IsAllTxsShowed
-                        ? Transactions
-                            .OrderByDescending(p => p.LocalTime.Date)
-                            .Take(TxsNumberPerPage)
-                            .GroupBy(p => p.LocalTime.Date)
-                            .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                                new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))))
-                        : Transactions
-                            .GroupBy(p => p.LocalTime.Date)
-                            .OrderByDescending(g => g.Key)
-                            .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                                new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))));
+                    return Transactions
+                        .Take(QtyDisplayedTxs <= _defaultQtyDisplayedTxs
+                            ? _defaultQtyDisplayedTxs
+                            : QtyDisplayedTxs)
+                        .ToList();
+                });
 
+                var groups = txs
+                    .GroupBy(p => p.LocalTime.Date)
+                        .Select(g => new Grouping<TransactionViewModel>(g.Key,
+                            new ObservableCollection<TransactionViewModel>(g)))
+                        .ToList();
+
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
                     GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
+                    QtyDisplayedTxs = txs.Count;
                 });
             }
             catch (OperationCanceledException)
             {
-                Log.Debug("LoadTransfers for {@Contract} canceled", Contract);
+                Log.Debug("Load transfers for {@Contract} canceled", Contract);
             }
             catch (Exception e)
             {
-                Log.Error(e, "LoadTransfers error for contract {@Contract}", Contract);
+                Log.Error(e, "Load transfers error for contract {@Contract}", Contract);
             }
             finally
             {
                 IsTransfersLoading = false;
                 Log.Debug("Token transfers loaded for contract {@Contract}", Contract);
+            }
+        }
+        
+        public ICommand LoadMoreTxsCommand => new Command(async () => await LoadMoreTxs());
+
+        private async Task LoadMoreTxs()
+        {
+            if (IsTransfersLoading ||
+                QtyDisplayedTxs >= Transactions.Count) return;
+
+            IsTransfersLoading = true;
+
+            try
+            {
+                if (Transactions == null)
+                    return;
+
+                var txs = Transactions
+                    .Skip(QtyDisplayedTxs)
+                    .Take(LoadingStepTxs)
+                    .ToList();
+
+                if (!txs.Any())
+                    return;
+
+                var groups = txs
+                    .GroupBy(p => p.LocalTime.Date)
+                    .Select(g => new Grouping<TransactionViewModel>(g.Key,
+                        new ObservableCollection<TransactionViewModel>(g)));
+
+                var resultGroups = MergeGroups(GroupedTransactions.ToList(), groups.ToList());
+
+                await Device.InvokeOnMainThreadAsync(() => 
+                    {
+                        GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(
+                            resultGroups ?? new ObservableCollection<Grouping<TransactionViewModel>>());
+                        QtyDisplayedTxs += txs.Count;
+                    }
+                );
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error loading more txs for {@Currency} error", CurrencyCode);
+            }
+            finally
+            {
+                IsTransfersLoading = false;
+            }
+        }
+        
+        private ReactiveCommand<Unit, Unit> _showAllTxsCommand;
+
+        public ReactiveCommand<Unit, Unit> ShowAllTxsCommand => _showAllTxsCommand ??= ReactiveCommand.Create(() =>
+        {
+            CanShowMoreTxs = false;
+            QtyDisplayedTxs = Transactions.Count;
+
+            var groups = Transactions
+                .GroupBy(p => p.LocalTime.Date)
+                .Select(g => new Grouping<TransactionViewModel>(g.Key,
+                    new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))));
+
+            GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
+        });
+
+        private IEnumerable<Grouping<TransactionViewModel>> MergeGroups(
+            List<Grouping<TransactionViewModel>> group1,
+            List<Grouping<TransactionViewModel>> group2)
+        {
+            var result = new List<Grouping<TransactionViewModel>>();
+
+            var i = 0;
+            var j = 0;
+            while (i < group1.Count && j < group2.Count)
+            {
+                if (group1[i].Date > group2[j].Date)
+                {
+                    result.Add(group1[i++]);
+                }
+                else if (group1[i].Date < group2[j].Date)
+                {
+                    result.Add(group2[j++]);
+                }
+                else
+                {
+                    var txs = group1[i]
+                        .Concat(group2[j])
+                        .OrderByDescending(t => t.LocalTime);
+
+                    result.Add(new Grouping<TransactionViewModel>(group1[i].Date, txs));
+                    i++;
+                    j++;
+                }
+            }
+
+            while (i < group1.Count)
+            {
+                result.Add(group1[i++]);
+            }
+
+            while (j < group2.Count)
+            {
+                result.Add(group2[j++]);
+            }
+
+            return result;
+        }
+
+        public virtual void Reset()
+        {
+            try
+            {
+                if (Transactions == null)
+                    return;
+
+                var txs = Transactions
+                    .Take(_defaultQtyDisplayedTxs)
+                    .ToList();
+
+                if (!txs.Any())
+                    return;
+
+                var groups = txs
+                    .GroupBy(p => p.LocalTime.Date)
+                    .Select(g => new Grouping<TransactionViewModel>(g.Key,
+                        new ObservableCollection<TransactionViewModel>(g)));
+
+                Device.InvokeOnMainThreadAsync(() => 
+                    {
+                        GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
+                        QtyDisplayedTxs = txs.Count;
+                    }
+                );
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Reset QtyDisplayedTxs error");
             }
         }
 
@@ -327,12 +446,9 @@ namespace atomex.ViewModels.CurrencyViewModels
             {
                 if (!args.IsTokenUpdate ||
                     args.TokenContract != null && (args.TokenContract != TokenBalance.Contract ||
-                                                   args.TokenId != TokenBalance.TokenId))
-                {
-                    return;
-                }
-
-                await Device.InvokeOnMainThreadAsync(async () => { await UpdateBalanceAsync(); });
+                                                   args.TokenId != TokenBalance.TokenId)) return;
+                
+                await Task.Run(async () => await UpdateBalanceAsync());
             }
             catch (Exception e)
             {
@@ -361,7 +477,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 var tokenQuote = quotesProvider.GetQuote(TokenBalance.Symbol, BaseCurrencyCode);
                 var xtzQuote = quotesProvider.GetQuote(TezosConfig.Xtz, BaseCurrencyCode);
                 if (tokenQuote == null || xtzQuote == null) return;
-                
+
                 Device.InvokeOnMainThreadAsync(() =>
                 {
                     CurrentQuote = (tokenQuote?.Bid ?? 0m) * (xtzQuote?.Bid ?? 0m);
@@ -412,26 +528,33 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource?.Dispose();
+            _cancellationTokenSource = null;
         });
 
         private async Task UpdateBalanceAsync()
         {
-            var tezosAccount = _app.Account.GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
+            try
+            {
+                var tezosAccount = _app.Account.GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
 
-            var tokenWalletAddresses = await tezosAccount
-                .DataRepository
-                .GetTezosTokenAddressesByContractAsync(Contract.Address);
+                var tokenWalletAddresses = await tezosAccount
+                    .DataRepository
+                    .GetTezosTokenAddressesByContractAsync(Contract.Address);
 
-            var addresses = tokenWalletAddresses
-                .Where(walletAddress => walletAddress.TokenBalance.TokenId == TokenBalance.TokenId)
-                .ToList();
+                var addresses = tokenWalletAddresses
+                    .Where(walletAddress => walletAddress.TokenBalance.TokenId == TokenBalance.TokenId)
+                    .ToList();
 
-            var tokenBalance = 0m;
-            addresses.ForEach(a => { tokenBalance += a.TokenBalance.GetTokenBalance(); });
+                var tokenBalance = 0m;
+                addresses.ForEach(a => tokenBalance += a.TokenBalance.GetTokenBalance());
 
-            await Device.InvokeOnMainThreadAsync(() => { TotalAmount = tokenBalance; });
+                await Device.InvokeOnMainThreadAsync(() => TotalAmount = tokenBalance);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Update balance error for {@Token}", CurrencyCode);
+            }
         }
-
 
         private async Task ScanCurrency()
         {
@@ -451,11 +574,9 @@ namespace atomex.ViewModels.CurrencyViewModels
                     cancellationToken: _cancellationTokenSource.Token);
 
                 await Device.InvokeOnMainThreadAsync(() =>
-                {
                     _navigationService?.DisplaySnackBar(
                         MessageType.Regular,
-                        CurrencyCode + " " + AppResources.HasBeenUpdated);
-                });
+                        CurrencyCode + " " + AppResources.HasBeenUpdated));
             }
             catch (OperationCanceledException)
             {
@@ -481,6 +602,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 tokenContract: Contract.Address,
                 tokenType: Contract.GetContractType(),
                 tokenId: (int) TokenBalance.TokenId);
+
             _navigationService?.ShowPopup(new ReceiveBottomSheet(receiveViewModel));
         }
 
@@ -506,7 +628,8 @@ namespace atomex.ViewModels.CurrencyViewModels
                     tokenType: Contract.GetContractType(),
                     tokenPreview: TokenPreview);
 
-            _navigationService?.ShowPage(new SelectAddressPage(sendViewModel.SelectFromViewModel),
+            _navigationService?.ShowPage(
+                new SelectAddressPage(sendViewModel.SelectFromViewModel),
                 TabNavigation.Portfolio);
         }
 
@@ -518,7 +641,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         private ReactiveCommand<string, Unit> _changeCurrencyTabCommand;
 
         public ReactiveCommand<string, Unit> ChangeCurrencyTabCommand => _changeCurrencyTabCommand ??=
-            ReactiveCommand.Create<string>((value) =>
+            ReactiveCommand.Create<string>(value =>
             {
                 Enum.TryParse(value, out CurrencyTab selectedTab);
                 SelectedTab = selectedTab;
@@ -543,13 +666,15 @@ namespace atomex.ViewModels.CurrencyViewModels
                 if (value != null)
                 {
                     _ = Clipboard.SetTextAsync(value);
-                    _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.AddressCopied);
+                    _navigationService?.DisplaySnackBar(
+                        MessageType.Regular,
+                        AppResources.AddressCopied);
                 }
                 else
-                {
-                    _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError,
+                    _navigationService?.ShowAlert(
+                        AppResources.Error,
+                        AppResources.CopyError,
                         AppResources.AcceptButton);
-                }
             });
         }
 
@@ -565,12 +690,10 @@ namespace atomex.ViewModels.CurrencyViewModels
                         AppResources.TransactionIdCopied);
                 }
                 else
-                {
                     _navigationService?.ShowAlert(
                         AppResources.Error,
                         AppResources.CopyError,
                         AppResources.AcceptButton);
-                }
             });
         }
 
@@ -592,23 +715,6 @@ namespace atomex.ViewModels.CurrencyViewModels
         private string AssetUrl => IsIpfsAsset
             ? $"http://ipfs.io/ipfs/{ThumbsApi.RemoveIpfsPrefix(TokenBalance.ArtifactUri)}"
             : null;
-
-        private ReactiveCommand<Unit, Unit> _showAllTxsCommand;
-
-        public ReactiveCommand<Unit, Unit> ShowAllTxsCommand => _showAllTxsCommand ??= ReactiveCommand.Create(() =>
-        {
-            IsAllTxsShowed = true;
-            CanShowMoreTxs = false;
-            TxsNumberPerPage = Transactions.Count;
-
-            var groups = Transactions
-                .GroupBy(p => p.LocalTime.Date)
-                .OrderByDescending(g => g.Key)
-                .Select(g => new Grouping<TransactionViewModel>(g.Key,
-                    new ObservableCollection<TransactionViewModel>(g.OrderByDescending(t => t.LocalTime))));
-
-            GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
-        });
 
         private ReactiveCommand<Unit, Unit> _showDescriptionCommand;
 

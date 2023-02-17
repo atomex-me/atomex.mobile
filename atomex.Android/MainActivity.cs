@@ -23,7 +23,7 @@ using Xamarin.Forms.Platform.Android.AppLinks;
 
 namespace atomex.Droid
 {
-    [Activity(Label = "Atomex", Icon = "@mipmap/icon", Theme = "@style/MainTheme",
+    [Activity(Label = "Atomex", Icon = "@mipmap/ic_launcher", Theme = "@style/MainTheme",
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, LaunchMode = LaunchMode.SingleTask,
         ScreenOrientation = ScreenOrientation.Locked, Exported = true)]
     

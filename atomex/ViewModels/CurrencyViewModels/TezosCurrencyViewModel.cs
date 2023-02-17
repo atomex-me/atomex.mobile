@@ -29,9 +29,8 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public DappsViewModel DappsViewModel { get; set; }
 
         private DelegateViewModel _delegateViewModel;
-
-        public const double DefaultDelegationRowHeight = 76;
-        [Reactive] public double DelegationListViewHeight { get; set; }
+        [Reactive] public bool IsDelegationsLoading { get; set; }
+        [Reactive] public int QtyDisplayedDelegations { get; set; }
 
         public TezosCurrencyViewModel(
             IAtomexApp app,
@@ -54,25 +53,20 @@ namespace atomex.ViewModels.CurrencyViewModels
                     SelectedDelegation = null;
                 });
 
-            this.WhenAnyValue(vm => vm.Delegations)
-                .WhereNotNull()
-                .SubscribeInMainThread(d =>
-                    DelegationListViewHeight = Delegations.Count * DefaultDelegationRowHeight);
-
-            _ = LoadDelegationInfoAsync();
-
             _delegateViewModel = new DelegateViewModel(App, NavigationService);
             TezosTokensViewModel = new TezosTokensViewModel(App, NavigationService);
             CollectiblesViewModel = new CollectiblesViewModel(App, NavigationService);
-            
-            HasDapps = true;
             DappsViewModel = new DappsViewModel(App, NavigationService);
+            
+            _ = Task.Run(LoadDelegationInfoAsync);
         }
 
         private async Task LoadDelegationInfoAsync()
         {
             try
             {
+                IsDelegationsLoading = true;
+
                 var addresses = await App.Account
                     .GetUnspentAddressesAsync(Tezos.Name)
                     .ConfigureAwait(false);
@@ -148,15 +142,20 @@ namespace atomex.ViewModels.CurrencyViewModels
                 await Device.InvokeOnMainThreadAsync(() =>
                 {
                     Delegations = new ObservableCollection<DelegationViewModel>(delegations);
+                    QtyDisplayedDelegations = Delegations.Count;
                 });
             }
             catch (OperationCanceledException)
             {
-                Log.Debug("LoadDelegationInfoAsync canceled");
+                Log.Debug("Load delegation info canceled");
             }
             catch (Exception e)
             {
-                Log.Error(e, "LoadDelegationInfoAsync error");
+                Log.Error(e, "Load delegation info error");
+            }
+            finally
+            {
+                IsDelegationsLoading = false;
             }
         }
 
@@ -190,14 +189,24 @@ namespace atomex.ViewModels.CurrencyViewModels
             {
                 if (Currency?.Name != args?.Currency) return;
 
-                await UpdateBalanceAsync();
-                await LoadTransactionsAsync();
-                await LoadDelegationInfoAsync();
+                await Task.Run(async () =>
+                {
+                    await UpdateBalanceAsync();
+                    await LoadTransactionsAsync();
+                    await LoadDelegationInfoAsync();
+                });
             }
             catch (Exception e)
             {
                 Log.Error(e, "Account balance updated event handler error");
             }
+        }
+
+        public override void Reset()
+        {
+            CollectiblesViewModel?.Reset();
+            TezosTokensViewModel?.Reset();
+            base.Reset();
         }
     }
 }

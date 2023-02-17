@@ -18,6 +18,9 @@ using System;
 using System.Threading;
 using atomex.ViewModels;
 using atomex.ViewModels.ConversionViewModels;
+using atomex.ViewModels.CurrencyViewModels;
+using atomex.Views.Collectibles;
+using atomex.Views.TezosTokens;
 using static atomex.Models.SnackbarMessage;
 using Rg.Plugins.Popup.Services;
 using Rg.Plugins.Popup.Pages;
@@ -85,12 +88,35 @@ namespace atomex.Views
             Children.Add(_navigationBuyPage);
             Children.Add(_navigationSettingsPage);
 
-            mainViewModel.Locked += (s, a) => { SignOut(); };
+            mainViewModel.Locked += (s, a) => SignOut();
+            
+            _navigationPortfolioPage.Popped += (s, e) =>
+            {
+                switch (e.Page)
+                {
+                    case CurrencyPage page:
+                    {
+                        var vm = page.BindingContext as CurrencyViewModel;
+                        vm?.Reset();
+                        break;
+                    }
+                    case TokenPage tokenPage:
+                    {
+                        var vm = tokenPage.BindingContext as TezosTokenViewModel;
+                        vm?.Reset();
+                        break;
+                    }
+                    case NftPage nftPage:
+                    {
+                        var vm = nftPage.BindingContext as TezosTokenViewModel;
+                        vm?.Reset();
+                        break;
+                    }
+                }
+            };
 
             LocalizationResourceManager.Instance.LanguageChanged += (s, a) =>
-            {
                 Device.BeginInvokeOnMainThread(LocalizeNavTabs);
-            };
         }
 
         private void LocalizeNavTabs()
@@ -106,7 +132,7 @@ namespace atomex.Views
             try
             {
                 MainViewModel?.SignOut();
-                StartViewModel startViewModel = new StartViewModel(MainViewModel?.AtomexApp);
+                var startViewModel = new StartViewModel(MainViewModel?.AtomexApp);
                 var mainPage = new StartPage(startViewModel);
                 Application.Current.MainPage = new NavigationPage(mainPage);
                 startViewModel.SetNavigationService(mainPage);
@@ -253,9 +279,10 @@ namespace atomex.Views
             {
                 if (removePrevious)
                 {
-                    for ( ; PopupNavigation.Instance.PopupStack.Count > 0 ; )
+                    if (PopupNavigation.Instance.PopupStack.Count > 0)
                         _ = PopupNavigation.Instance.PopAsync();
                 }
+                
                 _ = PopupNavigation.Instance.PushAsync(popup);
             }
             catch (Exception e)

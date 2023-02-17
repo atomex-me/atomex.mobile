@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Globalization;
 using System.Reactive;
-using System.Threading;
 using System.Windows.Input;
 using atomex.Resources;
 using atomex.Views;
