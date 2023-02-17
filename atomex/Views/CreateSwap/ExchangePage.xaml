@@ -34,152 +34,335 @@
               BackgroundColor="Transparent">
         <ListView.Header>
             <StackLayout Spacing="0">
-                <Label Text="{helpers:Translate ExchangeLabel}"
-                       Style="{DynamicResource MainTextH1}"
-                       Padding="16,32,16,16" />
-                <Grid HorizontalOptions="Fill"
-                      ColumnSpacing="0"
-                      RowSpacing="4"
-                      Margin="16">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="60" />
-                        <RowDefinition Height="40" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="60" />
-                        <RowDefinition Height="40" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="110" />
-                        <ColumnDefinition Width="80" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Frame Grid.RowSpan="2"
-                           Grid.ColumnSpan="3"
-                           HorizontalOptions="FillAndExpand"
-                           HasShadow="False"
-                           CornerRadius="16"
-                           BackgroundColor="{AppThemeBinding Dark='Transparent', Light={StaticResource FrameBackgroundColor}}"
-                           BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light='Transparent'}">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding FromViewModel.SelectCurrencyCommand}" />
-                        </Frame.GestureRecognizers>
-                    </Frame>
-                    <Frame
-                        BackgroundColor="{AppThemeBinding Dark={StaticResource ActionElementBackgroundColorDark}, Light={StaticResource ActionElementBackgroundColor}}"
-                        BorderColor="Transparent"
-                        Padding="5"
-                        HasShadow="False"
-                        Margin="16,0,0,0"
-                        HeightRequest="35"
-                        CornerRadius="20"
-                        VerticalOptions="End"
-                        IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding FromViewModel.SelectCurrencyCommand}" />
-                        </Frame.GestureRecognizers>
-                        <StackLayout Spacing="8"
-                                     Orientation="Horizontal"
-                                     HorizontalOptions="Center">
-                            <Image Source="{Binding FromViewModel.CurrencyViewModel.CurrencyCode}"
-                                   WidthRequest="22"
-                                   HeightRequest="22"
-                                   Margin="0,5" />
-                            <Label Text="{Binding FromViewModel.CurrencyViewModel.CurrencyName}"
-                                   Style="{DynamicResource MainTextH4}"
-                                   VerticalTextAlignment="Center" />
+                <StackLayout Spacing="0"
+                             Opacity="0.5"
+                             IsEnabled="False">
+                    <Label Text="{helpers:Translate ExchangeLabel}"
+                           Style="{DynamicResource MainTextH1}"
+                           Padding="16,32,16,16" />
+                    <Grid HorizontalOptions="Fill"
+                          ColumnSpacing="0"
+                          RowSpacing="4"
+                          Margin="16">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="60" />
+                            <RowDefinition Height="40" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="110" />
+                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Frame Grid.RowSpan="2"
+                               Grid.ColumnSpan="3"
+                               HorizontalOptions="FillAndExpand"
+                               HasShadow="False"
+                               CornerRadius="16"
+                               BackgroundColor="{AppThemeBinding Dark='Transparent', Light={StaticResource FrameBackgroundColor}}"
+                               BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light='Transparent'}">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding FromViewModel.SelectCurrencyCommand}" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                        <Frame
+                            BackgroundColor="{AppThemeBinding Dark={StaticResource ActionElementBackgroundColorDark}, Light={StaticResource ActionElementBackgroundColor}}"
+                            BorderColor="Transparent"
+                            Padding="5"
+                            HasShadow="False"
+                            Margin="16,0,0,0"
+                            HeightRequest="35"
+                            CornerRadius="20"
+                            VerticalOptions="End"
+                            IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding FromViewModel.SelectCurrencyCommand}" />
+                            </Frame.GestureRecognizers>
+                            <StackLayout Spacing="8"
+                                         Orientation="Horizontal"
+                                         HorizontalOptions="Center">
+                                <Image Source="{Binding FromViewModel.CurrencyViewModel.CurrencyCode}"
+                                       WidthRequest="22"
+                                       HeightRequest="22"
+                                       Margin="0,5" />
+                                <Label Text="{Binding FromViewModel.CurrencyViewModel.CurrencyName}"
+                                       Style="{DynamicResource MainTextH4}"
+                                       VerticalTextAlignment="Center" />
+                            </StackLayout>
+                        </Frame>
+                        <Label Grid.Row="1"
+                               Margin="18,10,0,0"
+                               Style="{DynamicResource AdditionalTextH6}"
+                               IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}"
+                               MaxLines="1"
+                               LineBreakMode="MiddleTruncation"
+                               Text="{Binding FromViewModel.Address}" />
+                        <Button Grid.Row="1"
+                                Grid.Column="1"
+                                Text="{helpers:Translate MaxButton}"
+                                BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
+                                BackgroundColor="Transparent"
+                                BorderWidth="1"
+                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                FontSize="12"
+                                Padding="0"
+                                TextTransform="Lowercase"
+                                HeightRequest="30"
+                                Margin="10,0"
+                                CornerRadius="15"
+                                VerticalOptions="Start"
+                                Command="{Binding FromViewModel.MaxCommand}"
+                                IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}" />
+                        <Label Grid.Row="1"
+                               Grid.Column="2"
+                               Style="{DynamicResource AdditionalTextH6}"
+                               Margin="16,0"
+                               Text="{Binding FromViewModel.AmountInBase, StringFormat='${0:f2}'}"
+                               HorizontalTextAlignment="End"
+                               VerticalTextAlignment="Start"
+                               IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}" />
+                        <Label Grid.RowSpan="2"
+                               Grid.ColumnSpan="2"
+                               Style="{DynamicResource AdditionalTextH3}"
+                               Text="{helpers:Translate ChooseFromCurrency}"
+                               VerticalTextAlignment="Center"
+                               Padding="16,0"
+                               IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}, FallbackValue='True', TargetNullValue='True'}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding FromViewModel.SelectCurrencyCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <custom:CustomEntry Grid.Column="1"
+                                            Grid.ColumnSpan="2"
+                                            Keyboard="Numeric"
+                                            Text="{Binding FromViewModel.AmountString, Mode=TwoWay}"
+                                            Style="{DynamicResource EntryStyle}"
+                                            FontSize="24"
+                                            HorizontalTextAlignment="End"
+                                            VerticalTextAlignment="End"
+                                            Margin="5,0,16,5"
+                                            IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}">
+                            <custom:CustomEntry.Behaviors>
+                                <behaviors:EventToCommandBehavior EventName="Focused"
+                                                                  Command="{Binding FromViewModel.RaiseGotInputFocusCommand}" />
+                            </custom:CustomEntry.Behaviors>
+                            <custom:CustomEntry.Triggers>
+                                <DataTrigger TargetType="custom:CustomEntry"
+                                             Binding="{Binding FromViewModel.IsAmountValid}"
+                                             Value="False">
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="custom:CustomEntry"
+                                             Binding="{Binding FromViewModel.IsAmountValid}"
+                                             Value="True">
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
+                                </DataTrigger>
+                            </custom:CustomEntry.Triggers>
+                        </custom:CustomEntry>
+                        <Label Grid.Column="1"
+                               Grid.ColumnSpan="2"
+                               Grid.RowSpan="2"
+                               Style="{DynamicResource AdditionalTextH2}"
+                               Text="0"
+                               Margin="16,0"
+                               HorizontalTextAlignment="End"
+                               VerticalTextAlignment="Center"
+                               IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}, FallbackValue='True', TargetNullValue='True'}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding FromViewModel.SelectCurrencyCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Image Grid.Row="2"
+                               Margin="10"
+                               Source="ic_swap"
+                               HeightRequest="18"
+                               WidthRequest="18"
+                               HorizontalOptions="Center">
+                            <Image.IsVisible>
+                                <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                                    <Binding Path="FromViewModel.CurrencyViewModel"
+                                             Mode="OneWay"
+                                             Converter="{StaticResource NullToBoolean}"
+                                             TargetNullValue="False"
+                                             FallbackValue="False" />
+                                    <Binding Path="ToViewModel.CurrencyViewModel"
+                                             Mode="OneWay"
+                                             Converter="{StaticResource NullToBoolean}"
+                                             TargetNullValue="False"
+                                             FallbackValue="False" />
+                                </MultiBinding>
+                            </Image.IsVisible>
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SwapCurrenciesCommand}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <StackLayout Grid.Row="2"
+                                     Grid.Column="1"
+                                     Grid.ColumnSpan="2"
+                                     Spacing="0"
+                                     HeightRequest="18"
+                                     HorizontalOptions="End"
+                                     Orientation="Horizontal">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding AvailableAmountTooltipCommand}" />
+                            </StackLayout.GestureRecognizers>
+                            <StackLayout.IsVisible>
+                                <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                                    <Binding Path="FromViewModel.CurrencyViewModel"
+                                             Mode="OneWay"
+                                             Converter="{StaticResource NullToBoolean}"
+                                             TargetNullValue="False"
+                                             FallbackValue="False" />
+                                    <Binding Path="ToViewModel.CurrencyViewModel"
+                                             Mode="OneWay"
+                                             Converter="{StaticResource NullToBoolean}"
+                                             TargetNullValue="False"
+                                             FallbackValue="False" />
+                                </MultiBinding>
+                            </StackLayout.IsVisible>
+                            <Label HorizontalTextAlignment="End"
+                                   VerticalTextAlignment="Center"
+                                   Style="{DynamicResource AdditionalTextH6}">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{helpers:Translate Available}" />
+                                        <Span Text=" " />
+                                        <Span Text="{Binding EstimatedMaxFromAmount, StringFormat='{0:0.########}'}" />
+                                        <Span Text=" " />
+                                        <Span Text="{Binding FromViewModel.CurrencyViewModel.CurrencyName}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Image Source="ic_question"
+                                   Margin="5,0"
+                                   WidthRequest="12"
+                                   HeightRequest="12" />
                         </StackLayout>
-                    </Frame>
-                    <Label Grid.Row="1"
-                           Margin="18,10,0,0"
-                           Style="{DynamicResource AdditionalTextH6}"
-                           IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}"
-                           MaxLines="1"
-                           LineBreakMode="MiddleTruncation"
-                           Text="{Binding FromViewModel.Address}" />
-                    <Button Grid.Row="1"
-                            Grid.Column="1"
-                            Text="{helpers:Translate MaxButton}"
-                            BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
-                            BackgroundColor="Transparent"
-                            BorderWidth="1"
-                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                            FontSize="12"
-                            Padding="0"
-                            TextTransform="Lowercase"
-                            HeightRequest="30"
-                            Margin="10,0"
-                            CornerRadius="15"
-                            VerticalOptions="Start"
-                            Command="{Binding FromViewModel.MaxCommand}"
-                            IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}" />
-                    <Label Grid.Row="1"
-                           Grid.Column="2"
-                           Style="{DynamicResource AdditionalTextH6}"
-                           Margin="16,0"
-                           Text="{Binding FromViewModel.AmountInBase, StringFormat='${0:f2}'}"
-                           HorizontalTextAlignment="End"
-                           VerticalTextAlignment="Start"
-                           IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}" />
-                    <Label Grid.RowSpan="2"
-                           Grid.ColumnSpan="2"
-                           Style="{DynamicResource AdditionalTextH3}"
-                           Text="{helpers:Translate ChooseFromCurrency}"
-                           VerticalTextAlignment="Center"
-                           Padding="16,0"
-                           IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}, FallbackValue='True', TargetNullValue='True'}">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding FromViewModel.SelectCurrencyCommand}" />
-                        </Label.GestureRecognizers>
-                    </Label>
-                    <custom:CustomEntry Grid.Column="1"
-                                        Grid.ColumnSpan="2"
-                                        Keyboard="Numeric"
-                                        Text="{Binding FromViewModel.AmountString, Mode=TwoWay}"
-                                        Style="{DynamicResource EntryStyle}"
-                                        FontSize="24"
-                                        HorizontalTextAlignment="End"
-                                        VerticalTextAlignment="End"
-                                        Margin="5,0,16,5"
-                                        IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}">
-                        <custom:CustomEntry.Behaviors>
-                            <behaviors:EventToCommandBehavior EventName="Focused"
-                                                              Command="{Binding FromViewModel.RaiseGotInputFocusCommand}" />
-                        </custom:CustomEntry.Behaviors>
-                        <custom:CustomEntry.Triggers>
-                            <DataTrigger TargetType="custom:CustomEntry"
-                                         Binding="{Binding FromViewModel.IsAmountValid}"
-                                         Value="False">
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}" />
-                            </DataTrigger>
-                            <DataTrigger TargetType="custom:CustomEntry"
-                                         Binding="{Binding FromViewModel.IsAmountValid}"
-                                         Value="True">
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
-                            </DataTrigger>
-                        </custom:CustomEntry.Triggers>
-                    </custom:CustomEntry>
-                    <Label Grid.Column="1"
-                           Grid.ColumnSpan="2"
-                           Grid.RowSpan="2"
-                           Style="{DynamicResource AdditionalTextH2}"
-                           Text="0"
-                           Margin="16,0"
-                           HorizontalTextAlignment="End"
-                           VerticalTextAlignment="Center"
-                           IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}, FallbackValue='True', TargetNullValue='True'}">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding FromViewModel.SelectCurrencyCommand}" />
-                        </Label.GestureRecognizers>
-                    </Label>
-                    <Image Grid.Row="2"
-                           Margin="10"
-                           Source="ic_swap"
-                           HeightRequest="18"
-                           WidthRequest="18"
-                           HorizontalOptions="Center">
-                        <Image.IsVisible>
+                        <Frame Grid.Row="3"
+                               Grid.RowSpan="2"
+                               Grid.ColumnSpan="3"
+                               HorizontalOptions="FillAndExpand"
+                               HasShadow="False"
+                               CornerRadius="16"
+                               BackgroundColor="{AppThemeBinding Dark='Transparent', Light={StaticResource FrameBackgroundColor}}"
+                               BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light='Transparent'}">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToViewModel.SelectCurrencyCommand}" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                        <Frame Grid.Row="3"
+                               Padding="5"
+                               Margin="16,0,0,0"
+                               HeightRequest="35"
+                               HasShadow="False"
+                               CornerRadius="20"
+                               VerticalOptions="End"
+                               BackgroundColor="{AppThemeBinding Dark={StaticResource ActionElementBackgroundColorDark}, Light={StaticResource ActionElementBackgroundColor}}"
+                               BorderColor="Transparent"
+                               IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToViewModel.SelectCurrencyCommand}" />
+                            </Frame.GestureRecognizers>
+                            <StackLayout Spacing="8"
+                                         Orientation="Horizontal"
+                                         HorizontalOptions="Center">
+                                <Image Source="{Binding ToViewModel.CurrencyViewModel.CurrencyCode}"
+                                       WidthRequest="22"
+                                       HeightRequest="22"
+                                       Margin="0,5" />
+                                <Label Text="{Binding ToViewModel.CurrencyViewModel.CurrencyName}"
+                                       FontFamily="{DynamicResource RegularFont}"
+                                       FontSize="16"
+                                       VerticalTextAlignment="Center"
+                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
+                            </StackLayout>
+                        </Frame>
+                        <custom:CustomEntry Grid.Row="3"
+                                            Grid.ColumnSpan="2"
+                                            Grid.Column="1"
+                                            Keyboard="Numeric"
+                                            Text="{Binding ToViewModel.AmountString, Mode=TwoWay}"
+                                            Style="{DynamicResource EntryStyle}"
+                                            FontSize="24"
+                                            HorizontalTextAlignment="End"
+                                            VerticalTextAlignment="End"
+                                            Margin="5,0,16,5"
+                                            IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}">
+                            <custom:CustomEntry.Triggers>
+                                <DataTrigger TargetType="custom:CustomEntry"
+                                             Binding="{Binding ToViewModel.IsAmountValid}"
+                                             Value="False">
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="custom:CustomEntry"
+                                             Binding="{Binding FromViewModel.IsAmountValid}"
+                                             Value="True">
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
+                                </DataTrigger>
+                            </custom:CustomEntry.Triggers>
+                            <custom:CustomEntry.Behaviors>
+                                <behaviors:EventToCommandBehavior EventName="Focused"
+                                                                  Command="{Binding ToViewModel.RaiseGotInputFocusCommand}" />
+                            </custom:CustomEntry.Behaviors>
+                        </custom:CustomEntry>
+                        <Label Grid.Row="3"
+                               Grid.RowSpan="2"
+                               Grid.ColumnSpan="2"
+                               Style="{DynamicResource AdditionalTextH3}"
+                               Text="{helpers:Translate ChooseToCurrency}"
+                               VerticalTextAlignment="Center"
+                               Padding="16,0"
+                               IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}, FallbackValue='True', TargetNullValue='True'}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToViewModel.SelectCurrencyCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Grid.Row="3"
+                               Grid.Column="1"
+                               Grid.ColumnSpan="2"
+                               Grid.RowSpan="2"
+                               Style="{DynamicResource AdditionalTextH2}"
+                               Text="0"
+                               Margin="16,0"
+                               HorizontalTextAlignment="End"
+                               VerticalTextAlignment="Center"
+                               IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}, FallbackValue='True', TargetNullValue='True'}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToViewModel.SelectCurrencyCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Grid.Row="4"
+                               Text="{Binding ToViewModel.Address}"
+                               Style="{DynamicResource AdditionalTextH6}"
+                               Margin="18,10,0,0"
+                               MaxLines="1"
+                               LineBreakMode="MiddleTruncation"
+                               IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}" />
+                        <Label Grid.Row="4"
+                               Grid.Column="2"
+                               Margin="16,0"
+                               Text="{Binding ToViewModel.AmountInBase, StringFormat='${0:f2}'}"
+                               HorizontalTextAlignment="End"
+                               VerticalTextAlignment="Start"
+                               Style="{DynamicResource AdditionalTextH6}"
+                               IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToViewModel.SelectCurrencyCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+                    <StackLayout Orientation="Horizontal"
+                                 Padding="18,0,0,10"
+                                 HorizontalOptions="Start"
+                                 VerticalOptions="Center"
+                                 Spacing="0">
+                        <StackLayout.IsVisible>
                             <MultiBinding Converter="{StaticResource AllTrueConverter}">
                                 <Binding Path="FromViewModel.CurrencyViewModel"
                                          Mode="OneWay"
@@ -191,22 +374,25 @@
                                          Converter="{StaticResource NullToBoolean}"
                                          TargetNullValue="False"
                                          FallbackValue="False" />
+                                <Binding Path="UseRedeemAddress"
+                                         Mode="OneWay" />
                             </MultiBinding>
-                        </Image.IsVisible>
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding SwapCurrenciesCommand}" />
-                        </Image.GestureRecognizers>
-                    </Image>
-                    <StackLayout Grid.Row="2"
-                                 Grid.Column="1"
-                                 Grid.ColumnSpan="2"
-                                 Spacing="0"
-                                 HeightRequest="18"
-                                 HorizontalOptions="End"
-                                 Orientation="Horizontal">
+                        </StackLayout.IsVisible>
                         <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding AvailableAmountTooltipCommand}" />
+                            <TapGestureRecognizer Command="{Binding ChangeRedeemAddress}" />
                         </StackLayout.GestureRecognizers>
+                        <Label Text="{helpers:Translate ChangeRedeemAddress}"
+                               HorizontalTextAlignment="Start"
+                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                               FontFamily="{DynamicResource RegularFont}"
+                               FontSize="16" />
+                        <Image Source="ic_forward"
+                               Margin="10,0"
+                               HeightRequest="12"
+                               WidthRequest="8" />
+                    </StackLayout>
+                    <StackLayout Spacing="2"
+                                 Padding="17,0">
                         <StackLayout.IsVisible>
                             <MultiBinding Converter="{StaticResource AllTrueConverter}">
                                 <Binding Path="FromViewModel.CurrencyViewModel"
@@ -221,289 +407,106 @@
                                          FallbackValue="False" />
                             </MultiBinding>
                         </StackLayout.IsVisible>
-                        <Label HorizontalTextAlignment="End"
-                               VerticalTextAlignment="Center"
-                               Style="{DynamicResource AdditionalTextH6}">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="{helpers:Translate Available}" />
-                                    <Span Text=" " />
-                                    <Span Text="{Binding EstimatedMaxFromAmount, StringFormat='{0:0.########}'}" />
-                                    <Span Text=" " />
-                                    <Span Text="{Binding FromViewModel.CurrencyViewModel.CurrencyName}" />
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                        <Image Source="ic_question"
-                               Margin="5,0"
-                               WidthRequest="12"
-                               HeightRequest="12" />
-                    </StackLayout>
-                    <Frame Grid.Row="3"
-                           Grid.RowSpan="2"
-                           Grid.ColumnSpan="3"
-                           HorizontalOptions="FillAndExpand"
-                           HasShadow="False"
-                           CornerRadius="16"
-                           BackgroundColor="{AppThemeBinding Dark='Transparent', Light={StaticResource FrameBackgroundColor}}"
-                           BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light='Transparent'}">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ToViewModel.SelectCurrencyCommand}" />
-                        </Frame.GestureRecognizers>
-                    </Frame>
-                    <Frame Grid.Row="3"
-                           Padding="5"
-                           Margin="16,0,0,0"
-                           HeightRequest="35"
-                           HasShadow="False"
-                           CornerRadius="20"
-                           VerticalOptions="End"
-                           BackgroundColor="{AppThemeBinding Dark={StaticResource ActionElementBackgroundColorDark}, Light={StaticResource ActionElementBackgroundColor}}"
-                           BorderColor="Transparent"
-                           IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ToViewModel.SelectCurrencyCommand}" />
-                        </Frame.GestureRecognizers>
-                        <StackLayout Spacing="8"
-                                     Orientation="Horizontal"
-                                     HorizontalOptions="Center">
-                            <Image Source="{Binding ToViewModel.CurrencyViewModel.CurrencyCode}"
-                                   WidthRequest="22"
-                                   HeightRequest="22"
-                                   Margin="0,5" />
-                            <Label Text="{Binding ToViewModel.CurrencyViewModel.CurrencyName}"
-                                   FontFamily="{DynamicResource RegularFont}"
-                                   FontSize="16"
-                                   VerticalTextAlignment="Center"
-                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
-                        </StackLayout>
-                    </Frame>
-                    <custom:CustomEntry Grid.Row="3"
-                                        Grid.ColumnSpan="2"
-                                        Grid.Column="1"
-                                        Keyboard="Numeric"
-                                        Text="{Binding ToViewModel.AmountString, Mode=TwoWay}"
-                                        Style="{DynamicResource EntryStyle}"
-                                        FontSize="24"
-                                        HorizontalTextAlignment="End"
-                                        VerticalTextAlignment="End"
-                                        Margin="5,0,16,5"
-                                        IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}">
-                        <custom:CustomEntry.Triggers>
-                            <DataTrigger TargetType="custom:CustomEntry"
-                                         Binding="{Binding ToViewModel.IsAmountValid}"
-                                         Value="False">
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}" />
-                            </DataTrigger>
-                            <DataTrigger TargetType="custom:CustomEntry"
-                                         Binding="{Binding FromViewModel.IsAmountValid}"
-                                         Value="True">
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
-                            </DataTrigger>
-                        </custom:CustomEntry.Triggers>
-                        <custom:CustomEntry.Behaviors>
-                            <behaviors:EventToCommandBehavior EventName="Focused"
-                                                              Command="{Binding ToViewModel.RaiseGotInputFocusCommand}" />
-                        </custom:CustomEntry.Behaviors>
-                    </custom:CustomEntry>
-                    <Label Grid.Row="3"
-                           Grid.RowSpan="2"
-                           Grid.ColumnSpan="2"
-                           Style="{DynamicResource AdditionalTextH3}"
-                           Text="{helpers:Translate ChooseToCurrency}"
-                           VerticalTextAlignment="Center"
-                           Padding="16,0"
-                           IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}, FallbackValue='True', TargetNullValue='True'}">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ToViewModel.SelectCurrencyCommand}" />
-                        </Label.GestureRecognizers>
-                    </Label>
-                    <Label Grid.Row="3"
-                           Grid.Column="1"
-                           Grid.ColumnSpan="2"
-                           Grid.RowSpan="2"
-                           Style="{DynamicResource AdditionalTextH2}"
-                           Text="0"
-                           Margin="16,0"
-                           HorizontalTextAlignment="End"
-                           VerticalTextAlignment="Center"
-                           IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}, FallbackValue='True', TargetNullValue='True'}">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ToViewModel.SelectCurrencyCommand}" />
-                        </Label.GestureRecognizers>
-                    </Label>
-                    <Label Grid.Row="4"
-                           Text="{Binding ToViewModel.Address}"
-                           Style="{DynamicResource AdditionalTextH6}"
-                           Margin="18,10,0,0"
-                           MaxLines="1"
-                           LineBreakMode="MiddleTruncation"
-                           IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}" />
-                    <Label Grid.Row="4"
-                           Grid.Column="2"
-                           Margin="16,0"
-                           Text="{Binding ToViewModel.AmountInBase, StringFormat='${0:f2}'}"
-                           HorizontalTextAlignment="End"
-                           VerticalTextAlignment="Start"
-                           Style="{DynamicResource AdditionalTextH6}"
-                           IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ToViewModel.SelectCurrencyCommand}" />
-                        </Label.GestureRecognizers>
-                    </Label>
-                </Grid>
-                <StackLayout Orientation="Horizontal"
-                             Padding="18,0,0,10"
-                             HorizontalOptions="Start"
-                             VerticalOptions="Center"
-                             Spacing="0">
-                    <StackLayout.IsVisible>
-                        <MultiBinding Converter="{StaticResource AllTrueConverter}">
-                            <Binding Path="FromViewModel.CurrencyViewModel"
-                                     Mode="OneWay"
-                                     Converter="{StaticResource NullToBoolean}"
-                                     TargetNullValue="False"
-                                     FallbackValue="False" />
-                            <Binding Path="ToViewModel.CurrencyViewModel"
-                                     Mode="OneWay"
-                                     Converter="{StaticResource NullToBoolean}"
-                                     TargetNullValue="False"
-                                     FallbackValue="False" />
-                            <Binding Path="UseRedeemAddress"
-                                     Mode="OneWay" />
-                        </MultiBinding>
-                    </StackLayout.IsVisible>
-                    <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ChangeRedeemAddress}" />
-                    </StackLayout.GestureRecognizers>
-                    <Label Text="{helpers:Translate ChangeRedeemAddress}"
-                           HorizontalTextAlignment="Start"
-                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                           FontFamily="{DynamicResource RegularFont}"
-                           FontSize="16" />
-                    <Image Source="ic_forward"
-                           Margin="10,0"
-                           HeightRequest="12"
-                           WidthRequest="8" />
-                </StackLayout>
-                <StackLayout Spacing="2"
-                             Padding="17,0">
-                    <StackLayout.IsVisible>
-                        <MultiBinding Converter="{StaticResource AllTrueConverter}">
-                            <Binding Path="FromViewModel.CurrencyViewModel"
-                                     Mode="OneWay"
-                                     Converter="{StaticResource NullToBoolean}" 
-                                     TargetNullValue="False"
-                                     FallbackValue="False" />
-                            <Binding Path="ToViewModel.CurrencyViewModel"
-                                     Mode="OneWay"
-                                     Converter="{StaticResource NullToBoolean}"
-                                     TargetNullValue="False"
-                                     FallbackValue="False" />
-                        </MultiBinding>
-                    </StackLayout.IsVisible>
-                    <Label HorizontalTextAlignment="Start"
-                           Style="{DynamicResource AdditionalTextH6}">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="{helpers:Translate EstimatedPriceLabel}" />
-                                <Span Text=" 1 " />
-                                <Span Text="{Binding BaseCurrencyCode}" />
-                                <Span Text=" = " />
-                                <Span Text="{Binding EstimatedPrice, StringFormat='{0:0.########}'}" />
-                                <Span Text=" " />
-                                <Span Text="{Binding QuoteCurrencyCode}" />
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
-                    <StackLayout Spacing="0"
-                                 Orientation="Horizontal">
-                        <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding EstNetworkFeeTooltipCommand}" />
-                        </StackLayout.GestureRecognizers>
                         <Label HorizontalTextAlignment="Start"
                                Style="{DynamicResource AdditionalTextH6}">
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="{helpers:Translate EstimatedNetworkFeeLabel}" />
+                                    <Span Text="{helpers:Translate EstimatedPriceLabel}" />
+                                    <Span Text=" 1 " />
+                                    <Span Text="{Binding BaseCurrencyCode}" />
+                                    <Span Text=" = " />
+                                    <Span Text="{Binding EstimatedPrice, StringFormat='{0:0.########}'}" />
                                     <Span Text=" " />
-                                    <Span Text="{Binding EstimatedTotalNetworkFeeInBase, StringFormat='${0:f2}'}" />
+                                    <Span Text="{Binding QuoteCurrencyCode}" />
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
-                        <Image Source="ic_question"
-                               Margin="5,0"
-                               WidthRequest="12"
-                               HeightRequest="12" />
+                        <StackLayout Spacing="0"
+                                     Orientation="Horizontal">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding EstNetworkFeeTooltipCommand}" />
+                            </StackLayout.GestureRecognizers>
+                            <Label HorizontalTextAlignment="Start"
+                                   Style="{DynamicResource AdditionalTextH6}">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{helpers:Translate EstimatedNetworkFeeLabel}" />
+                                        <Span Text=" " />
+                                        <Span Text="{Binding EstimatedTotalNetworkFeeInBase, StringFormat='${0:f2}'}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Image Source="ic_question"
+                                   Margin="5,0"
+                                   WidthRequest="12"
+                                   HeightRequest="12" />
+                        </StackLayout>
                     </StackLayout>
-                </StackLayout>
-                <StackLayout Margin="16,12,16,0"
-                             IsVisible="False">
-                    <StackLayout.Triggers>
-                        <MultiTrigger TargetType="StackLayout">
-                            <MultiTrigger.Conditions>
-                                <BindingCondition Binding="{Binding AmountToFeeRatioWarning.RelatedElement}"
-                                                  Value="All" />
-                                <BindingCondition
-                                    Binding="{Binding AmountToFeeRatioWarning.Text, Converter={StaticResource StringToBool}}"
-                                    Value="True" />
-                            </MultiTrigger.Conditions>
-                            <Setter Property="IsVisible"
-                                    Value="True" />
-                        </MultiTrigger>
-                    </StackLayout.Triggers>
-                    <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ShowTooltipCommand}"
-                                              CommandParameter="{Binding AmountToFeeRatioWarning.TooltipText}" />
-                    </StackLayout.GestureRecognizers>
-                    <StackLayout Orientation="Horizontal"
-                                 HorizontalOptions="FillAndExpand">
-                        <Label Text="{Binding AmountToFeeRatioWarning.Text}"
-                               HorizontalTextAlignment="Start"
-                               HorizontalOptions="StartAndExpand"
-                               VerticalOptions="Center">
-                            <Label.Triggers>
-                                <DataTrigger TargetType="Label"
-                                             Binding="{Binding AmountToFeeRatioWarning.Type}"
-                                             Value="Warning">
-                                    <Setter Property="Style"
-                                            Value="{DynamicResource WarningTextH6}" />
-                                </DataTrigger>
-                                <DataTrigger TargetType="Label"
-                                             Binding="{Binding AmountToFeeRatioWarning.Type}"
-                                             Value="Error">
-                                    <Setter Property="Style"
-                                            Value="{DynamicResource ErrorTextH6}" />
-                                </DataTrigger>
-                            </Label.Triggers>
-                        </Label>
-                        <Image WidthRequest="12"
-                               HeightRequest="12"
-                               Source="ic_question"
-                               HorizontalOptions="End"
-                               Margin="0,0,30,0"
-                               VerticalOptions="Center"
-                               IsVisible="{Binding AmountToFeeRatioWarning.TooltipText, Converter={StaticResource StringToBool}}">
-                            <Image.Triggers>
-                                <DataTrigger TargetType="Image"
-                                             Binding="{Binding AmountToFeeRatioWarning.Type}"
-                                             Value="Error">
-                                    <Setter Property="Source"
-                                            Value="ic_question__error" />
-                                </DataTrigger>
-                                <DataTrigger TargetType="Image"
-                                             Binding="{Binding AmountToFeeRatioWarning.Type}"
-                                             Value="Warning">
-                                    <Setter Property="Source"
-                                            Value="ic_question__warning" />
-                                </DataTrigger>
-                            </Image.Triggers>
-                        </Image>
+                    <StackLayout Margin="16,12,16,0"
+                                 IsVisible="False">
+                        <StackLayout.Triggers>
+                            <MultiTrigger TargetType="StackLayout">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition Binding="{Binding AmountToFeeRatioWarning.RelatedElement}"
+                                                      Value="All" />
+                                    <BindingCondition
+                                        Binding="{Binding AmountToFeeRatioWarning.Text, Converter={StaticResource StringToBool}}"
+                                        Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="IsVisible"
+                                        Value="True" />
+                            </MultiTrigger>
+                        </StackLayout.Triggers>
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowTooltipCommand}"
+                                                  CommandParameter="{Binding AmountToFeeRatioWarning.TooltipText}" />
+                        </StackLayout.GestureRecognizers>
+                        <StackLayout Orientation="Horizontal"
+                                     HorizontalOptions="FillAndExpand">
+                            <Label Text="{Binding AmountToFeeRatioWarning.Text}"
+                                   HorizontalTextAlignment="Start"
+                                   HorizontalOptions="StartAndExpand"
+                                   VerticalOptions="Center">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding AmountToFeeRatioWarning.Type}"
+                                                 Value="Warning">
+                                        <Setter Property="Style"
+                                                Value="{DynamicResource WarningTextH6}" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding AmountToFeeRatioWarning.Type}"
+                                                 Value="Error">
+                                        <Setter Property="Style"
+                                                Value="{DynamicResource ErrorTextH6}" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                            <Image WidthRequest="12"
+                                   HeightRequest="12"
+                                   Source="ic_question"
+                                   HorizontalOptions="End"
+                                   Margin="0,0,30,0"
+                                   VerticalOptions="Center"
+                                   IsVisible="{Binding AmountToFeeRatioWarning.TooltipText, Converter={StaticResource StringToBool}}">
+                                <Image.Triggers>
+                                    <DataTrigger TargetType="Image"
+                                                 Binding="{Binding AmountToFeeRatioWarning.Type}"
+                                                 Value="Error">
+                                        <Setter Property="Source"
+                                                Value="ic_question__error" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Image"
+                                                 Binding="{Binding AmountToFeeRatioWarning.Type}"
+                                                 Value="Warning">
+                                        <Setter Property="Source"
+                                                Value="ic_question__warning" />
+                                    </DataTrigger>
+                                </Image.Triggers>
+                            </Image>
+                        </StackLayout>
                     </StackLayout>
-                </StackLayout>
-                <!--<StackLayout Margin="16,12,16,0"
+                    <!--<StackLayout Margin="16,12,16,0"
                              IsVisible="False">
                     <StackLayout.Triggers>
                         <MultiTrigger TargetType="StackLayout">
@@ -566,7 +569,7 @@
                         </Image>
                     </StackLayout>
                 </StackLayout>-->
-                <!--<StackLayout Margin="16,12,16,0"
+                    <!--<StackLayout Margin="16,12,16,0"
                              IsVisible="False">
                     <StackLayout.Triggers>
                         <MultiTrigger TargetType="StackLayout">
@@ -629,123 +632,137 @@
                         </Image>
                     </StackLayout>
                 </StackLayout>-->
-                <StackLayout Margin="16,12,16,0"
-                             IsVisible="False">
-                    <StackLayout.Triggers>
-                        <MultiTrigger TargetType="StackLayout">
-                            <MultiTrigger.Conditions>
-                                <BindingCondition Binding="{Binding Message.RelatedElement}"
-                                                  Value="All" />
-                                <BindingCondition
-                                    Binding="{Binding Message.Text, Converter={StaticResource StringToBool}}"
-                                    Value="True" />
-                            </MultiTrigger.Conditions>
-                            <Setter Property="IsVisible"
-                                    Value="True" />
-                        </MultiTrigger>
-                    </StackLayout.Triggers>
-                    <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ShowTooltipCommand}"
-                                              CommandParameter="{Binding Message.TooltipText}" />
-                    </StackLayout.GestureRecognizers>
-                    <StackLayout Orientation="Horizontal"
-                                 HorizontalOptions="FillAndExpand">
-                        <Label Text="{Binding Message.Text}"
-                               HorizontalTextAlignment="Start"
-                               HorizontalOptions="StartAndExpand"
-                               VerticalOptions="Center">
-                            <Label.Triggers>
-                                <DataTrigger TargetType="Label"
-                                             Binding="{Binding Message.Type}"
-                                             Value="Warning">
-                                    <Setter Property="Style"
-                                            Value="{DynamicResource WarningTextH6}" />
+                    <StackLayout Margin="16,12,16,0"
+                                 IsVisible="False">
+                        <StackLayout.Triggers>
+                            <MultiTrigger TargetType="StackLayout">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition Binding="{Binding Message.RelatedElement}"
+                                                      Value="All" />
+                                    <BindingCondition
+                                        Binding="{Binding Message.Text, Converter={StaticResource StringToBool}}"
+                                        Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="IsVisible"
+                                        Value="True" />
+                            </MultiTrigger>
+                        </StackLayout.Triggers>
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowTooltipCommand}"
+                                                  CommandParameter="{Binding Message.TooltipText}" />
+                        </StackLayout.GestureRecognizers>
+                        <StackLayout Orientation="Horizontal"
+                                     HorizontalOptions="FillAndExpand">
+                            <Label Text="{Binding Message.Text}"
+                                   HorizontalTextAlignment="Start"
+                                   HorizontalOptions="StartAndExpand"
+                                   VerticalOptions="Center">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding Message.Type}"
+                                                 Value="Warning">
+                                        <Setter Property="Style"
+                                                Value="{DynamicResource WarningTextH6}" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding Message.Type}"
+                                                 Value="Error">
+                                        <Setter Property="Style"
+                                                Value="{DynamicResource ErrorTextH6}" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                            <Image WidthRequest="12"
+                                   HeightRequest="12"
+                                   Source="ic_question"
+                                   HorizontalOptions="End"
+                                   Margin="0,0,30,0"
+                                   VerticalOptions="Center"
+                                   IsVisible="{Binding Message.TooltipText, Converter={StaticResource StringToBool}}">
+                                <Image.Triggers>
+                                    <DataTrigger TargetType="Image"
+                                                 Binding="{Binding Message.Type}"
+                                                 Value="Error">
+                                        <Setter Property="Source"
+                                                Value="ic_question__error" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Image"
+                                                 Binding="{Binding Message.Type}"
+                                                 Value="Warning">
+                                        <Setter Property="Source"
+                                                Value="ic_question__warning" />
+                                    </DataTrigger>
+                                </Image.Triggers>
+                            </Image>
+                        </StackLayout>
+                    </StackLayout>
+                    <StackLayout VerticalOptions="End"
+                                 Margin="16">
+                        <StackLayout.IsVisible>
+                            <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                                <Binding Path="FromViewModel.CurrencyViewModel"
+                                         Mode="OneWay"
+                                         Converter="{StaticResource NullToBoolean}"
+                                         TargetNullValue="False"
+                                         FallbackValue="False" />
+                                <Binding Path="ToViewModel.CurrencyViewModel"
+                                         Mode="OneWay"
+                                         Converter="{StaticResource NullToBoolean}"
+                                         TargetNullValue="False"
+                                         FallbackValue="False" />
+                            </MultiBinding>
+                        </StackLayout.IsVisible>
+                        <Button Text="{helpers:Translate ExchangeButton}"
+                                CornerRadius="25"
+                                BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
+                                TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
+                                FontSize="17"
+                                HeightRequest="50"
+                                TextTransform="None"
+                                HorizontalOptions="FillAndExpand"
+                                FontFamily="{DynamicResource RegularFont}"
+                                Command="{Binding ConvertCommand}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding CanExchange}"
+                                             Value="False">
+                                    <Setter Property="BackgroundColor"
+                                            Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}" />
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}" />
+                                    <Setter Property="Opacity"
+                                            Value="0.5" />
+                                    <Setter Property="IsEnabled"
+                                            Value="False" />
                                 </DataTrigger>
-                                <DataTrigger TargetType="Label"
-                                             Binding="{Binding Message.Type}"
-                                             Value="Error">
-                                    <Setter Property="Style"
-                                            Value="{DynamicResource ErrorTextH6}" />
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding CanExchange}"
+                                             Value="True">
+                                    <Setter Property="BackgroundColor"
+                                            Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}" />
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}" />
+                                    <Setter Property="Opacity"
+                                            Value="1" />
+                                    <Setter Property="IsEnabled"
+                                            Value="True" />
                                 </DataTrigger>
-                            </Label.Triggers>
-                        </Label>
-                        <Image WidthRequest="12"
-                               HeightRequest="12"
-                               Source="ic_question"
-                               HorizontalOptions="End"
-                               Margin="0,0,30,0"
-                               VerticalOptions="Center"
-                               IsVisible="{Binding Message.TooltipText, Converter={StaticResource StringToBool}}">
-                            <Image.Triggers>
-                                <DataTrigger TargetType="Image"
-                                             Binding="{Binding Message.Type}"
-                                             Value="Error">
-                                    <Setter Property="Source"
-                                            Value="ic_question__error" />
-                                </DataTrigger>
-                                <DataTrigger TargetType="Image"
-                                             Binding="{Binding Message.Type}"
-                                             Value="Warning">
-                                    <Setter Property="Source"
-                                            Value="ic_question__warning" />
-                                </DataTrigger>
-                            </Image.Triggers>
-                        </Image>
+                            </Button.Triggers>
+                        </Button>
                     </StackLayout>
                 </StackLayout>
-                <StackLayout VerticalOptions="End"
-                             Margin="16">
-                    <StackLayout.IsVisible>
-                        <MultiBinding Converter="{StaticResource AllTrueConverter}">
-                            <Binding Path="FromViewModel.CurrencyViewModel"
-                                     Mode="OneWay"
-                                     Converter="{StaticResource NullToBoolean}"
-                                     TargetNullValue="False"
-                                     FallbackValue="False" />
-                            <Binding Path="ToViewModel.CurrencyViewModel"
-                                     Mode="OneWay"
-                                     Converter="{StaticResource NullToBoolean}"
-                                     TargetNullValue="False"
-                                     FallbackValue="False" />
-                        </MultiBinding>
-                    </StackLayout.IsVisible>
-                    <Button Text="{helpers:Translate ExchangeButton}"
-                            CornerRadius="25"
-                            BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
-                            TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
-                            FontSize="17"
-                            HeightRequest="50"
-                            TextTransform="None"
-                            HorizontalOptions="FillAndExpand"
-                            FontFamily="{DynamicResource RegularFont}"
-                            Command="{Binding ConvertCommand}">
-                        <Button.Triggers>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding CanExchange}"
-                                         Value="False">
-                                <Setter Property="BackgroundColor"
-                                        Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}" />
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}" />
-                                <Setter Property="Opacity"
-                                        Value="0.5" />
-                                <Setter Property="IsEnabled"
-                                        Value="False" />
-                            </DataTrigger>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding CanExchange}"
-                                         Value="True">
-                                <Setter Property="BackgroundColor"
-                                        Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}" />
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}" />
-                                <Setter Property="Opacity"
-                                        Value="1" />
-                                <Setter Property="IsEnabled"
-                                        Value="True" />
-                            </DataTrigger>
-                        </Button.Triggers>
-                    </Button>
+                <StackLayout Spacing="16"
+                             Margin="8,0,8,16"
+                             HorizontalOptions="FillAndExpand"
+                             Opacity="0.7">
+                    <Label Text="We are under maintenance" 
+                           Style="{DynamicResource MainTextH2}"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Center"/>
+                    <Label Text="We are improving our cross-chain swaps service.&#x0a;We'll be back as soon as possible."
+                           Style="{DynamicResource MainTextH4}"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Center"/>
                 </StackLayout>
             </StackLayout>
         </ListView.Header>
@@ -770,15 +787,15 @@
                 <Button Text="{helpers:Translate ShowAll}"
                         Style="{DynamicResource AdditionalButton}"
                         IsVisible="{Binding CanShowMoreSwaps}"
-                        Margin="16,0"
+                        Margin="16"
                         Padding="16,0"
                         Command="{Binding ShowAllSwapsCommand}" />
-                <Label Text="{helpers:Translate SwapHistoryText}"
-                       Style="{DynamicResource AdditionalTextH5}"
-                       BackgroundColor="Transparent"
-                       Padding="20,10"
-                       VerticalTextAlignment="Center"
-                       HorizontalTextAlignment="Center" />
+                <!-- <Label Text="{helpers:Translate SwapHistoryText}" -->
+                <!--        Style="{DynamicResource AdditionalTextH5}" -->
+                <!--        BackgroundColor="Transparent" -->
+                <!--        Padding="20,10" -->
+                <!--        VerticalTextAlignment="Center" -->
+                <!--        HorizontalTextAlignment="Center" /> -->
             </StackLayout>
         </ListView.Footer>
         <ListView.ItemTemplate>
