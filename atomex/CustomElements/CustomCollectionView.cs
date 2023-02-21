@@ -37,6 +37,18 @@ namespace atomex.CustomElements
             set => SetValue(GroupHeaderHeightProperty, value);
         }
 
+        public static readonly BindableProperty ColumnContentHeightProperty =
+            BindableProperty.CreateAttached("ColumnContentHeight",
+                typeof(int),
+                typeof(CustomCollectionView),
+                0);
+
+        public int ColumnContentHeight
+        {
+            get => (int) GetValue(RowHeightProperty);
+            set => SetValue(RowHeightProperty, value);
+        }
+
         public static readonly BindableProperty RowCountProperty =
             BindableProperty.CreateAttached("RowCount",
                 typeof(int),
@@ -78,7 +90,7 @@ namespace atomex.CustomElements
                         RemainingItemsThresholdReachedCommand?.Execute(
                             RemainingItemsThresholdReachedCommandParameter); // Touched bottom view
                 }
-                
+
                 _previousScrollViewPosition = e.ScrollY;
             }
             catch (Exception exception)
@@ -86,6 +98,15 @@ namespace atomex.CustomElements
                 Log.Error(exception, "Custom collection view scrolled error");
             }
         }
+
+        protected override SizeRequest OnMeasure(double widthConstraint, double heightConstraint)
+        {
+            if (_columns > 1)
+                UpdateHeight();
+
+            return base.OnMeasure(widthConstraint, heightConstraint);
+        }
+
 
         private void UpdateHeight()
         {
@@ -104,7 +125,7 @@ namespace atomex.CustomElements
                 var headerHeight = header?.IsVisible ?? false
                     ? header.HeightRequest
                     : 0;
-                
+
                 var footerHeight = footer?.IsVisible ?? false
                     ? footer.HeightRequest
                     : 0;
@@ -114,8 +135,13 @@ namespace atomex.CustomElements
                 if (RowCount < 0) RowCount = 0;
 
                 HeightRequest = IsGrouped
-                    ? RowCount * RowHeight + (BindingItemCount == 0 ? RowCount : BindingItemCount) * GroupHeaderHeight + footerHeight + headerHeight
-                    : RowCount * RowHeight / _columns + footerHeight + headerHeight;
+                    ? RowCount * RowHeight + (BindingItemCount == 0 ? RowCount : BindingItemCount) * GroupHeaderHeight +
+                      footerHeight + headerHeight
+                    : _columns > 1
+                        ? Math.Ceiling(Convert.ToDouble(RowCount) / Convert.ToDouble(_columns)) *
+                          ((_scrollView?.Content?.Width / _columns ?? 0) + ColumnContentHeight) + footerHeight +
+                          headerHeight
+                        : RowCount * RowHeight + footerHeight + headerHeight;
             }
             catch (Exception e)
             {

@@ -186,18 +186,22 @@ namespace atomex.ViewModels.CurrencyViewModels
                     .Where(t1 => !t1.IsSelected)
                     .Select(t2 => t2.TezosTokenViewModel.CurrencyCode)
                     .ToArray();
+                
+                UserTokens = AllTokens?
+                    .Where(c => c.IsSelected)
+                    .Select(vm => vm.TezosTokenViewModel)
+                    .ToList();
+                
+                var newQty = isSelected 
+                    ? QtyDisplayedTokens + 1 
+                    : QtyDisplayedTokens - 1;
 
                 Device.InvokeOnMainThreadAsync(() =>
                 {
-                    UserTokens = AllTokens?
-                        .Where(c => c.IsSelected)
-                        .Select(vm => vm.TezosTokenViewModel)
-                        .ToList();
-
                     DisplayedTokens = new ObservableCollection<TezosTokenViewModel>(
-                        UserTokens?.Take(QtyDisplayedTokens) ?? new List<TezosTokenViewModel>());
+                        UserTokens?.Take(newQty) ?? new List<TezosTokenViewModel>());
 
-                    QtyDisplayedTokens = DisplayedTokens.Count;
+                    QtyDisplayedTokens = newQty;
                 });
 
                 _app.Account.UserData.DisabledTokens = disabledTokens;

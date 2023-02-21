@@ -282,12 +282,16 @@ namespace atomex.ViewModels.CurrencyViewModels
                     .Select(vm => vm.CollectibleViewModel)
                     .ToList();
                 
+                var newQty = isSelected 
+                    ? QtyDisplayedCollectibles + 1 
+                    : QtyDisplayedCollectibles - 1;
+                
                 Device.InvokeOnMainThreadAsync(() =>
                 {
                     DisplayedCollectibles = new ObservableCollection<CollectibleViewModel>(
-                        UserCollectibles?.Take(QtyDisplayedCollectibles) ?? new List<CollectibleViewModel>());
+                        UserCollectibles?.Take(newQty) ?? new List<CollectibleViewModel>());
 
-                    QtyDisplayedCollectibles = DisplayedCollectibles.Count;
+                    QtyDisplayedCollectibles = newQty;
                 });
 
                 _app.Account.UserData.DisabledCollectibles = disabledCollectibles;

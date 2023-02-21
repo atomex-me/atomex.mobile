@@ -961,10 +961,11 @@
                         HorizontalScrollBarVisibility="Never"
                         VerticalScrollBarVisibility="Never"
                         BackgroundColor="Transparent"
-                        RowHeight="228"
                         RowCount="{Binding CollectiblesViewModel.QtyDisplayedCollectibles, Mode=OneWay}"
+                        ColumnContentHeight="30"
                         ScrollView="Page"
                         RemainingItemsThresholdReachedCommand="{Binding CollectiblesViewModel.LoadMoreCollectiblesCommand}"
+                        VerticalOptions="FillAndExpand"
                         Margin="8"
                         IsVisible="False">
                         <controls:CustomCollectionView.Triggers>
