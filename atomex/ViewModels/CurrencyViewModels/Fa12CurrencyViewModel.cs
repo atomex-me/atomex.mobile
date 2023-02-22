@@ -34,6 +34,8 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             try
             {
+                if (!IsOpenCurrency) return;
+                
                 if (App.Account == null)
                     return;
 
