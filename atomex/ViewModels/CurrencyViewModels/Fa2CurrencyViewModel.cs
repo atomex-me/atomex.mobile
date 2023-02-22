@@ -34,10 +34,10 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             try
             {
-                if (!IsOpenCurrency) return;
-                
-                if (App.Account == null)
+                if (!IsOpenCurrency || App.Account == null)
                     return;
+
+                IsTxsLoading = true;
 
                 var fa2Currency = Currency as Fa2Config;
 
@@ -91,6 +91,10 @@ namespace atomex.ViewModels.CurrencyViewModels
             catch (Exception e)
             {
                 Log.Error(e, "LoadTransactionsAsync error for {@Currency}", Currency?.Name);
+            }
+            finally
+            {
+                IsTxsLoading = false;
             }
         }
 

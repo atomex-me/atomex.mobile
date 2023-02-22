@@ -44,6 +44,8 @@ namespace atomex.ViewModels.CurrencyViewModels
         public static string BaseCurrencyCode => "USD";
         public string CurrencyCode => TokenBalance?.Symbol ?? "TOKENS";
         public string Description => TokenBalance?.Name ?? TokenBalance?.Symbol;
+        
+        public bool IsOpenToken { get; set; }
 
         public bool IsConvertable => _app?.Account?.Currencies
             .Any(c => c is Fa12Config fa12 && fa12?.TokenContractAddress == Contract.Address) ?? false;
@@ -241,10 +243,10 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             try
             {
-                IsTransfersLoading = true;
-                
-                if (_app.Account == null)
+                if (!IsOpenToken || _app.Account == null)
                     return;
+                
+                IsTransfersLoading = true;
 
                 var tezosAccount = _app.Account
                     .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
@@ -308,6 +310,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         private async Task LoadMoreTxs()
         {
             if (IsTransfersLoading ||
+                Transactions == null ||
                 QtyDisplayedTxs >= Transactions.Count) return;
 
             IsTransfersLoading = true;
@@ -412,6 +415,8 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             try
             {
+                IsOpenToken = false;
+                
                 if (Transactions == null)
                     return;
 
@@ -448,7 +453,11 @@ namespace atomex.ViewModels.CurrencyViewModels
                     args.TokenContract != null && (args.TokenContract != TokenBalance?.Contract ||
                                                    args.TokenId != TokenBalance?.TokenId)) return;
                 
-                await Task.Run(async () => await UpdateBalanceAsync());
+                await Task.Run(async () =>
+                {
+                    await UpdateBalanceAsync();
+                    await LoadTransfersAsync();
+                });
             }
             catch (Exception e)
             {

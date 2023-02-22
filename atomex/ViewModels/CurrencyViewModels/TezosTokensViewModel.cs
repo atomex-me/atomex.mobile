@@ -67,8 +67,6 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public bool IsTokensLoading { get; set; }
         public int LoadingStepTokens => 20;
 
-        private TezosTokenViewModel _openToken;
-
         [Reactive] public string SearchPattern { get; set; }
 
         public TezosTokensViewModel(
@@ -90,7 +88,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 .SubscribeInMainThread(async token =>
                 {
                     _navigationService?.ShowPage(new TokenPage(token), TabNavigation.Portfolio);
-                    _openToken = token;
+                    token.IsOpenToken = true;
 
                     await Task.Run(async () =>
                     {
@@ -276,12 +274,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             try
             {
-                if (!args.IsTokenUpdate ||
-                    args.TokenContract != null && (args.TokenContract != _openToken?.Contract?.Address ||
-                                                   args.TokenId != _openToken?.TokenBalance?.TokenId)) return;
-
-                if (_openToken != null)
-                    await Task.Run(async () => await _openToken.LoadTransfersAsync());
+                if (!args.IsTokenUpdate || (args.TokenContract != null && Contracts == null)) return;
 
                 await Task.Run(async () => await ReloadTokenContractsAsync());
             }
@@ -402,7 +395,6 @@ namespace atomex.ViewModels.CurrencyViewModels
             try
             {
                 SearchPattern = null;
-                _openToken = null;
 
                 if (UserTokens == null)
                     return;

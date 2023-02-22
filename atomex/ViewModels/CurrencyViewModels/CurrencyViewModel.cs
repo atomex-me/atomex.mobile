@@ -279,12 +279,10 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             try
             {
-                if (!IsOpenCurrency) return;
+                if (!IsOpenCurrency || App.Account == null)
+                    return;
                 
                 IsTxsLoading = true;
-
-                if (App.Account == null)
-                    return;
 
                 var txs = await Task.Run(async () =>
                 {
