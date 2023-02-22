@@ -227,6 +227,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         private async Task LoadMoreCollectibles()
         {
             if (IsCollectiblesLoading ||
+                UserCollectibles == null ||
                 QtyDisplayedCollectibles >= UserCollectibles.Count ||
                 !string.IsNullOrEmpty(SearchPattern)) return;
 
@@ -234,9 +235,6 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             try
             {
-                if (UserCollectibles == null)
-                    return;
-
                 var collectibles = UserCollectibles
                     .Skip(QtyDisplayedCollectibles)
                     .Take(LoadingStepCollectibles)

@@ -445,8 +445,8 @@ namespace atomex.ViewModels.CurrencyViewModels
             try
             {
                 if (!args.IsTokenUpdate ||
-                    args.TokenContract != null && (args.TokenContract != TokenBalance.Contract ||
-                                                   args.TokenId != TokenBalance.TokenId)) return;
+                    args.TokenContract != null && (args.TokenContract != TokenBalance?.Contract ||
+                                                   args.TokenId != TokenBalance?.TokenId)) return;
                 
                 await Task.Run(async () => await UpdateBalanceAsync());
             }
