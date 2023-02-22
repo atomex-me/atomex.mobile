@@ -468,6 +468,8 @@ namespace atomex.ViewModels.CurrencyViewModels
         public void SubscribeToUpdates()
         {
             _app.Account.BalanceUpdated += OnBalanceUpdatedEventHandler;
+            
+            if (TokenBalance.IsNft) return;
             _app.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
 
