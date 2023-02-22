@@ -523,15 +523,13 @@ namespace atomex.ViewModels.CurrencyViewModels
         private async Task LoadMoreTxs()
         {
             if (IsTxsLoading ||
+                Transactions == null ||
                 QtyDisplayedTxs >= Transactions.Count) return;
 
             IsTxsLoading = true;
 
             try
             {
-                if (Transactions == null)
-                    return;
-
                 var txs = Transactions
                     .Skip(QtyDisplayedTxs)
                     .Take(LoadingStepTxs)

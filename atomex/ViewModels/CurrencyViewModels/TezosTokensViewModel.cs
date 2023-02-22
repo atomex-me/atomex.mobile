@@ -218,6 +218,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         private async Task LoadMoreTokens()
         {
             if (IsTokensLoading ||
+                UserTokens == null ||
                 QtyDisplayedTokens >= UserTokens.Count ||
                 !string.IsNullOrEmpty(SearchPattern)) return;
 
@@ -225,9 +226,6 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             try
             {
-                if (UserTokens == null)
-                    return;
-
                 var tokens = UserTokens
                     .Skip(QtyDisplayedTokens)
                     .Take(LoadingStepTokens)
@@ -279,8 +277,8 @@ namespace atomex.ViewModels.CurrencyViewModels
             try
             {
                 if (!args.IsTokenUpdate ||
-                    args.TokenContract != null && (args.TokenContract != _openToken.Contract.Address ||
-                                                   args.TokenId != _openToken.TokenBalance.TokenId)) return;
+                    args.TokenContract != null && (args.TokenContract != _openToken?.Contract?.Address ||
+                                                   args.TokenId != _openToken?.TokenBalance?.TokenId)) return;
 
                 if (_openToken != null)
                     await Task.Run(async () => await _openToken.LoadTransfersAsync());
