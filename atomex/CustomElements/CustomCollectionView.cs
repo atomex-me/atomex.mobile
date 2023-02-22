@@ -10,6 +10,7 @@ namespace atomex.CustomElements
         private ScrollView _scrollView;
         private double _previousScrollViewPosition = 0;
         private int _columns;
+        private double _contentWidth;
         private double ThresholdSpace => RowHeight * 2;
         private int BindingItemCount => Convert.ToInt32(ItemsSource?.Cast<object>().ToList().Count);
 
@@ -45,8 +46,8 @@ namespace atomex.CustomElements
 
         public int ColumnContentHeight
         {
-            get => (int) GetValue(RowHeightProperty);
-            set => SetValue(RowHeightProperty, value);
+            get => (int) GetValue(ColumnContentHeightProperty);
+            set => SetValue(ColumnContentHeightProperty, value);
         }
 
         public static readonly BindableProperty RowCountProperty =
@@ -76,6 +77,17 @@ namespace atomex.CustomElements
             }
         }
 
+        protected override void OnSizeAllocated(double width, double height)
+        {
+            base.OnSizeAllocated(width, height);
+
+            if (_columns > 1 && _contentWidth <= 0)
+            {
+                _contentWidth = width;
+                UpdateHeight();
+            }
+        }
+
         private void _scrollView_Scrolled(object sender, ScrolledEventArgs e)
         {
             try
@@ -98,15 +110,6 @@ namespace atomex.CustomElements
                 Log.Error(exception, "Custom collection view scrolled error");
             }
         }
-
-        protected override SizeRequest OnMeasure(double widthConstraint, double heightConstraint)
-        {
-            if (_columns > 1)
-                UpdateHeight();
-
-            return base.OnMeasure(widthConstraint, heightConstraint);
-        }
-
 
         private void UpdateHeight()
         {
@@ -139,8 +142,7 @@ namespace atomex.CustomElements
                       footerHeight + headerHeight
                     : _columns > 1
                         ? Math.Ceiling(Convert.ToDouble(RowCount) / Convert.ToDouble(_columns)) *
-                          ((_scrollView?.Content?.Width / _columns ?? 0) + ColumnContentHeight) + footerHeight +
-                          headerHeight
+                          (_contentWidth / _columns + ColumnContentHeight) + footerHeight + headerHeight
                         : RowCount * RowHeight + footerHeight + headerHeight;
             }
             catch (Exception e)
