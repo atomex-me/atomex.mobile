@@ -49,6 +49,8 @@ namespace atomex.ViewModels.CurrencyViewModels
         public bool HasDapps => CurrencyCode == TezosConfig.Xtz;
         public bool CanBuy => BuyViewModel.Currencies.Contains(Currency?.Name);
 
+        public bool IsOpenCurrency { get; set; }
+
         protected CancellationTokenSource CancellationTokenSource;
 
         [Reactive] public decimal TotalAmount { get; set; }
@@ -277,10 +279,10 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             try
             {
-                IsTxsLoading = true;
-
-                if (App.Account == null)
+                if (!IsOpenCurrency || App.Account == null)
                     return;
+                
+                IsTxsLoading = true;
 
                 var txs = await Task.Run(async () =>
                 {
@@ -395,7 +397,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                     currency: Currency.Name,
                     skipUsed: true,
                     cancellationToken: CancellationTokenSource.Token);
-
+                
                 await Task.Run(async () => await LoadTransactionsAsync());
 
                 if (CancellationTokenSource is {IsCancellationRequested: false})
@@ -610,6 +612,8 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             try
             {
+                IsOpenCurrency = false;
+                
                 if (Transactions == null)
                     return;
 

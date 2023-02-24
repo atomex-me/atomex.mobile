@@ -96,6 +96,8 @@ namespace atomex.ViewModels
                         case CurrencyActionType.Show:
                             NavigationService?.ShowPage(new CurrencyPage(c), TabNavigation.Portfolio);
                             NavigationService?.SetInitiatedPage(TabNavigation.Portfolio);
+                            
+                            c.IsOpenCurrency = true;
                             await Task.Run(async () =>
                             {
                                 await c.LoadTransactionsAsync();

@@ -84,7 +84,8 @@ namespace atomex.ViewModels.CurrencyViewModels
                 .SubscribeInMainThread(async token =>
                 {
                     _navigationService?.ShowPage(new NftPage(token), TabNavigation.Portfolio);
-
+                    token.IsOpenToken = true;
+                    
                     await Task.Run(async () =>
                     {
                         await SelectedToken!.LoadTransfersAsync();
