@@ -82,7 +82,12 @@ namespace atomex.Views
 
             Children.Add(_navigationPortfolioPage);
             Children.Add(_navigationConversionPage);
-            Children.Add(_navigationBuyPage);
+            
+            if (Device.RuntimePlatform == Device.Android)
+            {
+                Children.Add(_navigationBuyPage);
+            }
+
             Children.Add(_navigationSettingsPage);
 
             mainViewModel.Locked += (s, a) => SignOut();

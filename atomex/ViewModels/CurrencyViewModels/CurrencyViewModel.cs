@@ -47,7 +47,8 @@ namespace atomex.ViewModels.CurrencyViewModels
         public bool HasCollectibles => CurrencyCode == TezosConfig.Xtz;
         public bool HasTokens => CurrencyCode == TezosConfig.Xtz;
         public bool HasDapps => CurrencyCode == TezosConfig.Xtz;
-        public bool CanBuy => BuyViewModel.Currencies.Contains(Currency?.Name);
+        public bool CanBuy => BuyViewModel.Currencies.Contains(Currency?.Name) && 
+                              Device.RuntimePlatform != Device.iOS;
 
         public bool IsOpenCurrency { get; set; }
 
