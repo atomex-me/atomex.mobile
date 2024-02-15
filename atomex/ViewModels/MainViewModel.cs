@@ -11,10 +11,13 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using atomex.Common;
+using Atomex.Core;
 using atomex.ViewModels.ConversionViewModels;
 using atomex.ViewModels.CurrencyViewModels;
 using atomex.ViewModels.DappsViewModels;
+using atomex.Views.Popup;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Xamarin.Essentials;
@@ -26,14 +29,16 @@ namespace atomex.ViewModels
     public class MainViewModel : BaseViewModel
     {
         public IAtomexApp AtomexApp { get; }
+        [Reactive] private INavigationService NavigationService { get; set; }
         public SettingsViewModel SettingsViewModel { get; }
         public ConversionViewModel ConversionViewModel { get; }
         public PortfolioViewModel PortfolioViewModel { get; }
         public BuyViewModel BuyViewModel { get; }
         [Reactive] public ConnectDappViewModel ConnectDappViewModel { get; set; }
+        public bool IsTestNet { get; set; }
 
         public EventHandler Locked;
-        
+
         public MainViewModel(
             IAtomexApp app,
             IAccount account)
@@ -70,6 +75,7 @@ namespace atomex.ViewModels
             BuyViewModel = new BuyViewModel(AtomexApp);
             SettingsViewModel = new SettingsViewModel(AtomexApp, this);
             PortfolioViewModel.CurrenciesLoaded += OnCurrenciesLoadedEventHandler;
+            IsTestNet = account?.Wallet.Network == Network.TestNet;
 
             _ = TokenDeviceService.SendTokenToServerAsync(App.DeviceToken, App.FileSystem, AtomexApp);
 
@@ -83,6 +89,23 @@ namespace atomex.ViewModels
                     await ConnectDappViewModel.OnDeepLinkResult(deepLink);
                     await SecureStorage.SetAsync("DappDeepLink", string.Empty);
                 });
+            
+            this.WhenAnyValue(vm => vm.NavigationService)
+                .WhereNotNull()
+                .SubscribeInMainThread(_ =>
+                {
+                    if (!IsTestNet) return;
+                    NavigationService.ShowPopup(new TestNetWalletPopup(this));
+                });
+        }
+        
+        public void SetNavigationService(INavigationService service)
+        {
+            NavigationService = service ?? throw new ArgumentNullException(nameof(service));
+            PortfolioViewModel.SetNavigationService(service);
+            SettingsViewModel.SetNavigationService(service);
+            BuyViewModel.SetNavigationService(service);
+            ConversionViewModel.SetNavigationService(service);
         }
         
         private void OnCurrenciesLoadedEventHandler(object sender, EventArgs args)
@@ -179,5 +202,10 @@ namespace atomex.ViewModels
                 atomexClient.SubscribeToMarketData(SubscriptionType.DepthTwenty);
             }
         }
+        
+        private ICommand _closePopupCommand;
+
+        public ICommand ClosePopupCommand => _closePopupCommand ??=
+            ReactiveCommand.Create(() => NavigationService?.ClosePopup());
     }
 }

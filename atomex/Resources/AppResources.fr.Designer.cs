@@ -2618,5 +2618,11 @@ namespace atomex.Resources {
                 return ResourceManager.GetString("CameraPermission", resourceCulture);
             }
         }
+        
+        internal static string TestNetWalletWarning {
+            get {
+                return ResourceManager.GetString("TestNetWalletWarning", resourceCulture);
+            }
+        }
     }
 }

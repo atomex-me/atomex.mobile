@@ -1357,4 +1357,7 @@
     <data name="CameraPermission" xml:space="preserve">
         <value>Доступ к камере</value>
     </data>
+    <data name="TestNetWalletWarning" xml:space="preserve">
+        <value>Вы используете тестовый кошелек (TestNet), монеты на котором не имеют реальной денежной стоимости! Будьте осторожны и остерегайтесь мошенников!</value>
+    </data>
 </root>

@@ -78,10 +78,7 @@ namespace atomex.Views
                 Title = AppResources.BuyTab
             };
 
-            MainViewModel.SettingsViewModel.SetNavigationService(this);
-            MainViewModel.BuyViewModel.SetNavigationService(this);
-            MainViewModel.ConversionViewModel.SetNavigationService(this);
-            MainViewModel.PortfolioViewModel.SetNavigationService(this);
+            MainViewModel.SetNavigationService(this);
 
             Children.Add(_navigationPortfolioPage);
             Children.Add(_navigationConversionPage);

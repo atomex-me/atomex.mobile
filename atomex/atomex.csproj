@@ -68,6 +68,10 @@
     <Compile Update="Resources\AppResources.fr.Designer.cs">
       <DependentUpon>AppResources.fr.resx</DependentUpon>
     </Compile>
+    <Compile Update="Views\Popup\TestNetWalletPopup.xaml.cs">
+      <DependentUpon>TestNetWalletPopup.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="configuration.json">
