@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using atomex.Resources;
 using Atomex;
 using Atomex.Blockchain.Abstract;
-using atomex.Common;
 using Atomex.Common;
+using Atomex.Core;
 using Atomex.MarketData.Abstract;
 using atomex.ViewModels.CurrencyViewModels;
 using Atomex.Wallet.Ethereum;
@@ -161,6 +161,9 @@ namespace atomex.ViewModels.SendViewModels
             try
             {
                 if (sender is not IQuotesProvider quotesProvider)
+                    return;
+                
+                if (App.Account?.Network == Network.TestNet)
                     return;
 
                 var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);

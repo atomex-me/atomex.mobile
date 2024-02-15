@@ -27,9 +27,9 @@
     <MtouchArch>x86_64</MtouchArch>
     <MtouchLink>None</MtouchLink>
     <MtouchDebug>true</MtouchDebug>
-    <CodesignKey>Apple Development: Igor Matcak (572BY3ZBQR)</CodesignKey>
+    <CodesignKey>iPhone Distribution</CodesignKey>
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
-    <CodesignProvision>VS: com.atomex.ios Development</CodesignProvision>
+    <CodesignProvision>Atomex Distribution</CodesignProvision>
     <MtouchExtraArgs>--interpreter</MtouchExtraArgs>
     <LangVersion>8.0</LangVersion>
     <MtouchExtraArgs>--interpreter</MtouchExtraArgs>
@@ -80,6 +80,7 @@
     <MtouchLink>SdkOnly</MtouchLink>
     <LangVersion>8.0</LangVersion>
     <BuildIpa>true</BuildIpa>
+    <CodesignProvision>Atomex Distribution</CodesignProvision>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />

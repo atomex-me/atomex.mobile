@@ -160,6 +160,12 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         public void SubscribeToRatesProvider(IQuotesProvider quotesProvider)
         {
+            if (quotesProvider == null)
+                return;
+            
+            if (App.Account?.Network == Network.TestNet)
+                return;
+
             QuotesProvider = quotesProvider;
             QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
@@ -233,7 +239,11 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         private void UpdateQuotesInBaseCurrency(IQuotesProvider quotesProvider)
         {
-            if (quotesProvider == null) return;
+            if (quotesProvider == null) 
+                return;
+            
+            if (App.Account?.Network == Network.TestNet)
+                return;
 
             try
             {
