@@ -14,6 +14,7 @@ using atomex.Views.TezosTokens;
 using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Common;
+using Atomex.Core;
 using Atomex.MarketData.Abstract;
 using atomex.Models;
 using Atomex.TezosTokens;
@@ -469,13 +470,21 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             _app.Account.BalanceUpdated += OnBalanceUpdatedEventHandler;
             
-            if (TokenBalance.IsNft) return;
+            if (_account.Wallet.Network == Network.TestNet)
+                return;
+            
+            if (TokenBalance.IsNft) 
+                return;
+            
             _app.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
 
         private void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
             if (sender is not IQuotesProvider quotesProvider)
+                return;
+            
+            if (_app.Account?.Network == Network.TestNet)
                 return;
 
             UpdateQuotesInBaseCurrency(quotesProvider);

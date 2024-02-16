@@ -1360,4 +1360,7 @@ NOTE: Do not sign out or close the application until the swap is completed, othe
     <data name="ReturnToAtomex" xml:space="preserve">
         <value>Return back to Atomex</value>
     </data>
+    <data name="TestNetWalletWarning" xml:space="preserve">
+        <value>You are using a test wallet (TestNet), the coins on which have no real monetary value! Be careful and beware of scammers!</value>
+    </data>
 </root>

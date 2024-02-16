@@ -2618,5 +2618,11 @@ namespace atomex.Resources {
                 return ResourceManager.GetString("ReturnToAtomex", resourceCulture);
             }
         }
+        
+        internal static string TestNetWalletWarning {
+            get {
+                return ResourceManager.GetString("TestNetWalletWarning", resourceCulture);
+            }
+        }
     }
 }

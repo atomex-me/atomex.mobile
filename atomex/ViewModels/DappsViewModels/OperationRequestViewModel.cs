@@ -231,7 +231,7 @@ namespace atomex.ViewModels.DappsViewModels
                     Launcher.OpenAsync(new Uri(uri.ToString()));
             });
 
-        protected override void OnQuotesUpdatedEventHandler(object? sender, EventArgs args)
+        protected override void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
             if (sender is not IQuotesProvider quotesProvider)
                 return;

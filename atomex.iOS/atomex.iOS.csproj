@@ -27,9 +27,9 @@
     <MtouchArch>x86_64</MtouchArch>
     <MtouchLink>None</MtouchLink>
     <MtouchDebug>true</MtouchDebug>
-    <CodesignKey>Apple Development: Igor Matcak (572BY3ZBQR)</CodesignKey>
+    <CodesignKey>iPhone Distribution</CodesignKey>
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
-    <CodesignProvision>VS: com.atomex.ios Development</CodesignProvision>
+    <CodesignProvision>Atomex Distribution</CodesignProvision>
     <MtouchExtraArgs>--interpreter</MtouchExtraArgs>
     <LangVersion>8.0</LangVersion>
     <MtouchExtraArgs>--interpreter</MtouchExtraArgs>
@@ -43,9 +43,10 @@
     <WarningLevel>4</WarningLevel>
     <MtouchLink>None</MtouchLink>
     <MtouchArch>x86_64</MtouchArch>
-    <CodesignKey>Apple Distribution: ATOMEX OU (BJT6S7XYJV)</CodesignKey>
+    <CodesignKey>iPhone Distribution</CodesignKey>
     <MtouchExtraArgs>--interpreter</MtouchExtraArgs>
     <LangVersion>8.0</LangVersion>
+    <CodesignProvision>Atomex Distribution</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>
@@ -73,7 +74,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <MtouchArch>ARM64</MtouchArch>
-    <CodesignKey>iPhone Distribution</CodesignKey>
+    <CodesignKey>Apple Distribution: ATOMEX OU (BJT6S7XYJV)</CodesignKey>
     <MtouchExtraArgs>--interpreter</MtouchExtraArgs>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchFloat32>true</MtouchFloat32>

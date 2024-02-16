@@ -16,6 +16,7 @@ using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Blockchain.Tezos.Internal;
 using Atomex.Common;
+using Atomex.Core;
 using Atomex.MarketData.Abstract;
 using Atomex.Wallet;
 using Atomex.Wallet.Tezos;
@@ -649,7 +650,11 @@ namespace atomex.ViewModels
 
         private void SubscribeToServices()
         {
-            if (!_app.HasQuotesProvider) return;
+            if (!_app.HasQuotesProvider) 
+                return;
+            
+            if (_app.Account?.Network == Network.TestNet)
+                return;
 
             _app.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
             _app.QuotesProvider.AvailabilityChanged += OnQuotesProviderAvailabilityChangedEventHandler;
@@ -658,6 +663,9 @@ namespace atomex.ViewModels
         private void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
             if (sender is not IQuotesProvider quotesProvider)
+                return;
+            
+            if (_app.Account?.Network == Network.TestNet)
                 return;
 
             try

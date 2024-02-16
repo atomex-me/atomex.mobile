@@ -9,6 +9,7 @@ using Atomex;
 using Atomex.Blockchain.Abstract;
 using atomex.Common;
 using Atomex.Common;
+using Atomex.Core;
 using Atomex.MarketData.Abstract;
 using atomex.Models;
 using Atomex.TezosTokens;
@@ -211,6 +212,9 @@ namespace atomex.ViewModels.SendViewModels
         protected override void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
             if (sender is not IQuotesProvider quotesProvider)
+                return;
+            
+            if (App.Account?.Network == Network.TestNet)
                 return;
             
             try

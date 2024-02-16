@@ -290,6 +290,9 @@ namespace atomex.ViewModels.SendViewModels
 
         private void SubscribeToServices()
         {
+            if (_app.Account?.Network == Network.TestNet)
+                return;
+            
             if (_app.HasQuotesProvider)
                 _app.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
@@ -775,6 +778,9 @@ namespace atomex.ViewModels.SendViewModels
             {
                 if (sender is not IQuotesProvider quotesProvider)
                     return;
+                
+                if (_app.Account?.Network == Network.TestNet)
+                    return;
 
                 var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
                 var feeQuote = quotesProvider.GetQuote(FeeCurrencyCode, BaseCurrencyCode);
@@ -877,6 +883,9 @@ namespace atomex.ViewModels.SendViewModels
 
         public void Dispose()
         {
+            if (_app.Account?.Network == Network.TestNet)
+                return;
+            
             if (_app.HasQuotesProvider)
                 _app.QuotesProvider.QuotesUpdated -= OnQuotesUpdatedEventHandler;
         }
